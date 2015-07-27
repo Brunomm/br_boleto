@@ -13,6 +13,10 @@ describe BrBoleto::Core::Sicoob do
 		it { must validate_inclusion_of(:carteira).in_array(%w(1 3)) }
 		it { wont allow_value(9).for(:carteira) }		
 		it { wont allow_value(6).for(:carteira) }		
+
+		it { must validate_inclusion_of(:modalidade_cobranca).in_array(%w(1 2 3)) }
+		it { wont allow_value(4).for(:modalidade_cobranca) }		
+		it { wont allow_value(5).for(:modalidade_cobranca) }		
 		
 		it { must validate_numericality_of(:valor_documento).is_less_than_or_equal_to(99999999.99) }
 		
@@ -113,7 +117,26 @@ describe BrBoleto::Core::Sicoob do
 			subject.stubs(:nosso_numero).returns('1234567-8')
 			subject.codigo_de_barras_do_banco.must_equal "1007801000006612345678001"
 		end
+	end
 
+	describe "#modalidade_cobranca" do
+		it "tem um valor padrão que é 01" do
+			subject.class.new().modalidade_cobranca.must_equal "01"
+		end
+		it "posso modificar a modalidade de cobranca" do
+			subject.modalidade_cobranca = 2
+			subject.modalidade_cobranca.must_equal "02"
+		end
+	end
+
+	describe "#parcelas" do
+		it "tem um valor padrão que é 001" do
+			subject.class.new().parcelas.must_equal "001"
+		end
+		it "deve permitir a modificação do número de parcelas" do
+			subject.parcelas = 2
+			subject.parcelas.must_equal "002"
+		end
 	end
 	
 	describe "#codigo_de_barras" do

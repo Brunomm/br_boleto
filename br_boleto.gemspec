@@ -10,8 +10,8 @@ Gem::Specification.new do |gem|
   gem.license       = "BSD"
 
   gem.files         = `git ls-files`.split($\).reject { |f| ['.pdf','.xls'].include?(File.extname(f)) }
+  gem.test_files    = `git ls-files -- test/**/*`.split("\n")
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
-  gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.name          = "br_boleto"
   gem.require_paths = ["lib"]
   gem.version       = BrBoleto::Version::CURRENT

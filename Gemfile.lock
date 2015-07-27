@@ -2,9 +2,9 @@ PATH
   remote: .
   specs:
     br_boleto (0.1.0)
-      activemodel (>= 4.1)
-      activesupport (>= 4.1)
-      rake
+      activemodel (~> 4.2)
+      activesupport (~> 4.2)
+      rake (>= 0.8.7)
 
 GEM
   remote: http://rubygems.org/
