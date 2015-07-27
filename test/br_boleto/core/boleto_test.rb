@@ -63,7 +63,7 @@ describe BrBoleto::Core::Boleto do
 			it{ @object.especie_documento.must_equal 'DM' }
 			it{ @object.data_documento.must_equal    Date.today }
 			it{ @object.sacado.must_equal            'Teste' }
-			it{ @object.documento_sacado.must_equal  '725.275.005-10' }
+			it{ @object.documento_sacado.must_equal  '72527500510' }
 			it{ @object.endereco_sacado.must_equal   'Rua teste, 23045'}
 			it{ @object.local_pagamento.must_equal   'PAGÁVEL EM QUALQUER BANCO ATÉ O VENCIMENTO' }
 			it{ @object.instrucoes1.must_equal       'Lembrar de algo 1'}
@@ -106,7 +106,7 @@ describe BrBoleto::Core::Boleto do
 			it {@object.codigo_cedente.must_equal    '90182' }
 			it {@object.endereco_cedente.must_equal  'Rua Itapaiuna, 2434' }
 			it {@object.cedente.must_equal           'Nome da razao social' }
-			it {@object.documento_cedente.must_equal '62.526.713/0001-40' }
+			it {@object.documento_cedente.must_equal '62526713000140' }
 			it {@object.sacado.must_equal            'Teste' }
 			it {@object.aceite.must_equal            true }
 			it {@object.instrucoes1.must_equal       'Lembrar de algo 1' }
@@ -115,6 +115,108 @@ describe BrBoleto::Core::Boleto do
 			it {@object.instrucoes4.must_equal       'Lembrar de algo 4' }
 			it {@object.instrucoes5.must_equal       'Lembrar de algo 5' }
 			it {@object.instrucoes6.must_equal       'Lembrar de algo 6' }
+		end
+	end
+
+	describe "#documento_cedente" do
+		context "com CPF" do
+			before do
+				subject.documento_cedente = 2273542143
+			end
+			it "deve preencher com zeros a esquerda se for menor que 11" do
+				subject.documento_cedente.must_equal '02273542143'
+			end
+			it "deve remover a formatacao" do
+				subject.documento_cedente = '022.735.421-43'
+				subject.documento_cedente.must_equal '02273542143'
+			end
+			describe "metodo documento_cedente_cpf_ou_cnpj?" do
+				it { subject.documento_cedente_cpf_ou_cnpj?.must_equal :cpf }
+			end
+			describe "metodo documento_cedente_formatado " do
+				it { subject.documento_cedente_formatado.must_equal '022.735.421-43' }
+			end
+			describe "metodo documento_cedente_formatado_com_label " do
+				it { subject.documento_cedente_formatado_com_label.must_equal 'CPF 022.735.421-43' }
+			end
+		end
+
+		context "com CNPJ" do
+			before do
+				subject.documento_cedente = 9372490000121
+			end
+			it "deve preencher com zeros a esquerda se tamanho for 12" do
+				subject.documento_cedente = 123456789012
+				subject.documento_cedente.must_equal '00123456789012'
+			end
+			it "deve preencher com zeros a esquerda se tamanho for 13" do
+				subject.documento_cedente = 9372490000121
+				subject.documento_cedente.must_equal '09372490000121'
+			end
+			it "deve remover a formatacao" do
+				subject.documento_cedente = '09.372.490/0001-21'
+				subject.documento_cedente.must_equal '09372490000121'
+			end
+			describe "metodo documento_cedente_cpf_ou_cnpj?" do
+				it { subject.documento_cedente_cpf_ou_cnpj?.must_equal :cnpj }
+			end
+			describe "metodo documento_cedente_formatado " do
+				it { subject.documento_cedente_formatado.must_equal '09.372.490/0001-21' }
+			end
+			describe "metodo documento_cedente_formatado_com_label " do
+				it { subject.documento_cedente_formatado_com_label.must_equal 'CNPJ 09.372.490/0001-21' }
+			end
+		end
+	end
+
+	describe "#documento_sacado" do
+		context "com CPF" do
+			before do
+				subject.documento_sacado = 2273542143
+			end
+			it "deve preencher com zeros a esquerda se for menor que 11" do
+				subject.documento_sacado.must_equal '02273542143'
+			end
+			it "deve remover a formatacao" do
+				subject.documento_sacado = '022.735.421-43'
+				subject.documento_sacado.must_equal '02273542143'
+			end
+			describe "metodo documento_sacado_cpf_ou_cnpj?" do
+				it { subject.documento_sacado_cpf_ou_cnpj?.must_equal :cpf }
+			end
+			describe "metodo documento_sacado_formatado " do
+				it { subject.documento_sacado_formatado.must_equal '022.735.421-43' }
+			end
+			describe "metodo documento_sacado_formatado_com_label " do
+				it { subject.documento_sacado_formatado_com_label.must_equal 'CPF 022.735.421-43' }
+			end
+		end
+
+		context "com CNPJ" do
+			before do
+				subject.documento_sacado = 9372490000121
+			end
+			it "deve preencher com zeros a esquerda se tamanho for 12" do
+				subject.documento_sacado = 123456789012
+				subject.documento_sacado.must_equal '00123456789012'
+			end
+			it "deve preencher com zeros a esquerda se tamanho for 13" do
+				subject.documento_sacado = 9372490000121
+				subject.documento_sacado.must_equal '09372490000121'
+			end
+			it "deve remover a formatacao" do
+				subject.documento_sacado = '09.372.490/0001-21'
+				subject.documento_sacado.must_equal '09372490000121'
+			end
+			describe "metodo documento_sacado_cpf_ou_cnpj?" do
+				it { subject.documento_sacado_cpf_ou_cnpj?.must_equal :cnpj }
+			end
+			describe "metodo documento_sacado_formatado " do
+				it { subject.documento_sacado_formatado.must_equal '09.372.490/0001-21' }
+			end
+			describe "metodo documento_sacado_formatado_com_label " do
+				it { subject.documento_sacado_formatado_com_label.must_equal 'CNPJ 09.372.490/0001-21' }
+			end
 		end
 	end
 
