@@ -149,3 +149,8 @@ Seja um contribuidor. Você pode contribuir de N formas. Seguem elas:
 * Escrevendo novos formatos (PDF, PNG), e me avisando para divulgar no Readme.
 * Refatorando código!!
 * Fornecendo Feedback construtivo! (Sempre bem vindo!)
+
+## Licença
+
+- BSD
+- Copyleft 2015 Bruno M. Mergen

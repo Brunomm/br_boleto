@@ -13,12 +13,12 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.name          = "br_boleto"
   gem.require_paths = ["lib"]
-  gem.version       = BrBoleto::VERSION
+  gem.version       = BrBoleto::Version::CURRENT
 
-  gem.required_ruby_version = '>= 2.2'
+  gem.required_ruby_version = '>= 2.1'
 
   gem.add_dependency "rake"
-  gem.add_dependency "activesupport", '~> 4.2.1'
-  gem.add_dependency "activemodel",   '~> 4.2.1'
+  gem.add_dependency "activesupport", '>= 4.1'
+  gem.add_dependency "activemodel",   '>= 4.1'
 
 end
