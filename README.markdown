@@ -3,6 +3,7 @@
 Emissão de Boletos Bancários em Ruby.
 
 [![Code Climate](https://codeclimate.com/github/Brunomm/br_boleto/badges/gpa.svg)](https://codeclimate.com/github/Brunomm/br_boleto)
+[![Build Status](https://travis-ci.org/Brunomm/br_boleto.svg?branch=master)](https://travis-ci.org/Brunomm/br_boleto)
 
 ## Versão 0.1.0
 
