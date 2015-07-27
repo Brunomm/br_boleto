@@ -2,7 +2,7 @@
 
 Emissão de Boletos Bancários em Ruby.
 
-## Versão 1.0.0
+## Versão 0.1.0
 
 Por enquanto esta gem apenas faz os cálculos para o banco sicoob.
 
