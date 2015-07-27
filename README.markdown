@@ -18,11 +18,12 @@ Essa biblioteca é baseada em outras **ótimas** bibliotecas.
 * Gem de Boleto Bancário [https://github.com/tomas-stefano/boleto_bancario](https://github.com/tomas-stefano/boleto_bancario)
 
 ## Instalação
-  ### Manual
+**Manual**
 
     gem install br_boleto
 
-  ### Instalação via Gemfile
+**Instalação via Gemfile**
+    
      gem 'br_boleto'
 
 ## Documentação
