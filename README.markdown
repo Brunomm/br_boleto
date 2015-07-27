@@ -143,6 +143,7 @@ end
 
 Seja um contribuidor. Você pode contribuir de N formas. Seguem elas:
 
+* Criar boletos para outros bancos.
 * Homologando boletos junto ao banco.
 * Fornecendo documentações mais atualizadas dos Bancos.
 * Escrevendo novos formatos (PDF, PNG), e me avisando para divulgar no Readme.
