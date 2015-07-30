@@ -67,6 +67,7 @@ module BrBoleto
 		module Cnab240
 			extend ActiveSupport::Autoload
 			autoload :Base
+			autoload :Sicoob
 		end
 	end
 

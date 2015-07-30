@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 require 'br_boleto/remessa/cnab240/helper/header_arquivo'
 require 'br_boleto/remessa/cnab240/helper/header_lote'
 require 'br_boleto/remessa/cnab240/helper/segmento_p'
@@ -67,9 +68,32 @@ module BrBoleto
 				attr_accessor :especie_titulo
 
 				validates :documento_cedente, :convenio, presence: true
-				validates :codigo_carteira, :forma_cadastramento, :emissao_boleto, :distribuicao_boleto, 
-				           length: {is: 1, message: 'deve ter 1 dígito.'}
-				validates :especie_titulo, length: { is: 2, message: 'deve ter 2 dígitos.' }
+				
+				def self.tamanho_codigo_carteira
+					1
+				end
+
+				def self.tamanho_forma_cadastramento
+					1
+				end
+
+				def self.tamanho_emissao_boleto
+					1
+				end
+
+				def self.tamanho_distribuicao_boleto
+					1
+				end
+
+				def self.tamanho_especie_titulo
+					2
+				end
+
+				validates :codigo_carteira,     length: {is: tamanho_codigo_carteira,     message: "deve ter #{tamanho_codigo_carteira} dígito."}
+				validates :forma_cadastramento, length: {is: tamanho_forma_cadastramento, message: "deve ter #{tamanho_forma_cadastramento} dígito."}
+				validates :emissao_boleto,      length: {is: tamanho_emissao_boleto,      message: "deve ter #{tamanho_emissao_boleto} dígito."}
+				validates :distribuicao_boleto, length: {is: tamanho_distribuicao_boleto, message: "deve ter #{tamanho_distribuicao_boleto} dígito."}
+				validates :especie_titulo,      length: {is: tamanho_especie_titulo,      message: "deve ter #{tamanho_especie_titulo} dígitos."}
 
 				def default_values
 					super.merge({

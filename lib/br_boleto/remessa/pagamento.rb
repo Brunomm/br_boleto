@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 module BrBoleto
 	module Remessa
 		class Pagamento

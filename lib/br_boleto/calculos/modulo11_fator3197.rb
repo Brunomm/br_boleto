@@ -49,19 +49,19 @@ module BrBoleto
     #
     # @example
     #
-    #    BrBoleto::Calculos::Modulo11FatorDe2a7.new('20')
+    #    BrBoleto::Calculos::Modulo11Fator3197.new('20')
     #    # => '5'
     #
-    #    BrBoleto::Calculos::Modulo11FatorDe2a7.new('64')
+    #    BrBoleto::Calculos::Modulo11Fator3197.new('64')
     #    # => '7'
     #
-    #    BrBoleto::Calculos::Modulo11FatorDe2a7.new('26')
+    #    BrBoleto::Calculos::Modulo11Fator3197.new('26')
     #    # => '4'
     #
-    #    BrBoleto::Calculos::Modulo11FatorDe2a7.new('6')
+    #    BrBoleto::Calculos::Modulo11Fator3197.new('6')
     #    # => 'P'
     #
-    #    BrBoleto::Calculos::Modulo11FatorDe2a7.new('14')
+    #    BrBoleto::Calculos::Modulo11Fator3197.new('14')
     #    # => '0'
     #
     class Modulo11Fator3197 < Modulo11
