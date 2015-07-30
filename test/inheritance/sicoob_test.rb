@@ -1,7 +1,7 @@
 # encoding: utf-8
 require 'test_helper'
 
-class TesteSicoob < BrBoleto::Sicoob
+class TesteSicoob < BrBoleto::Boleto::Sicoob
 	def self.valor_documento_tamanho_maximo
 		456.50 # Default 99999999.99
 	end

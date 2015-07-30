@@ -6,6 +6,10 @@ require 'active_support/core_ext/enumerable'
 require 'active_support/core_ext/object'
 require 'active_support/core_ext/string'
 
+require 'br_boleto/string_methods'
+
+
+
 # Copyright (C) 2015 Bruno M. Mergen <http://duobr.com.br>
 #
 # @author Bruno Mucelini Mergen <brunomergen@gmail.com>
@@ -47,20 +51,29 @@ module BrBoleto
 	# dos formatos (pdf, html, etc) e internacionalização dos boletos (caso
 	# você precise mudar os nomes dos campos nos boletos)
 	#
-	module Core
+	module Boleto
 		extend ActiveSupport::Autoload
 
-		autoload :Boleto
-		autoload :BancoBrasil
-		autoload :Banrisul
-		autoload :Bradesco
-		autoload :Caixa
-		autoload :Hsbc
-		autoload :Itau
-		autoload :Real
-		autoload :Santander
-		autoload :Sicredi
+		autoload :Base
 		autoload :Sicoob
+	end
+
+
+	module Remessa
+		extend ActiveSupport::Autoload
+		autoload :Base
+		autoload :Pagamento
+
+		module Cnab240
+			extend ActiveSupport::Autoload
+			autoload :Base
+		end
+	end
+
+	module Helper
+		extend ActiveSupport::Autoload
+
+		autoload :CpfCnpj
 	end
 
 	# Módulo que possui classes que realizam os cálculos dos campos que serão mostrados nos boletos.
@@ -83,5 +96,7 @@ module BrBoleto
 		autoload :Digitos
 	end
 
-	include Core
+	include Helper
+	include Boleto
+	include Remessa
 end

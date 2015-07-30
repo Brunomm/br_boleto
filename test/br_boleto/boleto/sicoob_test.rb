@@ -1,8 +1,8 @@
 # encoding: utf-8
 require 'test_helper'
 
-describe BrBoleto::Core::Sicoob do
-	subject { BrBoleto::Core::Sicoob.new }
+describe BrBoleto::Boleto::Sicoob do
+	subject { FactoryGirl.build(:boleto_sicoob) }
 	context "on validations" do
 		it { must validate_length_of(:agencia).is_at_most(4) }
 	

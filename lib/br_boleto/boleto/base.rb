@@ -1,10 +1,10 @@
 # encoding: utf-8
 module BrBoleto
-  module Core
+  module Boleto
     # @abstract Métodos { #codigo_banco, #digito_codigo_banco, #agencia_codigo_cedente, #nosso_numero, #codigo_de_barras_do_banco}
     # Métodos para serem escritos nas subclasses (exitem outros opcionais, conforme visto nessa documentação).
     #
-    class Boleto
+    class Base
       include BrBoleto::Calculos
 
       # Seguindo a interface do Active Model para:
@@ -561,22 +561,12 @@ module BrBoleto
       #   documento_sacado = '12345678901'
       #   atributo + '_formatado':
       #       documento_sacado_formatado = '123.456.789-01'
-      #   atributo + '_cpf_ou_cnpj?':
-      #       documento_sacado_cpf_ou_cnpj? = :cpf
       #   atributo + '_formatado_com_label':
       #       documento_sacado_formatado_com_label = 'CPF 123.456.789-01'
       #
       # OBS: O documento_cedente e documento_sacado SEMPRE irão retornar o valor sem a formatação
       #      mesmo que seja setado
       ##############################################################
-
-      # Utilizado para saber se o documento_sacado é cpf ou cnpj
-      #
-      # @return :cnpj ou :cpf
-      #
-      def documento_sacado_cpf_ou_cnpj?
-        documento_sacado.size > 11 ? :cnpj : :cpf
-      end
 
       # Retorna o documento do sacado com tamanho 0, 11 ou 14 caracteres
       # Sempre retorna o valor sem a formatação
@@ -585,7 +575,7 @@ module BrBoleto
       #
       def documento_sacado
         return "" unless @documento_sacado.present?
-        remove_formatacao_cpf_cnpj( ajusta_cpf_cnpj_com_zero(@documento_sacado.to_s) )
+        BrBoleto::Helper::CpfCnpj.new(@documento_sacado).sem_formatacao
       end
 
       # Retorna o documento do sacado formatado
@@ -593,7 +583,7 @@ module BrBoleto
       # @return String
       #
       def documento_sacado_formatado
-        documento_sacado_cpf_ou_cnpj? == :cnpj ? formata_cnpj(documento_sacado) : formata_cpf(documento_sacado)
+        BrBoleto::Helper::CpfCnpj.new(documento_sacado).com_formatacao
       end
 
       # Retorna o documento do sacado formatado com label de CNPJ ou CPF
@@ -601,15 +591,7 @@ module BrBoleto
       # @return String
       #
       def documento_sacado_formatado_com_label
-        documento_sacado_cpf_ou_cnpj? == :cnpj ? "CNPJ #{formata_cnpj(documento_sacado)}" : "CPF #{formata_cpf(documento_sacado)}"
-      end
-
-      # Utilizado para saber se o documento_cedente é cpf ou cnpj
-      #
-      # @return :cnpj ou :cpf
-      #
-      def documento_cedente_cpf_ou_cnpj?
-        documento_cedente.size > 11 ? :cnpj : :cpf
+        BrBoleto::Helper::CpfCnpj.new(documento_sacado).formatado_com_label
       end
 
       # Retorna o documento do cedente com tamanho 0, 11 ou 14 caracteres
@@ -619,7 +601,7 @@ module BrBoleto
       #
       def documento_cedente
         return "" unless @documento_cedente.present?
-        remove_formatacao_cpf_cnpj( ajusta_cpf_cnpj_com_zero(@documento_cedente.to_s) )
+        BrBoleto::Helper::CpfCnpj.new(@documento_cedente).sem_formatacao
       end
 
       # Retorna o documento do cedente formatado
@@ -627,7 +609,7 @@ module BrBoleto
       # @return String
       #
       def documento_cedente_formatado
-        documento_cedente_cpf_ou_cnpj? == :cnpj ? formata_cnpj(documento_cedente) : formata_cpf(documento_cedente)
+        BrBoleto::Helper::CpfCnpj.new(documento_cedente).com_formatacao
       end
 
       # Retorna o documento do cedente formatado com label de CNPJ ou CPF
@@ -635,35 +617,8 @@ module BrBoleto
       # @return String
       #
       def documento_cedente_formatado_com_label
-        documento_cedente_cpf_ou_cnpj? == :cnpj ? "CNPJ #{formata_cnpj(documento_cedente)}" : "CPF #{formata_cpf(documento_cedente)}"
+        BrBoleto::Helper::CpfCnpj.new(documento_cedente).formatado_com_label
       end
-
-    private
-
-      def ajusta_cpf_cnpj_com_zero(value)
-        if value.to_s.size < 12
-          value.to_s.rjust(11, '0')
-        else
-          value.to_s.rjust(14, '0')
-        end
-      end
-
-      def remove_formatacao_cpf_cnpj(value)
-        value.gsub(/[\.]|[\-]|[\/]/,'')
-      end
-
-      def formata_cpf(value)
-        return "" if value.blank?
-        value.gsub!(/[\.]|[\-]|[\/]/,'')
-        "#{value[0..2]}.#{value[3..5]}.#{value[6..8]}-#{value[9..10]}"
-      end
-
-      def formata_cnpj(value)
-        return "" if value.blank?
-        value.gsub!(/[\.]|[\-]|[\/]/,'')
-        "#{value[0..1]}.#{value[2..4]}.#{value[5..7]}/#{value[8..11]}-#{value[12..13]}"
-      end
-
     end
   end
 end

@@ -1,7 +1,7 @@
 # encoding: UTF-8
 
 FactoryGirl.define do
-	factory :boleto_sicoob, class:  BrBoleto::Core::Sicoob do
+	factory :boleto_sicoob, class:  BrBoleto::Boleto::Sicoob do
 		agencia          95
 		codigo_cedente   6532
 		numero_documento 1101

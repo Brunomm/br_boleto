@@ -1,7 +1,7 @@
 # encoding: UTF-8
 
 FactoryGirl.define do
-	factory :core_boleto, class:  BrBoleto::Core::Boleto do
+	factory :boleto_base, class:  BrBoleto::Boleto::Base do
 		numero_documento '191075'
 		valor_documento  101.99
 		data_vencimento  Date.new(2015, 07, 10)

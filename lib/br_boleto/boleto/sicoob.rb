@@ -1,6 +1,6 @@
 # encoding: utf-8
 module BrBoleto
-	module Core
+	module Boleto
 		# Implementação de emissão de boleto bancário pelo Banco Sicoob.
 		#
 		# === Documentação Implementada
@@ -8,7 +8,7 @@ module BrBoleto
 		# A documentação na qual essa implementação foi baseada está localizada na pasta
 		# 'documentacoes_dos_boletos/sicoob' dentro dessa biblioteca.
 		#
-		class Sicoob < Boleto
+		class Sicoob < Base
 			# === Carteira/Modalidade:
 			#
 			#   '1/01' - Simples com registro

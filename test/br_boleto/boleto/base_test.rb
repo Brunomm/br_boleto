@@ -1,25 +1,25 @@
 require 'test_helper'
 
-describe BrBoleto::Core::Boleto do
-	subject { FactoryGirl.build(:core_boleto) }
+describe BrBoleto::Boleto::Base do
+	subject { FactoryGirl.build(:boleto_base) }
 
 	it { must validate_numericality_of(:valor_documento).is_less_than_or_equal_to(99999999.99) }
 
 	describe "model_name" do
-		it "must return BrBoleto::Core::Boleto" do
-			BrBoleto::Core::Boleto.model_name.must_equal 'BrBoleto::Core::Boleto'
+		it "must return BrBoleto::Boleto::Base" do
+			BrBoleto::Boleto::Base.model_name.must_equal 'BrBoleto::Boleto::Base'
 		end
 	end
 
 	describe "human_attribute_name" do
 		it "must respond_to internationalization attribute" do
-			BrBoleto::Core::Boleto.human_attribute_name(:same_thing).must_equal "Same thing"
+			BrBoleto::Boleto::Base.human_attribute_name(:same_thing).must_equal "Same thing"
 		end
 	end
 
 	describe "to_partial_path" do
 		it "must return the path from class name" do
-			subject.to_partial_path.must_equal 'br_boleto/boleto'
+			subject.to_partial_path.must_equal 'br_boleto/base'
 		end
 	end
 
@@ -130,9 +130,6 @@ describe BrBoleto::Core::Boleto do
 				subject.documento_cedente = '022.735.421-43'
 				subject.documento_cedente.must_equal '02273542143'
 			end
-			describe "metodo documento_cedente_cpf_ou_cnpj?" do
-				it { subject.documento_cedente_cpf_ou_cnpj?.must_equal :cpf }
-			end
 			describe "metodo documento_cedente_formatado " do
 				it { subject.documento_cedente_formatado.must_equal '022.735.421-43' }
 			end
@@ -157,9 +154,6 @@ describe BrBoleto::Core::Boleto do
 				subject.documento_cedente = '09.372.490/0001-21'
 				subject.documento_cedente.must_equal '09372490000121'
 			end
-			describe "metodo documento_cedente_cpf_ou_cnpj?" do
-				it { subject.documento_cedente_cpf_ou_cnpj?.must_equal :cnpj }
-			end
 			describe "metodo documento_cedente_formatado " do
 				it { subject.documento_cedente_formatado.must_equal '09.372.490/0001-21' }
 			end
@@ -180,9 +174,6 @@ describe BrBoleto::Core::Boleto do
 			it "deve remover a formatacao" do
 				subject.documento_sacado = '022.735.421-43'
 				subject.documento_sacado.must_equal '02273542143'
-			end
-			describe "metodo documento_sacado_cpf_ou_cnpj?" do
-				it { subject.documento_sacado_cpf_ou_cnpj?.must_equal :cpf }
 			end
 			describe "metodo documento_sacado_formatado " do
 				it { subject.documento_sacado_formatado.must_equal '022.735.421-43' }
@@ -207,9 +198,6 @@ describe BrBoleto::Core::Boleto do
 			it "deve remover a formatacao" do
 				subject.documento_sacado = '09.372.490/0001-21'
 				subject.documento_sacado.must_equal '09372490000121'
-			end
-			describe "metodo documento_sacado_cpf_ou_cnpj?" do
-				it { subject.documento_sacado_cpf_ou_cnpj?.must_equal :cnpj }
 			end
 			describe "metodo documento_sacado_formatado " do
 				it { subject.documento_sacado_formatado.must_equal '09.372.490/0001-21' }
@@ -273,19 +261,19 @@ describe BrBoleto::Core::Boleto do
 
 	describe "#aceite_formatado" do
 		context "when is true" do
-			subject { FactoryGirl.build(:core_boleto, aceite: true) }
+			subject { FactoryGirl.build(:boleto_base, aceite: true) }
 
 			it{ subject.aceite_formatado.must_equal 'S' }
 		end
 
 		context "when is false" do
-			subject { FactoryGirl.build(:core_boleto, aceite: false) }
+			subject { FactoryGirl.build(:boleto_base, aceite: false) }
 			
 			it{ subject.aceite_formatado.must_equal 'N' }
 		end
 
 		context "when is nil" do
-			subject { FactoryGirl.build(:core_boleto, aceite: nil) }
+			subject { FactoryGirl.build(:boleto_base, aceite: nil) }
 			
 			it{ subject.aceite_formatado.must_equal 'N' }
 		end
