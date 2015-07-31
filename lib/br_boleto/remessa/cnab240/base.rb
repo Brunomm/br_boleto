@@ -163,11 +163,11 @@ module BrBoleto
 					lote
 				end
 
-				# Gera o arquivo remessa
+				# Gera os dados para o arquivo remessa
 				#
 				# @return [String]
 				#
-				def gera_arquivo
+				def dados_do_arquivo
 					return if self.invalid?
 
 					# contador dos registros do lote
@@ -187,7 +187,7 @@ module BrBoleto
 					arquivo << monta_trailer_arquivo(pagamentos.count, contador)
 
 					retorno = arquivo.join("\n")
-					retorno
+					ActiveSupport::Inflector.transliterate(retorno).upcase
 				end
 
 				# Número do Documento de Cobrança 
@@ -211,7 +211,7 @@ module BrBoleto
 				#
 				# Este metodo deve ser sobrescrevido na classe do banco
 				#
-				def versao_layout_do_arquivo
+				def versao_layout_arquivo
 					raise NotImplementedError.new('Sobreescreva este método na classe referente ao banco que você esta criando')
 				end
 

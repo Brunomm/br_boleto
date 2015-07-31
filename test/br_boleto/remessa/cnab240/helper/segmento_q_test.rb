@@ -20,11 +20,11 @@ module Helper
 			subject.stubs(:segmento_q_posicao_154_a_154).with(pagamento).returns(" 154_a_154")
 			subject.stubs(:segmento_q_posicao_155_a_169).with(pagamento).returns(" 155_a_169")
 			subject.stubs(:segmento_q_posicao_170_a_209).with(pagamento).returns(" 170_a_209")
-			subject.stubs(:segmento_q_posicao_210_a_210).returns(                " 210_a_210")
-			subject.stubs(:segmento_q_posicao_210_a_210).returns(                " 210_a_210")
-			subject.stubs(:segmento_q_posicao_210_a_210).returns(                " 210_a_210")
+			subject.stubs(:segmento_q_posicao_210_a_212).returns(                " 210_a_212")
+			subject.stubs(:segmento_q_posicao_213_a_232).returns(                " 213_a_232")
+			subject.stubs(:segmento_q_posicao_233_a_240).returns(                " 233_a_240")
 			# Deve dar um upcase
-			subject.monta_segmento_q(pagamento, 1, 2).must_equal(" 001_A_003 004_A_007 008_A_008 009_A_013 014_A_014 015_A_015 016_A_017 018_A_018 019_A_033 034_A_073 074_A_113 114_A_128 129_A_133 134_A_136 137_A_151 152_A_153 154_A_154 155_A_169 170_A_209 210_A_210 210_A_210 210_A_210")
+			subject.monta_segmento_q(pagamento, 1, 2).must_equal(" 001_A_003 004_A_007 008_A_008 009_A_013 014_A_014 015_A_015 016_A_017 018_A_018 019_A_033 034_A_073 074_A_113 114_A_128 129_A_133 134_A_136 137_A_151 152_A_153 154_A_154 155_A_169 170_A_209 210_A_212 213_A_232 233_A_240")
 		end
 
 		# Código do banco
@@ -199,24 +199,24 @@ module Helper
 		# 3 posições
 		# Deve retornar '000'
 		#
-		def test_SegmentoQTest_metodo_segmento_q_posicao_210_a_210
-			subject.segmento_q_posicao_210_a_210.must_equal ''.rjust(3, '0') 
+		def test_SegmentoQTest_metodo_segmento_q_posicao_210_a_212
+			subject.segmento_q_posicao_210_a_212.must_equal ''.rjust(3, '0') 
 		end
 
 		# Nosso Nº no Banco Correspondente
 		# 20 posições
 		# Deve retornar 20 posições em branco
 		#
-		def test_SegmentoQTest_metodo_segmento_q_posicao_210_a_210
-			subject.segmento_q_posicao_210_a_210.must_equal ''.rjust(20, ' ')
+		def test_SegmentoQTest_metodo_segmento_q_posicao_213_a_232
+			subject.segmento_q_posicao_213_a_232.must_equal ''.rjust(20, ' ')
 		end
 
 		# Uso Exclusivo FEBRABAN/CNAB
 		# 8 posições
 		# Retorna 8 posições em branco
 		#
-		def test_SegmentoQTest_metodo_segmento_q_posicao_210_a_210
-			subject.segmento_q_posicao_210_a_210.must_equal ''.rjust(8, ' ') 
+		def test_SegmentoQTest_metodo_segmento_q_posicao_233_a_240
+			subject.segmento_q_posicao_233_a_240.must_equal ''.rjust(8, ' ') 
 		end
 	
 	end

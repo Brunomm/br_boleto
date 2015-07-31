@@ -89,9 +89,9 @@ describe BrBoleto::Remessa::Cnab240::Base do
 			end
 		end
 
-		it "#versao_layout_do_arquivo" do
+		it "#versao_layout_arquivo" do
 			assert_raises NotImplementedError do
-				subject.versao_layout_do_arquivo
+				subject.versao_layout_arquivo
 			end
 		end
 
@@ -158,36 +158,36 @@ describe BrBoleto::Remessa::Cnab240::Base do
 
 		before do
 			# Stub nos metodos que devem ser sobrescritos nos bancos
-			subject.stubs(:complemento_header).returns(      'complemento_header')
-			subject.stubs(:versao_layout_do_arquivo).returns('versao_layout_do_arquivo')
-			subject.stubs(:versao_layout_lote).returns(      'versao_layout_lote')
-			subject.stubs(:convenio_lote).returns(           'convenio_lote')
-			subject.stubs(:nome_banco).returns(              'nome_banco')
-			subject.stubs(:codigo_banco).returns(            'codigo_banco')
-			subject.stubs(:informacoes_da_conta).returns(    'informacoes_da_conta')
-			subject.stubs(:codigo_convenio).returns(         'codigo_convenio')
-			subject.stubs(:digito_agencia).returns(          'digito_agencia')
-			subject.stubs(:complemento_p).returns(           'complemento_p')
+			subject.stubs(:complemento_header).returns(      ''.rjust(29, ' '))
+			subject.stubs(:versao_layout_arquivo).returns(   '081')
+			subject.stubs(:versao_layout_lote).returns(      '040')
+			subject.stubs(:convenio_lote).returns(           ''.rjust(20, ' '))
+			subject.stubs(:nome_banco).returns(              'NOMEBANCO'.ljust(30, ' '))
+			subject.stubs(:codigo_banco).returns(            '123')
+			subject.stubs(:informacoes_da_conta).returns(    ''.rjust(20, ' '))
+			subject.stubs(:codigo_convenio).returns(         ''.rjust(20, ' '))
+			subject.stubs(:digito_agencia).returns(          '1')
+			subject.stubs(:complemento_p).returns(           ''.rjust(34, ' '))
 		end
-		describe "#gera_arquivo#" do
+		describe "#dados_do_arquivo#" do
 			let(:pagamento_2) { FactoryGirl.build(:remessa_pagamento, valor_documento: 9_999_999.88) } 
 			before do
 				subject.pagamentos = [pagamento, pagamento_2]
 			end
 			it "se não for valido deve retornar nil" do
 				subject.stubs(:valid?).returns(false)
-				subject.gera_arquivo.must_be_nil
+				subject.dados_do_arquivo.must_be_nil
 			end
 			it "o valor do metodo monta_header_arquivo deve estar nas primeiras posições" do
 				subject.expects(:monta_header_arquivo).returns("TESTE_HEADER_ARQUIVO")
-				subject.gera_arquivo[0..19].must_equal "TESTE_HEADER_ARQUIVO"
+				subject.dados_do_arquivo[0..19].must_equal "TESTE_HEADER_ARQUIVO"
 			end
 			context "deve montar o lote para cada um dos pagamentos e devem vir depois da montagem do header_arquivo" do
 				it "com 2 pagamentos" do
 					subject.stubs(:monta_header_arquivo).returns("1234567890")
 					subject.expects(:monta_lote).with(pagamento, 1).returns(["LOTE_PAGAMENTO_1"])
 					subject.expects(:monta_lote).with(pagamento_2, 2).returns(["LOTE_PAGAMENTO_2"])
-					resultado = subject.gera_arquivo
+					resultado = subject.dados_do_arquivo
 					resultado[10..26].must_equal "\nLOTE_PAGAMENTO_1"
 					resultado[27..43].must_equal "\nLOTE_PAGAMENTO_2"				
 				end
@@ -196,7 +196,7 @@ describe BrBoleto::Remessa::Cnab240::Base do
 					subject.pagamentos = pagamento
 					subject.stubs(:monta_header_arquivo).returns("1234567890")
 					subject.expects(:monta_lote).with(pagamento, 1).returns(["LOTE_PAGAMENTO_1"])
-					resultado = subject.gera_arquivo
+					resultado = subject.dados_do_arquivo
 					resultado[10..26].must_equal "\nLOTE_PAGAMENTO_1"
 				end
 			end
@@ -206,7 +206,7 @@ describe BrBoleto::Remessa::Cnab240::Base do
 				subject.stubs(:monta_lote).with(pagamento, 1).returns(["LOTE_PAGAMENTO_1", "PARTE 2"])
 				subject.stubs(:monta_lote).with(pagamento_2, 2).returns(["LOTE_PAGAMENTO_2", "PARTE 2"])
 				subject.expects(:monta_trailer_arquivo).with(2, 6).returns("TRAILER_DO_LOTE")
-				resultado = subject.gera_arquivo
+				resultado = subject.dados_do_arquivo
 				resultado[10..26].must_equal "\nLOTE_PAGAMENTO_1"
 				resultado[27..34].must_equal "\nPARTE 2"
 				resultado[35..51].must_equal "\nLOTE_PAGAMENTO_2"
@@ -259,6 +259,44 @@ describe BrBoleto::Remessa::Cnab240::Base do
 					resultado = subject.monta_lote(pagamento, 55)
 					resultado[3].must_equal "RESULTADO_TRAILER_LOTE"
 				end
+			end
+
+			context "remoção de caracteres especiais" do
+				it "deve remover" do
+					subject.stubs(:monta_header_arquivo).returns("AÇÃOíóú")
+					subject.dados_do_arquivo[0..6].must_equal "ACAOIOU"
+				end
+			end
+		end
+		context "Tamanho de caracteres" do
+			it "para monta_header_arquivo deve ter 240 caracteres" do
+				subject.monta_header_arquivo.size.must_equal 240
+			end
+			it "para monta_lote deve ter 960 caracteres" do
+				subject.monta_lote(pagamento,1).join("").size.must_equal 960
+			end
+
+			it "para monta_header_lote deve ter 240 caracteres" do
+				subject.monta_header_lote(1).size.must_equal 240
+			end
+
+			it "para monta_segmento_p deve ter 240 caracteres" do
+				subject.monta_segmento_p(pagamento, 1, 2).size.must_equal 240
+			end
+
+			it "para monta_segmento_q deve ter 240 caracteres" do
+				subject.monta_segmento_q(pagamento, 1, 2).size.must_equal 240
+			end
+
+			it "para monta_trailer_lote deve ter 240 caracteres" do
+				subject.monta_trailer_lote(1, 2).size.must_equal 240
+			end
+			it "para monta_trailer_arquivo deve ter 240 caracteres" do
+				subject.monta_trailer_arquivo(1, 2).size.must_equal 240
+			end
+			it "o total de caracteres do arquivo para 1 pagamento deve ser de 1445 caracteres" do
+				# 1440 são das montagens e 5 caracteres são das quebras de linha (\n)
+				subject.dados_do_arquivo.size.must_equal 1445
 			end
 		end
 	end

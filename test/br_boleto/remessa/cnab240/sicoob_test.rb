@@ -1,10 +1,4 @@
 require 'test_helper'
-# require 'br_boleto/remessa/cnab240/helper/header_arquivo_test'
-# require 'br_boleto/remessa/cnab240/helper/header_lote_test'
-# require 'br_boleto/remessa/cnab240/helper/segmento_p_test'
-# require 'br_boleto/remessa/cnab240/helper/segmento_q_test'
-# require 'br_boleto/remessa/cnab240/helper/trailer_arquivo_test'
-# require 'br_boleto/remessa/cnab240/helper/trailer_lote_test'
 
 describe BrBoleto::Remessa::Cnab240::Sicoob do
 	subject { FactoryGirl.build(:remessa_cnab240_sicoob, pagamentos: pagamento) }
@@ -18,8 +12,9 @@ describe BrBoleto::Remessa::Cnab240::Sicoob do
 		it { must validate_presence_of(:modalidade_carteira) }
 		it { must validate_presence_of(:tipo_formulario) }
 		it { must validate_presence_of(:parcela) }
+		it { must validate_presence_of(:conta_corrente) }
 
-		it { must validate_length_of(:conta_corrente     ).is_at_most( 8).with_message("deve ter no máximo 8 dígitos.") }
+		it { must validate_length_of(:conta_corrente     ).is_at_most(12).with_message("deve ter no máximo 12 dígitos.") }
 		it { must validate_length_of(:agencia            ).is_equal_to(4).with_message("deve ter 4 dígitos.") }
 		it { must validate_length_of(:modalidade_carteira).is_equal_to(2).with_message("deve ter 2 dígitos.") }
 	end
@@ -73,8 +68,8 @@ describe BrBoleto::Remessa::Cnab240::Sicoob do
 		end
 	end
 
-	it "cod_banco deve ser 756" do
-		subject.cod_banco.must_equal '756'
+	it "codigo_banco deve ser 756" do
+		subject.codigo_banco.must_equal '756'
 	end
 
 	it "metodo nome_banco deve retornar SICOOB com 30 posições" do
@@ -209,5 +204,9 @@ describe BrBoleto::Remessa::Cnab240::Sicoob do
 		end
 	end
 
-	
+	describe "#dados_do_arquivo" do
+		it "deve gerar os dados do arquivo" do
+			subject.dados_do_arquivo.size.must_equal 1445
+		end
+	end
 end

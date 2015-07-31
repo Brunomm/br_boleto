@@ -104,7 +104,7 @@ module BrBoleto
 					end
 
 					# Convenio -> Código do Cedente no Banco
-					# 6 posições
+					# 20 posições
 					#
 					def header_lote_posicao_034_a_053
 						convenio_lote

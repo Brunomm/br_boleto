@@ -36,9 +36,9 @@ module BrBoleto
 						segmento_q << segmento_q_posicao_154_a_154(pagamento)  # identificacao do sacador             1
 						segmento_q << segmento_q_posicao_155_a_169(pagamento)  # documento sacador                    15
 						segmento_q << segmento_q_posicao_170_a_209(pagamento)  # nome avalista                         40
-						segmento_q << segmento_q_posicao_210_a_210             # cod. banco correspondente            3
-						segmento_q << segmento_q_posicao_210_a_210             # nosso numero banco correspondente    20
-						segmento_q << segmento_q_posicao_210_a_210             # uso exclusivo                        8
+						segmento_q << segmento_q_posicao_210_a_212             # cod. banco correspondente            3
+						segmento_q << segmento_q_posicao_213_a_232             # nosso numero banco correspondente    20
+						segmento_q << segmento_q_posicao_233_a_240             # uso exclusivo                        8
 						segmento_q.upcase
 					end
 
@@ -181,21 +181,21 @@ module BrBoleto
 					# Cód. Bco. Corresp. na Compensação
 					# 3 posições
 					#
-					def segmento_q_posicao_210_a_210
+					def segmento_q_posicao_210_a_212
 						''.rjust(3, '0') 
 					end
 
 					# Nosso Nº no Banco Correspondente
 					# 20 posições
 					#
-					def segmento_q_posicao_210_a_210
+					def segmento_q_posicao_213_a_232
 						''.rjust(20, ' ')
 					end
 
 					# Uso Exclusivo FEBRABAN/CNAB
 					# 8 posições
 					#
-					def segmento_q_posicao_210_a_210
+					def segmento_q_posicao_233_a_240
 						''.rjust(8, ' ') 
 					end
 

@@ -165,10 +165,10 @@ module Helper
 
 		# Numero da Versão do Layout do Arquivo
 		# 3 posições
-		# Deve pegar o valor contido no metodo "versao_layout_do_arquivo"
+		# Deve pegar o valor contido no metodo "versao_layout_arquivo"
 		#
 		def test_HeaderArquivoTest_metodo_header_arquivo_posicao_164_a_166
-			subject.expects(:versao_layout_do_arquivo).returns("123")
+			subject.expects(:versao_layout_arquivo).returns("123")
 			subject.header_arquivo_posicao_164_a_166.must_equal("123")
 		end
 

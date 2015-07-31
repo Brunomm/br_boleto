@@ -17,7 +17,8 @@ module BrBoleto
 					def monta_segmento_p(pagamento, nr_lote, sequencial)
 						# campos com * na frente nao foram implementados
 						#                                                      # DESCRICAO                             TAMANHO
-						segmento_p =  segmento_p_posicao_001_a_003             # codigo banco                          3
+						segmento_p =  ''
+						segmento_p <<  segmento_p_posicao_001_a_003             # codigo banco                          3
 						segmento_p << segmento_p_posicao_004_a_007(nr_lote)    # lote de servico                       4
 						segmento_p << segmento_p_posicao_008_a_008             # tipo de registro                      1
 						segmento_p << segmento_p_posicao_009_a_013(sequencial) # num. sequencial do registro no lote   5

@@ -149,7 +149,7 @@ module BrBoleto
 					# 3 posições
 					#
 					def header_arquivo_posicao_164_a_166
-						versao_layout_do_arquivo
+						versao_layout_arquivo
 					end
 					
 					# Densidade de Gravação do Arquivo 

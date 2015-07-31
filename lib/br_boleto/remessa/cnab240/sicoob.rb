@@ -24,10 +24,10 @@ module BrBoleto
 				attr_accessor :parcela
 				#       Parcela - 02 posições (11 a 12) - "01" se parcela única
 
-				validates :modalidade_carteira, :tipo_formulario, :parcela, presence: true
+				validates :modalidade_carteira, :tipo_formulario, :conta_corrente, :parcela, presence: true
 				# Remessa 400 - 8 digitos
 				# Remessa 240 - 12 digitos
-				validates :conta_corrente,      length: {maximum: 8, message: 'deve ter no máximo 8 dígitos.'}
+				validates :conta_corrente,      length: {maximum: 12, message: 'deve ter no máximo 12 dígitos.'}
 				validates :agencia,             length: {is: 4, message: 'deve ter 4 dígitos.'}
 				validates :modalidade_carteira, length: {is: 2, message: 'deve ter 2 dígitos.'}
 
@@ -43,7 +43,7 @@ module BrBoleto
 					})
 				end
 
-				def cod_banco
+				def codigo_banco
 					'756'
 				end
 

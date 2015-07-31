@@ -14,8 +14,8 @@ module BrBoleto
 					# @return [String]
 					#
 					def monta_trailer_arquivo(nro_lotes, sequencial)
-						                                                                    # CAMPO              TAMANHO
-						trailer_arquivo =  trailer_arquivo_posicao_001_a_003                 # Código banco          3
+						trailer_arquivo =  ''                                               # CAMPO              TAMANHO
+						trailer_arquivo << trailer_arquivo_posicao_001_a_003                 # Código banco          3
 						trailer_arquivo << trailer_arquivo_posicao_004_a_007(nro_lotes)     # Lote Serviço          4
 						trailer_arquivo << trailer_arquivo_posicao_008_a_008                # Tipo registro         1
 						trailer_arquivo << trailer_arquivo_posicao_009_a_017                # Exclusivo             9
