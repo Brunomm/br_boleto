@@ -47,7 +47,6 @@ module BrBoleto
 			end
 
 			validates :nome_empresa, presence: true
-			validates :nome_empresa, length: {maximum: 30}
 			validates :aceite,       inclusion: { in: %w(A a n N), message: "valor deve ser A(aceito) ou N(não ceito)" }
 
 			validates_each :pagamentos do |record, attr, value|
@@ -78,8 +77,7 @@ module BrBoleto
 
 			def nome_empresa_formatada
 				"#{nome_empresa}".adjust_size_to(30)
-			end
-			
+			end			
 		end
 	end
 end
