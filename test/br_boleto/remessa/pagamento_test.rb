@@ -15,6 +15,7 @@ describe BrBoleto::Remessa::Pagamento do
 		it { must validate_presence_of(:cidade_sacado) }
 		it { must validate_presence_of(:uf_sacado) }
 		it { must validate_presence_of(:bairro_sacado) }
+		it { must validate_presence_of(:tipo_impressao) }
 		
 		it { must validate_length_of(:cep_sacado).is_equal_to(8).with_message("deve ter 8 dígitos.") }
 		it { must validate_length_of(:cod_desconto).is_equal_to(1).with_message("deve ter 1 dígito.") }
@@ -49,6 +50,35 @@ describe BrBoleto::Remessa::Pagamento do
 			object = subject.class.new()
 			object.cod_desconto.must_equal '0'
 		end
+		it "for tipo_impressao" do
+			object = subject.class.new()
+			object.tipo_impressao.must_equal '1'
+		end
+		it "for desconto_2_codigo" do
+			object = subject.class.new()
+			object.desconto_2_codigo.must_equal  '0'
+		end
+		it "for desconto_2_valor" do
+			object = subject.class.new()
+			object.desconto_2_valor.must_equal  0.0
+		end
+		it "for desconto_3_codigo" do
+			object = subject.class.new()
+			object.desconto_3_codigo.must_equal  '0'
+		end
+		it "for desconto_3_valor" do
+			object = subject.class.new()
+			object.desconto_3_valor.must_equal  0.0
+		end
+		it "for codigo_multa" do
+			object = subject.class.new()
+			object.codigo_multa.must_equal  '0'
+		end
+		it "for valor_multa" do
+			object = subject.class.new()
+			object.valor_multa.must_equal  0.0
+		end
+
 	end
 
 	describe "#assign_attributes" do
@@ -77,24 +107,74 @@ describe BrBoleto::Remessa::Pagamento do
 		it { subject.valor_documento.must_equal 789.44 }
 	end
 
-	describe "#data_desconto_formatado" do
-		it "quando data_desconto for nil" do
-			subject.data_desconto = nil
-			subject.data_desconto_formatado.must_equal '000000'
+	describe "#formata_data" do
+		it "quando passar um valor nil" do
+			subject.send(:formata_data, nil).must_equal '00000000'
 		end
-		it "quando data_desconto for nil mas passar outro formato para a data" do
-			subject.data_desconto = nil
-			subject.data_desconto_formatado("%d%m%Y").must_equal '00000000'
+		it "quando passar um valor nil mas passar outro formato para a data" do
+			subject.send(:formata_data, nil, "%d%m%y").must_equal '000000'
 		end
-		it "deve formatar a data com padrão ddmmyy" do
-			subject.data_desconto = Date.parse('30/12/2017')
-			subject.data_desconto_formatado.must_equal '301217'
+		it "deve formatar a data com padrão ddmmyyyy" do
+			subject.send(:formata_data, Date.parse('30/12/2017')).must_equal '30122017'
 		end
 		it "deve formatar a data com formato passado por parametro" do
-			subject.data_desconto = Date.parse('30/12/2017')
-			subject.data_desconto_formatado("%d%m%Y").must_equal '30122017'
+			subject.send(:formata_data, Date.parse('30/12/2017'), "%d%m%y").must_equal '301217'
 		end
 	end
+
+	describe "#data_desconto_formatado" do
+		it "deve chamar o metodo formata_data com padrão de formato %d%m%y" do
+			subject.data_desconto = Date.today
+			subject.expects(:formata_data).with(Date.today, "%d%m%y").returns("123456")
+			subject.data_desconto_formatado.must_equal '123456'
+		end
+		it "deve chamar o metodo formata_data com o parametro passado" do
+			subject.data_desconto = Date.today
+			subject.expects(:formata_data).with(Date.today, "%d%m%Y").returns("123456")
+			subject.data_desconto_formatado("%d%m%Y").must_equal '123456'
+		end
+	end
+
+	describe "#desconto_2_data_formatado" do
+		it "deve chamar o metodo formata_data com padrão de formato %d%m%y" do
+			subject.desconto_2_data = Date.today
+			subject.expects(:formata_data).with(Date.today, "%d%m%y").returns("123456")
+			subject.desconto_2_data_formatado.must_equal '123456'
+		end
+		it "deve chamar o metodo formata_data com o parametro passado" do
+			subject.desconto_2_data = Date.today
+			subject.expects(:formata_data).with(Date.today, "%d%m%Y").returns("123456")
+			subject.desconto_2_data_formatado("%d%m%Y").must_equal '123456'
+		end
+	end
+
+	describe "#desconto_3_data_formatado" do
+		it "deve chamar o metodo formata_data com padrão de formato %d%m%y" do
+			subject.desconto_3_data = Date.today
+			subject.expects(:formata_data).with(Date.today, "%d%m%y").returns("123456")
+			subject.desconto_3_data_formatado.must_equal '123456'
+		end
+		it "deve chamar o metodo formata_data com o parametro passado" do
+			subject.desconto_3_data = Date.today
+			subject.expects(:formata_data).with(Date.today, "%d%m%Y").returns("123456")
+			subject.desconto_3_data_formatado("%d%m%Y").must_equal '123456'
+		end
+	end
+
+	describe "#data_multa_formatado" do
+		it "deve chamar o metodo formata_data com padrão de formato %d%m%y" do
+			subject.data_multa = Date.today
+			subject.expects(:formata_data).with(Date.today, "%d%m%y").returns("123456")
+			subject.data_multa_formatado.must_equal '123456'
+		end
+		it "deve chamar o metodo formata_data com o parametro passado" do
+			subject.data_multa = Date.today
+			subject.expects(:formata_data).with(Date.today, "%d%m%Y").returns("123456")
+			subject.data_multa_formatado("%d%m%Y").must_equal '123456'
+		end
+	end
+
+
 
 	describe "#valor_documento_formatado" do
 		context "com padrao de tamanho = 13 digitos" do

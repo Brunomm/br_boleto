@@ -24,6 +24,10 @@ module BrBoleto
 				attr_accessor :parcela
 				#       Parcela - 02 posições (11 a 12) - "01" se parcela única
 
+				def convenio_obrigatorio?
+					false
+				end
+
 				validates :modalidade_carteira, :tipo_formulario, :conta_corrente, :parcela, presence: true
 				# Remessa 400 - 8 digitos
 				# Remessa 240 - 12 digitos
@@ -41,6 +45,10 @@ module BrBoleto
 						modalidade_carteira: '01',
 						forma_cadastramento: '0'
 					})
+				end
+
+				def convenio
+					"#{@convenio}".adjust_size_to(20)
 				end
 
 				def codigo_banco

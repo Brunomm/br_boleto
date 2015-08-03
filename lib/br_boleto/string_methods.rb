@@ -6,11 +6,11 @@ module BrBoleto
 		# se a string for menor, adiciona espacos a direita
 		# se a string for maior, trunca para o num. de caracteres
 		#
-		def adjust_size_to(size)
+		def adjust_size_to(size, adjust=" ")
 			if self.size > size
 				truncate(size, omission: '')
 			else
-				ljust(size, ' ')
+				ljust(size, adjust)
 			end
 		end
 	end

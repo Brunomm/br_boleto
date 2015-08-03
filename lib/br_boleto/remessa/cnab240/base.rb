@@ -3,6 +3,8 @@ require 'br_boleto/remessa/cnab240/helper/header_arquivo'
 require 'br_boleto/remessa/cnab240/helper/header_lote'
 require 'br_boleto/remessa/cnab240/helper/segmento_p'
 require 'br_boleto/remessa/cnab240/helper/segmento_q'
+require 'br_boleto/remessa/cnab240/helper/segmento_r'
+require 'br_boleto/remessa/cnab240/helper/segmento_s'
 require 'br_boleto/remessa/cnab240/helper/trailer_lote'
 require 'br_boleto/remessa/cnab240/helper/trailer_arquivo'
 
@@ -22,6 +24,12 @@ module BrBoleto
 
 				# Utilizado para montar o segmento Q
 				include BrBoleto::Remessa::Cnab240::Helper::SegmentoQ
+
+				# Utilizado para montar o segmento R
+				include BrBoleto::Remessa::Cnab240::Helper::SegmentoR
+
+				# Utilizado para montar o segmento S
+				include BrBoleto::Remessa::Cnab240::Helper::SegmentoS
 
 				# Utilizado para montar o trailer do lote
 				include BrBoleto::Remessa::Cnab240::Helper::TrailerLote
@@ -67,7 +75,6 @@ module BrBoleto
 				# especie do titulo (verificar o padrao nas classes referentes aos bancos)
 				attr_accessor :especie_titulo
 
-				validates :documento_cedente, :convenio, presence: true
 				
 				def self.tamanho_codigo_carteira
 					1
@@ -88,6 +95,13 @@ module BrBoleto
 				def self.tamanho_especie_titulo
 					2
 				end
+
+				def convenio_obrigatorio?
+					true
+				end
+
+				validates :convenio,          presence: true, if: :convenio_obrigatorio?
+				validates :documento_cedente, presence: true
 
 				validates :codigo_carteira,     length: {is: tamanho_codigo_carteira,     message: "deve ter #{tamanho_codigo_carteira} dígito."}
 				validates :forma_cadastramento, length: {is: tamanho_forma_cadastramento, message: "deve ter #{tamanho_forma_cadastramento} dígito."}
@@ -156,9 +170,15 @@ module BrBoleto
 					
 					# Metodo 'monta_segmento_q' implementado no module -> BrBoleto::Remessa::Cnab240::Helper::SegmentoQ
 					lote << monta_segmento_q(pagamento, nro_lote, 3)
+
+					# Metodo 'monta_segmento_r' implementado no module -> BrBoleto::Remessa::Cnab240::Helper::SegmentoR
+					lote << monta_segmento_r(pagamento, nro_lote, 4)
+
+					# Metodo 'monta_segmento_s' implementado no module -> BrBoleto::Remessa::Cnab240::Helper::SegmentoS
+					lote << monta_segmento_s(pagamento, nro_lote, 5)
 					
 					# Metodo 'monta_trailer_lote' implementado no module -> BrBoleto::Remessa::Cnab240::Helper::TrailerLote
-					lote << monta_trailer_lote(nro_lote, 4)
+					lote << monta_trailer_lote(nro_lote, 6)
 
 					lote
 				end

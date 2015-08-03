@@ -42,6 +42,13 @@ module BrBoleto
 			# <b>REQUERIDO</b>: UF do sacado (cliente)
 			attr_accessor :uf_sacado
 
+			# <b>REQUERIDO</b>: Tipor de impressão
+			#                   1 - Frente do Bloqueto
+			#                   2 - Verso do Bloauqto
+			#                   3 - Corpo de instruções da Ficha de Complansação
+			# 
+			attr_accessor :tipo_impressao # Default '1'
+
 			# <b>OPCIONAL</b>: nome do avalista
 			attr_accessor :nome_avalista
 
@@ -72,8 +79,19 @@ module BrBoleto
 			# <b>OPCIONAL</b>: valor do abatimento
 			attr_accessor :valor_abatimento
 
+			# <b>OPCIONAL</b>: Informações para o desconto 2
+			attr_accessor :desconto_2_codigo, :desconto_2_data, :desconto_2_valor
+
+			# <b>OPCIONAL</b>: Informações para o desconto 3
+			attr_accessor :desconto_3_codigo, :desconto_3_data, :desconto_3_valor
+
+			# <b>OPCIONAL</b>: Informações para multa
+			attr_accessor :codigo_multa, :data_multa, :valor_multa
+
+
 			validates :nosso_numero, :data_vencimento, :valor_documento, :documento_sacado, :nome_sacado, 
-			          :endereco_sacado, :cep_sacado, :cidade_sacado, :uf_sacado, :bairro_sacado, presence: true
+			          :endereco_sacado, :cep_sacado, :cidade_sacado, :uf_sacado, :bairro_sacado, :tipo_impressao,
+			          presence: true
 
 			validates :cep_sacado,   length: {is: 8, message: 'deve ter 8 dígitos.'}
 			validates :cod_desconto, length: {is: 1, message: 'deve ter 1 dígito.'}
@@ -103,19 +121,40 @@ module BrBoleto
 					valor_iof:        0.0,
 					valor_abatimento: 0.0,
 					nome_avalista:    '',
-					cod_desconto:     '0'
+					cod_desconto:     '0',
+					desconto_2_codigo: '0',
+					desconto_2_valor:  0.0,
+					desconto_3_codigo: '0',
+					desconto_3_valor:  0.0,
+					codigo_multa:      '0', # Isento
+					valor_multa:       0.0,
+					tipo_impressao:    '1'
 				}
 			end
 
-			# Formata a data de desconto de acordo com o formato passado
+			# Formata a data de descontos de acordo com o formato passado
 			#
 			# @return [String]
 			#
 			def data_desconto_formatado(formato = '%d%m%y')
-				data_desconto.strftime(formato)
-			rescue
-				return (formato == '%d%m%y' ?  '000000' : '00000000')
+				formata_data(data_desconto, formato)
 			end
+			def desconto_2_data_formatado(formato = '%d%m%y')
+				formata_data(desconto_2_data, formato)
+			end
+			def desconto_3_data_formatado(formato = '%d%m%y')
+				formata_data(desconto_3_data, formato)
+			end
+
+			# Formatação para campos da multa
+			def data_multa_formatado(formato = '%d%m%y')
+				formata_data(data_multa, formato)
+			end
+			def valor_multa_formatado(tamanho=13)
+				formata_valor_monetario(valor_multa, tamanho)
+			end
+
+
 
 			# Formata o campo valor
 			# referentes as casas decimais
@@ -137,13 +176,19 @@ module BrBoleto
 				formata_valor_monetario(valor_mora, tamanho)
 			end
 
-			# Formata o campo valor do desconto
+			# Formata o campo valor dos descontos
 			#
 			# @param tamanho [Integer]
 			#   quantidade de caracteres a ser retornado
 			#
 			def valor_desconto_formatado(tamanho = 13)
 				formata_valor_monetario(valor_desconto, tamanho)
+			end
+			def desconto_2_valor_formatado(tamanho = 13)
+				formata_valor_monetario(desconto_2_valor, tamanho)
+			end
+			def desconto_3_valor_formatado(tamanho = 13)
+				formata_valor_monetario(desconto_3_valor, tamanho)
 			end
 
 			# Formata o campo valor do IOF
@@ -184,6 +229,12 @@ module BrBoleto
 			def formata_valor_monetario(value, size=13)
 				return ''.rjust(size, '0') if value.blank?
 				sprintf('%.2f', value).delete('.').rjust(size, '0')
+			end
+
+			def formata_data(value, formato="%d%m%Y")
+				value.strftime(formato)
+			rescue
+				return (formato == '%d%m%y' ?  '000000' : '00000000')
 			end
 		end
 	end

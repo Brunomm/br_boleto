@@ -3,6 +3,8 @@ require 'br_boleto/remessa/cnab240/helper/header_arquivo_test'
 require 'br_boleto/remessa/cnab240/helper/header_lote_test'
 require 'br_boleto/remessa/cnab240/helper/segmento_p_test'
 require 'br_boleto/remessa/cnab240/helper/segmento_q_test'
+require 'br_boleto/remessa/cnab240/helper/segmento_r_test'
+require 'br_boleto/remessa/cnab240/helper/segmento_s_test'
 require 'br_boleto/remessa/cnab240/helper/trailer_arquivo_test'
 require 'br_boleto/remessa/cnab240/helper/trailer_lote_test'
 
@@ -150,6 +152,8 @@ describe BrBoleto::Remessa::Cnab240::Base do
 		include Helper::HeaderLoteTest
 		include Helper::SegmentoPTest
 		include Helper::SegmentoQTest
+		include Helper::SegmentoRTest
+		include Helper::SegmentoSTest
 		include Helper::TrailerArquivoTest
 		include Helper::TrailerLoteTest
 	end
@@ -220,10 +224,10 @@ describe BrBoleto::Remessa::Cnab240::Base do
 				pagamento.stubs(:valid?).returns(false)
 				subject.monta_lote(pagamento, 1).must_be_nil
 			end
-			it "deve retornar um vetor com 4 posições" do
+			it "deve retornar um vetor com 6 posições" do
 				resultado = subject.monta_lote(pagamento, 123)
 				resultado.is_a?(Array).must_equal true
-				resultado.size.must_equal 4
+				resultado.size.must_equal 6
 			end
 			context "1 - Primeira posição do vetor" do
 				it "deve ter o conteudo do metodo monta_header_lote" do
@@ -251,13 +255,38 @@ describe BrBoleto::Remessa::Cnab240::Base do
 			end
 
 			context "4 - Quarta posição do vetor" do
+				it "deve ter o conteudo do metodo monta_segmento_r passando o pagamento, nro_lote e o contador" do
+					subject.stubs(:monta_header_lote).with(55).returns("RESULTADO_HEADER_LOTE")
+					subject.stubs(:monta_segmento_p).with(pagamento, 55, 2).returns("RESULTADO_SEGMENTO_P")
+					subject.stubs(:monta_segmento_q).with(pagamento, 55, 3).returns("RESULTADO_SEGMENTO_Q")
+					subject.expects(:monta_segmento_r).with(pagamento, 55, 4).returns("RESULTADO_SEGMENTO_R")
+					resultado = subject.monta_lote(pagamento, 55)
+					resultado[3].must_equal "RESULTADO_SEGMENTO_R"
+				end
+			end
+
+			context "5 - Quinta posição do vetor" do
+				it "deve ter o conteudo do metodo monta_segmento_s passando o pagamento, nro_lote e o contador" do
+					subject.stubs(:monta_header_lote).with(55).returns("RESULTADO_HEADER_LOTE")
+					subject.stubs(:monta_segmento_p).with(pagamento,   55, 2).returns("RESULTADO_SEGMENTO_P")
+					subject.stubs(:monta_segmento_q).with(pagamento,   55, 3).returns("RESULTADO_SEGMENTO_Q")
+					subject.stubs(:monta_segmento_r).with(pagamento,   55, 4).returns("RESULTADO_SEGMENTO_R")
+					subject.expects(:monta_segmento_s).with(pagamento, 55, 5).returns("RESULTADO_SEGMENTO_S")
+					resultado = subject.monta_lote(pagamento, 55)
+					resultado[4].must_equal "RESULTADO_SEGMENTO_S"
+				end
+			end
+
+			context "6 - Sexta posição do vetor" do
 				it "deve ter o conteudo do metodo monta_trailer_lote passando o nro_lote e o contador" do
 					subject.stubs(:monta_header_lote).with(55).returns("RESULTADO_HEADER_LOTE")
 					subject.stubs(:monta_segmento_p).with(pagamento, 55, 2).returns("RESULTADO_SEGMENTO_P")
 					subject.stubs(:monta_segmento_q).with(pagamento, 55, 3).returns("RESULTADO_SEGMENTO_Q")
-					subject.expects(:monta_trailer_lote).with(55, 4).returns("RESULTADO_TRAILER_LOTE")
+					subject.stubs(:monta_segmento_r).with(pagamento, 55, 4).returns("RESULTADO_SEGMENTO_R")
+					subject.stubs(:monta_segmento_s).with(pagamento, 55, 5).returns("RESULTADO_SEGMENTO_S")
+					subject.expects(:monta_trailer_lote).with(55, 6).returns("RESULTADO_TRAILER_LOTE")
 					resultado = subject.monta_lote(pagamento, 55)
-					resultado[3].must_equal "RESULTADO_TRAILER_LOTE"
+					resultado[5].must_equal "RESULTADO_TRAILER_LOTE"
 				end
 			end
 
@@ -272,8 +301,8 @@ describe BrBoleto::Remessa::Cnab240::Base do
 			it "para monta_header_arquivo deve ter 240 caracteres" do
 				subject.monta_header_arquivo.size.must_equal 240
 			end
-			it "para monta_lote deve ter 960 caracteres" do
-				subject.monta_lote(pagamento,1).join("").size.must_equal 960
+			it "para monta_lote deve ter 1440 caracteres" do
+				subject.monta_lote(pagamento,1).join("").size.must_equal 1440
 			end
 
 			it "para monta_header_lote deve ter 240 caracteres" do
@@ -288,6 +317,8 @@ describe BrBoleto::Remessa::Cnab240::Base do
 				subject.monta_segmento_q(pagamento, 1, 2).size.must_equal 240
 			end
 
+			# Para o segmento R e S esse teste é feito dentro dos modules
+
 			it "para monta_trailer_lote deve ter 240 caracteres" do
 				subject.monta_trailer_lote(1, 2).size.must_equal 240
 			end
@@ -296,7 +327,7 @@ describe BrBoleto::Remessa::Cnab240::Base do
 			end
 			it "o total de caracteres do arquivo para 1 pagamento deve ser de 1445 caracteres" do
 				# 1440 são das montagens e 5 caracteres são das quebras de linha (\n)
-				subject.dados_do_arquivo.size.must_equal 1445
+				subject.dados_do_arquivo.size.must_equal 1927
 			end
 		end
 	end
