@@ -8,9 +8,14 @@ module BrBoleto
 			#
 			include ActiveModel::Model
 
-			# variavel que terá os pagamentos no qual será gerado o arquivo de remessa
-			# Pode haver 1 ou vários pagamentos para o mesmo arquivo
-			attr_accessor :pagamentos
+			# variavel que terá os lotes no qual será gerado o arquivo de remessa
+			# um lote deve conter no minimo 1 pagamento
+			# Pode haver 1 ou vários lotes para o mesmo arquivo
+			attr_accessor :lotes
+
+			def self.class_for_lote
+				BrBoleto::Remessa::Lote
+			end
 
 			# Razão social da empresa
 			attr_accessor :nome_empresa
@@ -34,6 +39,7 @@ module BrBoleto
 			attr_accessor :aceite
 
 			def initialize(attributes = {})
+				self.lotes = []
 				attributes = default_values.merge!(attributes)
 				assign_attributes(attributes)
 				yield self if block_given?
@@ -49,22 +55,22 @@ module BrBoleto
 			validates :nome_empresa, presence: true
 			validates :aceite,       inclusion: { in: %w(A a n N), message: "valor deve ser A(aceito) ou N(não ceito)" }
 
-			validates_each :pagamentos do |record, attr, value|
+			validates_each :lotes do |record, attr, value|
 				record.errors.add(attr, 'não pode estar vazio.') if value.empty?
-				value.each do |pagamento|
-					if pagamento.is_a? BrBoleto::Remessa::Pagamento
-						if pagamento.invalid?
-							pagamento.errors.full_messages.each { |msg| record.errors.add(attr, msg) }
+				value.each do |lote|
+					if lote.is_a? record.class.class_for_lote
+						if lote.invalid?
+							lote.errors.full_messages.each { |msg| record.errors.add(attr, msg) }
 						end
 					else
-						record.errors.add(attr, 'cada item deve ser um objeto Pagamento.')
+						record.errors.add(attr, 'cada item deve ser um objeto Lote.')
 					end
 				end				
 			end
 
-			# O atributo pagamentos sempre irá retornar umm Array 
-			def pagamentos
-				@pagamentos = [@pagamentos].flatten
+			# O atributo lotes sempre irá retornar umm Array 
+			def lotes
+				@lotes = [@lotes].flatten
 			end
 
 			def default_values

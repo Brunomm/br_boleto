@@ -151,7 +151,7 @@ module BrBoleto
 
 				# Monta um lote para o arquivo
 				#
-				# @param pagamento [Brcobranca::Remessa::Pagamento]
+				# @param lote [BrBoleto::Remessa::Lote]
 				#   objeto contendo os detalhes do boleto (valor, )
 				#
 				# @param nro_lote [Integer]
@@ -159,28 +159,44 @@ module BrBoleto
 				#
 				# @return [Array]
 				#
-				def monta_lote(pagamento, nro_lote)
-					return if pagamento.invalid?
+				def monta_lote(lote, nro_lote)
+					return if lote.invalid?
+
+					#Nº Sequencial de Registros no Lote:
+					sequencial_do_lote = 1
 
 					# Metodo 'monta_header_lote' implementado no module -> BrBoleto::Remessa::Cnab240::Helper::HeaderLote
-					lote = [monta_header_lote(nro_lote)]
-					
-					# Metodo 'monta_segmento_p' implementado no module -> BrBoleto::Remessa::Cnab240::Helper::SegmentoP
-					lote << monta_segmento_p(pagamento, nro_lote, 2)
-					
-					# Metodo 'monta_segmento_q' implementado no module -> BrBoleto::Remessa::Cnab240::Helper::SegmentoQ
-					lote << monta_segmento_q(pagamento, nro_lote, 3)
+					itens_lote = [monta_header_lote(nro_lote)] # Fixo numero sequencial do lote = 1
+					sequencial_do_lote += 1
 
-					# Metodo 'monta_segmento_r' implementado no module -> BrBoleto::Remessa::Cnab240::Helper::SegmentoR
-					lote << monta_segmento_r(pagamento, nro_lote, 4)
+					#Contador para saber quantos segmentos tem no lote
+					cont_segmentos_lote = 0
+					lote.pagamentos.each do |pagamento|					
+						# Metodo 'monta_segmento_p' implementado no module -> BrBoleto::Remessa::Cnab240::Helper::SegmentoP
+						cont_segmentos_lote += 1
+						itens_lote << monta_segmento_p(pagamento, cont_segmentos_lote, sequencial_do_lote)
+						sequencial_do_lote += 1
+						
+						# Metodo 'monta_segmento_q' implementado no module -> BrBoleto::Remessa::Cnab240::Helper::SegmentoQ
+						cont_segmentos_lote += 1
+						itens_lote << monta_segmento_q(pagamento, cont_segmentos_lote, sequencial_do_lote)
+						sequencial_do_lote += 1
 
-					# Metodo 'monta_segmento_s' implementado no module -> BrBoleto::Remessa::Cnab240::Helper::SegmentoS
-					lote << monta_segmento_s(pagamento, nro_lote, 5)
+						# Metodo 'monta_segmento_r' implementado no module -> BrBoleto::Remessa::Cnab240::Helper::SegmentoR
+						cont_segmentos_lote += 1
+						itens_lote << monta_segmento_r(pagamento, cont_segmentos_lote, sequencial_do_lote)
+						sequencial_do_lote += 1
+
+						# Metodo 'monta_segmento_s' implementado no module -> BrBoleto::Remessa::Cnab240::Helper::SegmentoS
+						cont_segmentos_lote += 1
+						itens_lote << monta_segmento_s(pagamento, cont_segmentos_lote, sequencial_do_lote)
+						sequencial_do_lote += 1
+					end
 					
 					# Metodo 'monta_trailer_lote' implementado no module -> BrBoleto::Remessa::Cnab240::Helper::TrailerLote
-					lote << monta_trailer_lote(nro_lote, 6)
+					itens_lote << monta_trailer_lote(nro_lote, sequencial_do_lote)
 
-					lote
+					itens_lote
 				end
 
 				# Gera os dados para o arquivo remessa
@@ -197,14 +213,14 @@ module BrBoleto
 					arquivo = [monta_header_arquivo] 
 					contador += 1
 
-					pagamentos.each_with_index do |pagamento, index|
-						novo_lote = monta_lote(pagamento, (index + 1))
+					lotes.each_with_index do |lote, index|
+						novo_lote = monta_lote(lote, (index + 1))
 						arquivo.push novo_lote
 						novo_lote.each { |_lote| contador += 1 }
 					end
 
 					# Metodo 'monta_trailer_arquivo' implementado no module -> BrBoleto::Remessa::Cnab240::Helper::TrailerArquivo
-					arquivo << monta_trailer_arquivo(pagamentos.count, contador)
+					arquivo << monta_trailer_arquivo(lotes.count, contador)
 
 					retorno = arquivo.join("\n")
 					ActiveSupport::Inflector.transliterate(retorno).upcase

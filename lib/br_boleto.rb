@@ -62,6 +62,7 @@ module BrBoleto
 	module Remessa
 		extend ActiveSupport::Autoload
 		autoload :Base
+		autoload :Lote
 		autoload :Pagamento
 
 		module Cnab240
