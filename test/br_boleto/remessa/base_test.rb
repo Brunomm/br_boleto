@@ -2,7 +2,7 @@ require 'test_helper'
 
 describe BrBoleto::Remessa::Base do
 	subject { FactoryGirl.build(:remessa_base) }
-	let(:pagamento) { FactoryGirl.build(:remessa_pagamento) } 
+	let(:lote) { FactoryGirl.build(:remessa_lote) } 
 	describe "validations" do
 		it { must validate_presence_of(:nome_empresa) }
 		
@@ -11,35 +11,46 @@ describe BrBoleto::Remessa::Base do
 		it { wont allow_value('q').for(:aceite) }
 	end
 
-	describe "#pagamentos" do
-		it "deve haver ao menos 1 pagamento" do
-			wont allow_value([]).for(:pagamentos).with_message("não pode estar vazio.")
+	describe "#lotes" do
+		it "deve haver ao menos 1 lote" do
+			wont allow_value([]).for(:lotes).with_message("não pode estar vazio.")
 		end
-		it "deve ser um objeto pagamento" do
-			wont allow_value([BrBoleto::Boleto::Base.new()]).for(:pagamentos).with_message("cada item deve ser um objeto Pagamento.")
+		it "deve ser um objeto lote" do
+			wont allow_value(FactoryGirl.build(:boleto_sicoob)).for(:lotes).with_message("cada item deve ser um objeto Lote.")
 		end
-		it "deve ser válido com um pagamento válido" do
-			must allow_value([pagamento]).for(:pagamentos)
+		it "deve ser válido com um lote válido" do
+			must allow_value([lote]).for(:lotes)
 		end
-		it "não deve ser válidose houver algum pagamento inválido" do
-			wont allow_value([FactoryGirl.build(:remessa_pagamento, cep_sacado: nil)]).for(:pagamentos)
+		it "não deve ser válido se houver algum lote inválido" do
+			wont allow_value([FactoryGirl.build(:remessa_lote, pagamentos: [])]).for(:lotes)
 		end
-		it "deve ser válido se passar apenas um pagamento sem Array" do
-			must allow_value(pagamento).for(:pagamentos)
+		it "deve ser válido se passar apenas um lote sem Array" do
+			must allow_value(lote).for(:lotes)
 		end
-		it "se setar apenas 1 pagamento sem array deve retornar um array de 1 posicao" do
-			subject.pagamentos = pagamento
-			subject.pagamentos.size.must_equal 1
-			subject.pagamentos.is_a?(Array).must_equal true
-			subject.pagamentos[0].must_equal pagamento
+		it "se setar apenas 1 lote sem array deve retornar um array de 1 posicao" do
+			subject.lotes = lote
+			subject.lotes.size.must_equal 1
+			subject.lotes.is_a?(Array).must_equal true
+			subject.lotes[0].must_equal lote
 		end
-		it "posso setar mais que 1 pagamento" do
-			pagamento2 = FactoryGirl.build(:remessa_pagamento)
-			subject.pagamentos = [pagamento, pagamento2]
-			subject.pagamentos.size.must_equal 2
-			subject.pagamentos.is_a?(Array).must_equal true
-			subject.pagamentos[0].must_equal pagamento
-			subject.pagamentos[1].must_equal pagamento2
+		it "posso setar mais que 1 lote" do
+			lote2 = FactoryGirl.build(:remessa_lote)
+			subject.lotes = [lote, lote2]
+			subject.lotes.size.must_equal 2
+			subject.lotes.is_a?(Array).must_equal true
+			subject.lotes[0].must_equal lote
+			subject.lotes[1].must_equal lote2
+		end
+
+		it "posso incrementar os lotes com <<" do
+			lote2 = FactoryGirl.build(:remessa_lote)
+			subject.lotes = lote
+			subject.lotes.size.must_equal 1
+			subject.lotes << lote2
+			subject.lotes.size.must_equal 2
+			subject.lotes.is_a?(Array).must_equal true
+			subject.lotes[0].must_equal lote
+			subject.lotes[1].must_equal lote2
 		end
 	end
 

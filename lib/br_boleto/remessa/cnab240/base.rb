@@ -148,7 +148,6 @@ module BrBoleto
 					return Time.now
 				end
 
-
 				# Monta um lote para o arquivo
 				#
 				# @param lote [BrBoleto::Remessa::Lote]
@@ -166,7 +165,7 @@ module BrBoleto
 					sequencial_do_lote = 1
 
 					# Metodo 'monta_header_lote' implementado no module -> BrBoleto::Remessa::Cnab240::Helper::HeaderLote
-					itens_lote = [monta_header_lote(nro_lote)] # Fixo numero sequencial do lote = 1
+					itens_lote = [monta_header_lote(lote, nro_lote)] # Fixo numero sequencial do lote = 1
 					sequencial_do_lote += 1
 
 					lote.pagamentos.each do |pagamento|					
@@ -188,7 +187,7 @@ module BrBoleto
 					end
 					
 					# Metodo 'monta_trailer_lote' implementado no module -> BrBoleto::Remessa::Cnab240::Helper::TrailerLote
-					itens_lote << monta_trailer_lote(nro_lote, sequencial_do_lote)
+					itens_lote << monta_trailer_lote(lote, nro_lote, sequencial_do_lote)
 
 					itens_lote
 				end
@@ -257,7 +256,7 @@ module BrBoleto
 				#
 				# Este metodo deve ser sobrescrevido na classe do banco
 				#
-				def convenio_lote
+				def convenio_lote(lote)
 					raise NotImplementedError.new('Sobreescreva este método na classe referente ao banco que você esta criando')
 				end
 
@@ -315,7 +314,7 @@ module BrBoleto
 				# Por padrão coloco 217 caracateres em branco pois é na maioria dos bancos
 				# Mas para alguns bancos isso pode mudar
 				#
-				def complemento_trailer_lote
+				def complemento_trailer_lote(lote, nr_lote)
 					''.rjust(217, ' ')	
 				end
 			end

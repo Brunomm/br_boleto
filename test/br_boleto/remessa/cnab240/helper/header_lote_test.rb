@@ -11,7 +11,7 @@ module Helper
 			subject.stubs(:header_lote_posicao_017_a_017).returns(" 017_a_017")
 			subject.stubs(:header_lote_posicao_018_a_018).returns(" 018_a_018")
 			subject.stubs(:header_lote_posicao_019_a_033).returns(" 019_a_033")
-			subject.stubs(:header_lote_posicao_034_a_053).returns(" 034_a_053")
+			subject.stubs(:header_lote_posicao_034_a_053).with(lote).returns(" 034_a_053")
 			subject.stubs(:header_lote_posicao_054_a_073).returns(" 054_a_073")
 			subject.stubs(:header_lote_posicao_074_a_103).returns(" 074_a_103")
 			subject.stubs(:header_lote_posicao_104_a_143).returns(" 104_a_143")
@@ -21,7 +21,7 @@ module Helper
 			subject.stubs(:header_lote_posicao_200_a_207).returns(" 200_a_207")
 			subject.stubs(:header_lote_posicao_208_a_240).returns(" 208_a_240")
 			# Deve dar um upcase
-			subject.monta_header_lote(1).must_equal(" 001_A_003 004_A_007 008_A_008 009_A_009 010_A_011 012_A_013 014_A_016 017_A_017 018_A_018 019_A_033 034_A_053 054_A_073 074_A_103 104_A_143 144_A_183 184_A_191 192_A_199 200_A_207 208_A_240")
+			subject.monta_header_lote(lote, 1).must_equal(" 001_A_003 004_A_007 008_A_008 009_A_009 010_A_011 012_A_013 014_A_016 017_A_017 018_A_018 019_A_033 034_A_053 054_A_073 074_A_103 104_A_143 144_A_183 184_A_191 192_A_199 200_A_207 208_A_240")
 		end
 
 		# Código do banco
@@ -112,9 +112,9 @@ module Helper
 		# 6 posições
 		# Deve pegar o valor do metodo 'convenio_lote'
 		#
-		def test_HeaderLoteTest_metodo_header_lote_posicao_034_a_053
-			subject.expects(:convenio_lote).returns('convenio_lote')
-			subject.header_lote_posicao_034_a_053.must_equal 'convenio_lote'
+		def test_HeaderLoteTest_metodo_header_lote_posicao_034_a_053#lote
+			subject.expects(:convenio_lote).with(lote).returns('convenio_lote')
+			subject.header_lote_posicao_034_a_053(lote).must_equal 'convenio_lote'
 		end
 
 		# Informações da conta bancária

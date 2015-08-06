@@ -13,14 +13,14 @@ module BrBoleto
 					#
 					# @return [String]
 					#
-					def monta_trailer_lote(nr_lote, nro_registros)
+					def monta_trailer_lote(lote, nr_lote, nro_registros)
 						trailer_lote = ''                                            # CAMPO                   # TAMANHO
 						trailer_lote << trailer_lote_posicao_001_a_003               # codigo banco            3
 						trailer_lote << trailer_lote_posicao_004_a_007(nr_lote)      # lote de servico         4
 						trailer_lote << trailer_lote_posicao_008_a_008               # tipo de servico         1
 						trailer_lote << trailer_lote_posicao_009_a_017               # uso exclusivo           9
 						trailer_lote << trailer_lote_posicao_018_a_023(nro_registros)# qtde de registros lote  6
-						trailer_lote << trailer_lote_posicao_024_a_240               # uso exclusivo           217
+						trailer_lote << trailer_lote_posicao_024_a_240(lote, nr_lote)#                         217
 						trailer_lote.upcase
 					end
 
@@ -65,8 +65,8 @@ module BrBoleto
 					# Complemento trailer diferente para cada banco
 					# 217 posições
 					#
-					def trailer_lote_posicao_024_a_240
-						complemento_trailer_lote
+					def trailer_lote_posicao_024_a_240(lote, nr_lote)
+						complemento_trailer_lote(lote, nr_lote)
 					end
 					
 				end

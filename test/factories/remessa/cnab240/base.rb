@@ -2,7 +2,7 @@
 
 FactoryGirl.define do
 	factory :remessa_cnab240_base, class:  BrBoleto::Remessa::Cnab240::Base do
-		pagamentos         { FactoryGirl.build(:remessa_pagamento) }
+		lotes              { FactoryGirl.build(:remessa_lote) }
 		nome_empresa       "Nome da empresa"
 		agencia            "3069"
 		conta_corrente     "123456"

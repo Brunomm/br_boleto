@@ -85,7 +85,9 @@ module BrBoleto
 					''.rjust(20, ' ')
 				end
 
-				alias_method :convenio_lote, :codigo_convenio
+				def convenio_lote(lote)
+					codigo_convenio
+				end
 
 				def informacoes_da_conta
 					# CAMPO                  TAMANHO

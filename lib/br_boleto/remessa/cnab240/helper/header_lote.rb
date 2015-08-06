@@ -10,7 +10,7 @@ module BrBoleto
 					#
 					# @return [String]
 					#
-					def monta_header_lote(nr_lote)
+					def monta_header_lote(lote, nr_lote)
 						header_lote = ''                                        # CAMPO              TAMANHO
 						header_lote << header_lote_posicao_001_a_003         # codigo banco           3
 						header_lote << header_lote_posicao_004_a_007(nr_lote)# lote servico           4
@@ -22,7 +22,7 @@ module BrBoleto
 						header_lote << header_lote_posicao_017_a_017         # uso exclusivo          1
 						header_lote << header_lote_posicao_018_a_018         # tipo de inscricao      1
 						header_lote << header_lote_posicao_019_a_033         # inscricao cedente      15
-						header_lote << header_lote_posicao_034_a_053         # codigo do convenio     20
+						header_lote << header_lote_posicao_034_a_053(lote)   # codigo do convenio     20
 						header_lote << header_lote_posicao_054_a_073         # informacoes conta      20
 						header_lote << header_lote_posicao_074_a_103         # nome empresa           30
 						header_lote << header_lote_posicao_104_a_143         # 1a mensagem            40
@@ -106,8 +106,8 @@ module BrBoleto
 					# Convenio -> Código do Cedente no Banco
 					# 20 posições
 					#
-					def header_lote_posicao_034_a_053
-						convenio_lote
+					def header_lote_posicao_034_a_053(lote)
+						convenio_lote(lote)
 					end
 
 					# Informações da conta bancária

@@ -39,7 +39,7 @@ module BrBoleto
 			attr_accessor :aceite
 
 			def initialize(attributes = {})
-				self.lotes = []
+				self.lotes = [] # Para poder utilizar o << para adicionar lote
 				attributes = default_values.merge!(attributes)
 				assign_attributes(attributes)
 				yield self if block_given?

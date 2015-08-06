@@ -8,7 +8,7 @@ module Helper
 			subject.stubs(:trailer_lote_posicao_018_a_023).with(2).returns(' 018_a_023')
 			subject.stubs(:trailer_lote_posicao_024_a_240).returns(        ' 024_a_240')
 			# Deve dar um upcase
-			subject.monta_trailer_lote(1, 2).must_equal(" 001_A_003 004_A_007 008_A_008 009_A_017 018_A_023 024_A_240")
+			subject.monta_trailer_lote(lote, 1, 2).must_equal(" 001_A_003 004_A_007 008_A_008 009_A_017 018_A_023 024_A_240")
 		end
 
 		# Código do banco
@@ -60,8 +60,8 @@ module Helper
 		# Deve pegar o valor do metodo "complemento_trailer_lote"
 		#
 		def test_TrailerLote_metodo_trailer_lote_posicao_024_a_240
-			subject.expects(:complemento_trailer_lote).returns('complemento_trailer_lote')
-			subject.trailer_lote_posicao_024_a_240.must_equal 'complemento_trailer_lote'
+			subject.expects(:complemento_trailer_lote).with(lote, 1).returns('complemento_trailer_lote')
+			subject.trailer_lote_posicao_024_a_240(lote, 1).must_equal 'complemento_trailer_lote'
 		end
 	end
 end

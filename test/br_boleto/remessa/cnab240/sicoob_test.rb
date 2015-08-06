@@ -1,8 +1,9 @@
 require 'test_helper'
 
 describe BrBoleto::Remessa::Cnab240::Sicoob do
-	subject { FactoryGirl.build(:remessa_cnab240_sicoob, pagamentos: pagamento) }
+	subject { FactoryGirl.build(:remessa_cnab240_sicoob, lotes: lote) }
 	let(:pagamento) { FactoryGirl.build(:remessa_pagamento) } 
+	let(:lote) { FactoryGirl.build(:remessa_lote, pagamentos: pagamento) } 
 
 	it "deve herdar da class Base" do
 		subject.class.superclass.must_equal BrBoleto::Remessa::Cnab240::Base
