@@ -169,27 +169,21 @@ module BrBoleto
 					itens_lote = [monta_header_lote(nro_lote)] # Fixo numero sequencial do lote = 1
 					sequencial_do_lote += 1
 
-					#Contador para saber quantos segmentos tem no lote
-					cont_segmentos_lote = 0
 					lote.pagamentos.each do |pagamento|					
 						# Metodo 'monta_segmento_p' implementado no module -> BrBoleto::Remessa::Cnab240::Helper::SegmentoP
-						cont_segmentos_lote += 1
-						itens_lote << monta_segmento_p(pagamento, cont_segmentos_lote, sequencial_do_lote)
+						itens_lote << monta_segmento_p(pagamento, nro_lote, sequencial_do_lote)
 						sequencial_do_lote += 1
 						
 						# Metodo 'monta_segmento_q' implementado no module -> BrBoleto::Remessa::Cnab240::Helper::SegmentoQ
-						cont_segmentos_lote += 1
-						itens_lote << monta_segmento_q(pagamento, cont_segmentos_lote, sequencial_do_lote)
+						itens_lote << monta_segmento_q(pagamento, nro_lote, sequencial_do_lote)
 						sequencial_do_lote += 1
 
 						# Metodo 'monta_segmento_r' implementado no module -> BrBoleto::Remessa::Cnab240::Helper::SegmentoR
-						cont_segmentos_lote += 1
-						itens_lote << monta_segmento_r(pagamento, cont_segmentos_lote, sequencial_do_lote)
+						itens_lote << monta_segmento_r(pagamento, nro_lote, sequencial_do_lote)
 						sequencial_do_lote += 1
 
 						# Metodo 'monta_segmento_s' implementado no module -> BrBoleto::Remessa::Cnab240::Helper::SegmentoS
-						cont_segmentos_lote += 1
-						itens_lote << monta_segmento_s(pagamento, cont_segmentos_lote, sequencial_do_lote)
+						itens_lote << monta_segmento_s(pagamento, nro_lote, sequencial_do_lote)
 						sequencial_do_lote += 1
 					end
 					
