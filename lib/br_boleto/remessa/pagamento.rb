@@ -113,6 +113,10 @@ module BrBoleto
 				end
 			end
 
+			def nosso_numero
+				"#{@nosso_numero}".gsub(/[^0-9]/, "")
+			end
+
 			def default_values
 				{
 					data_emissao:     Date.today,
