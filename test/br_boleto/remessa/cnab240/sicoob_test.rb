@@ -100,15 +100,15 @@ describe BrBoleto::Remessa::Cnab240::Sicoob do
 		subject.versao_layout_lote.must_equal '040'
 	end
 
-	it "o digito_agencia deve calcular o modulo11 de 2 a 7 " do
+	it "o digito_agencia deve calcular o modulo11 de 2 a 9 com resto zero " do
 		subject.agencia = '33'
-		BrBoleto::Calculos::Modulo11FatorDe2a7.expects(:new).with('33').returns(1)
+		BrBoleto::Calculos::Modulo11FatorDe2a9RestoZero.expects(:new).with('33').returns(1)
 		subject.digito_agencia.must_equal '1'
 	end
 	
-	it "o digito_conta deve calcular o modulo11 de 2 a 7 " do
+	it "o digito_conta deve calcular o modulo11 de 2 a 9 com resto zero " do
 		subject.conta_corrente = '34'
-		BrBoleto::Calculos::Modulo11FatorDe2a7.expects(:new).with('34').returns(1)
+		BrBoleto::Calculos::Modulo11FatorDe2a9RestoZero.expects(:new).with('34').returns(1)
 		subject.digito_conta.must_equal '1'
 	end
 

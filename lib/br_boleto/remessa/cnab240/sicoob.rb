@@ -70,13 +70,13 @@ module BrBoleto
 				def digito_agencia
 					# utilizando a agencia com 4 digitos
 					# para calcular o digito
-					BrBoleto::Calculos::Modulo11FatorDe2a7.new(agencia).to_s
+					BrBoleto::Calculos::Modulo11FatorDe2a9RestoZero.new(agencia).to_s
 				end
 
 				def digito_conta
 					# utilizando a conta corrente com 5 digitos
 					# para calcular o digito
-					BrBoleto::Calculos::Modulo11FatorDe2a7.new(conta_corrente).to_s
+					BrBoleto::Calculos::Modulo11FatorDe2a9RestoZero.new(conta_corrente).to_s
 				end
 
 				def codigo_convenio

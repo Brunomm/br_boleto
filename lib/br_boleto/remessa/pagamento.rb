@@ -158,8 +158,6 @@ module BrBoleto
 				BrBoleto::Helper::Number.new(valor_multa).formata_valor_monetario(tamanho) 
 			end
 
-
-
 			# Formata o campo valor
 			# referentes as casas decimais
 			# exe. R$199,90 => 0000000019990

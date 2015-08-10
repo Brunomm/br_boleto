@@ -224,16 +224,16 @@ module BrBoleto
       #
       # O recomendado é usar os boletos herdando de seu respectivo banco. Por exemplo:
       #
-      #     class Itau < BrBoleto::Itau
+      #     class Sicoob < BrBoleto::Sicoob
       #     end
       #
       # Agora você pode emitir um boleto usando a classe criada acima:
       #
-      #     Itau.new(conta_corrente: '89755', agencia: '0097', :carteira => '195')
+      #     Sicoob.new(conta_corrente: '89755', agencia: '0097', :carteira => '195')
       #
       # Você pode usar blocos se quiser:
       #
-      #     Itau.new do |boleto|
+      #     Sicoob.new do |boleto|
       #       boleto.conta_corrente   = '89755'
       #       boleto.agencia          = '0097'
       #       boleto.carteira         = '198'

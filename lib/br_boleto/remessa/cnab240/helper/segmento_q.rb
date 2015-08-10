@@ -168,14 +168,14 @@ module BrBoleto
 					# 15 posições
 					#
 					def segmento_q_posicao_155_a_169(pagamento)
-						pagamento.documento_avalista.to_s.rjust(15, '0')
+						"#{pagamento.documento_avalista}".rjust(15, '0')
 					end
 
 					# Nome do avalista
 					# 40 posições
 					#
 					def segmento_q_posicao_170_a_209(pagamento)
-						pagamento.nome_avalista.adjust_size_to(40)
+						"#{pagamento.nome_avalista}".adjust_size_to(40)
 					end
 
 					# Cód. Bco. Corresp. na Compensação
