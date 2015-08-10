@@ -76,6 +76,7 @@ module BrBoleto
 		extend ActiveSupport::Autoload
 
 		autoload :CpfCnpj
+		autoload :Number
 	end
 
 	# Módulo que possui classes que realizam os cálculos dos campos que serão mostrados nos boletos.

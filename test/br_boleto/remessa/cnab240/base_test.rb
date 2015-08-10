@@ -241,16 +241,16 @@ describe BrBoleto::Remessa::Cnab240::Base do
 				it "deve ter o conteudo do metodo monta_segmento_p passando o pagamento, nro_lote e o contador" do
 					lote.pagamentos = pagamento
 					subject.stubs(:monta_header_lote).with(lote, 123).returns("RESULTADO_HEADER_LOTE")
-					subject.expects(:monta_segmento_p).with(pagamento, 123, 2).returns("RESULTADO_SEGMENTO_P")
+					subject.expects(:monta_segmento_p).with(pagamento, 123, 1).returns("RESULTADO_SEGMENTO_P")
 					resultado = subject.monta_lote(lote, 123)
 					resultado[1].must_equal "RESULTADO_SEGMENTO_P"
 				end
-				it "Se o lote tiver 2 pagamentos deve setar o segmento_p na posição 2 e 6" do
+				it "Se o lote tiver 2 pagamentos deve setar o segmento_p na posição 1 e 5" do
 					pagamento_2 = FactoryGirl.build(:remessa_pagamento)
 					lote.pagamentos = [pagamento, pagamento_2]
 					subject.stubs(:monta_header_lote).with(lote, 123).returns("RESULTADO_HEADER_LOTE")
-					subject.expects(:monta_segmento_p).with(pagamento,   123, 2).returns("RESULTADO_SEGMENTO_P_2")
-					subject.expects(:monta_segmento_p).with(pagamento_2, 123, 6).returns("RESULTADO_SEGMENTO_P_6")
+					subject.expects(:monta_segmento_p).with(pagamento,   123, 1).returns("RESULTADO_SEGMENTO_P_2")
+					subject.expects(:monta_segmento_p).with(pagamento_2, 123, 5).returns("RESULTADO_SEGMENTO_P_6")
 					resultado = subject.monta_lote(lote, 123)
 					resultado[1].must_equal "RESULTADO_SEGMENTO_P_2"
 					resultado[5].must_equal "RESULTADO_SEGMENTO_P_6"
@@ -259,8 +259,8 @@ describe BrBoleto::Remessa::Cnab240::Base do
 			context "3 - Terceira posição do vetor" do
 				it "deve ter o conteudo do metodo monta_segmento_q passando o pagamento, nro_lote e o contador" do
 					subject.stubs(:monta_header_lote).with(lote, 55).returns("RESULTADO_HEADER_LOTE")
-					subject.stubs(:monta_segmento_p).with(pagamento, 55, 2).returns("RESULTADO_SEGMENTO_P")
-					subject.expects(:monta_segmento_q).with(pagamento, 55, 3).returns("RESULTADO_SEGMENTO_Q")
+					subject.stubs(:monta_segmento_p).with(pagamento,   55, 1).returns("RESULTADO_SEGMENTO_P")
+					subject.expects(:monta_segmento_q).with(pagamento, 55, 2).returns("RESULTADO_SEGMENTO_Q")
 					resultado = subject.monta_lote(lote, 55)
 					resultado[2].must_equal "RESULTADO_SEGMENTO_Q"
 				end
@@ -268,10 +268,10 @@ describe BrBoleto::Remessa::Cnab240::Base do
 					pagamento_2 = FactoryGirl.build(:remessa_pagamento)
 					lote.pagamentos = [pagamento, pagamento_2]
 					subject.stubs(:monta_header_lote).with(lote, 55).returns("RESULTADO_HEADER_LOTE")
-					subject.stubs(:monta_segmento_p).with(pagamento,      55, 2).returns("RESULTADO_SEGMENTO_P")
-					subject.stubs(:monta_segmento_p).with(pagamento_2,    55, 6).returns("RESULTADO_SEGMENTO_P")
-					subject.expects(:monta_segmento_q).with(pagamento,    55, 3).returns("RESULTADO_SEGMENTO_Q_3")
-					subject.expects(:monta_segmento_q).with(pagamento_2,  55, 7).returns("RESULTADO_SEGMENTO_Q_7")
+					subject.stubs(:monta_segmento_p).with(pagamento,      55, 1).returns("RESULTADO_SEGMENTO_P")
+					subject.stubs(:monta_segmento_p).with(pagamento_2,    55, 5).returns("RESULTADO_SEGMENTO_P")
+					subject.expects(:monta_segmento_q).with(pagamento,    55, 2).returns("RESULTADO_SEGMENTO_Q_3")
+					subject.expects(:monta_segmento_q).with(pagamento_2,  55, 6).returns("RESULTADO_SEGMENTO_Q_7")
 					resultado = subject.monta_lote(lote, 55)
 					resultado[2].must_equal "RESULTADO_SEGMENTO_Q_3"
 					resultado[6].must_equal "RESULTADO_SEGMENTO_Q_7"
@@ -281,9 +281,9 @@ describe BrBoleto::Remessa::Cnab240::Base do
 			context "4 - Quarta posição do vetor" do
 				it "deve ter o conteudo do metodo monta_segmento_r passando o pagamento, nro_lote e o contador" do
 					subject.stubs(:monta_header_lote).with(lote, 55).returns("RESULTADO_HEADER_LOTE")
-					subject.stubs(:monta_segmento_p).with(pagamento,   55, 2).returns("RESULTADO_SEGMENTO_P")
-					subject.stubs(:monta_segmento_q).with(pagamento,   55, 3).returns("RESULTADO_SEGMENTO_Q")
-					subject.expects(:monta_segmento_r).with(pagamento, 55, 4).returns("RESULTADO_SEGMENTO_R")
+					subject.stubs(:monta_segmento_p).with(pagamento,   55, 1).returns("RESULTADO_SEGMENTO_P")
+					subject.stubs(:monta_segmento_q).with(pagamento,   55, 2).returns("RESULTADO_SEGMENTO_Q")
+					subject.expects(:monta_segmento_r).with(pagamento, 55, 3).returns("RESULTADO_SEGMENTO_R")
 					resultado = subject.monta_lote(lote, 55)
 					resultado[3].must_equal "RESULTADO_SEGMENTO_R"
 				end
@@ -291,12 +291,12 @@ describe BrBoleto::Remessa::Cnab240::Base do
 					pagamento_2 = FactoryGirl.build(:remessa_pagamento)
 					lote.pagamentos = [pagamento, pagamento_2]
 					subject.stubs(:monta_header_lote).with(lote, 55).returns("RESULTADO_HEADER_LOTE")
-					subject.stubs(:monta_segmento_p).with(pagamento,      55, 2).returns("RESULTADO_SEGMENTO_P")
-					subject.stubs(:monta_segmento_p).with(pagamento_2,    55, 6).returns("RESULTADO_SEGMENTO_P")
-					subject.stubs(:monta_segmento_q).with(pagamento,      55, 3).returns("RESULTADO_SEGMENTO_Q")
-					subject.stubs(:monta_segmento_q).with(pagamento_2,    55, 7).returns("RESULTADO_SEGMENTO_Q")
-					subject.expects(:monta_segmento_r).with(pagamento,    55, 4).returns("RESULTADO_SEGMENTO_R_4")
-					subject.expects(:monta_segmento_r).with(pagamento_2,  55, 8).returns("RESULTADO_SEGMENTO_R_8")
+					subject.stubs(:monta_segmento_p).with(pagamento,      55, 1).returns("RESULTADO_SEGMENTO_P")
+					subject.stubs(:monta_segmento_p).with(pagamento_2,    55, 5).returns("RESULTADO_SEGMENTO_P")
+					subject.stubs(:monta_segmento_q).with(pagamento,      55, 2).returns("RESULTADO_SEGMENTO_Q")
+					subject.stubs(:monta_segmento_q).with(pagamento_2,    55, 6).returns("RESULTADO_SEGMENTO_Q")
+					subject.expects(:monta_segmento_r).with(pagamento,    55, 3).returns("RESULTADO_SEGMENTO_R_4")
+					subject.expects(:monta_segmento_r).with(pagamento_2,  55, 7).returns("RESULTADO_SEGMENTO_R_8")
 					resultado = subject.monta_lote(lote, 55)
 					resultado[3].must_equal "RESULTADO_SEGMENTO_R_4"
 					resultado[7].must_equal "RESULTADO_SEGMENTO_R_8"
@@ -306,10 +306,10 @@ describe BrBoleto::Remessa::Cnab240::Base do
 			context "5 - Quinta posição do vetor" do
 				it "deve ter o conteudo do metodo monta_segmento_s passando o pagamento, nro_lote e o contador" do
 					subject.stubs(:monta_header_lote).with(lote, 55).returns("RESULTADO_HEADER_LOTE")
-					subject.stubs(:monta_segmento_p).with(pagamento,   55, 2).returns("RESULTADO_SEGMENTO_P")
-					subject.stubs(:monta_segmento_q).with(pagamento,   55, 3).returns("RESULTADO_SEGMENTO_Q")
-					subject.stubs(:monta_segmento_r).with(pagamento,   55, 4).returns("RESULTADO_SEGMENTO_R")
-					subject.expects(:monta_segmento_s).with(pagamento, 55, 5).returns("RESULTADO_SEGMENTO_S")
+					subject.stubs(:monta_segmento_p).with(pagamento,   55, 1).returns("RESULTADO_SEGMENTO_P")
+					subject.stubs(:monta_segmento_q).with(pagamento,   55, 2).returns("RESULTADO_SEGMENTO_Q")
+					subject.stubs(:monta_segmento_r).with(pagamento,   55, 3).returns("RESULTADO_SEGMENTO_R")
+					subject.expects(:monta_segmento_s).with(pagamento, 55, 4).returns("RESULTADO_SEGMENTO_S")
 					resultado = subject.monta_lote(lote, 55)
 					resultado[4].must_equal "RESULTADO_SEGMENTO_S"
 				end
@@ -317,14 +317,14 @@ describe BrBoleto::Remessa::Cnab240::Base do
 					pagamento_2 = FactoryGirl.build(:remessa_pagamento)
 					lote.pagamentos = [pagamento, pagamento_2]
 					subject.stubs(:monta_header_lote).with(lote, 55).returns("RESULTADO_HEADER_LOTE")
-					subject.stubs(:monta_segmento_p).with(pagamento,      55, 2).returns("RESULTADO_SEGMENTO_P")
-					subject.stubs(:monta_segmento_p).with(pagamento_2,    55, 6).returns("RESULTADO_SEGMENTO_P")
-					subject.stubs(:monta_segmento_q).with(pagamento,      55, 3).returns("RESULTADO_SEGMENTO_Q")
-					subject.stubs(:monta_segmento_q).with(pagamento_2,    55, 7).returns("RESULTADO_SEGMENTO_Q")
-					subject.stubs(:monta_segmento_r).with(pagamento,      55, 4).returns("RESULTADO_SEGMENTO_R")
-					subject.stubs(:monta_segmento_r).with(pagamento_2,    55, 8).returns("RESULTADO_SEGMENTO_R")
-					subject.expects(:monta_segmento_s).with(pagamento,    55, 5).returns("RESULTADO_SEGMENTO_S_5")
-					subject.expects(:monta_segmento_s).with(pagamento_2,  55, 9).returns("RESULTADO_SEGMENTO_S_9")
+					subject.stubs(:monta_segmento_p).with(pagamento,      55, 1).returns("RESULTADO_SEGMENTO_P")
+					subject.stubs(:monta_segmento_p).with(pagamento_2,    55, 5).returns("RESULTADO_SEGMENTO_P")
+					subject.stubs(:monta_segmento_q).with(pagamento,      55, 2).returns("RESULTADO_SEGMENTO_Q")
+					subject.stubs(:monta_segmento_q).with(pagamento_2,    55, 6).returns("RESULTADO_SEGMENTO_Q")
+					subject.stubs(:monta_segmento_r).with(pagamento,      55, 3).returns("RESULTADO_SEGMENTO_R")
+					subject.stubs(:monta_segmento_r).with(pagamento_2,    55, 7).returns("RESULTADO_SEGMENTO_R")
+					subject.expects(:monta_segmento_s).with(pagamento,    55, 4).returns("RESULTADO_SEGMENTO_S_5")
+					subject.expects(:monta_segmento_s).with(pagamento_2,  55, 8).returns("RESULTADO_SEGMENTO_S_9")
 					resultado = subject.monta_lote(lote, 55)
 					resultado[4].must_equal "RESULTADO_SEGMENTO_S_5"
 					resultado[8].must_equal "RESULTADO_SEGMENTO_S_9"
@@ -334,11 +334,11 @@ describe BrBoleto::Remessa::Cnab240::Base do
 			context "6 - Sexta posição do vetor" do
 				it "deve ter o conteudo do metodo monta_trailer_lote passando o nro_lote e o contador" do
 					subject.stubs(:monta_header_lote).with(lote, 55).returns("RESULTADO_HEADER_LOTE")
-					subject.stubs(:monta_segmento_p).with(pagamento, 55, 2).returns("RESULTADO_SEGMENTO_P")
-					subject.stubs(:monta_segmento_q).with(pagamento, 55, 3).returns("RESULTADO_SEGMENTO_Q")
-					subject.stubs(:monta_segmento_r).with(pagamento, 55, 4).returns("RESULTADO_SEGMENTO_R")
-					subject.stubs(:monta_segmento_s).with(pagamento, 55, 5).returns("RESULTADO_SEGMENTO_S")
-					subject.expects(:monta_trailer_lote).with(lote, 55, 6).returns("RESULTADO_TRAILER_LOTE")
+					subject.stubs(:monta_segmento_p).with(pagamento, 55, 1).returns("RESULTADO_SEGMENTO_P")
+					subject.stubs(:monta_segmento_q).with(pagamento, 55, 2).returns("RESULTADO_SEGMENTO_Q")
+					subject.stubs(:monta_segmento_r).with(pagamento, 55, 3).returns("RESULTADO_SEGMENTO_R")
+					subject.stubs(:monta_segmento_s).with(pagamento, 55, 4).returns("RESULTADO_SEGMENTO_S")
+					subject.expects(:monta_trailer_lote).with(lote,  55, 6).returns("RESULTADO_TRAILER_LOTE")
 					resultado = subject.monta_lote(lote, 55)
 					resultado[5].must_equal "RESULTADO_TRAILER_LOTE"
 				end
@@ -346,15 +346,15 @@ describe BrBoleto::Remessa::Cnab240::Base do
 					pagamento_2 = FactoryGirl.build(:remessa_pagamento)
 					lote.pagamentos = [pagamento, pagamento_2]
 					subject.stubs(:monta_header_lote).with(lote, 55).returns("RESULTADO_HEADER_LOTE")
-					subject.stubs(:monta_segmento_p).with(pagamento,      55, 2).returns("RESULTADO_SEGMENTO_P")
-					subject.stubs(:monta_segmento_p).with(pagamento_2,    55, 6).returns("RESULTADO_SEGMENTO_P")
-					subject.stubs(:monta_segmento_q).with(pagamento,      55, 3).returns("RESULTADO_SEGMENTO_Q")
-					subject.stubs(:monta_segmento_q).with(pagamento_2,    55, 7).returns("RESULTADO_SEGMENTO_Q")
-					subject.stubs(:monta_segmento_r).with(pagamento,      55, 4).returns("RESULTADO_SEGMENTO_R")
-					subject.stubs(:monta_segmento_r).with(pagamento_2,    55, 8).returns("RESULTADO_SEGMENTO_R")
-					subject.stubs(:monta_segmento_s).with(pagamento,      55, 5).returns("RESULTADO_SEGMENTO_S_5")
-					subject.stubs(:monta_segmento_s).with(pagamento_2,    55, 9).returns("RESULTADO_SEGMENTO_S_9")
-					subject.expects(:monta_trailer_lote).with(lote, 55, 10).returns("RESULTADO_TRAILER_LOTE")
+					subject.stubs(:monta_segmento_p).with(pagamento,      55, 1).returns("RESULTADO_SEGMENTO_P")
+					subject.stubs(:monta_segmento_p).with(pagamento_2,    55, 5).returns("RESULTADO_SEGMENTO_P")
+					subject.stubs(:monta_segmento_q).with(pagamento,      55, 2).returns("RESULTADO_SEGMENTO_Q")
+					subject.stubs(:monta_segmento_q).with(pagamento_2,    55, 6).returns("RESULTADO_SEGMENTO_Q")
+					subject.stubs(:monta_segmento_r).with(pagamento,      55, 3).returns("RESULTADO_SEGMENTO_R")
+					subject.stubs(:monta_segmento_r).with(pagamento_2,    55, 7).returns("RESULTADO_SEGMENTO_R")
+					subject.stubs(:monta_segmento_s).with(pagamento,      55, 4).returns("RESULTADO_SEGMENTO_S_5")
+					subject.stubs(:monta_segmento_s).with(pagamento_2,    55, 8).returns("RESULTADO_SEGMENTO_S_9")
+					subject.expects(:monta_trailer_lote).with(lote,       55, 10).returns("RESULTADO_TRAILER_LOTE")
 					resultado = subject.monta_lote(lote, 55)
 					resultado[9].must_equal "RESULTADO_TRAILER_LOTE"
 				end

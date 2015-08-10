@@ -155,7 +155,7 @@ module BrBoleto
 				formata_data(data_multa, formato)
 			end
 			def valor_multa_formatado(tamanho=13)
-				formata_valor_monetario(valor_multa, tamanho)
+				BrBoleto::Helper::Number.new(valor_multa).formata_valor_monetario(tamanho) 
 			end
 
 
@@ -168,7 +168,7 @@ module BrBoleto
 			#   quantidade de caracteres a ser retornado
 			#
 			def valor_documento_formatado(tamanho = 13)
-				formata_valor_monetario(valor_documento, tamanho)
+				BrBoleto::Helper::Number.new(valor_documento).formata_valor_monetario(tamanho) 
 			end
 
 			# Formata o campo valor da mora
@@ -177,7 +177,7 @@ module BrBoleto
 			#   quantidade de caracteres a ser retornado
 			#
 			def valor_mora_formatado(tamanho = 13)
-				formata_valor_monetario(valor_mora, tamanho)
+				BrBoleto::Helper::Number.new(valor_mora).formata_valor_monetario(tamanho) 
 			end
 
 			# Formata o campo valor dos descontos
@@ -186,13 +186,13 @@ module BrBoleto
 			#   quantidade de caracteres a ser retornado
 			#
 			def valor_desconto_formatado(tamanho = 13)
-				formata_valor_monetario(valor_desconto, tamanho)
+				BrBoleto::Helper::Number.new(valor_desconto).formata_valor_monetario(tamanho) 
 			end
 			def desconto_2_valor_formatado(tamanho = 13)
-				formata_valor_monetario(desconto_2_valor, tamanho)
+				BrBoleto::Helper::Number.new(desconto_2_valor).formata_valor_monetario(tamanho) 
 			end
 			def desconto_3_valor_formatado(tamanho = 13)
-				formata_valor_monetario(desconto_3_valor, tamanho)
+				BrBoleto::Helper::Number.new(desconto_3_valor).formata_valor_monetario(tamanho) 
 			end
 
 			# Formata o campo valor do IOF
@@ -201,7 +201,7 @@ module BrBoleto
 			#   quantidade de caracteres a ser retornado
 			#
 			def valor_iof_formatado(tamanho = 13)
-				formata_valor_monetario(valor_iof, tamanho)
+				BrBoleto::Helper::Number.new(valor_iof).formata_valor_monetario(tamanho) 
 			end
 
 			# Formata o campo valor do IOF
@@ -210,7 +210,7 @@ module BrBoleto
 			#   quantidade de caracteres a ser retornado
 			#
 			def valor_abatimento_formatado(tamanho = 13)
-				formata_valor_monetario(valor_abatimento, tamanho)
+				BrBoleto::Helper::Number.new(valor_abatimento).formata_valor_monetario(tamanho) 
 			end
 
 			# Retorna a identificacao do pagador
@@ -229,11 +229,6 @@ module BrBoleto
 				BrBoleto::Helper::CpfCnpj.new(documento_avalista).tipo_documento(tamanho)
 			end
 		private
-
-			def formata_valor_monetario(value, size=13)
-				return ''.rjust(size, '0') if value.blank?
-				sprintf('%.2f', value).delete('.').rjust(size, '0')
-			end
 
 			def formata_data(value, formato="%d%m%Y")
 				value.strftime(formato)

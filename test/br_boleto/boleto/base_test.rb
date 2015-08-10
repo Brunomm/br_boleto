@@ -29,6 +29,12 @@ describe BrBoleto::Boleto::Base do
 		end
 	end
 
+	describe "#tipo_cobranca" do
+		it "default é nil" do
+			subject.tipo_cobranca.must_be_nil
+		end
+	end
+
 	context '#initialize' do
 		context "when passing a Hash" do
 			before do 

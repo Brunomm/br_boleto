@@ -277,6 +277,18 @@ module BrBoleto
         }
       end
 
+      # Tipo de cobrança
+      # Ex: :com_registro, :sem_registro, :garantia_caucionada
+      # A implementação para esse valor deve ser implementada para cada banco, 
+      # pois cada banco tem uma maneira diferente para saber o tipo de cobrança.
+      #
+      # Obs: O VALOR DESSE METODO NÃO INFLUÊNCIA NA GERAÇÃO DO BOLETO
+      # É APENAS PARA QUESTÃO DE INFORMAÇÃO CASO PRECISE PARA OUTRAS COISAS, POR EXEMPLO:
+      # É UTILIZADO NOS PAGAMENTOS DAS REMESSAS, MAIS ESPECIFICAMENTE NO COMPLEMENTO TRAILER
+      # DO LOTE PARA O BANCO SICOOB NO CNAB 240.
+      def tipo_cobranca        
+      end
+
       # Código do Banco.
       # <b>Esse campo é específico para cada banco</b>.
       #

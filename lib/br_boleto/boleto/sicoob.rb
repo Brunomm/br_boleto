@@ -16,6 +16,7 @@ module BrBoleto
 			#   '3/03' - Garantida Caucionada
 			#
 			attr_accessor :modalidade_cobranca
+
 			def modalidade_cobranca
 				if @modalidade_cobranca.present?
 					@modalidade_cobranca.to_s.rjust(2, '0')
@@ -164,6 +165,24 @@ module BrBoleto
 			def nosso_numero
 				"#{numero_documento}-#{digito_verificador_nosso_numero}"
 			end
+
+			# Tipo de cobrança
+			# Ex: :com_registro, :sem_registro, :garantia_caucionada
+			#
+			# Obs: O VALOR DESSE METODO NÃO INFLUÊNCIA NA GERAÇÃO DO BOLETO
+			# É APENAS PARA QUESTÃO DE INFORMAÇÃO CASO PRECISE PARA OUTRAS COISAS.
+			#
+			def tipo_cobranca
+				case "#{modalidade_cobranca}".rjust(2, "0")
+				when '01'
+					:com_registro
+				when '02'
+					:sem_registro
+				when '03'
+					:garantia_caucionada
+				end
+			end
+
 
 			#  === Código de barras do banco
 			#

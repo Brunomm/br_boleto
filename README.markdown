@@ -12,7 +12,7 @@ Emissão de Boletos Bancários em Ruby.
  1. Boleto bancário para os bancos:
 - Sicoob (apenas os cálculos para o boleto, sem a interface)
  2. Arquivo de remessa para os Bancos:
- - Sicoob
+- Sicoob
 
 ## Alternativas
 
@@ -257,8 +257,8 @@ remessa = BrBoleto::Remessa::Cnab240::Sicoob.new({
   sequencial_remessa:  1,
   documento_cedente:   '12345678901',
   convenio:            '1',
-  emissao_boleto:      '1',
-  distribuicao_boleto: '1',
+  emissao_boleto:      '2',
+  distribuicao_boleto: '2',
   especie_titulo:      '02'
 })
 
@@ -318,8 +318,8 @@ remessa = BrBoleto::Remessa::Cnab240::Sicoob.new({
   sequencial_remessa:  1,
   documento_cedente:   '12345678901',
   convenio:            '1',
-  emissao_boleto:      '1',
-  distribuicao_boleto: '1',
+  emissao_boleto:      '2',
+  distribuicao_boleto: '2',
   especie_titulo:      '02'
 })
 ```

@@ -68,7 +68,6 @@ module BrBoleto
 					def trailer_lote_posicao_024_a_240(lote, nr_lote)
 						complemento_trailer_lote(lote, nr_lote)
 					end
-					
 				end
 			end
 		end

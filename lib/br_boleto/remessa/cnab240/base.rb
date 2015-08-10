@@ -161,33 +161,38 @@ module BrBoleto
 				def monta_lote(lote, nro_lote)
 					return if lote.invalid?
 
-					#Nº Sequencial de Registros no Lote:
-					sequencial_do_lote = 1
 
 					# Metodo 'monta_header_lote' implementado no module -> BrBoleto::Remessa::Cnab240::Helper::HeaderLote
-					itens_lote = [monta_header_lote(lote, nro_lote)] # Fixo numero sequencial do lote = 1
-					sequencial_do_lote += 1
+					itens_lote = [monta_header_lote(lote, nro_lote)]
+					
+					#Nº Sequencial de Registros no Lote:
+					sequencial_do_lote = 0
 
 					lote.pagamentos.each do |pagamento|					
 						# Metodo 'monta_segmento_p' implementado no module -> BrBoleto::Remessa::Cnab240::Helper::SegmentoP
-						itens_lote << monta_segmento_p(pagamento, nro_lote, sequencial_do_lote)
 						sequencial_do_lote += 1
+						itens_lote << monta_segmento_p(pagamento, nro_lote, sequencial_do_lote)
 						
 						# Metodo 'monta_segmento_q' implementado no module -> BrBoleto::Remessa::Cnab240::Helper::SegmentoQ
-						itens_lote << monta_segmento_q(pagamento, nro_lote, sequencial_do_lote)
 						sequencial_do_lote += 1
+						itens_lote << monta_segmento_q(pagamento, nro_lote, sequencial_do_lote)
 
 						# Metodo 'monta_segmento_r' implementado no module -> BrBoleto::Remessa::Cnab240::Helper::SegmentoR
-						itens_lote << monta_segmento_r(pagamento, nro_lote, sequencial_do_lote)
 						sequencial_do_lote += 1
+						itens_lote << monta_segmento_r(pagamento, nro_lote, sequencial_do_lote)
 
 						# Metodo 'monta_segmento_s' implementado no module -> BrBoleto::Remessa::Cnab240::Helper::SegmentoS
-						itens_lote << monta_segmento_s(pagamento, nro_lote, sequencial_do_lote)
 						sequencial_do_lote += 1
+						itens_lote << monta_segmento_s(pagamento, nro_lote, sequencial_do_lote)
 					end
 					
+					# total_de_registros_do_lote é a quantidade de registros(linhas) que constam em um lote
+					# Total de complementos do lote + o HEADER_LOTE + TRAILER_LOTE
+					#        sequencial_do_lote     +       1       +      1  
+					total_de_registros_do_lote = sequencial_do_lote + 2
+
 					# Metodo 'monta_trailer_lote' implementado no module -> BrBoleto::Remessa::Cnab240::Helper::TrailerLote
-					itens_lote << monta_trailer_lote(lote, nro_lote, sequencial_do_lote)
+					itens_lote << monta_trailer_lote(lote, nro_lote, total_de_registros_do_lote)
 
 					itens_lote
 				end

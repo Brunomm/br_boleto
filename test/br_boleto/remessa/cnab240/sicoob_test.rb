@@ -2,7 +2,7 @@ require 'test_helper'
 
 describe BrBoleto::Remessa::Cnab240::Sicoob do
 	subject { FactoryGirl.build(:remessa_cnab240_sicoob, lotes: lote) }
-	let(:pagamento) { FactoryGirl.build(:remessa_pagamento) } 
+	let(:pagamento) { FactoryGirl.build(:remessa_pagamento, valor_documento: 100.00) } 
 	let(:lote) { FactoryGirl.build(:remessa_lote, pagamentos: pagamento) } 
 
 	it "deve herdar da class Base" do
@@ -170,10 +170,94 @@ describe BrBoleto::Remessa::Cnab240::Sicoob do
 		end
 	end
 
-	describe "#complemento_trailer" do
-		it "deve ter 217 posições em branco" do
-			subject.complemento_trailer.must_equal ''.rjust(217, ' ')
+	describe "#complemento_trailer_lote" do
+		let(:pagamento_2) { FactoryGirl.build(:remessa_pagamento, valor_documento: 50.25) } 
+		it "deve carregar os dados dos metodos complemento_trailer_lote na sequencia" do
+			subject.stubs(:complemento_trailer_lote_posicao_024_a_029).with(lote).returns(" 024_a_029")
+			subject.stubs(:complemento_trailer_lote_posicao_030_a_046).with(lote).returns(" 030_a_046")
+			subject.stubs(:complemento_trailer_lote_posicao_047_a_052).with(lote).returns(" 047_a_052")
+			subject.stubs(:complemento_trailer_lote_posicao_053_a_069).with(lote).returns(" 053_a_069")
+			subject.stubs(:complemento_trailer_lote_posicao_070_a_075).with(lote).returns(" 070_a_075")
+			subject.stubs(:complemento_trailer_lote_posicao_076_a_092).with(lote).returns(" 076_a_092")
+			subject.stubs(:complemento_trailer_lote_posicao_093_a_098).with(lote).returns(" 093_a_098")
+			subject.stubs(:complemento_trailer_lote_posicao_099_a_115).with(lote).returns(" 099_a_115")
+			subject.stubs(:complemento_trailer_lote_posicao_116_a_123).with(lote).returns(" 116_a_123")
+			subject.stubs(:complemento_trailer_lote_posicao_124_a_240).returns(" 124_a_240")
+			subject.complemento_trailer_lote(lote, 1).must_equal(" 024_A_029 030_A_046 047_A_052 053_A_069 070_A_075 076_A_092 093_A_098 099_A_115 116_A_123 124_A_240")
 		end
+
+		before do
+			lote.pagamentos << pagamento_2
+		end
+
+		describe "#complemento_trailer_lote_posicao_024_a_029" do
+			it "se o tipo_cobranca for simples, então deve contar o total de pagamentos do lote" do
+				subject.expects(:tipo_cobranca).returns(:simples)
+				subject.complemento_trailer_lote_posicao_024_a_029(lote).must_equal "2".rjust(6, "0") 
+			end 
+			it "se o tipo_cobranca não for simples, então não deve contar o total de pagamentos do lote" do
+				subject.expects(:tipo_cobranca).returns(:caucionada)
+				subject.complemento_trailer_lote_posicao_024_a_029(lote).must_equal "".rjust(6, "0") 
+			end 
+		end
+
+		describe "#complemento_trailer_lote_posicao_030_a_046" do
+			it "se o tipo_cobranca for simples, então deve somar o valor_documento dos pagamentos do lote" do
+				subject.expects(:tipo_cobranca).returns(:simples)
+				subject.complemento_trailer_lote_posicao_030_a_046(lote).must_equal "15025".rjust(17, "0") 
+			end 
+			it "se o tipo_cobranca não for simples, então não deve somar o valor_documento dos pagamentos do lote" do
+				subject.expects(:tipo_cobranca).returns(:caucionada)
+				subject.complemento_trailer_lote_posicao_030_a_046(lote).must_equal "".rjust(17, "0") 
+			end 
+		end
+
+		describe "#complemento_trailer_lote_posicao_047_a_052" do
+			it { subject.complemento_trailer_lote_posicao_047_a_052(lote).must_equal "".rjust(6, "0") }
+		end
+
+		describe "#complemento_trailer_lote_posicao_053_a_069" do
+			it { subject.complemento_trailer_lote_posicao_053_a_069(lote).must_equal "".rjust(17, "0") }
+		end
+
+		describe "#complemento_trailer_lote_posicao_070_a_075" do
+			it "se o tipo_cobranca for caucionada, então deve contar o total de pagamentos do lote" do
+				subject.expects(:tipo_cobranca).returns(:caucionada)
+				subject.complemento_trailer_lote_posicao_070_a_075(lote).must_equal "2".rjust(6, "0") 
+			end 
+			it "se o tipo_cobranca não for caucionada, então não deve contar o total de pagamentos do lote" do
+				subject.expects(:tipo_cobranca).returns(:simples)
+				subject.complemento_trailer_lote_posicao_070_a_075(lote).must_equal "".rjust(6, "0") 
+			end 
+		end
+
+		describe "#complemento_trailer_lote_posicao_076_a_092" do
+			it "se o tipo_cobranca for caucionada, então deve somar o valor_documento dos pagamentos do lote" do
+				subject.expects(:tipo_cobranca).returns(:caucionada)
+				subject.complemento_trailer_lote_posicao_076_a_092(lote).must_equal "15025".rjust(17, "0") 
+			end 
+			it "se o tipo_cobranca não for caucionada, então não deve somar o valor_documento dos pagamentos do lote" do
+				subject.expects(:tipo_cobranca).returns(:simples)
+				subject.complemento_trailer_lote_posicao_076_a_092(lote).must_equal "".rjust(17, "0") 
+			end 
+		end
+
+		describe "#complemento_trailer_lote_posicao_093_a_098" do
+			it { subject.complemento_trailer_lote_posicao_093_a_098(lote).must_equal "".rjust(6, "0") }
+		end
+
+		describe "#complemento_trailer_lote_posicao_099_a_115" do
+			it { subject.complemento_trailer_lote_posicao_099_a_115(lote).must_equal "".rjust(17, "0") }
+		end
+
+		describe "#complemento_trailer_lote_posicao_116_a_123" do
+			it { subject.complemento_trailer_lote_posicao_116_a_123(lote).must_equal "".rjust(8, " ") }
+		end
+		
+		describe "#complemento_trailer_lote_posicao_124_a_240" do
+			it { subject.complemento_trailer_lote_posicao_124_a_240.must_equal "".rjust(117, " ") }
+		end
+
 	end
 
 	describe "#formata_nosso_numero" do
@@ -223,6 +307,41 @@ describe BrBoleto::Remessa::Cnab240::Sicoob do
 	describe "#dados_do_arquivo" do
 		it "deve gerar os dados do arquivo" do
 			subject.dados_do_arquivo.size.must_equal 1927
+		end
+	end
+
+	describe "#tipo_cobranca" do
+		it "deve ser :simples se modalidade_carteira for 01" do
+			subject.modalidade_carteira = '01'
+			subject.tipo_cobranca.must_equal :simples
+		end
+		it "deve ser :simples se modalidade_carteira for 1" do
+			subject.modalidade_carteira = 1
+			subject.tipo_cobranca.must_equal :simples
+		end
+		it "deve ser :simples se modalidade_carteira for 02" do
+			subject.modalidade_carteira = '02'
+			subject.tipo_cobranca.must_equal :simples
+		end
+		it "deve ser :simples se modalidade_carteira for 2" do
+			subject.modalidade_carteira = 2
+			subject.tipo_cobranca.must_equal :simples
+		end
+		it "deve ser :caucionada se modalidade_carteira for 03" do
+			subject.modalidade_carteira = '03'
+			subject.tipo_cobranca.must_equal :caucionada
+		end
+		it "deve ser :caucionada se modalidade_carteira for 3" do
+			subject.modalidade_carteira = 3
+			subject.tipo_cobranca.must_equal :caucionada
+		end
+		it "deve ser nil se modalidade_carteira for outro numero" do
+			subject.modalidade_carteira = 4
+			subject.tipo_cobranca.must_be_nil
+		end
+		it "deve ser nil se modalidade_carteira for nil" do
+			subject.modalidade_carteira = nil
+			subject.tipo_cobranca.must_be_nil
 		end
 	end
 end
