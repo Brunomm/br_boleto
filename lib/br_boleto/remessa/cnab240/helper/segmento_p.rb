@@ -297,7 +297,7 @@ module BrBoleto
 					# 1 posição
 					#
 					def segmento_p_posicao_221_a_221 
-						'0'
+						'1'
 					end
 
 					# Número de Dias para Protesto 

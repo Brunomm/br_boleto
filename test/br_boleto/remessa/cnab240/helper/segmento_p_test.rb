@@ -333,10 +333,10 @@ module Helper
 
 		# Código para Protesto
 		# 1 posição
-		# Por padrão é o valor '0'
+		# Por padrão é o valor '1'
 		#
 		def test_SegmentoPTest_metodo_segmento_p_posicao_221_a_221 
-			subject.segmento_p_posicao_221_a_221 .must_equal '0'
+			subject.segmento_p_posicao_221_a_221 .must_equal '1'
 		end
 
 		# Número de Dias para Protesto 
