@@ -6,7 +6,7 @@ Emissão de Boletos Bancários em Ruby.
 [![Build Status](https://travis-ci.org/Brunomm/br_boleto.svg?branch=master)](https://travis-ci.org/Brunomm/br_boleto)
 [![security](https://hakiri.io/github/Brunomm/br_boleto/master.svg)](https://hakiri.io/github/Brunomm/br_boleto/master)
 
-## Versão 0.2.0
+## Versão 1.0.0
 **O que essa gem faz?**
 
  1. Boleto bancário para os bancos:
