@@ -67,7 +67,7 @@ module Helper
 		# Retorna 6 posições em branco
 		#
 		def test_TrailerArquivo_metodo_trailer_arquivo_posicao_030_a_035
-			subject.trailer_arquivo_posicao_030_a_035.must_equal ''.rjust(6, ' ')
+			subject.trailer_arquivo_posicao_030_a_035.must_equal ''.rjust(6, '0')
 		end
 
 		# Uso Exclusivo FEBRABAN/CNAB

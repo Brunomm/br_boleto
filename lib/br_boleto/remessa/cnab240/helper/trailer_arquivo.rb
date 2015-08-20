@@ -72,7 +72,7 @@ module BrBoleto
 					# 6 posições
 					#
 					def trailer_arquivo_posicao_030_a_035
-						''.rjust(6, ' ')
+						''.rjust(6, '0')
 					end
 
 					# Uso Exclusivo FEBRABAN/CNAB
