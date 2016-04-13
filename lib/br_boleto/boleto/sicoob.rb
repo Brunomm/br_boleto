@@ -119,23 +119,6 @@ module BrBoleto
 			validates :carteira, inclusion: { in: ->(object) { object.class.carteiras_suportadas } }, if: :deve_validar_carteira?
 			validates :modalidade_cobranca, inclusion: { in: ->(object) { object.class.modalidade_cobranca_validas } }, if: :deve_validar_modalidade_cobranca?
 
-			# @return [String] 4 caracteres
-			#
-			def agencia
-				@agencia.to_s.rjust(4, '0') if @agencia.present?
-			end
-
-			# @return [String] 7 caracteres
-			# O Código do cedente é o mesmo que o codigo do beneficiário
-			def codigo_cedente
-				@codigo_cedente.to_s.rjust(7, '0') if @codigo_cedente.present?
-			end
-
-			# @return [String] 6 caracteres
-			#
-			def numero_documento
-				@numero_documento.to_s.rjust(7, '0') if @numero_documento.present?
-			end
 
 			# @return [String] Código do Banco descrito na documentação.
 			#
@@ -172,14 +155,14 @@ module BrBoleto
 			# Obs: O VALOR DESSE METODO NÃO INFLUÊNCIA NA GERAÇÃO DO BOLETO
 			# É APENAS PARA QUESTÃO DE INFORMAÇÃO CASO PRECISE PARA OUTRAS COISAS.
 			#
-			def tipo_cobranca
+			def tipo_cobranca_formatada
 				case "#{modalidade_cobranca}".rjust(2, "0")
 				when '01'
 					:com_registro
 				when '02'
 					:sem_registro
 				when '03'
-					:garantia_caucionada
+					:caucionada
 				end
 			end
 

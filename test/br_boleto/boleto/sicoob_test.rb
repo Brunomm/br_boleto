@@ -159,38 +159,38 @@ describe BrBoleto::Boleto::Sicoob do
 		it { subject.class.carteiras_suportadas.must_equal ["1","3"] }
 	end
 
-	describe "#tipo_cobranca" do
+	describe "#tipo_cobranca_formatada" do
 		it "deve ser :com_registro se modalidade_cobranca for 01" do
 			subject.modalidade_cobranca = '01'
-			subject.tipo_cobranca.must_equal :com_registro
+			subject.tipo_cobranca_formatada.must_equal :com_registro
 		end
 		it "deve ser :com_registro se modalidade_cobranca for 1" do
 			subject.modalidade_cobranca = 1
-			subject.tipo_cobranca.must_equal :com_registro
+			subject.tipo_cobranca_formatada.must_equal :com_registro
 		end
 		it "deve ser :sem_registro se modalidade_cobranca for 02" do
 			subject.modalidade_cobranca = '02'
-			subject.tipo_cobranca.must_equal :sem_registro
+			subject.tipo_cobranca_formatada.must_equal :sem_registro
 		end
 		it "deve ser :sem_registro se modalidade_cobranca for 2" do
 			subject.modalidade_cobranca = 2
-			subject.tipo_cobranca.must_equal :sem_registro
+			subject.tipo_cobranca_formatada.must_equal :sem_registro
 		end
-		it "deve ser :garantia_caucionada se modalidade_cobranca for 03" do
+		it "deve ser :caucionada se modalidade_cobranca for 03" do
 			subject.modalidade_cobranca = '03'
-			subject.tipo_cobranca.must_equal :garantia_caucionada
+			subject.tipo_cobranca_formatada.must_equal :caucionada
 		end
-		it "deve ser :garantia_caucionada se modalidade_cobranca for 3" do
+		it "deve ser :caucionada se modalidade_cobranca for 3" do
 			subject.modalidade_cobranca = 3
-			subject.tipo_cobranca.must_equal :garantia_caucionada
+			subject.tipo_cobranca_formatada.must_equal :caucionada
 		end
 		it "deve ser nil se modalidade_cobranca for outro numero" do
 			subject.modalidade_cobranca = 4
-			subject.tipo_cobranca.must_be_nil
+			subject.tipo_cobranca_formatada.must_be_nil
 		end
 		it "deve ser com_registro se modalidade_cobranca for nil, pois o defaul de modalidade_cobranca é 01" do
 			subject.modalidade_cobranca = nil
-			subject.tipo_cobranca.must_equal :com_registro
+			subject.tipo_cobranca_formatada.must_equal :com_registro
 		end
 	end
 end

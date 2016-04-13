@@ -42,20 +42,15 @@ require 'br_boleto/string_methods'
 #   bundle install
 #
 module BrBoleto
-	# Modulo responsável por guardar todas as regras dos campos de
-	# todos os Boletos Bancários. <b>Contribuicões com novas documentações dos
-	# bancos e homologação dos boletos são extremamente bem vindas!</b>
-	#
-	# Esse módulo também é responsável por guardar todas as regras de validação dos boletos e
-	# contém a forma de chamar os objetos necessários para renderização
-	# dos formatos (pdf, html, etc) e internacionalização dos boletos (caso
-	# você precise mudar os nomes dos campos nos boletos)
-	#
+	extend ActiveSupport::Autoload
+	autoload :ActiveModelBase
+	
 	module Boleto
 		extend ActiveSupport::Autoload
 
 		autoload :Base
 		autoload :Sicoob
+		autoload :Caixa
 	end
 
 
