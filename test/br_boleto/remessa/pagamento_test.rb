@@ -2,7 +2,17 @@
 require 'test_helper'
 
 describe BrBoleto::Remessa::Pagamento do
+	
+	class Shoulda::Matchers::ActiveModel::ValidateLengthOfMatcher
+		# Sobrescrevo o método que gera a string para validar o tamanho
+		# Pois o CEP só aceita números
+		def string_of_length(length)
+			'8' * length
+		end
+	end
+
 	subject { FactoryGirl.build(:remessa_pagamento) }
+	
 	
 	describe "validations" do
 		it { must validate_presence_of(:nosso_numero) }
@@ -83,8 +93,8 @@ describe BrBoleto::Remessa::Pagamento do
 
 	describe "#assign_attributes" do
 		it "posso setar varios atributos" do
-			subject.assign_attributes({cep_sacado: "NOVO", cidade_sacado: "Valor", uf_sacado: "OK"})
-			subject.cep_sacado.must_equal 'NOVO'
+			subject.assign_attributes({cep_sacado: "89809-360", cidade_sacado: "Valor", uf_sacado: "OK"})
+			subject.cep_sacado.must_equal '89809360'
 			subject.cidade_sacado.must_equal 'Valor'
 			subject.uf_sacado.must_equal 'OK'
 		end

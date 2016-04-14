@@ -99,7 +99,7 @@ module BrBoleto
 					"#{agencia.rjust(5, '0')}#{digito_agencia}#{conta_corrente.rjust(12, '0')}#{digito_conta}".adjust_size_to(20)
 				end
 
-				def complemento_header
+				def complemento_header_arquivo
 					''.rjust(29, ' ')
 				end
 

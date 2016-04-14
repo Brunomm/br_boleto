@@ -52,12 +52,11 @@ module BrBoleto
 				# Data e hora da geração do arquivo
 				attr_accessor :data_hora_arquivo
 
-				# codigo da carteira
+				# modalidade da carteira
 				#   opcoes:
-				#     1 - cobranca simples
-				#     2 - cobranca caucionada
-				#     3 - cobranca descontada
-				#     7 – modalidade Simples quando carteira 17 (apenas Banco do Brasil)
+				#     11: título Registrado emissão CAIXA
+				#     14: título Registrado emissão Cedente
+				#     21: título Sem Registro emissão CAIXA
 				attr_accessor :codigo_carteira
 
 				# forma de cadastramento dos titulos (campo nao tratado pelo Banco do Brasil)
@@ -145,7 +144,7 @@ module BrBoleto
 				def data_hora_arquivo
 					@data_hora_arquivo.to_time
 				rescue
-					return Time.now
+					return Time.current
 				end
 
 				# Monta um lote para o arquivo
@@ -226,18 +225,22 @@ module BrBoleto
 
 				# Número do Documento de Cobrança 
 				# Cada banco tem sua maneira de identificar esse número, mas o padrão é o
-				# Valor que se encontra no nosso numero
+				# Valor que se encontra no numero_documento ou então em nosso numero
 				# 15 posições
 				#
 				def segmento_p_numero_do_documento(pagamento)
-					pagamento.nosso_numero.to_s.rjust(15, '0')
+					if pagamento.numero_documento.present?
+						pagamento.numero_documento.to_s.rjust(15, '0')
+					else
+						pagamento.nosso_numero.to_s.rjust(15, '0')
+					end
 				end
 
 				# Complemento do registro
 				#
 				# Este metodo deve ser sobrescrevido na classe do banco
 				#
-				def complemento_header
+				def complemento_header_arquivo
 					raise NotImplementedError.new('Sobreescreva este método na classe referente ao banco que você esta criando')
 				end
 

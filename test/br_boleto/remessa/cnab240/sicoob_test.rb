@@ -164,9 +164,9 @@ describe BrBoleto::Remessa::Cnab240::Sicoob do
 		end
 	end
 
-	describe "#complemento_header" do
+	describe "#complemento_header_arquivo" do
 		it "deve ter 29 posições em branco" do
-			subject.complemento_header.must_equal ''.rjust(29, ' ')
+			subject.complemento_header_arquivo.must_equal ''.rjust(29, ' ')
 		end
 	end
 

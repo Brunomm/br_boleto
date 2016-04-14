@@ -198,10 +198,10 @@ module Helper
 
 		# Para Uso Exclusivo FEBRABAN / CNAB
 		# 29 posições
-		# Padrão pega o valor do metodo "complemento_header"
+		# Padrão pega o valor do metodo "complemento_header_arquivo"
 		#
 		def test_HeaderArquivoTest_metodo_header_arquivo_posicao_212_a_240
-			subject.expects(:complemento_header).returns("123456")
+			subject.expects(:complemento_header_arquivo).returns("123456")
 			subject.header_arquivo_posicao_212_a_240.must_equal("123456")
 		end
 	end

@@ -328,7 +328,7 @@ module Helper
 		# Deve retornar 25 posições em branco
 		#
 		def test_SegmentoPTest_metodo_segmento_p_posicao_196_a_220
-			subject.segmento_p_posicao_196_a_220.must_equal ''.rjust(25, ' ') 
+			subject.segmento_p_posicao_196_a_220(pagamento).must_equal ''.rjust(25, ' ') 
 		end
 
 		# Código para Protesto

@@ -105,7 +105,7 @@ module BrBoleto
 					# 15 posições
 					#
 					def segmento_q_posicao_019_a_033(pagamento)
-						pagamento.documento_sacado.to_s.rjust(15, '0')
+						BrBoleto::Helper::CpfCnpj.new(pagamento.documento_sacado).sem_formatacao.rjust(15, '0')
 					end
 
 					# Nome do sacado
@@ -168,7 +168,7 @@ module BrBoleto
 					# 15 posições
 					#
 					def segmento_q_posicao_155_a_169(pagamento)
-						"#{pagamento.documento_avalista}".rjust(15, '0')
+						BrBoleto::Helper::CpfCnpj.new("#{pagamento.documento_avalista}").sem_formatacao.rjust(15, '0')
 					end
 
 					# Nome do avalista

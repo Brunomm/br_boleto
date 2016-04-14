@@ -49,7 +49,7 @@ module BrBoleto
 						segmento_p << segmento_p_posicao_151_a_165(pagamento)  # valor desconto                        15
 						segmento_p << segmento_p_posicao_166_a_180(pagamento)  # valor IOF                             15
 						segmento_p << segmento_p_posicao_181_a_195(pagamento)  # valor abatimento                      15
-						segmento_p << segmento_p_posicao_196_a_220             # identificacao titulo empresa          25  *
+						segmento_p << segmento_p_posicao_196_a_220(pagamento)  # identificacao titulo empresa          25  *
 						segmento_p << segmento_p_posicao_221_a_221             # cod. para protesto                    1   *
 						segmento_p << segmento_p_posicao_222_a_223             # dias para protesto                    2   *
 						segmento_p << segmento_p_posicao_224_a_224             # cod. para baixa                       1   *
@@ -289,7 +289,7 @@ module BrBoleto
 					# Identificação do Título na Empresa 
 					# 25 posições
 					#
-					def segmento_p_posicao_196_a_220
+					def segmento_p_posicao_196_a_220(pagamento)
 						''.rjust(25, ' ') 
 					end
 

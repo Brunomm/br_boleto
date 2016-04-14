@@ -1,16 +1,16 @@
 # -*- encoding: utf-8 -*-
 module BrBoleto
 	module Remessa
-		class Pagamento
-			# Seguindo a interface do Active Model para:
-			# * Validações;
-			# * Internacionalização;
-			# * Nomes das classes para serem manipuladas;
-			#
-			include ActiveModel::Model
-
+		class Pagamento < BrBoleto::ActiveModelBase
 			# <b>REQUERIDO</b>: nosso numero
 			attr_accessor :nosso_numero
+
+			# <b>OPCIONAL</b>: Número do Documento de Cobrança - Número adotado e controlado pelo Cliente,
+			# para identificar o título de cobrança.
+			# Informação utilizada para referenciar a identificação do documento objeto de cobrança.
+			# Poderá conter número de duplicata, no caso de cobrança de duplicatas; número da apólice,
+			# no caso de cobrança de seguros, etc
+			attr_accessor :numero_documento
 
 			# <b>REQUERIDO</b>: data do vencimento do boleto
 			attr_accessor :data_vencimento
@@ -88,6 +88,13 @@ module BrBoleto
 			# <b>OPCIONAL</b>: Informações para multa
 			attr_accessor :codigo_multa, :data_multa, :valor_multa
 
+			def cep_sacado
+				"#{@cep_sacado}".gsub(/[^0-9]/, "")
+			end
+
+			def nosso_numero
+				"#{@nosso_numero}".gsub(/[^0-9]/, "")
+			end
 
 			validates :nosso_numero, :data_vencimento, :valor_documento, :documento_sacado, :nome_sacado, 
 			          :endereco_sacado, :cep_sacado, :cidade_sacado, :uf_sacado, :bairro_sacado, :tipo_impressao,
@@ -96,36 +103,15 @@ module BrBoleto
 			validates :cep_sacado,   length: {is: 8, message: 'deve ter 8 dígitos.'}
 			validates :cod_desconto, length: {is: 1, message: 'deve ter 1 dígito.'}
 
-			# Nova instancia da classe Pagamento
-			#
-			# @param campos [Hash]
-			#
-			def initialize(attributes = {})
-				attributes = default_values.merge!(attributes)
-				assign_attributes(attributes)
-				yield self if block_given?
-			end
-
-			def assign_attributes(attributes={})
-				attributes ||= {}
-				attributes.each do |name, value|
-					send("#{name}=", value)
-				end
-			end
-
-			def nosso_numero
-				"#{@nosso_numero}".gsub(/[^0-9]/, "")
-			end
-
 			def default_values
 				{
-					data_emissao:     Date.today,
-					valor_mora:       0.0,
-					valor_desconto:   0.0,
-					valor_iof:        0.0,
-					valor_abatimento: 0.0,
-					nome_avalista:    '',
-					cod_desconto:     '0',
+					data_emissao:      Date.today,
+					valor_mora:        0.0,
+					valor_desconto:    0.0,
+					valor_iof:         0.0,
+					valor_abatimento:  0.0,
+					nome_avalista:     '',
+					cod_desconto:      '0',
 					desconto_2_codigo: '0',
 					desconto_2_valor:  0.0,
 					desconto_3_codigo: '0',
