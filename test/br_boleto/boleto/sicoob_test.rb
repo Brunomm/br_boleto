@@ -21,6 +21,13 @@ describe BrBoleto::Boleto::Sicoob do
 		it { must validate_numericality_of(:valor_documento).is_less_than_or_equal_to(99999999.99) }
 		
 	end
+
+	describe "#default_values" do
+		it "local_pagamento deve ter o valor padrão conforme a documentação" do
+			BrBoleto::Boleto::Sicoob.new.local_pagamento.must_equal 'PREFERENCIALMENTE COOPERATIVAS DA REDE SICOOB'
+		end
+	end
+
 	context "#agencia" do
 		it "get value when have a value" do
 			subject.agencia = '215'

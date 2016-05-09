@@ -119,6 +119,11 @@ module BrBoleto
 			validates :carteira, inclusion: { in: ->(object) { object.class.carteiras_suportadas } }, if: :deve_validar_carteira?
 			validates :modalidade_cobranca, inclusion: { in: ->(object) { object.class.modalidade_cobranca_validas } }, if: :deve_validar_modalidade_cobranca?
 
+			def default_values
+				super.merge({
+					local_pagamento: "PREFERENCIALMENTE COOPERATIVAS DA REDE SICOOB"
+				})
+			end
 
 			# @return [String] Código do Banco descrito na documentação.
 			#
