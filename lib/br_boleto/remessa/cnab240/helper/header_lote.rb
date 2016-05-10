@@ -56,6 +56,10 @@ module BrBoleto
 
 					# Tipo da Operação
 					# 1 posição
+					#   
+					#  'R' = Arquivo Remessa
+					#  'T' = Arquivo Retorno
+					#
 					#
 					def header_lote_posicao_009_a_009
 						'R'
@@ -63,6 +67,11 @@ module BrBoleto
 
 					# Tipo do Serviço
 					# 2 posições
+					#
+					#    '01' = Cobrança Registrada
+					#    '02' = Cobrança Sem Registro / Serviços
+					#    '03' = Desconto de Títulos
+					#    '04' = Caução de Títulos
 					#
 					def header_lote_posicao_010_a_011
 						'01'
@@ -100,7 +109,7 @@ module BrBoleto
 					# 15 posições
 					#
 					def header_lote_posicao_019_a_033
-						documento_cedente.to_s.rjust(15, '0')
+						BrBoleto::Helper::CpfCnpj.new(documento_cedente).sem_formatacao.rjust(15, '0')
 					end
 
 					# Convenio -> Código do Cedente no Banco

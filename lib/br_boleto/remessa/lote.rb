@@ -1,33 +1,13 @@
 # -*- encoding: utf-8 -*-
 module BrBoleto
 	module Remessa
-		class Lote
-			# Seguindo a interface do Active Model para:
-			# * Validações;
-			# * Internacionalização;
-			# * Nomes das classes para serem manipuladas;
-			#
-			include ActiveModel::Model
-
+		class Lote < BrBoleto::ActiveModelBase
 			# variavel que terá os pagamentos no qual será gerado o lote do arquivo de remessa
 			# Pode haver 1 ou vários pagamentos para o mesmo arquivo
 			attr_accessor :pagamentos
 
 			def self.class_for_pagamentos
 				BrBoleto::Remessa::Pagamento
-			end
-
-			def initialize(attributes = {})
-				self.pagamentos = [] # Para poder utilizar o << para incrementar o array
-				assign_attributes(attributes)
-				yield self if block_given?
-			end
-
-			def assign_attributes(attributes)
-				attributes ||= {}
-				attributes.each do |name, value|
-					send("#{name}=", value)
-				end
 			end
 
 			validates_each :pagamentos do |record, attr, value|

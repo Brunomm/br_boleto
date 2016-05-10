@@ -1,13 +1,6 @@
 module BrBoleto
 	module Remessa
-		class Base
-			# Seguindo a interface do Active Model para:
-			# * Validações;
-			# * Internacionalização;
-			# * Nomes das classes para serem manipuladas;
-			#
-			include ActiveModel::Model
-
+		class Base < BrBoleto::ActiveModelBase
 			# variavel que terá os lotes no qual será gerado o arquivo de remessa
 			# um lote deve conter no minimo 1 pagamento
 			# Pode haver 1 ou vários lotes para o mesmo arquivo
@@ -37,20 +30,6 @@ module BrBoleto
 
 			# aceite (A = ACEITO/N = NAO ACEITO)
 			attr_accessor :aceite
-
-			def initialize(attributes = {})
-				self.lotes = [] # Para poder utilizar o << para adicionar lote
-				attributes = default_values.merge!(attributes)
-				assign_attributes(attributes)
-				yield self if block_given?
-			end
-
-			def assign_attributes(attributes)
-				attributes ||= {}
-				attributes.each do |name, value|
-					send("#{name}=", value)
-				end
-			end
 
 			validates :nome_empresa, presence: true
 			validates :aceite,       inclusion: { in: %w(A a n N), message: "valor deve ser A(aceito) ou N(não ceito)" }

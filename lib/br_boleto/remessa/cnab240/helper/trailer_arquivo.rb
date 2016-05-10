@@ -41,6 +41,13 @@ module BrBoleto
 					end
 
 					# Tipo do registro -> Padrão 9
+					# Código adotado pela FEBRABAN para identificar o tipo de registro:
+					#     0 = Header de Arquivo
+					#     1 = Header de Lote
+					#     3 = Detalhe
+					#     5 = Trailer de Lote
+					#     9 = Trailer de Arquivo
+					#
 					# 1 posição
 					#
 					def trailer_arquivo_posicao_008_a_008

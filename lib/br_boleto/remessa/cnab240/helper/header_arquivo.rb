@@ -71,7 +71,7 @@ module BrBoleto
 					# 14 Posições
 					#
 					def header_arquivo_posicao_019_a_032
-						documento_cedente.to_s.rjust(14, '0')
+						BrBoleto::Helper::CpfCnpj.new(documento_cedente).sem_formatacao.rjust(14, '0')
 					end
 
 					# Código do Convênio no Banco
@@ -177,7 +177,7 @@ module BrBoleto
 					# 29 posições
 					#
 					def header_arquivo_posicao_212_a_240 
-						complemento_header
+						complemento_header_arquivo
 					end
 				end
 			end

@@ -2,6 +2,10 @@ source 'http://rubygems.org'
 
 gemspec
 
+group :development do
+  gem 'pry'
+end
+
 group :test do
 	# gem "mocha", :require => false
 	gem "mocha", :require => false

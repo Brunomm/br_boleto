@@ -79,16 +79,16 @@ describe BrBoleto::Remessa::Cnab240::Base do
 	end
 
 	describe "#segmento_p_numero_do_documento" do
-		it "deve pegar o nosso_numero do pagamento do parametro e ajustar para 15 caracateres" do
-			pagamento.nosso_numero = '123456'
+		it "deve pegar o numero_documento do pagamento do parametro e ajustar para 15 caracateres" do
+			pagamento.numero_documento = '123456'
 			subject.segmento_p_numero_do_documento(pagamento).must_equal '123456'.rjust(15, '0')
 		end
 	end
 
 	context "metodos que devem ser sobrescritos para cada banco" do
-		it "#complemento_header" do
+		it "#complemento_header_arquivo" do
 			assert_raises NotImplementedError do
-				subject.complemento_header
+				subject.complemento_header_arquivo
 			end
 		end
 
@@ -163,7 +163,7 @@ describe BrBoleto::Remessa::Cnab240::Base do
 
 		before do
 			# Stub nos metodos que devem ser sobrescritos nos bancos
-			subject.stubs(:complemento_header).returns(      ''.rjust(29, ' '))
+			subject.stubs(:complemento_header_arquivo).returns(      ''.rjust(29, ' '))
 			subject.stubs(:versao_layout_arquivo).returns(   '081')
 			subject.stubs(:versao_layout_lote).returns(      '040')
 			subject.stubs(:convenio_lote).returns(           ''.rjust(20, ' '))

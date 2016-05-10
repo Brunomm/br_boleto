@@ -99,7 +99,7 @@ module BrBoleto
 					"#{agencia.rjust(5, '0')}#{digito_agencia}#{conta_corrente.rjust(12, '0')}#{digito_conta}".adjust_size_to(20)
 				end
 
-				def complemento_header
+				def complemento_header_arquivo
 					''.rjust(29, ' ')
 				end
 
@@ -118,7 +118,7 @@ module BrBoleto
 				# Obs: O VALOR DESSE METODO NÃO INFLUÊNCIA NA GERAÇÃO DO BOLETO
 				# É APENAS PARA QUESTÃO DE INFORMAÇÃO CASO PRECISE PARA OUTRAS COISAS.
 				#
-				def tipo_cobranca
+				def tipo_cobranca_formatada
 					case "#{modalidade_carteira}".rjust(2, "0")
 					when '01', '02'
 						:simples
@@ -165,14 +165,14 @@ module BrBoleto
 				# 6 posições
 				#
 				def complemento_trailer_lote_posicao_024_a_029(lote)
-					tipo_cobranca == :simples ? lote.pagamentos.count.to_s.rjust(6, '0') : ''.rjust(6, '0')
+					tipo_cobranca_formatada == :simples ? lote.pagamentos.count.to_s.rjust(6, '0') : ''.rjust(6, '0')
 				end
 
 				# Valor total dos titulos de cobrança simples
 				# 17 posições
 				#
 				def complemento_trailer_lote_posicao_030_a_046(lote)
-					if tipo_cobranca == :simples
+					if tipo_cobranca_formatada == :simples
 						BrBoleto::Helper::Number.new(lote.pagamentos.map(&:valor_documento).sum).formata_valor_monetario(17)
 					else
 						''.rjust(17, '0')
@@ -198,14 +198,14 @@ module BrBoleto
 				# 6 posições
 				#
 				def complemento_trailer_lote_posicao_070_a_075(lote)
-					tipo_cobranca == :caucionada ? lote.pagamentos.count.to_s.rjust(6, '0') : ''.rjust(6, '0')
+					tipo_cobranca_formatada == :caucionada ? lote.pagamentos.count.to_s.rjust(6, '0') : ''.rjust(6, '0')
 				end
 
 				# Valor total dos titulos de cobrança Caucionada
 				# 17 posições
 				#
 				def complemento_trailer_lote_posicao_076_a_092(lote)
-					if tipo_cobranca == :caucionada
+					if tipo_cobranca_formatada == :caucionada
 						BrBoleto::Helper::Number.new(lote.pagamentos.map(&:valor_documento).sum).formata_valor_monetario(17)
 					else
 						''.rjust(17, '0')

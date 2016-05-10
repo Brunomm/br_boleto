@@ -8,8 +8,6 @@ require 'active_support/core_ext/string'
 
 require 'br_boleto/string_methods'
 
-
-
 # Copyright (C) 2015 Bruno M. Mergen <http://duobr.com.br>
 #
 # @author Bruno Mucelini Mergen <brunomergen@gmail.com>
@@ -42,20 +40,20 @@ require 'br_boleto/string_methods'
 #   bundle install
 #
 module BrBoleto
-	# Modulo responsável por guardar todas as regras dos campos de
-	# todos os Boletos Bancários. <b>Contribuicões com novas documentações dos
-	# bancos e homologação dos boletos são extremamente bem vindas!</b>
-	#
-	# Esse módulo também é responsável por guardar todas as regras de validação dos boletos e
-	# contém a forma de chamar os objetos necessários para renderização
-	# dos formatos (pdf, html, etc) e internacionalização dos boletos (caso
-	# você precise mudar os nomes dos campos nos boletos)
-	#
+	
+	def self.root
+		File.expand_path '../..', __FILE__
+	end
+
+	extend ActiveSupport::Autoload
+	autoload :ActiveModelBase
+	
 	module Boleto
 		extend ActiveSupport::Autoload
 
 		autoload :Base
 		autoload :Sicoob
+		autoload :Caixa
 	end
 
 
@@ -69,6 +67,18 @@ module BrBoleto
 			extend ActiveSupport::Autoload
 			autoload :Base
 			autoload :Sicoob
+			autoload :Caixa
+		end
+	end
+	
+	module Retorno
+		extend ActiveSupport::Autoload
+		autoload :Base
+		autoload :Pagamento
+		module Cnab240
+			extend ActiveSupport::Autoload
+			autoload :Base
+			autoload :Sicoob
 		end
 	end
 
@@ -77,6 +87,7 @@ module BrBoleto
 
 		autoload :CpfCnpj
 		autoload :Number
+		autoload :FormatValue
 	end
 
 	# Módulo que possui classes que realizam os cálculos dos campos que serão mostrados nos boletos.

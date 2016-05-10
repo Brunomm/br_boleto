@@ -29,9 +29,9 @@ describe BrBoleto::Boleto::Base do
 		end
 	end
 
-	describe "#tipo_cobranca" do
+	describe "#tipo_cobranca_formatada" do
 		it "default é nil" do
-			subject.tipo_cobranca.must_be_nil
+			subject.tipo_cobranca_formatada.must_be_nil
 		end
 	end
 
@@ -39,11 +39,11 @@ describe BrBoleto::Boleto::Base do
 		context "when passing a Hash" do
 			before do 
 				@object = subject.class.new({
-					numero_documento: '191075',
+					numero_documento: '123',
 					valor_documento:  101.99,
 					data_vencimento:  Date.new(2015, 07, 10),
 					carteira:         '175',
-					agencia:          '0098',
+					agencia:          '98',
 					conta_corrente:   '98701',
 					cedente:          'Nome da razao social',
 					sacado:           'Teste',
@@ -57,7 +57,7 @@ describe BrBoleto::Boleto::Base do
 					instrucoes6:      'Lembrar de algo 6',
 				})
 			end
-			it{ @object.numero_documento.must_equal  '191075' }
+			it{ @object.numero_documento.must_equal  '000123' }
 			it{ @object.valor_documento.must_equal   101.99 }
 			it{ @object.data_vencimento.must_equal   Date.new(2015, 07, 10) }
 			it{ @object.carteira.must_equal          '175' }
@@ -109,7 +109,7 @@ describe BrBoleto::Boleto::Base do
 			it {@object.agencia.must_equal           '0914' }
 			it {@object.conta_corrente.must_equal    '82369' }
 			it {@object.codigo_moeda.must_equal      '9' }
-			it {@object.codigo_cedente.must_equal    '90182' }
+			it {@object.codigo_cedente.must_equal    '090182' }
 			it {@object.endereco_cedente.must_equal  'Rua Itapaiuna, 2434' }
 			it {@object.cedente.must_equal           'Nome da razao social' }
 			it {@object.documento_cedente.must_equal '62526713000140' }

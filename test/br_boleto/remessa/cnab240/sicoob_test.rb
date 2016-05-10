@@ -164,9 +164,9 @@ describe BrBoleto::Remessa::Cnab240::Sicoob do
 		end
 	end
 
-	describe "#complemento_header" do
+	describe "#complemento_header_arquivo" do
 		it "deve ter 29 posições em branco" do
-			subject.complemento_header.must_equal ''.rjust(29, ' ')
+			subject.complemento_header_arquivo.must_equal ''.rjust(29, ' ')
 		end
 	end
 
@@ -191,23 +191,23 @@ describe BrBoleto::Remessa::Cnab240::Sicoob do
 		end
 
 		describe "#complemento_trailer_lote_posicao_024_a_029" do
-			it "se o tipo_cobranca for simples, então deve contar o total de pagamentos do lote" do
-				subject.expects(:tipo_cobranca).returns(:simples)
+			it "se o tipo_cobranca_formatada for simples, então deve contar o total de pagamentos do lote" do
+				subject.expects(:tipo_cobranca_formatada).returns(:simples)
 				subject.complemento_trailer_lote_posicao_024_a_029(lote).must_equal "2".rjust(6, "0") 
 			end 
-			it "se o tipo_cobranca não for simples, então não deve contar o total de pagamentos do lote" do
-				subject.expects(:tipo_cobranca).returns(:caucionada)
+			it "se o tipo_cobranca_formatada não for simples, então não deve contar o total de pagamentos do lote" do
+				subject.expects(:tipo_cobranca_formatada).returns(:caucionada)
 				subject.complemento_trailer_lote_posicao_024_a_029(lote).must_equal "".rjust(6, "0") 
 			end 
 		end
 
 		describe "#complemento_trailer_lote_posicao_030_a_046" do
-			it "se o tipo_cobranca for simples, então deve somar o valor_documento dos pagamentos do lote" do
-				subject.expects(:tipo_cobranca).returns(:simples)
+			it "se o tipo_cobranca_formatada for simples, então deve somar o valor_documento dos pagamentos do lote" do
+				subject.expects(:tipo_cobranca_formatada).returns(:simples)
 				subject.complemento_trailer_lote_posicao_030_a_046(lote).must_equal "15025".rjust(17, "0") 
 			end 
-			it "se o tipo_cobranca não for simples, então não deve somar o valor_documento dos pagamentos do lote" do
-				subject.expects(:tipo_cobranca).returns(:caucionada)
+			it "se o tipo_cobranca_formatada não for simples, então não deve somar o valor_documento dos pagamentos do lote" do
+				subject.expects(:tipo_cobranca_formatada).returns(:caucionada)
 				subject.complemento_trailer_lote_posicao_030_a_046(lote).must_equal "".rjust(17, "0") 
 			end 
 		end
@@ -221,23 +221,23 @@ describe BrBoleto::Remessa::Cnab240::Sicoob do
 		end
 
 		describe "#complemento_trailer_lote_posicao_070_a_075" do
-			it "se o tipo_cobranca for caucionada, então deve contar o total de pagamentos do lote" do
-				subject.expects(:tipo_cobranca).returns(:caucionada)
+			it "se o tipo_cobranca_formatada for caucionada, então deve contar o total de pagamentos do lote" do
+				subject.expects(:tipo_cobranca_formatada).returns(:caucionada)
 				subject.complemento_trailer_lote_posicao_070_a_075(lote).must_equal "2".rjust(6, "0") 
 			end 
-			it "se o tipo_cobranca não for caucionada, então não deve contar o total de pagamentos do lote" do
-				subject.expects(:tipo_cobranca).returns(:simples)
+			it "se o tipo_cobranca_formatada não for caucionada, então não deve contar o total de pagamentos do lote" do
+				subject.expects(:tipo_cobranca_formatada).returns(:simples)
 				subject.complemento_trailer_lote_posicao_070_a_075(lote).must_equal "".rjust(6, "0") 
 			end 
 		end
 
 		describe "#complemento_trailer_lote_posicao_076_a_092" do
-			it "se o tipo_cobranca for caucionada, então deve somar o valor_documento dos pagamentos do lote" do
-				subject.expects(:tipo_cobranca).returns(:caucionada)
+			it "se o tipo_cobranca_formatada for caucionada, então deve somar o valor_documento dos pagamentos do lote" do
+				subject.expects(:tipo_cobranca_formatada).returns(:caucionada)
 				subject.complemento_trailer_lote_posicao_076_a_092(lote).must_equal "15025".rjust(17, "0") 
 			end 
-			it "se o tipo_cobranca não for caucionada, então não deve somar o valor_documento dos pagamentos do lote" do
-				subject.expects(:tipo_cobranca).returns(:simples)
+			it "se o tipo_cobranca_formatada não for caucionada, então não deve somar o valor_documento dos pagamentos do lote" do
+				subject.expects(:tipo_cobranca_formatada).returns(:simples)
 				subject.complemento_trailer_lote_posicao_076_a_092(lote).must_equal "".rjust(17, "0") 
 			end 
 		end
@@ -310,38 +310,38 @@ describe BrBoleto::Remessa::Cnab240::Sicoob do
 		end
 	end
 
-	describe "#tipo_cobranca" do
+	describe "#tipo_cobranca_formatada" do
 		it "deve ser :simples se modalidade_carteira for 01" do
 			subject.modalidade_carteira = '01'
-			subject.tipo_cobranca.must_equal :simples
+			subject.tipo_cobranca_formatada.must_equal :simples
 		end
 		it "deve ser :simples se modalidade_carteira for 1" do
 			subject.modalidade_carteira = 1
-			subject.tipo_cobranca.must_equal :simples
+			subject.tipo_cobranca_formatada.must_equal :simples
 		end
 		it "deve ser :simples se modalidade_carteira for 02" do
 			subject.modalidade_carteira = '02'
-			subject.tipo_cobranca.must_equal :simples
+			subject.tipo_cobranca_formatada.must_equal :simples
 		end
 		it "deve ser :simples se modalidade_carteira for 2" do
 			subject.modalidade_carteira = 2
-			subject.tipo_cobranca.must_equal :simples
+			subject.tipo_cobranca_formatada.must_equal :simples
 		end
 		it "deve ser :caucionada se modalidade_carteira for 03" do
 			subject.modalidade_carteira = '03'
-			subject.tipo_cobranca.must_equal :caucionada
+			subject.tipo_cobranca_formatada.must_equal :caucionada
 		end
 		it "deve ser :caucionada se modalidade_carteira for 3" do
 			subject.modalidade_carteira = 3
-			subject.tipo_cobranca.must_equal :caucionada
+			subject.tipo_cobranca_formatada.must_equal :caucionada
 		end
 		it "deve ser nil se modalidade_carteira for outro numero" do
 			subject.modalidade_carteira = 4
-			subject.tipo_cobranca.must_be_nil
+			subject.tipo_cobranca_formatada.must_be_nil
 		end
 		it "deve ser nil se modalidade_carteira for nil" do
 			subject.modalidade_carteira = nil
-			subject.tipo_cobranca.must_be_nil
+			subject.tipo_cobranca_formatada.must_be_nil
 		end
 	end
 end

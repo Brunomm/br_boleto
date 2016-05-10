@@ -1,0 +1,4 @@
+coverage/
+.dropbox
+**/*.subl*
+dev_load_data.rb
