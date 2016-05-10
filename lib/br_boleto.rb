@@ -8,8 +8,6 @@ require 'active_support/core_ext/string'
 
 require 'br_boleto/string_methods'
 
-
-
 # Copyright (C) 2015 Bruno M. Mergen <http://duobr.com.br>
 #
 # @author Bruno Mucelini Mergen <brunomergen@gmail.com>
@@ -67,12 +65,18 @@ module BrBoleto
 			autoload :Caixa
 		end
 	end
+	
+	module Retorno
+		extend ActiveSupport::Autoload
+		autoload :Pagamento
+	end
 
 	module Helper
 		extend ActiveSupport::Autoload
 
 		autoload :CpfCnpj
 		autoload :Number
+		autoload :FormatValue
 	end
 
 	# Módulo que possui classes que realizam os cálculos dos campos que serão mostrados nos boletos.
