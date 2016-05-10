@@ -1,4 +1,5 @@
 coverage/
 .dropbox
 **/*.subl*
+**/*.~lock.*
 dev_load_data.rb
