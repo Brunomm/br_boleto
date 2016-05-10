@@ -22,5 +22,6 @@ Gem::Specification.new do |gem|
   gem.add_dependency "rake", '>= 0.8.7'
   gem.add_dependency "activesupport", '~> 4.2'
   gem.add_dependency "activemodel",   '~> 4.2'
-
+  gem.add_dependency 'unidecoder', '>= 1.1.2'
+  
 end

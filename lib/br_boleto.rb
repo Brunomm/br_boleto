@@ -40,6 +40,11 @@ require 'br_boleto/string_methods'
 #   bundle install
 #
 module BrBoleto
+	
+	def self.root
+		File.expand_path '../..', __FILE__
+	end
+
 	extend ActiveSupport::Autoload
 	autoload :ActiveModelBase
 	
@@ -68,7 +73,12 @@ module BrBoleto
 	
 	module Retorno
 		extend ActiveSupport::Autoload
+		autoload :Base
 		autoload :Pagamento
+		module Cnab240
+			extend ActiveSupport::Autoload
+			autoload :Base
+		end
 	end
 
 	module Helper
