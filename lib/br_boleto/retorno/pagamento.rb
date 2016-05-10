@@ -13,6 +13,8 @@ module BrBoleto
 			# NÚMERO DA CONTA CORRENTE/CEDENTE
 			attr_accessor :numero_conta_com_dv # tamanho = 13
 			attr_accessor :numero_conta_sem_dv # tamanho = 12
+			alias_attribute :codigo_cedente, :numero_conta_sem_dv
+			alias_attribute :numero_conta,   :numero_conta_sem_dv
 			
 			# IDENTIFICAÇÃO DO TÍTULO
 			# Tamanho    Posição

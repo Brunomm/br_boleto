@@ -79,6 +79,7 @@ module BrBoleto
 			extend ActiveSupport::Autoload
 			autoload :Base
 			autoload :Sicoob
+			autoload :Caixa
 		end
 	end
 
