@@ -4,15 +4,19 @@ Emissão de Boletos Bancários em Ruby.
 
 [![Code Climate](https://codeclimate.com/github/Brunomm/br_boleto/badges/gpa.svg)](https://codeclimate.com/github/Brunomm/br_boleto)
 [![Build Status](https://travis-ci.org/Brunomm/br_boleto.svg?branch=master)](https://travis-ci.org/Brunomm/br_boleto)
-[![security](https://hakiri.io/github/Brunomm/br_boleto/master.svg)](https://hakiri.io/github/Brunomm/br_boleto/master)
 
-## Versão 1.0.0
+## Versão 1.1.0
 **O que essa gem faz?**
 
- 1. Boleto bancário para os bancos:
-- Sicoob (apenas os cálculos para o boleto, sem a interface)
+ 1. Boleto bancário (apenas os cálculos para o boleto, sem a interface) para os bancos:
+- Sicoob 
+- Caixa
  2. Arquivo de remessa para os Bancos:
-- Sicoob
+- Sicoob (CNAB 240)
+- Caixa  (CNAB 240)
+ 3. Arquivo de retorno para os Bancos:
+- Sicoob (CNAB 240)
+- Caixa  (CNAB 240)
 
 ## Alternativas
 
@@ -56,6 +60,12 @@ Para todos os bancos e carteiras implementadas, **seguimos as documentações** 
     <td>Homologado dia 03/08/2015</td>
    <td>Bruno M. Mergen</td>
   </tr>
+  <tr>
+    <td>Caixa</td>
+    <td>1, 2.</td>
+    <td>Pendente</td>
+   <td></td>
+  </tr>
 </table>
 
 
@@ -73,6 +83,11 @@ Para todos os bancos e carteiras implementadas, **seguimos as documentações** 
     <td>Sicoob</td>
     <td>Homologado dia 07/08/2015</td>
     <td>Bruno M. Mergen</td>
+  </tr>
+  <tr>
+    <td>Caixa</td>
+    <td>Pendente</td>
+    <td></td>
   </tr>
 </table>
 
@@ -118,9 +133,9 @@ Primeiramente, **antes de renderizar qualquer boleto você precisar verificar se
 
 ```ruby
 if boleto_sicoob.valid?
-   # Renderiza o boleto itau
+   # Renderiza o boleto
 else
-   # Trata os erros
+   # Tratar erros
 end
 ```
 
