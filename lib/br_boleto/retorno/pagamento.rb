@@ -182,6 +182,12 @@ module BrBoleto
 			#   3        211-213
 			attr_accessor :nosso_numero_banco_correspondente
 
+			# MODALIDADE 
+			# O Padrão da FEBRABAN não prevê este valor, porém na maioria dos bancos
+			# este valor está incluso junto com a posição do nosso_numero
+			# É implementado apenas para os bancos que não conseguem seguir um padrão estabelecido
+			attr_accessor :modalidade
+
 			def initialize(attributes = {})
 				define_formatted_methods!
 				super
