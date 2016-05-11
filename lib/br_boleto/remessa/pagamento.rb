@@ -86,7 +86,20 @@ module BrBoleto
 			attr_accessor :desconto_3_codigo, :desconto_3_data, :desconto_3_valor
 
 			# <b>OPCIONAL</b>: Informações para multa
+			#  Código da multa pode ser:
+			#      - '1' Valor por Dia
+			#      - '2' Taxa Mensal
+			#      - '3' Isento
+			#      - E Ainda alguns bancos como o SICOOB não conseguem seguir o padrão e usam o cód '0' para Isento
 			attr_accessor :codigo_multa, :data_multa, :valor_multa
+
+			# <b>OPCIONAL</b>: Informações para Juros
+			#  Código do juros pode ser:
+			#      - '1' Valor por Dia
+			#      - '2' Taxa Mensal
+			#      - '3' Isento
+			#      - E Ainda alguns bancos como o SICOOB não conseguem seguir o padrão e usam o cód '0' para Isento
+			attr_accessor :codigo_juros, :data_juros, :valor_juros
 
 			def cep_sacado
 				"#{@cep_sacado}".gsub(/[^0-9]/, "")
@@ -116,8 +129,10 @@ module BrBoleto
 					desconto_2_valor:  0.0,
 					desconto_3_codigo: '0',
 					desconto_3_valor:  0.0,
-					codigo_multa:      '0', # Isento
+					codigo_multa:      '3', # Isento
+					codigo_juros:      '3', # Isento
 					valor_multa:       0.0,
+					valor_juros:       0.0,
 					tipo_impressao:    '1'
 				}
 			end
@@ -126,22 +141,30 @@ module BrBoleto
 			#
 			# @return [String]
 			#
-			def data_desconto_formatado(formato = '%d%m%y')
+			def data_desconto_formatado(formato = '%d%m%Y')
 				formata_data(data_desconto, formato)
 			end
-			def desconto_2_data_formatado(formato = '%d%m%y')
+			def desconto_2_data_formatado(formato = '%d%m%Y')
 				formata_data(desconto_2_data, formato)
 			end
-			def desconto_3_data_formatado(formato = '%d%m%y')
+			def desconto_3_data_formatado(formato = '%d%m%Y')
 				formata_data(desconto_3_data, formato)
 			end
 
 			# Formatação para campos da multa
-			def data_multa_formatado(formato = '%d%m%y')
+			def data_multa_formatado(formato = '%d%m%Y')
 				formata_data(data_multa, formato)
 			end
 			def valor_multa_formatado(tamanho=13)
 				BrBoleto::Helper::Number.new(valor_multa).formata_valor_monetario(tamanho) 
+			end
+
+			# Formatação para campos da juros
+			def data_juros_formatado(formato = '%d%m%Y')
+				formata_data(data_juros, formato)
+			end
+			def valor_juros_formatado(tamanho=13)
+				BrBoleto::Helper::Number.new(valor_juros).formata_valor_monetario(tamanho) 
 			end
 
 			# Formata o campo valor

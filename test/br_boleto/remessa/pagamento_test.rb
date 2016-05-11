@@ -34,7 +34,7 @@ describe BrBoleto::Remessa::Pagamento do
 	context "default_values" do
 		it "for data_emissao" do
 			object = subject.class.new()
-			object.data_emissao.must_equal Date.today
+			object.data_emissao.must_equal Date.current
 		end
 		it "for valor_mora" do
 			object = subject.class.new()
@@ -82,11 +82,19 @@ describe BrBoleto::Remessa::Pagamento do
 		end
 		it "for codigo_multa" do
 			object = subject.class.new()
-			object.codigo_multa.must_equal  '0'
+			object.codigo_multa.must_equal  '3'
 		end
 		it "for valor_multa" do
 			object = subject.class.new()
 			object.valor_multa.must_equal  0.0
+		end
+		it "for codigo_juros" do
+			object = subject.class.new()
+			object.codigo_juros.must_equal  '3'
+		end
+		it "for valor_juros" do
+			object = subject.class.new()
+			object.valor_juros.must_equal  0.0
 		end
 
 	end
@@ -133,54 +141,95 @@ describe BrBoleto::Remessa::Pagamento do
 	end
 
 	describe "#data_desconto_formatado" do
-		it "deve chamar o metodo formata_data com padrão de formato %d%m%y" do
-			subject.data_desconto = Date.today
-			subject.expects(:formata_data).with(Date.today, "%d%m%y").returns("123456")
+		it "deve chamar o metodo formata_data com padrão de formato %d%m%Y" do
+			subject.data_desconto = Date.current
+			subject.expects(:formata_data).with(Date.current, "%d%m%Y").returns("123456")
 			subject.data_desconto_formatado.must_equal '123456'
 		end
 		it "deve chamar o metodo formata_data com o parametro passado" do
-			subject.data_desconto = Date.today
-			subject.expects(:formata_data).with(Date.today, "%d%m%Y").returns("123456")
-			subject.data_desconto_formatado("%d%m%Y").must_equal '123456'
+			subject.data_desconto = Date.current
+			subject.expects(:formata_data).with(Date.current, "%d%m%y").returns("123456")
+			subject.data_desconto_formatado("%d%m%y").must_equal '123456'
 		end
 	end
 
 	describe "#desconto_2_data_formatado" do
-		it "deve chamar o metodo formata_data com padrão de formato %d%m%y" do
-			subject.desconto_2_data = Date.today
-			subject.expects(:formata_data).with(Date.today, "%d%m%y").returns("123456")
+		it "deve chamar o metodo formata_data com padrão de formato %d%m%Y" do
+			subject.desconto_2_data = Date.current
+			subject.expects(:formata_data).with(Date.current, "%d%m%Y").returns("123456")
 			subject.desconto_2_data_formatado.must_equal '123456'
 		end
 		it "deve chamar o metodo formata_data com o parametro passado" do
-			subject.desconto_2_data = Date.today
-			subject.expects(:formata_data).with(Date.today, "%d%m%Y").returns("123456")
-			subject.desconto_2_data_formatado("%d%m%Y").must_equal '123456'
+			subject.desconto_2_data = Date.current
+			subject.expects(:formata_data).with(Date.current, "%d%m%y").returns("123456")
+			subject.desconto_2_data_formatado("%d%m%y").must_equal '123456'
 		end
 	end
 
 	describe "#desconto_3_data_formatado" do
-		it "deve chamar o metodo formata_data com padrão de formato %d%m%y" do
-			subject.desconto_3_data = Date.today
-			subject.expects(:formata_data).with(Date.today, "%d%m%y").returns("123456")
+		it "deve chamar o metodo formata_data com padrão de formato %d%m%Y" do
+			subject.desconto_3_data = Date.current
+			subject.expects(:formata_data).with(Date.current, "%d%m%Y").returns("123456")
 			subject.desconto_3_data_formatado.must_equal '123456'
 		end
 		it "deve chamar o metodo formata_data com o parametro passado" do
-			subject.desconto_3_data = Date.today
-			subject.expects(:formata_data).with(Date.today, "%d%m%Y").returns("123456")
-			subject.desconto_3_data_formatado("%d%m%Y").must_equal '123456'
+			subject.desconto_3_data = Date.current
+			subject.expects(:formata_data).with(Date.current, "%d%m%y").returns("123456")
+			subject.desconto_3_data_formatado("%d%m%y").must_equal '123456'
 		end
 	end
 
 	describe "#data_multa_formatado" do
-		it "deve chamar o metodo formata_data com padrão de formato %d%m%y" do
-			subject.data_multa = Date.today
-			subject.expects(:formata_data).with(Date.today, "%d%m%y").returns("123456")
-			subject.data_multa_formatado.must_equal '123456'
+		it "deve chamar o metodo formata_data com padrão de formato %d%m%Y" do
+			subject.data_multa = Date.current
+			subject.expects(:formata_data).with(Date.current, "%d%m%Y").returns("12345678")
+			subject.data_multa_formatado.must_equal '12345678'
 		end
 		it "deve chamar o metodo formata_data com o parametro passado" do
-			subject.data_multa = Date.today
-			subject.expects(:formata_data).with(Date.today, "%d%m%Y").returns("123456")
-			subject.data_multa_formatado("%d%m%Y").must_equal '123456'
+			subject.data_multa = Date.current
+			subject.expects(:formata_data).with(Date.current, "%d%m%y").returns("123456")
+			subject.data_multa_formatado("%d%m%y").must_equal '123456'
+		end
+	end
+	describe "#valor_multa_formatado" do
+		context "com padrao de tamanho = 13 digitos" do
+			it "deve formatar o valor removendo separador de casas decimais e aredondando para 2 casas decimais" do
+				subject.valor_multa = 7856.888
+				subject.valor_multa_formatado.must_equal "0000000785689"
+			end
+		end
+		context "passando a quantidade de digitos" do
+			it "deve formatar o valor removendo separador de casas decimais e aredondando para 2 casas decimais" do
+				subject.valor_multa = 7856.888
+				subject.valor_multa_formatado(10).must_equal "0000785689"
+			end
+		end
+	end
+
+	describe "#data_juros_formatado" do
+		it "deve chamar o metodo formata_data com padrão de formato %d%m%Y" do
+			subject.data_juros = Date.current
+			subject.expects(:formata_data).with(Date.current, "%d%m%Y").returns("12345678")
+			subject.data_juros_formatado.must_equal '12345678'
+		end
+		it "deve chamar o metodo formata_data com o parametro passado" do
+			subject.data_juros = Date.current
+			subject.expects(:formata_data).with(Date.current, "%d%m%y").returns("123456")
+			subject.data_juros_formatado("%d%m%y").must_equal '123456'
+		end
+	end
+	describe "#valor_juros_formatado" do
+		context "com padrao de tamanho = 13 digitos" do
+			it "deve formatar o valor removendo separador de casas decimais e aredondando para 2 casas decimais" do
+				subject.valor_juros = 7856.888
+				subject.valor_juros_formatado.must_equal "0000000785689"
+			end
+		end
+		context "passando a quantidade de digitos" do
+			it "deve formatar o valor removendo separador de casas decimais e aredondando para 2 casas decimais" do
+				subject.valor_juros = 7856.888
+				subject.valor_juros_formatado(10).must_equal "0000785689"
+			end
 		end
 	end
 
