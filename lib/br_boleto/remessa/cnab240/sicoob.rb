@@ -240,6 +240,16 @@ module BrBoleto
 					''.rjust(117, ' ')
 				end
 
+				# Codigo da multa 
+				# Padrão pela FEBRABAN = (1 = Valor fixo e 2 = Percentual, 3 = isento)
+				# Padrão do SICOOB     = (1 = Valor fixo e 2 = Percentual, 0 = isento)
+				# 1 posição
+				#
+				def segmento_r_posicao_066_a_066(pagamento)
+					cod = "#{pagamento.codigo_multa}".adjust_size_to(1, '0')
+					cod.in?(['1','2']) ? cod : '0'
+				end
+
 			end
 		end
 	end
