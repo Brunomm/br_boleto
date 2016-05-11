@@ -155,6 +155,9 @@ module Helper
 			subject.segmento_r_posicao_066_a_066(pagamento).must_equal '2'
 			pagamento.codigo_multa = '3'
 			subject.segmento_r_posicao_066_a_066(pagamento).must_equal '3'
+
+			pagamento.codigo_multa = nil
+			subject.segmento_r_posicao_066_a_066(pagamento).must_equal '3'
 			
 			pagamento.codigo_multa = '4'
 			subject.segmento_r_posicao_066_a_066(pagamento).must_equal '3'
@@ -166,7 +169,7 @@ module Helper
 		# 1 posição
 		#
 		def test_SegmentoRHelper_metodo_segmento_r_posicao_067_a_074#(pagamento)
-			pagamento.expects(:data_multa_formatado).with('%d%m%Y').returns('12345678')
+			pagamento.expects(:data_multa_formatado).with('%d%m%Y').returns('1234567890')
 			subject.segmento_r_posicao_067_a_074(pagamento).must_equal '12345678'
 		end
 

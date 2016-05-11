@@ -142,11 +142,12 @@ module BrBoleto
 						pagamento.desconto_3_valor_formatado(15)
 					end
 
-					# Codigo da multa - (1 = Valor fixo e 2 = Percentual, 3 = isento)
+					# Codigo da multa 
 					# 1 posição
+					# Padrão FEBRABAN = (1 = Valor fixo e 2 = Percentual, 3 = isento)
 					#
 					def segmento_r_posicao_066_a_066(pagamento)
-						cod = "#{pagamento.codigo_multa}".adjust_size_to(1, '0')
+						cod = "#{pagamento.codigo_multa}".adjust_size_to(1, '3')
 						cod.in?(['1','2','3']) ? cod : '3'
 					end
 
