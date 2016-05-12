@@ -34,7 +34,7 @@ module BrBoleto
 			# NÚMERO DO DOCUMENTO
 			# Tamanho    Posição
 			#   15        59-73
-			attr_accessor :numero_codumento
+			attr_accessor :numero_documento
 
 			# DATA DE VENCIMENTO
 			# Tamanho    Posição

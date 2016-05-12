@@ -21,7 +21,7 @@ module BrBoleto
 						modalidade:                  40..41,
 						nosso_numero:                42..56,
 						# carteira:                  58..58, # Cartéira segue o padrão da FEBRABAN
-						numero_codumento:            59..69,
+						numero_documento:            59..69,
 					})
 				end
 			end

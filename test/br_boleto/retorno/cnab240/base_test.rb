@@ -24,7 +24,7 @@ describe BrBoleto::Retorno::Cnab240::Base do
 			pagamento.dv_conta_e_agencia.must_equal                     "0"
 			pagamento.nosso_numero.must_equal                           "000000033001014"
 			pagamento.carteira.must_equal                               "1"
-			pagamento.numero_codumento.must_equal                       "000000000000330"
+			pagamento.numero_documento.must_equal                       "000000000000330"
 			pagamento.data_vencimento.must_equal                        Date.parse('03/05/2016')
 			pagamento.valor_titulo.must_equal                           129.39
 			pagamento.banco_recebedor.must_equal                        "756"
@@ -64,7 +64,7 @@ describe BrBoleto::Retorno::Cnab240::Base do
 			pagamento.dv_conta_e_agencia.must_equal                     "0"
 			pagamento.nosso_numero.must_equal                           "000000034801024"
 			pagamento.carteira.must_equal                               "1"
-			pagamento.numero_codumento.must_equal                       "000000000000348"
+			pagamento.numero_documento.must_equal                       "000000000000348"
 			pagamento.data_vencimento.must_equal                        Date.parse('06/05/2016')
 			pagamento.valor_titulo.must_equal                           29.0
 			pagamento.banco_recebedor.must_equal                        "756"
@@ -104,7 +104,7 @@ describe BrBoleto::Retorno::Cnab240::Base do
 			pagamento.dv_conta_e_agencia.must_equal                     "0"
 			pagamento.nosso_numero.must_equal                           "000000035501014"
 			pagamento.carteira.must_equal                               "1"
-			pagamento.numero_codumento.must_equal                       "000000000000355"
+			pagamento.numero_documento.must_equal                       "000000000000355"
 			pagamento.data_vencimento.must_equal                        Date.parse('06/05/2016')
 			pagamento.valor_titulo.must_equal                           89.1
 			pagamento.banco_recebedor.must_equal                        "756"
@@ -144,7 +144,7 @@ describe BrBoleto::Retorno::Cnab240::Base do
 			pagamento.dv_conta_e_agencia.must_equal                     "0"
 			pagamento.nosso_numero.must_equal                           "000000036201014"
 			pagamento.carteira.must_equal                               "1"
-			pagamento.numero_codumento.must_equal                       "000000000000362"
+			pagamento.numero_documento.must_equal                       "000000000000362"
 			pagamento.data_vencimento.must_equal                        Date.parse('06/05/2016')
 			pagamento.valor_titulo.must_equal                           29.0
 			pagamento.banco_recebedor.must_equal                        "104"
@@ -183,7 +183,7 @@ describe BrBoleto::Retorno::Cnab240::Base do
 			pagamento.dv_conta_e_agencia.must_equal                     "0"
 			pagamento.nosso_numero.must_equal                           "000000036201014"
 			pagamento.carteira.must_equal                               "1"
-			pagamento.numero_codumento.must_equal                       "000000000000362"
+			pagamento.numero_documento.must_equal                       "000000000000362"
 			pagamento.data_vencimento.must_equal                        Date.parse('06/05/2016')
 			pagamento.valor_titulo.must_equal                           47.37
 			pagamento.banco_recebedor.must_equal                        "104"

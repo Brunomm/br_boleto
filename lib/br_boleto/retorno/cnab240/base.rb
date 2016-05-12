@@ -58,7 +58,7 @@ module BrBoleto
 						dv_conta_e_agencia:            37..37,
 						nosso_numero:                  38..57,
 						carteira:                      58..58,
-						numero_codumento:              59..73,
+						numero_documento:              59..73,
 						data_vencimento:               74..81,
 						valor_titulo:                  82..96,
 						banco_recebedor:               97..99,

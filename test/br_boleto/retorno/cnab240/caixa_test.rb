@@ -23,7 +23,7 @@ describe BrBoleto::Retorno::Cnab240::Caixa do
 			pagamento.dv_conta_e_agencia.must_equal                     nil
 			pagamento.nosso_numero.must_equal                           "NOSSONUMERO0001"
 			pagamento.carteira.must_equal                               "X"
-			pagamento.numero_codumento.must_equal                       "NUMEROCOD01"
+			pagamento.numero_documento.must_equal                       "NUMEROCOD01"
 			pagamento.data_vencimento.must_equal                        Date.parse('03/05/2016')
 			pagamento.valor_titulo.must_equal                           129.39
 			pagamento.banco_recebedor.must_equal                        "104"
@@ -63,7 +63,7 @@ describe BrBoleto::Retorno::Cnab240::Caixa do
 			pagamento.dv_conta_e_agencia.must_equal                     nil
 			pagamento.nosso_numero.must_equal                           "NOSSONUMERO0002"
 			pagamento.carteira.must_equal                               "X"
-			pagamento.numero_codumento.must_equal                       "NUMEROCOD02"
+			pagamento.numero_documento.must_equal                       "NUMEROCOD02"
 			pagamento.data_vencimento.must_equal                        Date.parse('06/05/2016')
 			pagamento.valor_titulo.must_equal                           29.00
 			pagamento.banco_recebedor.must_equal                        "104"
@@ -103,7 +103,7 @@ describe BrBoleto::Retorno::Cnab240::Caixa do
 			pagamento.dv_conta_e_agencia.must_equal                     nil
 			pagamento.nosso_numero.must_equal                           "NOSSONUMERO0003"
 			pagamento.carteira.must_equal                               "X"
-			pagamento.numero_codumento.must_equal                       "NUMEROCOD03"
+			pagamento.numero_documento.must_equal                       "NUMEROCOD03"
 			pagamento.data_vencimento.must_equal                        Date.parse('06/05/2016')
 			pagamento.valor_titulo.must_equal                           89.1
 			pagamento.banco_recebedor.must_equal                        "104"
@@ -143,7 +143,7 @@ describe BrBoleto::Retorno::Cnab240::Caixa do
 			pagamento.dv_conta_e_agencia.must_equal                     nil
 			pagamento.nosso_numero.must_equal                           "NOSSONUMERO0004"
 			pagamento.carteira.must_equal                               "X"
-			pagamento.numero_codumento.must_equal                       "NUMEROCOD04"
+			pagamento.numero_documento.must_equal                       "NUMEROCOD04"
 			pagamento.data_vencimento.must_equal                        Date.parse('06/05/2016')
 			pagamento.valor_titulo.must_equal                           29.0
 			pagamento.banco_recebedor.must_equal                        "104"
@@ -183,7 +183,7 @@ describe BrBoleto::Retorno::Cnab240::Caixa do
 			pagamento.dv_conta_e_agencia.must_equal                     nil
 			pagamento.nosso_numero.must_equal                           "NOSSONUMERO0005"
 			pagamento.carteira.must_equal                               "X"
-			pagamento.numero_codumento.must_equal                       "NUMEROCOD05"
+			pagamento.numero_documento.must_equal                       "NUMEROCOD05"
 			pagamento.data_vencimento.must_equal                        Date.parse('06/05/2016')
 			pagamento.valor_titulo.must_equal                           47.37
 			pagamento.banco_recebedor.must_equal                        "104"
