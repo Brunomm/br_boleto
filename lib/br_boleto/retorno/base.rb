@@ -3,14 +3,17 @@ module BrBoleto
 	module Retorno
 		class Base < BrBoleto::ActiveModelBase
 			
-			attr_accessor :pagamentos			
+			attr_reader    :file
+			attr_accessor :pagamentos
 			attr_accessor :codigo_banco
 
 			def initialize(file)
 				self.pagamentos = []
 				@file = file
-				read_file!
+				read_file! if @file.present?
 			end
+
+			validates :file, presence: true
 
 			# O atributo pagamentos sempre irá retornar um Array 
 			def pagamentos
