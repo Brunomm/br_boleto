@@ -145,15 +145,31 @@ module Helper
 		# 1 posição
 		#
 		def test_SegmentoRHelper_metodo_segmento_r_posicao_066_a_066#(pagamento)
-			pagamento.expects(:codigo_multa).returns('55555555')
-			subject.segmento_r_posicao_066_a_066(pagamento).must_equal '5'
+			pagamento.expects(:codigo_multa).returns('11111111')
+			subject.segmento_r_posicao_066_a_066(pagamento).must_equal '1'
+		end
+		def test_SegmentoRHelper_metodo_segmento_r_posicao_066_a_066_aceita_apenas_1_2_ou_3_com_padrao_3
+			pagamento.codigo_multa = '1'
+			subject.segmento_r_posicao_066_a_066(pagamento).must_equal '1'
+			pagamento.codigo_multa = '2'
+			subject.segmento_r_posicao_066_a_066(pagamento).must_equal '2'
+			pagamento.codigo_multa = '3'
+			subject.segmento_r_posicao_066_a_066(pagamento).must_equal '3'
+
+			pagamento.codigo_multa = nil
+			subject.segmento_r_posicao_066_a_066(pagamento).must_equal '3'
+			
+			pagamento.codigo_multa = '4'
+			subject.segmento_r_posicao_066_a_066(pagamento).must_equal '3'
+			pagamento.codigo_multa = '0'
+			subject.segmento_r_posicao_066_a_066(pagamento).must_equal '3'
 		end
 
 		# Data da multa
 		# 1 posição
 		#
 		def test_SegmentoRHelper_metodo_segmento_r_posicao_067_a_074#(pagamento)
-			pagamento.expects(:data_multa_formatado).with('%d%m%Y').returns('12345678')
+			pagamento.expects(:data_multa_formatado).with('%d%m%Y').returns('1234567890')
 			subject.segmento_r_posicao_067_a_074(pagamento).must_equal '12345678'
 		end
 

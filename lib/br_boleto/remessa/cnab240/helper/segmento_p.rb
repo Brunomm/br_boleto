@@ -39,11 +39,11 @@ module BrBoleto
 						segmento_p << segmento_p_posicao_101_a_105             # agencia cobradora                     5
 						segmento_p << segmento_p_posicao_106_a_106             # dv agencia cobradora                  1
 						segmento_p << segmento_p_posicao_107_a_108             # especie do titulo                     2
-						segmento_p << segmento_p_posicao_109_a_109              # aceite                                1
+						segmento_p << segmento_p_posicao_109_a_109             # aceite                                1
 						segmento_p << segmento_p_posicao_110_a_117(pagamento)  # data de emissao titulo                8
-						segmento_p << segmento_p_posicao_118_a_118             # cod. do juros                         1   *
-						segmento_p << segmento_p_posicao_119_a_126             # data juros                            8   *
-						segmento_p << segmento_p_posicao_127_a_141             # valor juros                           15  *
+						segmento_p << segmento_p_posicao_118_a_118(pagamento)  # cod. do juros                         1   *
+						segmento_p << segmento_p_posicao_119_a_126(pagamento)  # data juros                            8   *
+						segmento_p << segmento_p_posicao_127_a_141(pagamento)  # valor juros                           15  *
 						segmento_p << segmento_p_posicao_142_a_142(pagamento)  # cod. do desconto                      1
 						segmento_p << segmento_p_posicao_143_a_150(pagamento)  # data desconto                         8
 						segmento_p << segmento_p_posicao_151_a_165(pagamento)  # valor desconto                        15
@@ -232,23 +232,25 @@ module BrBoleto
 
 					# Código do Juros de Mora 
 					# 1 posição
+					# Padrão FEBRABAN = (1 = Valor fixo e 2 = Percentual, 3 = isento)
 					#
-					def segmento_p_posicao_118_a_118 
-						'0'
+					def segmento_p_posicao_118_a_118(pagamento) 
+						cod = "#{pagamento.codigo_juros}".adjust_size_to(1, '3')
+						cod.in?(['1','2','3']) ? cod : '3'
 					end
 
 					# Data do Juros de Mora 
 					# 8 posições
 					#
-					def segmento_p_posicao_119_a_126
-						''.rjust(8, '0')
+					def segmento_p_posicao_119_a_126(pagamento)
+						"#{pagamento.data_juros_formatado('%d%m%Y')}".adjust_size_to(8, '0')
 					end
 
 					# Juros de Mora por Dia/Taxa 
 					# 15 posições
 					#
-					def segmento_p_posicao_127_a_141
-						''.rjust(15, '0')
+					def segmento_p_posicao_127_a_141(pagamento)
+						pagamento.valor_juros_formatado(15)
 					end
 
 					# Código do Desconto 1 

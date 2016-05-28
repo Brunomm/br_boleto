@@ -16,7 +16,7 @@ module BrBoleto
 			# Alguns bancos, dependendo do banco e da carteira, precisam desse campo preenchido.
 			# Em compensação, outros bancos (a minoria) não fazem utilização desse campo.
 			#
-			attr_accessor :codigo_cedente
+			attr_accessor :codigo_cedente # com DV
 
 			# Código do beneficiário e codigo cedente é a mesma coisa
 			# Por isso foi criado um alias para que cada um utilize a nomenclatura que preferir.

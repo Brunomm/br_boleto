@@ -344,4 +344,64 @@ describe BrBoleto::Remessa::Cnab240::Sicoob do
 			subject.tipo_cobranca_formatada.must_be_nil
 		end
 	end
+
+	describe "particularidades do Segmento R" do
+		describe "#segmento_r_posicao_066_a_066 - Codigo da multa " do
+			# Para o Sicoob o código reference a Isento é '0', diferente do padrão
+			# estabelecido pela FEBRABAN onde o código de isento é '3'
+
+			it "Se não tiver valor em codigo_multa deve considerar '0'" do
+				pagamento.codigo_multa = nil
+				subject.send(:segmento_r_posicao_066_a_066, pagamento).must_equal '0'
+			end
+			it "Se o valor de codigo_multa tiver mais caracteres que 1 deve ajustar para 1 caractere" do
+				pagamento.codigo_multa = '123'
+				subject.send(:segmento_r_posicao_066_a_066, pagamento).must_equal '1'
+			end
+			it "se o código da multa do pagamento for '1' então deve permanecer '1'" do
+				pagamento.codigo_multa = '1'
+				subject.send(:segmento_r_posicao_066_a_066, pagamento).must_equal '1'
+			end
+			it "se o código da multa do pagamento for '2' então deve permanecer '2'" do
+				pagamento.codigo_multa = '2'
+				subject.send(:segmento_r_posicao_066_a_066, pagamento).must_equal '2'
+			end
+			it "se o código da multa do pagamento for diferente de 1 ou 2 então considera '0'" do
+				pagamento.codigo_multa = '3'
+				subject.send(:segmento_r_posicao_066_a_066, pagamento).must_equal '0'
+				pagamento.codigo_multa = '4'
+				subject.send(:segmento_r_posicao_066_a_066, pagamento).must_equal '0'
+			end
+		end
+	end
+
+	describe "particularidades do Segmento P" do
+		describe "#segmento_p_posicao_118_a_118 - Codigo de Juros " do
+			# Para o Sicoob o código reference a Isento é '0', diferente do padrão
+			# estabelecido pela FEBRABAN onde o código de isento é '3'
+
+			it "Se não tiver valor em codigo_juros deve considerar '0'" do
+				pagamento.codigo_juros = nil
+				subject.send(:segmento_p_posicao_118_a_118, pagamento).must_equal '0'
+			end
+			it "Se o valor de codigo_juros tiver mais caracteres que 1 deve ajustar para 1 caractere" do
+				pagamento.codigo_juros = '123'
+				subject.send(:segmento_p_posicao_118_a_118, pagamento).must_equal '1'
+			end
+			it "se o código da multa do pagamento for '1' então deve permanecer '1'" do
+				pagamento.codigo_juros = '1'
+				subject.send(:segmento_p_posicao_118_a_118, pagamento).must_equal '1'
+			end
+			it "se o código da multa do pagamento for '2' então deve permanecer '2'" do
+				pagamento.codigo_juros = '2'
+				subject.send(:segmento_p_posicao_118_a_118, pagamento).must_equal '2'
+			end
+			it "se o código da multa do pagamento for diferente de 1 ou 2 então considera '0'" do
+				pagamento.codigo_juros = '3'
+				subject.send(:segmento_p_posicao_118_a_118, pagamento).must_equal '0'
+				pagamento.codigo_juros = '4'
+				subject.send(:segmento_p_posicao_118_a_118, pagamento).must_equal '0'
+			end
+		end
+	end
 end

@@ -24,9 +24,9 @@ module Helper
 			subject.stubs(:segmento_p_posicao_107_a_108).returns(" 107_a_108")
 			subject.stubs(:segmento_p_posicao_109_a_109).returns(" 109_a_109")
 			subject.stubs(:segmento_p_posicao_110_a_117).with(pagamento).returns(" 110_a_117")
-			subject.stubs(:segmento_p_posicao_118_a_118).returns(" 118_a_118")
-			subject.stubs(:segmento_p_posicao_119_a_126).returns(" 119_a_126")
-			subject.stubs(:segmento_p_posicao_127_a_141).returns(" 127_a_141")
+			subject.stubs(:segmento_p_posicao_118_a_118).with(pagamento).returns(" 118_a_118")
+			subject.stubs(:segmento_p_posicao_119_a_126).with(pagamento).returns(" 119_a_126")
+			subject.stubs(:segmento_p_posicao_127_a_141).with(pagamento).returns(" 127_a_141")
 			subject.stubs(:segmento_p_posicao_142_a_142).with(pagamento).returns(" 142_a_142")
 			subject.stubs(:segmento_p_posicao_143_a_150).with(pagamento).returns(" 143_a_150")
 			subject.stubs(:segmento_p_posicao_151_a_165).with(pagamento).returns(" 151_a_165")
@@ -258,24 +258,42 @@ module Helper
 		# 1 posição
 		# Por padrão é o valor '0'
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_118_a_118 
-			subject.segmento_p_posicao_118_a_118 .must_equal '0'
+		def test_SegmentoPTest_metodo_segmento_p_posicao_118_a_118#(pagamento) 
+			subject.segmento_p_posicao_118_a_118(pagamento).must_equal '3'
+		end
+		def test_SegmentoPTest_metodo_segmento_p_posicao_118_a_118_aceita_apenas_1_2_ou_3_com_padrao_3
+			pagamento.codigo_juros = '1'
+			subject.segmento_p_posicao_118_a_118(pagamento).must_equal '1'
+			pagamento.codigo_juros = '2'
+			subject.segmento_p_posicao_118_a_118(pagamento).must_equal '2'
+			pagamento.codigo_juros = '3'
+			subject.segmento_p_posicao_118_a_118(pagamento).must_equal '3'
+
+			pagamento.codigo_juros = nil
+			subject.segmento_p_posicao_118_a_118(pagamento).must_equal '3'
+			
+			pagamento.codigo_juros = '4'
+			subject.segmento_p_posicao_118_a_118(pagamento).must_equal '3'
+			pagamento.codigo_juros = '0'
+			subject.segmento_p_posicao_118_a_118(pagamento).must_equal '3'
 		end
 
 		# Data do Juros de Mora 
 		# 8 posições
 		# Por padrão é 8 posições em branco
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_119_a_126
-			subject.segmento_p_posicao_119_a_126.must_equal ''.rjust(8, '0')
+		def test_SegmentoPTest_metodo_segmento_p_posicao_119_a_126#(pagamento) 
+			pagamento.expects(:data_juros_formatado).with('%d%m%Y').returns('1234567890')
+			subject.segmento_p_posicao_119_a_126(pagamento).must_equal '12345678'
 		end
 
 		# Juros de Mora por Dia/Taxa 
 		# 15 posições
 		# Por padrão é 15 posições em branco
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_127_a_141
-			subject.segmento_p_posicao_127_a_141.must_equal ''.rjust(15, '0')
+		def test_SegmentoPTest_metodo_segmento_p_posicao_127_a_141#(pagamento) 
+			pagamento.expects(:valor_juros_formatado).with(15).returns('123456')
+			subject.segmento_p_posicao_127_a_141(pagamento).must_equal '123456'
 		end
 
 		# Código do Desconto 1 
