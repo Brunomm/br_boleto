@@ -23,7 +23,7 @@ describe BrBoleto::Retorno::Cnab240::Sicoob do
 			pagamento.dv_conta_e_agencia.must_equal                     "0"
 			pagamento.nosso_numero.must_equal                           "0000000330"
 			pagamento.carteira.must_equal                               "1"
-			pagamento.numero_documento.must_equal                       "000000000000330"
+			pagamento.numero_documento.must_equal                       "00000000000033"
 			pagamento.data_vencimento.must_equal                        Date.parse('03/05/2016')
 			pagamento.valor_titulo.must_equal                           129.39
 			pagamento.banco_recebedor.must_equal                        "756"
@@ -63,7 +63,7 @@ describe BrBoleto::Retorno::Cnab240::Sicoob do
 			pagamento.dv_conta_e_agencia.must_equal                     "0"
 			pagamento.nosso_numero.must_equal                           "0000000348"
 			pagamento.carteira.must_equal                               "1"
-			pagamento.numero_documento.must_equal                       "000000000000348"
+			pagamento.numero_documento.must_equal                       "00000000000034"
 			pagamento.data_vencimento.must_equal                        Date.parse('06/05/2016')
 			pagamento.valor_titulo.must_equal                           29.0
 			pagamento.banco_recebedor.must_equal                        "756"
@@ -103,7 +103,7 @@ describe BrBoleto::Retorno::Cnab240::Sicoob do
 			pagamento.dv_conta_e_agencia.must_equal                     "0"
 			pagamento.nosso_numero.must_equal                           "0000000355"
 			pagamento.carteira.must_equal                               "1"
-			pagamento.numero_documento.must_equal                       "000000000000355"
+			pagamento.numero_documento.must_equal                       "00000000000035"
 			pagamento.data_vencimento.must_equal                        Date.parse('06/05/2016')
 			pagamento.valor_titulo.must_equal                           89.1
 			pagamento.banco_recebedor.must_equal                        "756"
@@ -143,7 +143,7 @@ describe BrBoleto::Retorno::Cnab240::Sicoob do
 			pagamento.dv_conta_e_agencia.must_equal                     "0"
 			pagamento.nosso_numero.must_equal                           "0000000362"
 			pagamento.carteira.must_equal                               "1"
-			pagamento.numero_documento.must_equal                       "000000000000362"
+			pagamento.numero_documento.must_equal                       "00000000000036"
 			pagamento.data_vencimento.must_equal                        Date.parse('06/05/2016')
 			pagamento.valor_titulo.must_equal                           29.0
 			pagamento.banco_recebedor.must_equal                        "104"
@@ -183,7 +183,7 @@ describe BrBoleto::Retorno::Cnab240::Sicoob do
 			pagamento.dv_conta_e_agencia.must_equal                     "0"
 			pagamento.nosso_numero.must_equal                           "0000000362"
 			pagamento.carteira.must_equal                               "1"
-			pagamento.numero_documento.must_equal                       "000000000000362"
+			pagamento.numero_documento.must_equal                       "00000000000036"
 			pagamento.data_vencimento.must_equal                        Date.parse('06/05/2016')
 			pagamento.valor_titulo.must_equal                           47.37
 			pagamento.banco_recebedor.must_equal                        "104"

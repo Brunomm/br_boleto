@@ -26,7 +26,8 @@ module BrBoleto
 					super.merge({ 
 					#    ATRIBUTO               POSIÇÃO DA LINHA
 						nosso_numero:                 38..47,
-						modalidade:                   50..51
+						modalidade:                   50..51,
+						numero_documento:             59..72, # Número do documento sem DV
 					})
 				end
 			end
