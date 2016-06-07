@@ -1,9 +1,10 @@
-# **BrBoleto**
-
-Emissão de Boletos Bancários em Ruby.
 [![Gem Version](https://badge.fury.io/rb/br_boleto.svg)](https://badge.fury.io/rb/br_boleto)
 [![Code Climate](https://codeclimate.com/github/Brunomm/br_boleto/badges/gpa.svg)](https://codeclimate.com/github/Brunomm/br_boleto)
 [![Build Status](https://travis-ci.org/Brunomm/br_boleto.svg?branch=master)](https://travis-ci.org/Brunomm/br_boleto)
+
+# **BrBoleto**
+
+Emissão de Boletos Bancários em Ruby.
 
 **O que essa gem faz?**
 
