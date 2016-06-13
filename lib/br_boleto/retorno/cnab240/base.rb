@@ -15,7 +15,7 @@ module BrBoleto
 				# Cada loop representa um pagamento.
 				#
 				def read_file! #:doc:
-					File.readlines(file).reject{|l| l =~ /^((?!^.{7}3.{5}[T|U].*$).)*$/}.each_slice(2) do |line|
+					File.readlines(file).reject{|l| adjust_encode(l) =~ /^((?!^.{7}3.{5}[T|U].*$).)*$/}.each_slice(2) do |line|
 						instnce_payment(line)
 					end
 					pagamentos
@@ -93,6 +93,14 @@ module BrBoleto
 						codigo_ocorrencia_banco_correspondente: 211..213,
 						nosso_numero_banco_correspondente:      214..133,
 					}				
+				end
+
+				# Resolve problema quando existe algum caractere com acentuação e encode UTF-16
+				# converte esse caractere para ? e converte para o encode UTF-8.
+				# Fix issue #5
+				#
+				def adjust_encode(line)
+					line.encode!("UTF-16be", invalid: :replace, replace: "?").encode!('UTF-8')
 				end
 
 			end
