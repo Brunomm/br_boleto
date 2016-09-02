@@ -1,68 +1,39 @@
 module BrBoleto
 	module Remessa
 		class Base < BrBoleto::ActiveModelBase
-			# variavel que terá os lotes no qual será gerado o arquivo de remessa
-			# um lote deve conter no minimo 1 pagamento
-			# Pode haver 1 ou vários lotes para o mesmo arquivo
-			attr_accessor :lotes
-
-			def self.class_for_lote
-				BrBoleto::Remessa::Lote
-			end
-
-			# Razão social da empresa
-			attr_accessor :nome_empresa
-
-			# agencia (sem digito verificador)
-			attr_accessor :agencia
-
-			# numero da conta corrente
-			attr_accessor :conta_corrente
-
-			# digito verificador da conta corrente
-			attr_accessor :digito_conta
-
-			# carteira do cedente
-			attr_accessor :carteira
-
+			include BrBoleto::HaveConta
+			
 			# sequencial remessa (num. sequencial que nao pode ser repetido nem zerado)
 			attr_accessor :sequencial_remessa
 
-			# aceite (A = ACEITO/N = NAO ACEITO)
-			attr_accessor :aceite
-
-			validates :nome_empresa, presence: true
-			validates :aceite,       inclusion: { in: %w(A a n N), message: "valor deve ser A(aceito) ou N(não ceito)" }
-
-			validates_each :lotes do |record, attr, value|
-				record.errors.add(attr, 'não pode estar vazio.') if value.empty?
-				value.each do |lote|
-					if lote.is_a? record.class.class_for_lote
-						if lote.invalid?
-							lote.errors.full_messages.each { |msg| record.errors.add(attr, msg) }
-						end
-					else
-						record.errors.add(attr, 'cada item deve ser um objeto Lote.')
-					end
-				end				
-			end
-
-			# O atributo lotes sempre irá retornar umm Array 
-			def lotes
-				@lotes = [@lotes].flatten
-			end
-
-			def default_values
-				{aceite: "N"}
-			end
+			# Data e hora da geração do arquivo
+			attr_accessor :data_hora_arquivo
 
 			def persisted?
 				false
 			end
 
-			def nome_empresa_formatada
-				"#{nome_empresa}".adjust_size_to(30)
-			end			
+			# Data de geracao do arquivo
+			#
+			# @return [String]
+			#
+			def data_geracao(formato = '%d%m%Y')
+				data_hora_arquivo.to_date.strftime(formato)
+			end
+
+			# Hora de geracao do arquivo
+			#
+			# @return [String]
+			#
+			def hora_geracao(formato = '%H%M%S')
+				data_hora_arquivo.strftime(formato)
+			end
+			
+			def data_hora_arquivo
+				@data_hora_arquivo.to_time
+			rescue
+				return Time.current
+			end
 		end
 	end
 end

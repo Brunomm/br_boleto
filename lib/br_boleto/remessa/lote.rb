@@ -4,7 +4,7 @@ module BrBoleto
 		class Lote < BrBoleto::ActiveModelBase
 			# variavel que terá os pagamentos no qual será gerado o lote do arquivo de remessa
 			# Pode haver 1 ou vários pagamentos para o mesmo arquivo
-			attr_accessor :pagamentos
+			include BrBoleto::HavePagamentos
 
 			def self.class_for_pagamentos
 				BrBoleto::Remessa::Pagamento
@@ -22,11 +22,7 @@ module BrBoleto
 					end
 				end				
 			end
-
-			# O atributo pagamentos sempre irá retornar umm Array 
-			def pagamentos
-				@pagamentos = [@pagamentos].flatten
-			end
+			
 		end
 	end
 end

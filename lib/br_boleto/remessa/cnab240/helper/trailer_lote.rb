@@ -28,7 +28,7 @@ module BrBoleto
 					# 3 posições
 					#
 					def trailer_lote_posicao_001_a_003 
-						codigo_banco
+						conta.codigo_banco
 					end
 
 					# Lote de Serviço: Número seqüencial para identificar univocamente um lote de serviço. 
@@ -38,7 +38,7 @@ module BrBoleto
 					# 4 posições
 					#
 					def trailer_lote_posicao_004_a_007(numero_do_lote)
-						numero_do_lote.to_s.rjust(4, '0')
+						"#{numero_do_lote}".adjust_size_to(4, '0', :right)
 					end
 
 					# Tipo do registro -> Padrão 5
@@ -59,7 +59,7 @@ module BrBoleto
 					# 6 posições
 					#
 					def trailer_lote_posicao_018_a_023(nro_registros)
-						nro_registros.to_s.rjust(6, '0')
+						"#{nro_registros}".adjust_size_to(6, '0', :right)
 					end
 
 					# Complemento trailer diferente para cada banco

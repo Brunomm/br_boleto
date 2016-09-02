@@ -1,0 +1,28 @@
+en:
+  activemodel:
+    errors:
+      messages:
+        custom_length_maximum: 
+          one: "deve ter no máximo 1 dígito"
+          other: "deve ter no máximo %{count} dígitos"
+        custom_length_minimum: 
+          one: "deve ter no mímimo 1 dígito"
+          other: "deve ter no mímimo %{count} dígitos"
+        custom_length_is: 
+          one: "deve ter 1 dígito"
+          other: "deve ter %{count} dígitos"
+    attributes:
+      br_boleto/conta/base:
+        modalidade: Modalidade
+        razao_social: Razão social
+        cpf_cnpj: CNPJ
+        codigo_cedente: Código do cedente
+        codigo_cedente_dv: DV código cedente
+        endereco: Endereço
+        carteira: Carteira
+        agencia: Agência
+        agencia_dv: DV Agência
+        conta_corrente: Conta corrente
+        conta_corrente_dv: DV Conta corrente
+        convenio: Convênio
+        nome_banco: Nome do banco

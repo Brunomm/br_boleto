@@ -7,6 +7,11 @@ require 'active_support/core_ext/object'
 require 'active_support/core_ext/string'
 
 require 'br_boleto/string_methods'
+require 'br_boleto/validations'
+
+require 'br_boleto/association/have_conta'
+require 'br_boleto/association/have_pagador'
+require 'br_boleto/association/have_pagamentos'
 
 # Copyright (C) 2015 Bruno M. Mergen <http://duobr.com.br>
 #
@@ -40,13 +45,23 @@ require 'br_boleto/string_methods'
 #   bundle install
 #
 module BrBoleto
-	
 	def self.root
 		File.expand_path '../..', __FILE__
 	end
 
+	I18n.load_path += Dir[BrBoleto.root+'/lib/config'+ '/locales'+'/**'+'/*.{rb,yml}']
+
 	extend ActiveSupport::Autoload
 	autoload :ActiveModelBase
+	
+	autoload :Pagador
+
+	module Conta
+		extend ActiveSupport::Autoload
+		autoload :Base
+		autoload :Sicoob
+		autoload :Caixa
+	end
 	
 	module Boleto
 		extend ActiveSupport::Autoload
@@ -68,6 +83,11 @@ module BrBoleto
 			autoload :Base
 			autoload :Sicoob
 			autoload :Caixa
+		end
+		module Cnab400
+			extend ActiveSupport::Autoload
+			autoload :Base
+			autoload :Sicoob
 		end
 	end
 	

@@ -29,7 +29,7 @@ module Helper
 		# Por padrão deve retornar o "codigo_banco"
 		#
 		def test_HeaderLoteTest_metodo_header_lote_posicao_001_a_003
-			subject.expects(:codigo_banco).returns("669")
+			subject.conta.expects(:codigo_banco).returns("669")
 			subject.header_lote_posicao_001_a_003.must_equal("669")
 		end
 
@@ -78,8 +78,8 @@ module Helper
 		# Deve pegar o valor do metodo "versao_layout_lote"
 		#
 		def test_HeaderLoteTest_metodo_header_lote_posicao_014_a_016
-			subject.expects(:versao_layout_lote).returns('versao_layout_lote')
-			subject.header_lote_posicao_014_a_016.must_equal "versao_layout_lote"
+			subject.conta.expects(:versao_layout_lote_cnab_240).returns('56')
+			subject.header_lote_posicao_014_a_016.must_equal "056"
 		end
 
 		# Uso Exclusivo da FEBRABAN/CNAB
@@ -95,8 +95,8 @@ module Helper
 		# Deve pegar o valor do metodo "tipo_inscricao"
 		#
 		def test_HeaderLoteTest_metodo_header_lote_posicao_018_a_018
-			subject.expects(:tipo_inscricao).returns('tipo_inscricao')
-			subject.header_lote_posicao_018_a_018.must_equal 'tipo_inscricao'
+			subject.conta.expects(:tipo_cpf_cnpj).with(1).returns('3')
+			subject.header_lote_posicao_018_a_018.must_equal '3'
 		end
 
 		# Número de Inscrição da Empresa 
@@ -104,7 +104,7 @@ module Helper
 		# Deve pegar o valor do 'documento_cedente' e ajustar com 0 o espaço em branco
 		#
 		def test_HeaderLoteTest_metodo_header_lote_posicao_019_a_033
-			subject.expects(:documento_cedente).returns('1234567890')
+			subject.conta.expects(:cpf_cnpj).returns('1234567890')
 			subject.header_lote_posicao_019_a_033.must_equal '000001234567890'
 		end
 
@@ -139,8 +139,8 @@ module Helper
 		# deve retornar o valor do metodo 'nome_empresa_formatada'
 		#
 		def test_HeaderLoteTest_metodo_header_lote_posicao_074_a_103
-			subject.expects(:nome_empresa_formatada).returns('nome_empresa_formatada')
-			subject.header_lote_posicao_074_a_103.must_equal 'nome_empresa_formatada'
+			subject.conta.expects(:razao_social).returns('nome_empresa_formatada')
+			subject.header_lote_posicao_074_a_103.must_equal 'nome_empresa_formatada'.ljust(30, ' ')
 		end
 
 		# Mensagem 1 

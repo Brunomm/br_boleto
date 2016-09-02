@@ -1,0 +1,38 @@
+module BrBoleto
+	module HavePagador
+		extend ActiveSupport::Concern
+		
+		included do 
+			validate :pagador_validations
+		end
+		
+		def pagador
+			yield pagador if block_given?
+			@pagador.is_a?(pagador_class) ? @pagador : @pagador = pagador_class.new()
+		end
+
+		def pagador=(value)
+			if value.is_a?(pagador_class) || value.nil?
+				@pagador = value
+			elsif value.is_a?(Hash)
+				pagador.assign_attributes(value)
+			end
+		end
+
+	private
+		def pagador_class
+			BrBoleto::Pagador
+		end
+
+		def endereco_required;       end
+		
+		def pagador_validations
+			pagador.endereco_required = endereco_required if "#{endereco_required}".present?
+			if pagador.invalid?
+				pagador.errors.full_messages.each do |msg|
+					errors.add(:base, msg)
+				end
+			end
+		end
+	end
+end

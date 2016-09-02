@@ -49,7 +49,7 @@ module Helper
 		# Por padrão deve retornar o "codigo_banco"
 		#
 		def test_SegmentoPTest_metodo_segmento_p_posicao_001_a_003
-			subject.expects(:codigo_banco).returns("669")
+			subject.conta.expects(:codigo_banco).returns("669")
 			subject.segmento_p_posicao_001_a_003.must_equal("669")
 		end
 
@@ -112,7 +112,7 @@ module Helper
 		# Deve pegar a "agencia" e ajustar para 5 caracteres incluindo 0 na frente
 		#
 		def test_SegmentoPTest_metodo_segmento_p_posicao_018_a_022
-			subject.expects(:agencia).returns(89)
+			subject.conta.expects(:agencia).returns(89)
 			subject.segmento_p_posicao_018_a_022.must_equal '00089'
 		end
 
@@ -121,7 +121,7 @@ module Helper
 		# Deve pegar o "digito_agencia"
 		#
 		def test_SegmentoPTest_metodo_segmento_p_posicao_023_a_023
-			subject.expects(:digito_agencia).returns(1)
+			subject.conta.expects(:agencia_dv).returns(1)
 			subject.segmento_p_posicao_023_a_023.must_equal '1'
 		end
 
@@ -144,7 +144,7 @@ module Helper
 		# Deve pegar o valor do metodo "codigo_carteira"
 		#
 		def test_SegmentoPTest_metodo_segmento_p_posicao_058_a_058
-			subject.expects(:codigo_carteira).returns('3')
+			subject.conta.expects(:carteira).returns('3')
 			subject.segmento_p_posicao_058_a_058.must_equal '3'
 		end
 
@@ -153,8 +153,8 @@ module Helper
 		# Deve pegar o valor da "forma_cadastramento"
 		#
 		def test_SegmentoPTest_metodo_segmento_p_posicao_059_a_059
-			subject.expects(:forma_cadastramento).returns('123')
-			subject.segmento_p_posicao_059_a_059.must_equal '123'
+			pagamento.expects(:forma_cadastramento).returns('56')
+			subject.segmento_p_posicao_059_a_059(pagamento).must_equal '5'
 		end
 
 		# Tipo de Documento
@@ -232,8 +232,8 @@ module Helper
 		# Deve retornar o valro do metodo "especie_titulo"
 		#
 		def test_SegmentoPTest_metodo_segmento_p_posicao_107_a_108 
-			subject.expects(:especie_titulo).returns('123')
-			subject.segmento_p_posicao_107_a_108 .must_equal '123'
+			pagamento.expects(:especie_titulo).returns('123')
+			subject.segmento_p_posicao_107_a_108(pagamento).must_equal '12'
 		end
 
 		# Identific. de Título Aceito/Não Aceito (A ou N)
@@ -241,8 +241,10 @@ module Helper
 		# Deve retornar o valor do "aceite"
 		#
 		def test_SegmentoPTest_metodo_segmento_p_posicao_109_a_109
-			subject.expects(:aceite).returns('1')
-			subject.segmento_p_posicao_109_a_109.must_equal '1'
+			pagamento.aceite = true
+			subject.segmento_p_posicao_109_a_109(pagamento).must_equal 'A'
+			pagamento.aceite = false
+			subject.segmento_p_posicao_109_a_109(pagamento).must_equal 'N'
 		end
 
 		# Data da Emissão do Título 
@@ -302,7 +304,7 @@ module Helper
 		#
 		def test_SegmentoPTest_metodo_segmento_p_posicao_142_a_142#(pagamento)
 			pagamento.expects(:cod_desconto).returns('123')
-			subject.segmento_p_posicao_142_a_142(pagamento).must_equal '123'
+			subject.segmento_p_posicao_142_a_142(pagamento).must_equal '1'
 		end
 
 		# Data do Desconto 1 

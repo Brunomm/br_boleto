@@ -36,7 +36,7 @@ module BrBoleto
 					# 3 posições
 					#
 					def header_arquivo_posicao_001_a_003
-						codigo_banco
+						conta.codigo_banco
 					end
 
 					# Lote de serviço
@@ -64,21 +64,21 @@ module BrBoleto
 					# 1 posição
 					#
 					def header_arquivo_posicao_018_a_018
-						tipo_inscricao 
+						conta.tipo_cpf_cnpj(1) 
 					end
 
 					# Número de Inscrição da Empresa (CPF/CNPJ)
 					# 14 Posições
 					#
 					def header_arquivo_posicao_019_a_032
-						BrBoleto::Helper::CpfCnpj.new(documento_cedente).sem_formatacao.rjust(14, '0')
+						"#{conta.cpf_cnpj}".adjust_size_to(14, '0', :right)
 					end
 
 					# Código do Convênio no Banco
 					# 20 posições
 					# 
 					def header_arquivo_posicao_033_a_052
-						codigo_convenio
+						"#{codigo_convenio}".adjust_size_to(20)
 					end
 					
 					# Informações da conta bancária
@@ -100,14 +100,14 @@ module BrBoleto
 					# 30 posições
 					# 
 					def header_arquivo_posicao_073_a_102
-						nome_empresa_formatada
+						"#{conta.razao_social}".adjust_size_to(30)
 					end
 
 					# Nome do Banco
 					# 30 posições
 					#
 					def header_arquivo_posicao_103_a_132
-						nome_banco
+						"#{conta.nome_banco}".adjust_size_to(30)
 					end
 
 					# Uso Exclusivo FEBRABAN / CNAB
@@ -149,7 +149,7 @@ module BrBoleto
 					# 3 posições
 					#
 					def header_arquivo_posicao_164_a_166
-						versao_layout_arquivo
+						"#{conta.versao_layout_arquivo_cnab_240}".adjust_size_to(3, '0', :right)
 					end
 					
 					# Densidade de Gravação do Arquivo 

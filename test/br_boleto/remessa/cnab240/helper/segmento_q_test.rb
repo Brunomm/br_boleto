@@ -32,7 +32,7 @@ module Helper
 		# Por padrão deve retornar o "codigo_banco"
 		#
 		def test_SegmentoQTest_metodo_segmento_q_posicao_001_a_003
-			subject.expects(:codigo_banco).returns("669")
+			subject.conta.expects(:codigo_banco).returns("669")
 			subject.segmento_q_posicao_001_a_003.must_equal("669")
 		end
 
@@ -92,7 +92,7 @@ module Helper
 		# Deve pegar o 'tipo_documento_sacado' com 1 posição
 		#
 		def test_SegmentoQTest_metodo_segmento_q_posicao_018_a_018#(pagamento)
-			pagamento.expects(:tipo_documento_sacado).with(1).returns('1')
+			pagamento.pagador.expects(:tipo_cpf_cnpj).with(1).returns('1')
 			subject.segmento_q_posicao_018_a_018(pagamento).must_equal '1' 
 		end
 
@@ -101,7 +101,7 @@ module Helper
 		# Deve retornar o "documento_sacado" com 15 posições
 		#
 		def test_SegmentoQTest_metodo_segmento_q_posicao_019_a_033#(pagamento)
-			pagamento.documento_sacado = 1234567890
+			pagamento.pagador.cpf_cnpj = 1234567890
 			subject.segmento_q_posicao_019_a_033(pagamento).must_equal '000001234567890'
 		end
 
@@ -110,7 +110,7 @@ module Helper
 		# Deve retornar o nome do sacado ajustando para 40 posições
 		#
 		def test_SegmentoQTest_metodo_segmento_q_posicao_034_a_073#(pagamento)
-			pagamento.nome_sacado = '556698'
+			pagamento.pagador.nome = '556698'
 			subject.segmento_q_posicao_034_a_073(pagamento).must_equal '556698'.adjust_size_to(40)
 		end
 
@@ -119,7 +119,7 @@ module Helper
 		# Deve pegar o "endereco_sacado" ajsutando para 40 posições
 		#
 		def test_SegmentoQTest_metodo_segmento_q_posicao_074_a_113#(pagamento)
-			pagamento.endereco_sacado = '111'.rjust(43, '2')
+			pagamento.pagador.endereco = '111'.rjust(43, '2')
 			subject.segmento_q_posicao_074_a_113(pagamento).must_equal ''.rjust(40, '2')
 		end
 
@@ -128,7 +128,7 @@ module Helper
 		# Deve retornar o 'bairro_sacado' com 15 posições
 		#
 		def test_SegmentoQTest_metodo_segmento_q_posicao_114_a_128#(pagamento)
-			pagamento.bairro_sacado = '50'
+			pagamento.pagador.bairro = '50'
 			subject.segmento_q_posicao_114_a_128(pagamento).must_equal '50'.adjust_size_to(15)
 		end
 
@@ -137,7 +137,7 @@ module Helper
 		# Deve retornar o CEP com 5 posições
 		#
 		def test_SegmentoQTest_metodo_segmento_q_posicao_129_a_133#(pagamento)
-			pagamento.expects(:cep_sacado).returns('12345678')
+			pagamento.pagador.cep = '12345678'
 			subject.segmento_q_posicao_129_a_133(pagamento).must_equal '12345'
 		end
 
@@ -146,7 +146,7 @@ module Helper
 		# Deve pegar as ultimas 3 posições do cep
 		#
 		def test_SegmentoQTest_metodo_segmento_q_posicao_134_a_136#(pagamento)
-			pagamento.expects(:cep_sacado).returns('12345678')
+			pagamento.pagador.cep = '12345678'
 			subject.segmento_q_posicao_134_a_136(pagamento).must_equal '678'
 		end
 
@@ -155,7 +155,7 @@ module Helper
 		# Deve retornar a "cidade_sacado" ajustando para 15 posições
 		#
 		def test_SegmentoQTest_metodo_segmento_q_posicao_137_a_151#(pagamento)
-			pagamento.expects(:cidade_sacado).returns('5555')
+			pagamento.pagador.cidade = '5555'
 			subject.segmento_q_posicao_137_a_151(pagamento).must_equal '5555'.adjust_size_to(15)
 		end
 
@@ -164,7 +164,7 @@ module Helper
 		# Retorna o UF do sacado
 		#
 		def test_SegmentoQTest_metodo_segmento_q_posicao_152_a_153#(pagamento)
-			pagamento.expects(:uf_sacado).returns("XX")
+			pagamento.pagador.uf = "XX"
 			subject.segmento_q_posicao_152_a_153(pagamento).must_equal 'XX'
 		end
 
@@ -173,7 +173,7 @@ module Helper
 		# Deve retornar o "tipo_documento_avalista" com 1 posição do pagamento
 		#
 		def test_SegmentoQTest_metodo_segmento_q_posicao_154_a_154#(pagamento)
-			pagamento.expects(:tipo_documento_avalista).with(1).returns("6")
+			pagamento.pagador.expects(:tipo_documento_avalista).with(1).returns("6")
 			subject.segmento_q_posicao_154_a_154(pagamento).must_equal '6'
 		end
 
@@ -182,7 +182,7 @@ module Helper
 		# Deve pegar o "documento_avalista" com 15 posições
 		#
 		def test_SegmentoQTest_metodo_segmento_q_posicao_155_a_169#(pagamento)
-			pagamento.expects(:documento_avalista).returns(123)
+			pagamento.pagador.expects(:documento_avalista).returns(123)
 			subject.segmento_q_posicao_155_a_169(pagamento).must_equal '123'.rjust(15, '0')
 		end
 
@@ -191,7 +191,7 @@ module Helper
 		# Deve retornar o "nome_avalista" ajustando para 40 posições
 		#
 		def test_SegmentoQTest_metodo_segmento_q_posicao_170_a_209#(pagamento)
-			pagamento.expects(:nome_avalista).returns('avalista')
+			pagamento.pagador.expects(:nome_avalista).returns('avalista')
 			subject.segmento_q_posicao_170_a_209(pagamento).must_equal 'avalista'.adjust_size_to(40)
 		end
 

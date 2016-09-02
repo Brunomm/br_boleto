@@ -37,7 +37,7 @@ module BrBoleto
 					# 3 posições
 					# 
 					def header_lote_posicao_001_a_003
-						codigo_banco
+						conta.codigo_banco
 					end
 
 					# Lote de Serviço 
@@ -88,7 +88,7 @@ module BrBoleto
 					# 3 posições
 					#
 					def header_lote_posicao_014_a_016
-						versao_layout_lote
+						"#{conta.versao_layout_lote_cnab_240}".adjust_size_to(3, '0', :right)
 					end
 
 					# Uso Exclusivo da FEBRABAN/CNAB
@@ -102,14 +102,14 @@ module BrBoleto
 					# 1 posição
 					#
 					def header_lote_posicao_018_a_018
-						tipo_inscricao
+						conta.tipo_cpf_cnpj(1)
 					end
 
 					# Número de Inscrição da Empresa 
 					# 15 posições
 					#
 					def header_lote_posicao_019_a_033
-						BrBoleto::Helper::CpfCnpj.new(documento_cedente).sem_formatacao.rjust(15, '0')
+						"#{conta.cpf_cnpj}".adjust_size_to(15, '0', :right)
 					end
 
 					# Convenio -> Código do Cedente no Banco
@@ -138,7 +138,7 @@ module BrBoleto
 					# 30 posições
 					#
 					def header_lote_posicao_074_a_103
-						nome_empresa_formatada
+						"#{conta.razao_social}".adjust_size_to(30)
 					end
 
 					# Mensagem 1 
@@ -159,7 +159,7 @@ module BrBoleto
 					# 8 posições
 					#
 					def header_lote_posicao_184_a_191
-						sequencial_remessa.to_s.rjust(8, '0')
+						"#{sequencial_remessa}".adjust_size_to(8, '0', :right)
 					end
 
 					# Data de Gravação Remessa/Retorno 

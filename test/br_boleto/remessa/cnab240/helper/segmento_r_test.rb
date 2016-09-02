@@ -35,7 +35,7 @@ module Helper
 		end
 		
 		def test_SegmentoRHelper_deve_ter_240_posicoes
-			subject.stubs(:codigo_banco).returns("123")
+			subject.conta.stubs(:codigo_banco).returns("123")
 			subject.monta_segmento_r(pagamento, 1, 2).size.must_equal 240
 			
 		end
@@ -44,7 +44,7 @@ module Helper
 		# 3 posições
 		#
 		def test_SegmentoRHelper_metodo_segmento_r_posicao_001_a_003 
-			subject.expects(:codigo_banco).returns("123")
+			subject.conta.expects(:codigo_banco).returns("123")
 			subject.segmento_r_posicao_001_a_003 .must_equal '123'
 		end
 

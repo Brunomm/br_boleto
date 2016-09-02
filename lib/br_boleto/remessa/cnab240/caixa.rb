@@ -3,61 +3,17 @@ module BrBoleto
 	module Remessa
 		module Cnab240
 			class Caixa < BrBoleto::Remessa::Cnab240::Base
+				def conta_class
+					BrBoleto::Conta::Caixa
+				end
 				
-				# modalidade da carteira
-				#   opcoes:
-				#     11: título Registrado emissão CAIXA
-				#     14: título Registrado emissão Cedente
-				#     21: título Sem Registro emissão CAIXA
-				attr_accessor :modalidade_carteira
-				
-				# versão do aplicativo da caixa
-				attr_accessor :versao_aplicativo
-
-				validates :modalidade_carteira, :agencia, :versao_aplicativo, presence: true
-				validates :convenio,            length: {maximum: 6, message: 'deve ter no máximo 6 dígitos.'}
-				validates :versao_aplicativo,   length: {maximum: 4, message: 'deve ter no máximo 4 dígitos.'}
-				validates :agencia,             length: {maximum: 5, message: 'deve ter no máximo 5 dígitos.'}
-				validates :modalidade_carteira, length: {is: 2, message: 'deve ter 2 dígitos.'}
-
 				def default_values
 					super.merge({
 						emissao_boleto: '2',
-						distribuicao_boleto: '2',
-						especie_titulo: '02', # 02 = DM Duplicata mercantil
-						modalidade_carteira: '14',
-						forma_cadastramento: '0',
-						versao_aplicativo:   '0'
+						distribuicao_boleto: '2'
 					})
 				end
 
-				def codigo_banco
-					'104'
-				end
-
-				def nome_banco
-					'CAIXA ECONOMICA FEDERAL'.ljust(30, ' ')
-				end
-
-				def versao_layout_arquivo
-					'050'
-				end
-
-				def versao_layout_lote
-					'030'
-				end
-
-				def versao_aplicativo
-					"#{@versao_aplicativo}".rjust(4, '0') if @versao_aplicativo.present?
-				end
-
-				def digito_agencia
-					# utilizando a agencia com 5 digitos
-					# para calcular o digito
-					BrBoleto::Calculos::Modulo11FatorDe2a9RestoZero.new(agencia).to_s
-				end
-
-				
 				# Uso exclusivo caixa
 				# CAMPO                TAMANHO
 				# ---------------------------------------------------------
@@ -78,7 +34,7 @@ module BrBoleto
 				# TOTAL = 20 posições
 				#
 				def convenio_lote(lote)
-					conv_lote = convenio.to_s.rjust(6, '0')
+					conv_lote = "#{conta.convenio}".adjust_size_to(6, '0', :right)
 					conv_lote << ''.to_s.rjust(14, '0') #Padrão '0'
 					conv_lote
 				end
@@ -95,9 +51,9 @@ module BrBoleto
 				# TOTAL = 20 posições
 				#
 				def informacoes_da_conta
-					informacoes =   agencia.rjust(5, '0')
-					informacoes <<  digito_agencia
-					informacoes <<  "#{convenio}".rjust(6, '0')
+					informacoes =   "#{conta.agencia}".adjust_size_to(5, '0', :right)
+					informacoes <<  conta.agencia_dv
+					informacoes <<  "#{conta.convenio}".adjust_size_to(6, '0', :right)
 					informacoes <<  ''.rjust(7, '0')
 					informacoes <<  '0'
 					informacoes
@@ -112,7 +68,7 @@ module BrBoleto
 				# TOTAL = 29 posições
 				#
 				def complemento_header_arquivo
-					complemento =  "#{versao_aplicativo}".rjust(4, '0') # 04 digitos já ajustado no método
+					complemento =  "#{conta.versao_aplicativo}".rjust(4, '0') # 04 digitos já ajustado no método
 					complemento << ''.rjust(25, ' ')
 					complemento
 				end
@@ -128,10 +84,10 @@ module BrBoleto
 				# TOTAL = 34 posições 
 				#
 				def complemento_p(pagamento)
-					complemento  = "#{convenio}".rjust(6, '0')
+					complemento  = "#{conta.convenio}".adjust_size_to(6, '0', :right)
 					complemento << ''.rjust(11, '0')
-					complemento << modalidade_carteira
-					complemento << pagamento.nosso_numero.rjust(15, '0')
+					complemento << conta.modalidade
+					complemento << pagamento.nosso_numero.adjust_size_to(15, '0', :right)
 					complemento
 				end
 
@@ -144,7 +100,7 @@ module BrBoleto
 				# TOTAL = 15 posições 
 				#
 				def segmento_p_numero_do_documento(pagamento)
-					complemento =  pagamento.numero_documento.to_s.rjust(11, '0')
+					complemento =  "#{pagamento.numero_documento}".adjust_size_to(11, '0', :right)
 					complemento << ''.rjust(4, ' ')
 					complemento
 				end
@@ -165,7 +121,7 @@ module BrBoleto
 				# TOTAL = 25 posições
 				#
 				def segmento_p_posicao_196_a_220(pagamento)
-					pagamento.numero_documento.to_s.rjust(25, '0')
+					"#{pagamento.numero_documento}".adjust_size_to(25, '0', :right)
 				end
 				
 				def segmento_s_posicao_019_a_020_tipo_impressao_1_ou_2(pagamento)

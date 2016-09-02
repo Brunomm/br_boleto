@@ -30,7 +30,7 @@ module BrBoleto
 					# 3 posições
 					#
 					def trailer_arquivo_posicao_001_a_003 
-						codigo_banco
+						conta.codigo_banco
 					end
 
 					# Lote de Serviço -> Padrão 9999
@@ -65,14 +65,14 @@ module BrBoleto
 					# 6 posições
 					#
 					def trailer_arquivo_posicao_018_a_023(nro_lotes)
-						nro_lotes.to_s.rjust(6, '0')
+						"#{nro_lotes}".adjust_size_to(6, '0', :right)
 					end
 
 					# Quantidade de Registros do Arquivo
 					# 6 posições
 					#
 					def trailer_arquivo_posicao_024_a_029(sequencial)
-						sequencial.to_s.rjust(6, '0')
+						"#{sequencial}".adjust_size_to(6, '0', :right)
 					end
 
 					# Qtde de Contas p/ Conc. (Lotes)

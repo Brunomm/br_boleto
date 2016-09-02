@@ -29,7 +29,7 @@ module BrBoleto
 						segmento_p << segmento_p_posicao_023_a_023             # dv agencia                            1
 						segmento_p << segmento_p_posicao_024_a_057(pagamento)  # informacoes da conta                  34
 						segmento_p << segmento_p_posicao_058_a_058             # codigo da carteira                    1
-						segmento_p << segmento_p_posicao_059_a_059             # forma de cadastro do titulo           1
+						segmento_p << segmento_p_posicao_059_a_059(pagamento)  # forma de cadastro do titulo           1
 						segmento_p << segmento_p_posicao_060_a_060             # tipo de documento                     1
 						segmento_p << segmento_p_posicao_061_a_061             # identificaco emissao                  1
 						segmento_p << segmento_p_posicao_062_a_062             # indentificacao entrega                1
@@ -38,8 +38,8 @@ module BrBoleto
 						segmento_p << segmento_p_posicao_086_a_100(pagamento)  # valor documento                       15
 						segmento_p << segmento_p_posicao_101_a_105             # agencia cobradora                     5
 						segmento_p << segmento_p_posicao_106_a_106             # dv agencia cobradora                  1
-						segmento_p << segmento_p_posicao_107_a_108             # especie do titulo                     2
-						segmento_p << segmento_p_posicao_109_a_109             # aceite                                1
+						segmento_p << segmento_p_posicao_107_a_108(pagamento)  # especie do titulo                     2
+						segmento_p << segmento_p_posicao_109_a_109(pagamento)  # aceite                                1
 						segmento_p << segmento_p_posicao_110_a_117(pagamento)  # data de emissao titulo                8
 						segmento_p << segmento_p_posicao_118_a_118(pagamento)  # cod. do juros                         1   *
 						segmento_p << segmento_p_posicao_119_a_126(pagamento)  # data juros                            8   *
@@ -61,7 +61,7 @@ module BrBoleto
 					end
 
 					def segmento_p_posicao_001_a_003 
-						codigo_banco
+						conta.codigo_banco
 					end
 
 					# Lote de Serviço: Número seqüencial para identificar univocamente um lote de serviço. 
@@ -116,14 +116,14 @@ module BrBoleto
 					# 5 posições
 					#
 					def segmento_p_posicao_018_a_022
-						agencia.to_s.rjust(5, '0')
+						"#{conta.agencia}".adjust_size_to(5, '0', :right)
 					end
 
 					# Dígito Verificador da Agência 
 					# 1 posição
 					#
 					def segmento_p_posicao_023_a_023
-						digito_agencia.to_s
+						"#{conta.agencia_dv}".adjust_size_to(1, '0')
 					end
 
 					# O padrão da FEBRABAN é: 
@@ -142,14 +142,14 @@ module BrBoleto
 					# 1 posição
 					#
 					def segmento_p_posicao_058_a_058
-						codigo_carteira
+						conta.carteira
 					end
 
 					# Forma de Cadastr. do Título no Banco
 					# 1 posição
 					#
-					def segmento_p_posicao_059_a_059
-						forma_cadastramento
+					def segmento_p_posicao_059_a_059(pagamento)
+						"#{pagamento.forma_cadastramento}".adjust_size_to(1,'1')
 					end
 
 					# Tipo de Documento
@@ -185,7 +185,7 @@ module BrBoleto
 					# 8 posições
 					#
 					def segmento_p_posicao_078_a_085(pagamento)
-						pagamento.data_vencimento.strftime('%d%m%Y')
+						pagamento.data_vencimento_formatado('%d%m%Y')
 					end
 
 					# Valor Nominal do Título 
@@ -212,22 +212,22 @@ module BrBoleto
 					# Espécie do Título
 					# 2 posições
 					#
-					def segmento_p_posicao_107_a_108 
-						especie_titulo
+					def segmento_p_posicao_107_a_108(pagamento)
+						"#{pagamento.especie_titulo}".adjust_size_to(2, '0', :right)
 					end
 
 					# Identific. de Título Aceito/Não Aceito (A ou N)
 					# 1 posição
 					#
-					def segmento_p_posicao_109_a_109
-						aceite
+					def segmento_p_posicao_109_a_109(pagamento)
+						pagamento.aceite ? 'A' : 'N'
 					end
 
 					# Data da Emissão do Título 
 					# 8 posições
 					#
 					def segmento_p_posicao_110_a_117(pagamento)
-						pagamento.data_emissao.strftime('%d%m%Y')
+						pagamento.data_emissao_formatado('%d%m%Y')
 					end
 
 					# Código do Juros de Mora 
@@ -257,7 +257,7 @@ module BrBoleto
 					# 1 posição
 					#
 					def segmento_p_posicao_142_a_142(pagamento)
-						pagamento.cod_desconto
+						"#{pagamento.cod_desconto}".adjust_size_to(1)
 					end
 
 					# Data do Desconto 1 
