@@ -12,6 +12,8 @@ require 'shoulda/matchers'
 require "minitest/reporters"
 require 'mocha/mini_test'
 
+require 'pry'
+
 
 require 'factory_girl_rails'
 

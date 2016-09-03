@@ -108,47 +108,62 @@ describe BrBoleto::Remessa::Base do
 					wont_be_message_error(:modalidade, :custom_length_maximum, {count: 3})
 				end
 			end
+
+			context "#modalidade_inclusion" do
+				it "deve validar que o valor deve estar entre um dos valores passados" do
+					subject.modalidade_inclusion = 3
+					subject.modalidade = '4'
+					must_be_message_error(:modalidade, :custom_inclusion, {list: '3'})
+					subject.modalidade_inclusion = [1,2,'03']
+					subject.modalidade = '04'
+					must_be_message_error(:modalidade, :custom_inclusion, {list: '1, 2, 03'})
+
+					subject.modalidade = '2'
+					wont_be_message_error(:modalidade)
+				end
+			end
 		end
 
 		context "#codigo_cedente" do
 			it "por padrão não deve validar nada" do
 				subject.codigo_cedente = nil
 				wont_be_message_error(:codigo_cedente)
+				wont_be_message_error(:convenio)
 			end
 
 			context "#codigo_cedente_required" do
 				it "quando setado deve validar a obrigatoriedade" do
-					wont validate_presence_of(:codigo_cedente)
+					wont validate_presence_of(:convenio)
 					
 					subject.codigo_cedente_required = true
-					must validate_presence_of(:codigo_cedente)
+					must validate_presence_of(:convenio)
 				end
 			end
 			context "#codigo_cedente_length" do
 				it "quando setado um valor deve validar através do valor setado" do
 					subject.codigo_cedente_length = 7
 					subject.codigo_cedente = '12345678'
-					must_be_message_error(:codigo_cedente, :custom_length_is, {count: 7})
+					must_be_message_error(:convenio, :custom_length_is, {count: 7})
 					subject.codigo_cedente = '1234567'
-					wont_be_message_error(:codigo_cedente, :custom_length_is, {count: 7})
+					wont_be_message_error(:convenio, :custom_length_is, {count: 7})
 				end
 			end
 			context "#codigo_cedente_minimum" do
 				it "quando setado um valor deve validar através do valor setado" do
 					subject.codigo_cedente_minimum = 5
 					subject.codigo_cedente = '1'
-					must_be_message_error(:codigo_cedente, :custom_length_minimum, {count: 5})
+					must_be_message_error(:convenio, :custom_length_minimum, {count: 5})
 					subject.codigo_cedente = '1234567'
-					wont_be_message_error(:codigo_cedente, :custom_length_minimum, {count: 5})
+					wont_be_message_error(:convenio, :custom_length_minimum, {count: 5})
 				end
 			end
 			context "#codigo_cedente_maximum" do
 				it "quando setado um valor deve validar através do valor setado" do
 					subject.codigo_cedente_maximum = 3
 					subject.codigo_cedente = '1234'
-					must_be_message_error(:codigo_cedente, :custom_length_maximum, {count: 3})
+					must_be_message_error(:convenio, :custom_length_maximum, {count: 3})
 					subject.codigo_cedente = '123'
-					wont_be_message_error(:codigo_cedente, :custom_length_maximum, {count: 3})
+					wont_be_message_error(:convenio, :custom_length_maximum, {count: 3})
 				end
 			end
 		end
@@ -194,6 +209,19 @@ describe BrBoleto::Remessa::Base do
 					wont_be_message_error(:carteira, :custom_length_maximum, {count: 3})
 				end
 			end
+			context "#carteira_inclusion" do
+				it "deve validar que o valor deve estar entre um dos valores passados" do
+					subject.carteira_inclusion = 3
+					subject.carteira = '4'
+					must_be_message_error(:carteira, :custom_inclusion, {list: '3'})
+					subject.carteira_inclusion = [1,2,'03']
+					subject.carteira = '04'
+					must_be_message_error(:carteira, :custom_inclusion, {list: '1, 2, 03'})
+
+					subject.carteira = '2'
+					wont_be_message_error(:carteira)
+				end
+			end
 		end
 
 		context "#convenio" do
@@ -235,6 +263,19 @@ describe BrBoleto::Remessa::Base do
 					must_be_message_error(:convenio, :custom_length_maximum, {count: 3})
 					subject.convenio = '123'
 					wont_be_message_error(:convenio, :custom_length_maximum, {count: 3})
+				end
+			end
+			context "#convenio_inclusion" do
+				it "deve validar que o valor deve estar entre um dos valores passados" do
+					subject.convenio_inclusion = 3
+					subject.convenio = '4'
+					must_be_message_error(:convenio, :custom_inclusion, {list: '3'})
+					subject.convenio_inclusion = [1,2,'03']
+					subject.convenio = '04'
+					must_be_message_error(:convenio, :custom_inclusion, {list: '1, 2, 03'})
+
+					subject.convenio = '2'
+					wont_be_message_error(:convenio)
 				end
 			end
 		end

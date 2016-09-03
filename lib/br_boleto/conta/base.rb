@@ -7,8 +7,8 @@ module BrBoleto
 			#                ATRIBUTOS
 			# razao_social
 			# cpf_cnpj
-			# codigo_cedente OU codigo_beneficiario
-			# codigo_cedente_dv OU codigo_beneficiario_dv
+			# convenio OU codigo_cedente    OU codigo_beneficiario
+			# convenio OU codigo_cedente_dv OU codigo_beneficiario_dv
 			# endereco
 			# carteira
 			# agencia
@@ -18,32 +18,11 @@ module BrBoleto
 			# nome_banco
 			# modalidade
 
-			# Modalidade da carteira
-			attr_accessor :modalidade
-
 			# Nome/Razão social que aparece no campo 'Cedente' no boleto.
 			attr_accessor :razao_social
 
 			# Documento do Cedente (CPF ou CNPJ).
 			attr_accessor :cpf_cnpj
-
-			# <b>Código do Cedente é o código do cliente, fornecido pelo banco.</b>
-			#
-			# Alguns bancos, dependendo do banco e da carteira, precisam desse campo preenchido.
-			# Em compensação, outros bancos (a minoria) não fazem utilização desse campo.
-			attr_accessor :codigo_cedente
-			attr_accessor :codigo_cedente_dv
-			
-			# Código do beneficiário e codigo cedente é a mesma coisa
-			# Por isso foi criado um alias para que cada um utilize a nomenclatura que preferir.
-			alias_attribute :codigo_beneficiario,    :codigo_cedente
-			alias_attribute :codigo_beneficiario_dv, :codigo_cedente_dv
-
-
-			# Deve ser informado o endereço completo do Cedente.
-			#
-			# <b>Campo Obrigatório</b>
-			attr_accessor :endereco
 
 			# Uma carteira de cobrança define o modo como o boleto é tratado pelo banco.
 			# Existem duas grandes divisões: carteiras não registradas e carteiras registradas.
@@ -65,6 +44,35 @@ module BrBoleto
 			#
 			attr_accessor :carteira
 
+			# Modalidade da carteira
+			# Alguns bancos utilizam campos separados para definir a modalidade e a carteira
+			# porém normalmente é utilizado a nomenclatura "MODALIDADE DA CARTEIRA". Quando utilizado essa
+			# nomenclatura apenas, e não separa a carteira da modalidade, então deve se usar apenas a carteira
+			# 
+			attr_accessor :modalidade
+
+
+			# <b>Código do Convênio é o código do cliente, fornecido pelo banco.</b>
+			#
+			# Alguns bancos, dependendo do banco e da carteira, precisam desse campo preenchido.
+			# A nomenclatura para essa informação varia em cada banco, pode ser também:
+			# codigo_beneficiario OU codigo_cedente OU contrato
+			# Por isso foi criado um alias para que cada um utilize a nomenclatura que preferir.
+			attr_accessor :convenio
+			attr_accessor :convenio_dv
+			alias_attribute :codigo_cedente,         :convenio
+			alias_attribute :codigo_cedente_dv,      :convenio_dv
+			alias_attribute :codigo_beneficiario,    :convenio
+			alias_attribute :codigo_beneficiario_dv, :convenio_dv
+
+
+			# Deve ser informado o endereço completo do Cedente.
+			#
+			# <b>Campo Obrigatório</b>
+			attr_accessor :endereco
+
+			
+
 			# Número da agência. Campo auto explicativo.
 			#
 			attr_accessor :agencia
@@ -75,8 +83,6 @@ module BrBoleto
 			attr_accessor :conta_corrente
 			attr_accessor :conta_corrente_dv
 			
-			# Convêncio da conta
-			attr_accessor :convenio
 
 			# Pode ser customizado o nome da conta.
 			# Se não passar nenhum valor irá pegar um nome padrão
@@ -84,6 +90,30 @@ module BrBoleto
 			attr_accessor :nome_banco
 
 			###############################  VALIDAÇÕES DINÂMICAS ###############################
+			# => Modalidade
+				attr_accessor :modalidade_length
+				attr_accessor :modalidade_minimum
+				attr_accessor :modalidade_maximum
+				attr_accessor :modalidade_required
+				attr_accessor :modalidade_inclusion
+				validates :modalidade, custom_length: {is:      :modalidade_length},  if: :modalidade_length
+				validates :modalidade, custom_length: {minimum: :modalidade_minimum}, if: :modalidade_minimum
+				validates :modalidade, custom_length: {maximum: :modalidade_maximum}, if: :modalidade_maximum
+				validates :modalidade, presence: true, if: :modalidade_required
+				validates :modalidade, custom_inclusion: {in: :modalidade_inclusion}, if: :modalidade_inclusion
+
+			# => CARTEIRA
+				attr_accessor :carteira_length
+				attr_accessor :carteira_minimum
+				attr_accessor :carteira_maximum
+				attr_accessor :carteira_required
+				attr_accessor :carteira_inclusion
+				validates :carteira, custom_length: {is:      :carteira_length},  if: :carteira_length
+				validates :carteira, custom_length: {minimum: :carteira_minimum}, if: :carteira_minimum
+				validates :carteira, custom_length: {maximum: :carteira_maximum}, if: :carteira_maximum
+				validates :carteira, presence: true, if: :carteira_required
+				validates :carteira, custom_inclusion: {in: :carteira_inclusion}, if: :carteira_inclusion
+			
 			# => CONTA CORRENTE
 				attr_accessor :conta_corrente_length
 				attr_accessor :conta_corrente_minimum
@@ -94,52 +124,40 @@ module BrBoleto
 				validates :conta_corrente, custom_length: {maximum: :conta_corrente_maximum}, if: :conta_corrente_maximum
 				validates :conta_corrente, presence: true, if: :conta_corrente_required
 
-			# => Modalidade
-				attr_accessor :modalidade_length
-				attr_accessor :modalidade_minimum
-				attr_accessor :modalidade_maximum
-				attr_accessor :modalidade_required
-				validates :modalidade, custom_length: {is:      :modalidade_length},  if: :modalidade_length
-				validates :modalidade, custom_length: {minimum: :modalidade_minimum}, if: :modalidade_minimum
-				validates :modalidade, custom_length: {maximum: :modalidade_maximum}, if: :modalidade_maximum
-				validates :modalidade, presence: true, if: :modalidade_required
 			
-			# => CODIGO CEDENTE
-				attr_accessor :codigo_cedente_length
-				attr_accessor :codigo_cedente_minimum
-				attr_accessor :codigo_cedente_maximum
-				attr_accessor :codigo_cedente_required
-				validates :codigo_cedente, custom_length: {is:      :codigo_cedente_length},  if: :codigo_cedente_length
-				validates :codigo_cedente, custom_length: {minimum: :codigo_cedente_minimum}, if: :codigo_cedente_minimum
-				validates :codigo_cedente, custom_length: {maximum: :codigo_cedente_maximum}, if: :codigo_cedente_maximum
-				validates :codigo_cedente, presence: true, if: :codigo_cedente_required
+			# => CONVÊNIO / CODIGO CEDENTE / CONTRATO / CODIGO BENEFICIÁRIO
+				attr_accessor :convenio_length
+				attr_accessor :convenio_minimum
+				attr_accessor :convenio_maximum
+				attr_accessor :convenio_required
+				attr_accessor :convenio_inclusion
+				alias_attribute :codigo_beneficiario_length,    :convenio_length
+				alias_attribute :codigo_beneficiario_minimum,   :convenio_minimum
+				alias_attribute :codigo_beneficiario_maximum,   :convenio_maximum
+				alias_attribute :codigo_beneficiario_required,  :convenio_required
+				alias_attribute :codigo_beneficiario_inclusion, :convenio_inclusion
+				alias_attribute :codigo_cedente_length,         :convenio_length
+				alias_attribute :codigo_cedente_minimum,        :convenio_minimum
+				alias_attribute :codigo_cedente_maximum,        :convenio_maximum
+				alias_attribute :codigo_cedente_required,       :convenio_required
+				alias_attribute :codigo_cedente_inclusion,      :convenio_inclusion
+
+				validates :convenio, custom_length: {is:      :convenio_length},  if: :convenio_length
+				validates :convenio, custom_length: {minimum: :convenio_minimum}, if: :convenio_minimum
+				validates :convenio, custom_length: {maximum: :convenio_maximum}, if: :convenio_maximum
+				validates :convenio, presence: true, if: :convenio_required
+				validates :convenio, custom_inclusion: {in: :convenio_inclusion}, if: :convenio_inclusion
 			
 			# => ENDEREÇO
 				attr_accessor :endereco_required
 				validates :endereco, presence: true, if: :endereco_required
 			
-			# => CARTEIRA
-				attr_accessor :carteira_length
-				attr_accessor :carteira_minimum
-				attr_accessor :carteira_maximum
-				attr_accessor :carteira_required
-				validates :carteira, custom_length: {is:      :carteira_length},  if: :carteira_length
-				validates :carteira, custom_length: {minimum: :carteira_minimum}, if: :carteira_minimum
-				validates :carteira, custom_length: {maximum: :carteira_maximum}, if: :carteira_maximum
-				validates :carteira, presence: true, if: :carteira_required
 			
-			# => CONVÊNIO
-				attr_accessor :convenio_length
-				attr_accessor :convenio_minimum
-				attr_accessor :convenio_maximum
-				attr_accessor :convenio_required
-				validates :convenio, custom_length: {is:      :convenio_length},  if: :convenio_length
-				validates :convenio, custom_length: {minimum: :convenio_minimum}, if: :convenio_minimum
-				validates :convenio, custom_length: {maximum: :convenio_maximum}, if: :convenio_maximum
-				validates :convenio, presence: true, if: :convenio_required
+
 			#####################################################################################
 
 			validates :agencia, :razao_social, :cpf_cnpj, presence: true
+			validates :agencia_dv, custom_length: {is: 1}
 
 			# Força valores para retornar como string
 			def carteira
@@ -149,7 +167,7 @@ module BrBoleto
 				@agencia.try(:to_s)
 			end			
 			def codigo_cedente
-				@codigo_cedente.try(:to_s)
+				@convenio.try(:to_s)
 			end
 
 			# Código do Banco.

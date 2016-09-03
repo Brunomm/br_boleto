@@ -86,7 +86,7 @@ module BrBoleto
 				def complemento_p(pagamento)
 					complemento  = "#{conta.convenio}".adjust_size_to(6, '0', :right)
 					complemento << ''.rjust(11, '0')
-					complemento << conta.modalidade
+					complemento << conta.carteira
 					complemento << pagamento.nosso_numero.adjust_size_to(15, '0', :right)
 					complemento
 				end

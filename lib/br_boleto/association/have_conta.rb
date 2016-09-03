@@ -47,29 +47,41 @@ module BrBoleto
 		def convenio_minimum;        end
 		def convenio_maximum;        end
 		def convenio_required;       end
+		def modalidade_inclusion;    end
+		def carteira_inclusion;      end
+		def convenio_inclusion;      end
 
 		def conta_validations
 			conta.conta_corrente_length   = conta_corrente_length   if "#{conta_corrente_length}".present?
 			conta.conta_corrente_minimum  = conta_corrente_minimum  if "#{conta_corrente_minimum}".present?
 			conta.conta_corrente_maximum  = conta_corrente_maximum  if "#{conta_corrente_maximum}".present?
 			conta.conta_corrente_required = conta_corrente_required if "#{conta_corrente_required}".present?
+			
 			conta.modalidade_length       = modalidade_length       if "#{modalidade_length}".present?
 			conta.modalidade_minimum      = modalidade_minimum      if "#{modalidade_minimum}".present?
 			conta.modalidade_maximum      = modalidade_maximum      if "#{modalidade_maximum}".present?
 			conta.modalidade_required     = modalidade_required     if "#{modalidade_required}".present?
-			conta.codigo_cedente_length   = codigo_cedente_length   if "#{codigo_cedente_length}".present?
-			conta.codigo_cedente_minimum  = codigo_cedente_minimum  if "#{codigo_cedente_minimum}".present?
-			conta.codigo_cedente_maximum  = codigo_cedente_maximum  if "#{codigo_cedente_maximum}".present?
-			conta.codigo_cedente_required = codigo_cedente_required if "#{codigo_cedente_required}".present?
+			conta.modalidade_inclusion    = modalidade_inclusion    if "#{modalidade_inclusion}".present?
+			
 			conta.endereco_required       = endereco_required       if "#{endereco_required}".present?
+			
 			conta.carteira_length         = carteira_length         if "#{carteira_length}".present?
 			conta.carteira_minimum        = carteira_minimum        if "#{carteira_minimum}".present?
 			conta.carteira_maximum        = carteira_maximum        if "#{carteira_maximum}".present?
 			conta.carteira_required       = carteira_required       if "#{carteira_required}".present?
+			conta.carteira_inclusion      = carteira_inclusion      if "#{carteira_inclusion}".present?
+			
+			# Se tiver alguma validação setada em convênio é o que deve prevalecer
+			conta.codigo_cedente_length   = codigo_cedente_length   if "#{codigo_cedente_length}".present?
+			conta.codigo_cedente_minimum  = codigo_cedente_minimum  if "#{codigo_cedente_minimum}".present?
+			conta.codigo_cedente_maximum  = codigo_cedente_maximum  if "#{codigo_cedente_maximum}".present?
+			conta.codigo_cedente_required = codigo_cedente_required if "#{codigo_cedente_required}".present?
+			
 			conta.convenio_length         = convenio_length         if "#{convenio_length}".present?
 			conta.convenio_minimum        = convenio_minimum        if "#{convenio_minimum}".present?
 			conta.convenio_maximum        = convenio_maximum        if "#{convenio_maximum}".present?
 			conta.convenio_required       = convenio_required       if "#{convenio_required}".present?
+			conta.convenio_inclusion      = convenio_inclusion      if "#{convenio_inclusion}".present?
 			
 			if conta.invalid?
 				conta.errors.full_messages.each do |msg|

@@ -3,7 +3,7 @@ module BrBoleto
 	module Conta
 		class Caixa < BrBoleto::Conta::Base
 			
-			# MODALIDADE
+			# MODALIDADE CARTEIRA
 			#   opcoes:
 			#     11: título Registrado emissão CAIXA
 			#     14: título Registrado emissão Cedente
@@ -12,20 +12,20 @@ module BrBoleto
 			# versão do aplicativo da caixa
 			attr_accessor :versao_aplicativo
 
-			validates :agencia_dv, :modalidade, :conta_corrente, presence: true
-			validates :agencia,    length: {maximum: 5, message: 'deve ter no máximo 5 dígitos.'}
-			validates :modalidade, length: {is: 2, message: 'deve ter 2 dígitos.'}, allow_blank: true
-			validates :agencia_dv, length: {is: 1, message: 'deve ter 1 dígito.'},  allow_blank: true
-			validates :versao_aplicativo,   length: {maximum: 4, message: 'deve ter no máximo 4 dígitos.'}
-			validates :convenio,            length: {maximum: 6, message: 'deve ter no máximo 6 dígitos.'}
-			
+			validates :agencia,           custom_length: { maximum: 5, minimum: 4 }
+			validates :versao_aplicativo, custom_length: { maximum: 4 }
+
 			def default_values
 				super.merge({
-					modalidade: '14', # Com registro
-					versao_aplicativo: '0',
+					carteira:             '14', # Com registro
+					carteira_required:     true,         # <- Validação dinâmica que a modalidade é obrigatória
+					carteira_length:       2,            # <- Validação dinâmica que a modalidade deve ter 2 digitos
+					carteira_inclusion:    %w[11 14 21], # <- Validação dinâmica de valores aceitos para a modalidade
+					convenio_required:     true,         # <- Validação que a convenio deve ter obrigatório
+					convenio_maximum:      6,            # <- Validação que a convenio deve ter no máximo 6 digitos
+					versao_aplicativo:     '0',
 				})
 			end
-
 
 			def codigo_banco
 				'104'

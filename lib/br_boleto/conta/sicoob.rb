@@ -11,17 +11,21 @@ module BrBoleto
 			#    1     /    02       = Simples sem Registro
 			#    3     /    03       = Garantia caicionada
 
-			validates :agencia_dv, :modalidade, :carteira, :conta_corrente, presence: true
-			validates :agencia,    length: {is: 4, message: 'deve ter 4 dígitos.'}
-			validates :modalidade, length: {is: 2, message: 'deve ter 2 dígitos.'}, allow_blank: true
-			validates :carteira,   length: {is: 1, message: 'deve ter 1 dígito.'},  allow_blank: true
-			validates :agencia_dv, length: {is: 1, message: 'deve ter 1 dígito.'},  allow_blank: true
-			validates :conta_corrente, length: {maximum: 8, message: 'deve ter no máximo 8 dígitos.'}
+			validates :agencia, custom_length: {is: 4}
 
 			def default_values
 				super.merge({
-					carteira:   '1', # Simples
-					modalidade: '01' # Com registro
+					carteira:                '1', # Simples
+					modalidade:              '01', # Com registro
+					modalidade_required:     true,         # <- Validação dinâmica que a modalidade é obrigatória
+					modalidade_length:       2,            # <- Validação dinâmica que a modalidade deve ter 2 digitos
+					modalidade_inclusion:    %w[01 02 03], # <- Validação dinâmica de valores aceitos para a modalidade
+					carteira_required:       true,    # <- Validação dinâmica que a carteira é obrigatória
+					carteira_length:         1,       # <- Validação dinâmica que a carteira deve ter 1 digito
+					carteira_inclusion:      %w[1 3], # <- Validação dinâmica de valores aceitos para a carteira
+					conta_corrente_required: true,    # <- Validação dinâmica que a conta_corrente é obrigatória
+					conta_corrente_maximum:  8,       # <- Validação que a conta_corrente deve ter no máximo 8 digitos
+					codigo_cedente_maximum:  7,       # <- Validação que a codigo_cedente/convênio deve ter no máximo 7 digitos
 				})
 			end
 

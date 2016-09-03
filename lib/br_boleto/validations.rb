@@ -9,4 +9,11 @@ class CustomLengthValidator < ActiveModel::EachValidator
 		record.errors.add(attribute, :custom_length_is,      count: is_value ) if is_value  && "#{record.try(attribute)}".strip.size != is_value
 	end
 end
+
+class CustomInclusionValidator < ActiveModel::EachValidator
+	def validate_each(record, attribute, value)
+		in_values = [options[:in].is_a?(Symbol) ? record.send(options[:in]) : options[:in]].flatten.compact.map(&:to_s)
+		record.errors.add(attribute, :custom_inclusion, list: in_values.join(', ') ) if in_values.any?  && !"#{record.try(attribute)}".strip.in?(in_values)
+	end
+end
   
