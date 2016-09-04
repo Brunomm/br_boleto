@@ -15,7 +15,7 @@ describe BrBoleto::Remessa::Lote do
 			must allow_value([pagamento]).for(:pagamentos)
 		end
 		it "não deve ser válidose houver algum pagamento inválido" do
-			wont allow_value([FactoryGirl.build(:remessa_pagamento, cep_sacado: nil)]).for(:pagamentos)
+			wont allow_value([FactoryGirl.build(:remessa_pagamento, nosso_numero: nil)]).for(:pagamentos)
 		end
 		it "deve ser válido se passar apenas um pagamento sem Array" do
 			must allow_value(pagamento).for(:pagamentos)

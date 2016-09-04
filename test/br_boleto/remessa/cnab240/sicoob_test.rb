@@ -9,18 +9,22 @@ describe BrBoleto::Remessa::Cnab240::Sicoob do
 		subject.class.superclass.must_equal BrBoleto::Remessa::Cnab240::Base
 	end
 
-	context "validations" do
-		it { must validate_presence_of(:modalidade_carteira) }
-		it { must validate_presence_of(:tipo_formulario) }
-		it { must validate_presence_of(:parcela) }
-		it { must validate_presence_of(:conta_corrente) }
-		# Segundo a documentação do Sicoob o convênio deve ter 20 caracteres em branco
-		# Então ele não pode ser obrigatorio
-		it { wont validate_presence_of(:convenio) } 
+	it "A conta deve ser da class Sicoob" do
+		subject.conta.must_be_kind_of BrBoleto::Conta::Sicoob
+	end
 
-		it { must validate_length_of(:conta_corrente     ).is_at_most(12).with_message("deve ter no máximo 12 dígitos.") }
-		it { must validate_length_of(:agencia            ).is_equal_to(4).with_message("deve ter 4 dígitos.") }
-		it { must validate_length_of(:modalidade_carteira).is_equal_to(2).with_message("deve ter 2 dígitos.") }
+	context "validations" do
+		# it { must validate_presence_of(:modalidade_carteira) }
+		# it { must validate_presence_of(:tipo_formulario) }
+		# it { must validate_presence_of(:parcela) }
+		# it { must validate_presence_of(:conta_corrente) }
+		# # Segundo a documentação do Sicoob o convênio deve ter 20 caracteres em branco
+		# # Então ele não pode ser obrigatorio
+		# it { wont validate_presence_of(:convenio) } 
+
+		# it { must validate_length_of(:conta_corrente     ).is_at_most(12).with_message("deve ter no máximo 12 dígitos.") }
+		# it { must validate_length_of(:agencia            ).is_equal_to(4).with_message("deve ter 4 dígitos.") }
+		# it { must validate_length_of(:modalidade_carteira).is_equal_to(2).with_message("deve ter 2 dígitos.") }
 	end
 
 	# describe "conveio" do
