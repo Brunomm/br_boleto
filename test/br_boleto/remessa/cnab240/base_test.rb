@@ -78,34 +78,6 @@ describe BrBoleto::Remessa::Cnab240::Base do
 		end
 	end
 
-	describe "#data_hora_arquivo" do
-		it "se for nil deve pegar o time now" do
-			subject.data_hora_arquivo = nil
-			now = Time.now
-			Time.stubs(:now).returns(now)
-			subject.data_hora_arquivo.must_equal now
-		end
-		it "se passar um date_time deve converter para time" do
-			now = DateTime.now
-			subject.data_hora_arquivo = now
-			subject.data_hora_arquivo.must_equal now.to_time
-		end
-	end
-
-	describe "#data_geracao" do
-		it "deve pegar a data com 8 posições do atributo data_hora_arquivo" do
-			subject.data_hora_arquivo = Time.parse("30/12/2015 01:02:03")
-			subject.data_geracao.must_equal "30122015"
-		end
-	end
-
-	describe "#hora_geracao" do
-		it "deve pegar a hora minuto e segundo da data_hora_arquivo" do
-			subject.data_hora_arquivo = Time.parse("30/12/2015 01:02:03")
-			subject.hora_geracao.must_equal "010203"
-		end
-	end
-
 	describe "#segmento_p_numero_do_documento" do
 		it "deve pegar o numero_documento do pagamento do parametro e ajustar para 15 caracateres" do
 			pagamento.numero_documento = '123456'

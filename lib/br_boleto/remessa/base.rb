@@ -9,6 +9,8 @@ module BrBoleto
 			# Data e hora da geração do arquivo
 			attr_accessor :data_hora_arquivo
 
+			validates :sequencial_remessa, presence: true
+
 			def persisted?
 				false
 			end

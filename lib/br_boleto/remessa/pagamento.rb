@@ -163,7 +163,7 @@ module BrBoleto
 			# Setar true para Aceite e false para Não aceite
 			attr_accessor :aceite
 
-			# Aceite título
+			# Moeda
 			# '9' = Real
 			#  CNAB: 400
 			attr_accessor :codigo_moeda
@@ -174,8 +174,16 @@ module BrBoleto
 			#     2 - sem cadastramento (cobrança sem registro)
 			attr_accessor :forma_cadastramento
 
+			########################  VALIDAÇÕES PERSONALIZADAS  ########################
+				attr_accessor :valid_tipo_impressao_required
+				validates :tipo_impressao, presence: true, if: :valid_tipo_impressao_required
+				
+				attr_accessor :valid_cod_desconto
+				validates :cod_desconto, custom_length: {is: 1}, if: :valid_cod_desconto
+			#############################################################################
+
 			def moeda_real?
-				codigo_moeda == '9'
+				"#{codigo_moeda}" == '9'
 			end
 			def codigo_moeda
 				@codigo_moeda = '9' if @codigo_moeda.blank?
@@ -184,14 +192,14 @@ module BrBoleto
 
 			def parcela
 				@parcela = '1' if @parcela.blank?
+				@parcela
 			end
 
 			def nosso_numero
 				"#{@nosso_numero}".gsub(/[^0-9]/, "")
 			end
 
-			validates :nosso_numero, :data_vencimento, :valor_documento, :tipo_impressao, presence: true
-			validates :cod_desconto, length: {is: 1, message: 'deve ter 1 dígito.'}
+			validates :nosso_numero, :data_vencimento, :valor_documento, presence: true
 
 			def default_values
 				{
@@ -215,12 +223,11 @@ module BrBoleto
 					tipo_impressao:    '1',
 					tipo_emissao:      '2',
 					identificacao_ocorrencia: '01',
-					especie_titulo: '01',
-					codigo_moeda: '9',
-					forma_cadastramento: '0',
+					especie_titulo:           '01',
+					codigo_moeda:             '9',
+					forma_cadastramento:      '0',
 				}
 			end
-
 
 			def data_vencimento_formatado(formato='%d%m%Y')
 				formata_data(data_vencimento, formato)
