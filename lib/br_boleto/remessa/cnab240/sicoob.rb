@@ -14,12 +14,18 @@ module BrBoleto
 				#            "6" -A4 sem envelopamento 3 vias
 				attr_accessor :tipo_formulario
 
+				#################### VALIDAÇÕES DA CONTA #####################
+					def modalidade_required;     true end # <= Modalidade é obrigatória
+					def conta_corrente_required; true end # <= Conta corrente obrigatória
+					def codigo_cedente_required; true end # <= Código do cedente/beneficiário/convenio deve ser obrigatorio
+					def conta_corrente_maximum;  12   end # <= Máximo de digitos da conta corrente
+					def modalidade_length;       2    end # <= Modalidade deve ter 2 digitos
+				##############################################################
+
 				validates :tipo_formulario, presence: true
 				
 				def default_values
 					super.merge({
-						emissao_boleto:      '2',
-						distribuicao_boleto: '2',
 						tipo_formulario:     '4'
 					})
 				end
@@ -41,7 +47,11 @@ module BrBoleto
 					# conta corrente         12
 					# digito conta           1
 					# digito agencia/conta   1
-					"#{conta.agencia.rjust(5, '0')}#{conta.agencia_dv}#{conta.conta_corrente.rjust(12, '0')}#{conta.conta_corrente_dv}".adjust_size_to(20)
+					result =  "#{conta.agencia}".adjust_size_to(5, '0', :right)
+					result << "#{conta.agencia_dv}"
+					result << "#{conta.conta_corrente}".adjust_size_to(12, '0', :right)
+					result << "#{conta.conta_corrente_dv}"
+					result.adjust_size_to(20)
 				end
 
 				def complemento_header_arquivo
@@ -52,9 +62,13 @@ module BrBoleto
 					# CAMPO                   TAMANHO
 					# conta corrente          12
 					# digito conta            1
-					# digito agencia/conta    1
+					# digito agencia/conta    1 # Branco
 					# ident. titulo no banco  20
-					"#{conta.conta_corrente.to_s.rjust(12, '0')}#{conta.conta_corrente_dv} #{formata_nosso_numero(pagamento.nosso_numero)}"
+					result =  "#{conta.conta_corrente}".adjust_size_to(12, '0', :right)
+					result << "#{conta.conta_corrente_dv}".adjust_size_to(1)
+					result << " "
+					result << "#{formata_nosso_numero(pagamento)}"
+					result
 				end
 
 				# Tipo de cobrança
@@ -87,8 +101,12 @@ module BrBoleto
 				#            "4" -A4 sem envelopamento
 				#            "6" -A4 sem envelopamento 3 vias
 				#       Em branco - 05 posições (16 a 20)
-				def formata_nosso_numero(nosso_numero)
-					"#{nosso_numero.to_s.rjust(10, '0')}#{parcela}#{conta.modalidade}#{tipo_formulario}".adjust_size_to(20)
+				def formata_nosso_numero(pagamento)
+					result = "#{pagamento.nosso_numero}".adjust_size_to(10, '0', :right)
+					result << "#{pagamento.parcela}".adjust_size_to(2, '0', :right)
+					result << "#{conta.modalidade}".adjust_size_to(2, '0', :right)
+					result << "#{tipo_formulario}".adjust_size_to(1, '1')
+					result.adjust_size_to(20)					
 				end
 
 				def complemento_trailer_lote(lote, nr_lote)

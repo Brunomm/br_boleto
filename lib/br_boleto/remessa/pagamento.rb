@@ -174,12 +174,42 @@ module BrBoleto
 			#     2 - sem cadastramento (cobrança sem registro)
 			attr_accessor :forma_cadastramento
 
+			# Identificação da Emissão do Boleto de Pagamento
+			# Código adotado pela FEBRABAN para identificar o responsável e a forma de emissão do
+			# Boleto de Pagamento.
+			# Domínio:
+			# '1' = Banco Emite
+			# '2' = Cliente Emite
+			# '3' = Banco Pré-emite e Cliente Complementa
+			# '4' = Banco Reemite
+			# '5' = Banco Não Reemite
+			# '7' = Banco Emitente - Aberta
+			# '8' = Banco Emitente - Auto-envelopável
+			# Os códigos '4' e '5' só serão aceitos para código de movimento para remessa '31'
+			attr_accessor :emissao_boleto
+
+			# Identificação da Distribuição
+			# Código adotado pela FEBRABAN para identificar o responsável pela distribuição do
+			# Boleto de Pagamento.
+			# Domínio:
+			# '1' = Banco Distribui
+			# '2' = Cliente Distribui
+			# ‘3’ = Banco envia e-mail
+			# ‘4’ = Banco envia SMS
+			attr_accessor :distribuicao_boleto
+
 			########################  VALIDAÇÕES PERSONALIZADAS  ########################
 				attr_accessor :valid_tipo_impressao_required
 				validates :tipo_impressao, presence: true, if: :valid_tipo_impressao_required
 				
-				attr_accessor :valid_cod_desconto
-				validates :cod_desconto, custom_length: {is: 1}, if: :valid_cod_desconto
+				attr_accessor :valid_cod_desconto_length
+				validates :cod_desconto, custom_length: {is: :valid_cod_desconto_length}, if: :valid_cod_desconto_length
+
+				attr_accessor :valid_emissao_boleto_length
+				validates :emissao_boleto, custom_length: {is: :valid_emissao_boleto_length}, if: :valid_emissao_boleto_length
+				
+				attr_accessor :valid_distribuicao_boleto_length
+				validates :distribuicao_boleto, custom_length: {is: :valid_distribuicao_boleto_length}, if: :valid_distribuicao_boleto_length
 			#############################################################################
 
 			def moeda_real?
@@ -226,6 +256,8 @@ module BrBoleto
 					especie_titulo:           '01',
 					codigo_moeda:             '9',
 					forma_cadastramento:      '0',
+					emissao_boleto:           '2',
+					distribuicao_boleto:      '2',
 				}
 			end
 

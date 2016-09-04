@@ -27,10 +27,30 @@ describe BrBoleto::Remessa::Pagamento do
 		describe '#cod_desconto' do
 			before { subject.cod_desconto = '555' }
 
-			it { wont_be_message_error(:cod_desconto, :custom_length_is, {count: 1}) }
-			it "se setar valid_cod_desconto então deve validar que o cod_desconto deve ter apenas 1 digito" do
-				subject.valid_cod_desconto = true
-				must_be_message_error(:cod_desconto, :custom_length_is, {count: 1})
+			it { wont_be_message_error(:cod_desconto) }
+			it "se valid_cod_desconto_length tiver valor validar a partir do valor setado" do
+				subject.valid_cod_desconto_length = 2
+				must_be_message_error(:cod_desconto, :custom_length_is, {count: 2})
+			end
+		end
+
+		describe '#emissao_boleto' do
+			before { subject.emissao_boleto = '555' }
+
+			it { wont_be_message_error(:emissao_boleto) }
+			it "se valid_emissao_boleto_length tiver valor validar a partir do valor setado" do
+				subject.valid_emissao_boleto_length = 2
+				must_be_message_error(:emissao_boleto, :custom_length_is, {count: 2})
+			end
+		end
+
+		describe '#distribuicao_boleto' do
+			before { subject.distribuicao_boleto = '555' }
+
+			it { wont_be_message_error(:distribuicao_boleto) }
+			it "se valid_distribuicao_boleto_length tiver valor validar a partir do valor setado" do
+				subject.valid_distribuicao_boleto_length = 2
+				must_be_message_error(:distribuicao_boleto, :custom_length_is, {count: 2})
 			end
 		end
 	end
@@ -90,6 +110,8 @@ describe BrBoleto::Remessa::Pagamento do
 		it "for especie_titulo"           do object.especie_titulo.must_equal           '01' end
 		it "for codigo_moeda"             do object.codigo_moeda.must_equal             '9' end
 		it "for forma_cadastramento"      do object.forma_cadastramento.must_equal      '0' end
+		it "for emissao_boleto"           do object.emissao_boleto.must_equal           '2' end
+		it "for distribuicao_boleto"      do object.distribuicao_boleto.must_equal      '2' end
 	end
 
 	describe "#data_vencimento_formatado" do

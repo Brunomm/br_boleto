@@ -6,13 +6,6 @@ module BrBoleto
 				def conta_class
 					BrBoleto::Conta::Caixa
 				end
-				
-				def default_values
-					super.merge({
-						emissao_boleto: '2',
-						distribuicao_boleto: '2'
-					})
-				end
 
 				# Uso exclusivo caixa
 				# CAMPO                TAMANHO

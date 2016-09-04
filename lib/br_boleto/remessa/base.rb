@@ -2,6 +2,11 @@ module BrBoleto
 	module Remessa
 		class Base < BrBoleto::ActiveModelBase
 			include BrBoleto::HaveConta
+
+			def pagamento_valid_tipo_impressao_required;    end
+			def pagamento_valid_cod_desconto_length;        end
+			def pagamento_valid_emissao_boleto_length;      end
+			def pagamento_valid_distribuicao_boleto_length; end
 			
 			# sequencial remessa (num. sequencial que nao pode ser repetido nem zerado)
 			attr_accessor :sequencial_remessa

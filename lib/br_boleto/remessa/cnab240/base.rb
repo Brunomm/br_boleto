@@ -43,12 +43,6 @@ module BrBoleto
 				# mensagem 2
 				attr_accessor :mensagem_2
 
-				# identificacao da emissao do boleto (verificar opcoes nas classes referentes aos bancos)
-				attr_accessor :emissao_boleto
-
-				# identificacao da distribuicao do boleto (verificar opcoes nas classes referentes aos bancos)
-				attr_accessor :distribuicao_boleto
-
 				# variavel que terá os lotes no qual será gerado o arquivo de remessa
 				# um lote deve conter no minimo 1 pagamento
 				# Pode haver 1 ou vários lotes para o mesmo arquivo
@@ -58,33 +52,30 @@ module BrBoleto
 					BrBoleto::Remessa::Lote
 				end
 
-				def self.tamanho_emissao_boleto
+				def pagamento_valid_emissao_boleto_length
 					1
 				end
 
-				def self.tamanho_distribuicao_boleto
+				def pagamento_valid_distribuicao_boleto_length
 					1
 				end
 
-				validates :emissao_boleto,      length: {is: tamanho_emissao_boleto,      message: "deve ter #{tamanho_emissao_boleto} dígito."}
-				validates :distribuicao_boleto, length: {is: tamanho_distribuicao_boleto, message: "deve ter #{tamanho_distribuicao_boleto} dígito."}
-				
 				validates_each :lotes do |record, attr, value|
-					record.errors.add(attr, 'não pode estar vazio.') if value.empty?
+					record.errors.add(attr, :blank) if value.empty?
 					value.each do |lote|
-						if lote.is_a? record.class.class_for_lote
-							if lote.invalid?
-								lote.errors.full_messages.each { |msg| record.errors.add(attr, msg) }
-							end
-						else
-							record.errors.add(attr, 'cada item deve ser um objeto Lote.')
+						lote.pagamento_valid_tipo_impressao_required    = record.pagamento_valid_tipo_impressao_required
+						lote.pagamento_valid_cod_desconto_length        = record.pagamento_valid_cod_desconto_length
+						lote.pagamento_valid_emissao_boleto_length      = record.pagamento_valid_emissao_boleto_length
+						lote.pagamento_valid_distribuicao_boleto_length = record.pagamento_valid_distribuicao_boleto_length
+						if lote.invalid?
+							lote.errors.full_messages.each { |msg| record.errors.add(:base, msg) }
 						end
 					end				
 				end
 
 				# O atributo lotes sempre irá retornar umm Array 
 				def lotes
-					@lotes = [@lotes].flatten.compact
+					@lotes = [@lotes].flatten.compact.select{|l| l.is_a?(self.class.class_for_lote) }
 				end
 
 				# Monta um lote para o arquivo

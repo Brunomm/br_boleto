@@ -12,6 +12,7 @@ en:
           one: "deve ter 1 dígito"
           other: "deve ter %{count} dígitos"
         custom_inclusion: 'deve conter um dos valores a seguir: %{list}'
+        at_least_one: deve ter no mínimo 1
     attributes:
       br_boleto/conta/base:
         modalidade: Modalidade

@@ -30,23 +30,35 @@ describe BrBoleto::Remessa::Cnab240::Base do
 		include Helper::TrailerLoteTest
 	end
 
-	context "validations" do
-		it { must validate_length_of(:emissao_boleto     ).is_equal_to(1).with_message("deve ter 1 dígito.") }
-		it { must validate_length_of(:distribuicao_boleto).is_equal_to(1).with_message("deve ter 1 dígito.") }
+	describe "Validações personalizadas para os pagamentos dos lotes" do
+		it 'pagamento_valid_emissao_boleto_length' do
+			subject.pagamento_valid_emissao_boleto_length.must_equal 1
+			pagamento.emissao_boleto = '123'
+			pagamentos_must_be_msg_error(pagamento, :emissao_boleto, :custom_length_is, {count: 1})
+		end
+		it 'pagamento_valid_distribuicao_boleto_length' do
+			subject.pagamento_valid_distribuicao_boleto_length.must_equal 1
+			pagamento.distribuicao_boleto = '123'
+			pagamentos_must_be_msg_error(pagamento, :distribuicao_boleto, :custom_length_is, {count: 1})
+		end
+
+		private
+	
+		def pagamentos_must_be_msg_error(pagamento, attr_validation, msg_key, options_msg={})
+			must_be_message_error(:base, "#{BrBoleto::Remessa::Lote.human_attribute_name(:pagamentos)} #{pagamento.nosso_numero}: #{BrBoleto::Remessa::Pagamento.human_attribute_name(attr_validation)} #{get_message(msg_key, options_msg)}")
+		end	
 	end
 
 	describe "#lotes" do
 		it "deve haver ao menos 1 lote" do
-			wont allow_value([]).for(:lotes).with_message("não pode estar vazio.")
-		end
-		it "deve ser um objeto lote" do
-			wont allow_value(FactoryGirl.build(:boleto_sicoob)).for(:lotes).with_message("cada item deve ser um objeto Lote.")
+			wont allow_value([]).for(:lotes).with_message(:blank)
 		end
 		it "deve ser válido com um lote válido" do
 			must allow_value([lote]).for(:lotes)
 		end
 		it "não deve ser válido se houver algum lote inválido" do
-			wont allow_value([FactoryGirl.build(:remessa_lote, pagamentos: [])]).for(:lotes)
+			subject.lotes = [FactoryGirl.build(:remessa_lote, pagamentos: [])]
+			must_be_message_error(:base)
 		end
 		it "deve ser válido se passar apenas um lote sem Array" do
 			must allow_value(lote).for(:lotes)
@@ -75,6 +87,17 @@ describe BrBoleto::Remessa::Cnab240::Base do
 			subject.lotes.is_a?(Array).must_equal true
 			subject.lotes[0].must_equal lote
 			subject.lotes[1].must_equal lote2
+		end
+
+		it "retorna apenas objetos de Lote" do
+			lote2 = FactoryGirl.build(:remessa_lote)
+			subject.lotes << 123
+			subject.lotes << lote2
+			subject.lotes << '123'
+
+			subject.lotes.size.must_equal 2
+			subject.lotes.must_include lote
+			subject.lotes.must_include lote2
 		end
 	end
 
@@ -358,5 +381,5 @@ describe BrBoleto::Remessa::Cnab240::Base do
 			end
 		end
 	end
-	
+
 end

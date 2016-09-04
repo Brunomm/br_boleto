@@ -5,7 +5,5 @@ FactoryGirl.define do
 		lotes               { FactoryGirl.build(:remessa_lote) }
 		conta               { FactoryGirl.build(:conta_sicoob) }
 		sequencial_remessa  1
-		emissao_boleto      '1'
-		distribuicao_boleto '1'
 	end
 end

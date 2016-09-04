@@ -31,8 +31,8 @@ module BrBoleto
 						segmento_p << segmento_p_posicao_058_a_058             # codigo da carteira                    1
 						segmento_p << segmento_p_posicao_059_a_059(pagamento)  # forma de cadastro do titulo           1
 						segmento_p << segmento_p_posicao_060_a_060             # tipo de documento                     1
-						segmento_p << segmento_p_posicao_061_a_061             # identificaco emissao                  1
-						segmento_p << segmento_p_posicao_062_a_062             # indentificacao entrega                1
+						segmento_p << segmento_p_posicao_061_a_061(pagamento)  # identificaco emissao                  1
+						segmento_p << segmento_p_posicao_062_a_062(pagamento)  # indentificacao entrega                1
 						segmento_p << segmento_p_posicao_063_a_077(pagamento)  # numro do documento                    15
 						segmento_p << segmento_p_posicao_078_a_085(pagamento)  # data de venc.                         8
 						segmento_p << segmento_p_posicao_086_a_100(pagamento)  # valor documento                       15
@@ -162,15 +162,15 @@ module BrBoleto
 					# Identificação da Emissão do Bloqueto 
 					# 1 posição
 					#
-					def segmento_p_posicao_061_a_061
-						emissao_boleto
+					def segmento_p_posicao_061_a_061(pagamento)
+						pagamento.emissao_boleto
 					end
 
 					# Identificação da Distribuição
 					# 1 posição
 					#
-					def segmento_p_posicao_062_a_062
-						distribuicao_boleto
+					def segmento_p_posicao_062_a_062(pagamento)
+						pagamento.distribuicao_boleto
 					end
 
 					# Número do Documento de Cobrança 

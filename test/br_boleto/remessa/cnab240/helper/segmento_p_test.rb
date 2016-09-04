@@ -170,8 +170,8 @@ module Helper
 		# Deve pegar o valor do metodo "emissao_boleto"
 		#
 		def test_SegmentoPTest_metodo_segmento_p_posicao_061_a_061
-			subject.expects(:emissao_boleto).returns('123')
-			subject.segmento_p_posicao_061_a_061.must_equal '123'
+			pagamento.expects(:emissao_boleto).returns('123')
+			subject.segmento_p_posicao_061_a_061(pagamento).must_equal '123'
 		end
 
 		# Identificação da Distribuição
@@ -179,8 +179,8 @@ module Helper
 		# Deve pegar o valor do metodo "distribuicao_boleto"
 		#
 		def test_SegmentoPTest_metodo_segmento_p_posicao_062_a_062
-			subject.expects(:distribuicao_boleto).returns('distribuicao_boleto')
-			subject.segmento_p_posicao_062_a_062.must_equal 'distribuicao_boleto'
+			pagamento.expects(:distribuicao_boleto).returns('distribuicao_boleto')
+			subject.segmento_p_posicao_062_a_062(pagamento).must_equal 'distribuicao_boleto'
 		end
 
 		# Número do Documento de Cobrança 
