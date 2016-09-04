@@ -69,9 +69,7 @@ module BrBoleto
 			# Deve ser informado o endereço completo do Cedente.
 			#
 			# <b>Campo Obrigatório</b>
-			attr_accessor :endereco
-
-			
+			attr_accessor :endereco			
 
 			# Número da agência. Campo auto explicativo.
 			#
@@ -151,9 +149,6 @@ module BrBoleto
 			# => ENDEREÇO
 				attr_accessor :endereco_required
 				validates :endereco, presence: true, if: :endereco_required
-			
-			
-
 			#####################################################################################
 
 			validates :agencia, :razao_social, :cpf_cnpj, presence: true

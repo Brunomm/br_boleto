@@ -5,6 +5,5 @@ FactoryGirl.define do
 		lotes               { FactoryGirl.build(:remessa_lote) }
 		conta               { FactoryGirl.build(:conta_caixa) }
 		sequencial_remessa  1
-		modalidade_carteira '14'
 	end
 end

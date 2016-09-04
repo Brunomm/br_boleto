@@ -46,7 +46,7 @@ describe BrBoleto::Remessa::Cnab240::Sicoob do
 		
 			def conta_must_be_msg_error(attr_validation, msg_key, options_msg={})
 				must_be_message_error(:base, "#{BrBoleto::Conta::Sicoob.human_attribute_name(attr_validation)} #{get_message(msg_key, options_msg)}")
-			end	
+			end
 		end
 		it { must validate_presence_of(:tipo_formulario) }
 	end

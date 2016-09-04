@@ -50,6 +50,7 @@ module BrBoleto
 		def modalidade_inclusion;    end
 		def carteira_inclusion;      end
 		def convenio_inclusion;      end
+		def valid_versao_aplicativo_required; end # Banco da Caixa
 
 		def conta_validations
 			conta.conta_corrente_length   = conta_corrente_length   if "#{conta_corrente_length}".present?
@@ -82,6 +83,8 @@ module BrBoleto
 			conta.convenio_maximum        = convenio_maximum        if "#{convenio_maximum}".present?
 			conta.convenio_required       = convenio_required       if "#{convenio_required}".present?
 			conta.convenio_inclusion      = convenio_inclusion      if "#{convenio_inclusion}".present?
+			
+			conta.valid_versao_aplicativo_required = valid_versao_aplicativo_required if "#{valid_versao_aplicativo_required}".present?
 			
 			if conta.invalid?
 				conta.errors.full_messages.each do |msg|

@@ -7,6 +7,11 @@ module BrBoleto
 					BrBoleto::Conta::Caixa
 				end
 
+				#########################################################################
+				########## VALIDAÇÕES ESPECÍFICAS DA DESTE OBJETO PARA A CONTA ##########
+					def valid_versao_aplicativo_required; true end # <= Vero do aplicativo é obrigatória
+				#########################################################################
+
 				# Uso exclusivo caixa
 				# CAMPO                TAMANHO
 				# ---------------------------------------------------------
@@ -79,7 +84,7 @@ module BrBoleto
 				def complemento_p(pagamento)
 					complemento  = "#{conta.convenio}".adjust_size_to(6, '0', :right)
 					complemento << ''.rjust(11, '0')
-					complemento << conta.carteira
+					complemento << "#{conta.carteira}".adjust_size_to(conta.carteira_length, '1', :right)
 					complemento << pagamento.nosso_numero.adjust_size_to(15, '0', :right)
 					complemento
 				end

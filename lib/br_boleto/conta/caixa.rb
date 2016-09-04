@@ -12,8 +12,14 @@ module BrBoleto
 			# versão do aplicativo da caixa
 			attr_accessor :versao_aplicativo
 
+			###############################  VALIDAÇÕES DINÂMICAS ###############################
+				# Versão do aplicativo
+				attr_accessor :valid_versao_aplicativo_required
+			#####################################################################################
+
 			validates :agencia,           custom_length: { maximum: 5, minimum: 4 }
 			validates :versao_aplicativo, custom_length: { maximum: 4 }
+			validates :versao_aplicativo, presence: true, if: :valid_versao_aplicativo_required
 
 			def default_values
 				super.merge({
