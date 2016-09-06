@@ -3,6 +3,7 @@ module BrBoleto
 	module Conta
 		class Base < BrBoleto::ActiveModelBase
 			include BrBoleto::Calculos
+			include BrBoleto::Helper::DefaultCodes
 
 			#                ATRIBUTOS
 			# razao_social

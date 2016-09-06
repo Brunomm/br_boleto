@@ -37,6 +37,11 @@ class MiniTest::Spec
 	include Shoulda::Matchers::ActiveModel
 	include FactoryGirl::Syntax::Methods
 
+	def read_fixture(path)
+		file_path = File.expand_path('../fixtures', __FILE__) + '/'+ path
+		File.read(file_path)
+	end
+
 	def wont_be_message_error(column, message=nil, msg_params={}, exec_valid = true)
 		message = get_message(message, msg_params, column) if message
 		subject.valid? if exec_valid

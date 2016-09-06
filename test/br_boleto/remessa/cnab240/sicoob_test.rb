@@ -356,4 +356,56 @@ describe BrBoleto::Remessa::Cnab240::Sicoob do
 			end
 		end
 	end
+
+	describe 'Geração do arquivo' do
+		let(:conta) do 
+			{
+				razao_social:   'EMPRESA EMITENTE',
+				cpf_cnpj:       '33.486.451/0001-30',
+				carteira:       '1',
+				modalidade:     '01',
+				agencia:        '3040',
+				codigo_cedente: '82819',
+				conta_corrente: '54843'
+
+			} 
+		end
+		let(:pagador) { 
+			{
+				nome:     'Benjamin Francisco Marcos Vinicius Fernandes',
+				cpf_cnpj: '787.933.211-12',
+				endereco: 'Rua Principal s/n 881',
+				bairro:   'Centro',
+				cep:      '79210-972',
+				cidade:   'Anastácio',
+				uf:       'MS',
+			}
+		}
+		let(:pagamento) { 
+			BrBoleto::Remessa::Pagamento.new({
+				nosso_numero:     '00157804',
+				numero_documento: '00157804',
+				data_vencimento:  Date.parse('06/09/2016'),
+				valor_documento:  147.89,
+				pagador:          pagador,
+				especie_titulo:   '02',
+				codigo_juros:     '1', 
+				data_juros:       Date.parse('07/09/2016'),
+				valor_juros:      0.25,
+				codigo_multa:     '2', 
+				data_multa:       Date.parse('07/09/2016'),
+				valor_multa:      2.00,
+			})
+		}
+		let(:lote) { BrBoleto::Remessa::Lote.new(pagamentos: pagamento) } 
+		it "deve gerar o arquivo de remessa corretamente com as informações passadas" do
+			remessa = BrBoleto::Remessa::Cnab240::Sicoob.new({
+				data_hora_arquivo:  Time.parse('06/09/2016 09:43:52'),
+				sequencial_remessa: 11,
+				conta:              conta,
+				lotes:              [lote],
+			})
+			remessa.dados_do_arquivo.must_equal read_fixture('remessa/cnab240/sicoob.rem')
+		end
+	end
 end

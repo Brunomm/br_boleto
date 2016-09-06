@@ -81,7 +81,9 @@ module BrBoleto
 			attr_accessor :codigo_multa, :data_multa
 			#CNAB 240 e 400
 			attr_accessor :valor_multa      # Valor R$
-			attr_accessor :percentual_multa # Valor % Ex: 2.5% = 2.5
+			def percentual_multa # Valor % Ex: 2.5% = 2.5
+				BrBoleto::Helper::Number.new(valor_multa).get_percent_by_total(valor_documento)
+			end
 
 			# <b>OPCIONAL</b>: Informações para Juros
 			#  Código do juros pode ser:
@@ -90,8 +92,11 @@ module BrBoleto
 			#      - '3' Isento
 			#      - E Ainda alguns bancos como o SICOOB não conseguem seguir o padrão e usam o cód '0' para Isento
 			attr_accessor :codigo_juros, :data_juros
-			attr_accessor :valor_juros      # Valor R$
-			attr_accessor :percentual_juros # Valor % Ex: 2.5% = 2.5
+			attr_accessor :valor_juros      # Valor R$			
+			# É calculado em base no valor do juros 
+			def percentual_juros # Valor % Ex: 2.5% = 2.5
+				BrBoleto::Helper::Number.new(valor_juros).get_percent_by_total(valor_documento)
+			end
 			
 			# <b>OPCIONAL</b>: Número da parquela que o pagamento representa
 			# Padrão: 1
@@ -131,7 +136,6 @@ module BrBoleto
 			# 40 – Alterar modalidade (Vide Observações) 
 			# CNAB: 400
 			attr_accessor :identificacao_ocorrencia
-
 
 			# Espécie do Título:
 			# Default: 01
@@ -247,8 +251,6 @@ module BrBoleto
 					codigo_juros:      '3', # Isento
 					valor_multa:       0.0,
 					valor_juros:       0.0,
-					percentual_multa:  0.0,
-					percentual_juros:  0.0,
 					parcela:           '1',
 					tipo_impressao:    '1',
 					tipo_emissao:      '2',

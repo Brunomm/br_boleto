@@ -54,7 +54,18 @@ module BrBoleto
 	extend ActiveSupport::Autoload
 	autoload :ActiveModelBase
 	
+	module Helper
+		extend ActiveSupport::Autoload
+
+		autoload :DefaultCodes
+		autoload :CpfCnpj
+		autoload :Number
+		autoload :FormatValue
+	end
+
+	
 	autoload :Pagador
+
 
 	module Conta
 		extend ActiveSupport::Autoload
@@ -103,13 +114,7 @@ module BrBoleto
 		end
 	end
 
-	module Helper
-		extend ActiveSupport::Autoload
-
-		autoload :CpfCnpj
-		autoload :Number
-		autoload :FormatValue
-	end
+	
 
 	# Módulo que possui classes que realizam os cálculos dos campos que serão mostrados nos boletos.
 	#

@@ -39,7 +39,7 @@ module BrBoleto
 			end
 
 			def nome_banco
-				@nome_banco ||= 'BANCOOBCED'
+				@nome_banco ||= 'SICOOB'
 			end
 
 			def versao_layout_arquivo_cnab_240

@@ -105,24 +105,25 @@ module BrBoleto
 					# 147  147  001  X(01)  Dígito Verificador do Prefixo: vide e-mail enviado com os dados do processo de homologação
 					dados << "#{conta.agencia_dv}".adjust_size_to(1, '0')
 
-					# 148  149  002  9(02)  "Espécie do Título :
-					#                          01 = Duplicata Mercantil
-					#                          02 = Nota Promissória
-					#                          03 = Nota de Seguro
-					#                          05 = Recibo
-					#                          06 = Duplicata Rural
-					#                          08 = Letra de Câmbio
-					#                          09 = Warrant
-					#                          10 = Cheque
-					#                          12 = Duplicata de Serviço
-					#                          13 = Nota de Débito
-					#                          14 = Triplicata Mercantil
-					#                          15 = Triplicata de Serviço
-					#                          18 = Fatura
-					#                          20 = Apólice de Seguro
-					#                          21 = Mensalidade Escolar
-					#                          22 = Parcela de Consórcio
-					#                          99 = Outros"
+					# 148  149  002  9(02)  
+					# "Espécie do Título :
+					#    01 = Duplicata Mercantil
+					#    02 = Nota Promissória
+					#    03 = Nota de Seguro
+					#    05 = Recibo
+					#    06 = Duplicata Rural
+					#    08 = Letra de Câmbio
+					#    09 = Warrant
+					#    10 = Cheque
+					#    12 = Duplicata de Serviço
+					#    13 = Nota de Débito
+					#    14 = Triplicata Mercantil
+					#    15 = Triplicata de Serviço
+					#    18 = Fatura
+					#    20 = Apólice de Seguro
+					#    21 = Mensalidade Escolar
+					#    22 = Parcela de Consórcio
+					#    99 = Outros"
 					dados << "#{pagamento.especie_titulo}".adjust_size_to(2, '0', :right)
 					
 					# 150  150  001  X(01)  "Aceite do Título:  "0" = Sem aceite "1" = Com aceite"
@@ -132,22 +133,22 @@ module BrBoleto
 					dados << pagamento.data_emissao_formatado('%d%m%y')
 
 					# 157  158  002  9(02)  "Primeira instrução codificada:
-					#                         Regras de impressão de mensagens nos boletos:
-					#                         * Primeira instrução (SEQ 34) = 00 e segunda (SEQ 35) = 00, não imprime nada.
-					#                         * Primeira instrução (SEQ 34) = 01 e segunda (SEQ 35) = 01, desconsidera-se as instruções CNAB e imprime as mensagens relatadas no trailler do arquivo.
-					#                         * Primeira e segunda instrução diferente das situações acima, imprimimos o conteúdo CNAB:
-					#                           00 = AUSENCIA DE INSTRUCOES
-					#                           01 = COBRAR JUROS
-					#                           03 = PROTESTAR 3 DIAS UTEIS APOS VENCIMENTO
-					#                           04 = PROTESTAR 4 DIAS UTEIS APOS VENCIMENTO
-					#                           05 = PROTESTAR 5 DIAS UTEIS APOS VENCIMENTO
-					#                           07 = NAO PROTESTAR
-					#                           10 = PROTESTAR 10 DIAS UTEIS APOS VENCIMENTO
-					#                           15 = PROTESTAR 15 DIAS UTEIS APOS VENCIMENTO
-					#                           20 = PROTESTAR 20 DIAS UTEIS APOS VENCIMENTO
-					#                           22 = CONCEDER DESCONTO SO ATE DATA ESTIPULADA
-					#                           42 = DEVOLVER APOS 15 DIAS VENCIDO
-					#                           43 = DEVOLVER APOS 30 DIAS VENCIDO"
+					#   Regras de impressão de mensagens nos boletos:
+					#   * Primeira instrução (SEQ 34) = 00 e segunda (SEQ 35) = 00, não imprime nada.
+					#   * Primeira instrução (SEQ 34) = 01 e segunda (SEQ 35) = 01, desconsidera-se as instruções CNAB e imprime as mensagens relatadas no trailler do arquivo.
+					#   * Primeira e segunda instrução diferente das situações acima, imprimimos o conteúdo CNAB:
+					#     00 = AUSENCIA DE INSTRUCOES
+					#     01 = COBRAR JUROS
+					#     03 = PROTESTAR 3 DIAS UTEIS APOS VENCIMENTO
+					#     04 = PROTESTAR 4 DIAS UTEIS APOS VENCIMENTO
+					#     05 = PROTESTAR 5 DIAS UTEIS APOS VENCIMENTO
+					#     07 = NAO PROTESTAR
+					#     10 = PROTESTAR 10 DIAS UTEIS APOS VENCIMENTO
+					#     15 = PROTESTAR 15 DIAS UTEIS APOS VENCIMENTO
+					#     20 = PROTESTAR 20 DIAS UTEIS APOS VENCIMENTO
+					#     22 = CONCEDER DESCONTO SO ATE DATA ESTIPULADA
+					#     42 = DEVOLVER APOS 15 DIAS VENCIDO
+					#     43 = DEVOLVER APOS 30 DIAS VENCIDO"
 					dados << '00'
 
 					# 159  160  002  9(02)  Segunda instrução: vide SEQ 33

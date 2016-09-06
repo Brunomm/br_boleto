@@ -100,7 +100,7 @@ describe BrBoleto::Conta::Sicoob do
 
 	describe "#nome_banco" do
 		it "valor padrão para o nome_banco" do
-			subject.nome_banco.must_equal 'BANCOOBCED'
+			subject.nome_banco.must_equal 'SICOOB'
 		end
 		it "deve ser possível mudar o valor do nome do banco" do
 			subject.nome_banco = 'MEU'

@@ -55,6 +55,36 @@ describe BrBoleto::Remessa::Pagamento do
 		end
 	end
 
+	describe "#percentual_multa" do
+		it "deve retornar o percentual representativo do valor_multa para o valor_documento utilizando" do
+			subject.assign_attributes(valor_multa: 7.47, valor_documento: 78.98)
+			subject.percentual_multa.must_equal 9.458091
+		end
+		it "deve utilizar o metodo get_percent_by_total de Helper::Number para gerar o percentual" do
+			subject.assign_attributes(valor_multa: 8.47, valor_documento: 100.00)
+			numero = BrBoleto::Helper::Number.new(50.0)
+			BrBoleto::Helper::Number.expects(:new).returns(numero)
+			numero.expects(:get_percent_by_total).with(100.00).returns(10.47)
+
+			subject.percentual_multa.must_equal 10.47
+		end
+	end
+
+	describe "#percentual_juros" do
+		it "deve retornar o percentual representativo do valor_juros para o valor_documento utilizando" do
+			subject.assign_attributes(valor_juros: 7.47, valor_documento: 78.98)
+			subject.percentual_juros.must_equal 9.458091
+		end
+		it "deve utilizar o metodo get_percent_by_total de Helper::Number para gerar o percentual" do
+			subject.assign_attributes(valor_juros: 8.47, valor_documento: 100.00)
+			numero = BrBoleto::Helper::Number.new(50.0)
+			BrBoleto::Helper::Number.expects(:new).returns(numero)
+			numero.expects(:get_percent_by_total).with(100.00).returns(10.47)
+
+			subject.percentual_juros.must_equal 10.47
+		end
+	end
+
 	describe '#moeda_real?' do
 		it "se a moeda for 9 então deve retornar true" do
 			subject.codigo_moeda = 9
@@ -101,8 +131,6 @@ describe BrBoleto::Remessa::Pagamento do
 		it "for codigo_juros"             do object.codigo_juros.must_equal             '3' end
 		it "for valor_multa"              do object.valor_multa.must_equal              0.0 end
 		it "for valor_juros"              do object.valor_juros.must_equal              0.0 end
-		it "for percentual_multa"         do object.percentual_multa.must_equal         0.0 end
-		it "for percentual_juros"         do object.percentual_juros.must_equal         0.0 end
 		it "for parcela"                  do object.parcela.must_equal                  '1' end
 		it "for tipo_impressao"           do object.tipo_impressao.must_equal           '1' end
 		it "for tipo_emissao"             do object.tipo_emissao.must_equal             '2' end
@@ -311,31 +339,43 @@ describe BrBoleto::Remessa::Pagamento do
 	describe '#percentual_multa_formatado' do
 		let(:number) { BrBoleto::Helper::Number.new(5.47) } 
 		it "deve formatar o valor no formato de valores em percentual" do
+			subject.stubs(:percentual_multa).returns(72.50)
 			number
-			BrBoleto::Helper::Number.expects(:new).with(subject.percentual_multa).returns(number)
+			BrBoleto::Helper::Number.expects(:new).with(72.50).returns(number)
 			number.expects(:formata_valor_percentual).with(6).returns('123')
 			subject.percentual_multa_formatado.must_equal '123000'
 		end
 		it "deve considerar o tamanho pelo parametro para formatar o valor" do
+			subject.stubs(:percentual_multa).returns(4.0)
 			number
-			BrBoleto::Helper::Number.expects(:new).with(subject.percentual_multa).returns(number)
+			BrBoleto::Helper::Number.expects(:new).with(4.0).returns(number)
 			number.expects(:formata_valor_percentual).with(3).returns('1234')
 			subject.percentual_multa_formatado(3).must_equal '123'
+		end
+		it "deve gerar o valor corretamente - Teste sem MOCK" do
+			subject.stubs(:percentual_multa).returns(2.87)
+			subject.percentual_multa_formatado(5).must_equal '02870'
 		end
 	end
 	describe '#percentual_juros_formatado' do
 		let(:number) { BrBoleto::Helper::Number.new(5.47) } 
 		it "deve formatar o valor no formato de valores em percentual" do
+			subject.stubs(:percentual_juros).returns(7.50)
 			number
-			BrBoleto::Helper::Number.expects(:new).with(subject.percentual_juros).returns(number)
+			BrBoleto::Helper::Number.expects(:new).with(7.50).returns(number)
 			number.expects(:formata_valor_percentual).with(6).returns('123')
 			subject.percentual_juros_formatado.must_equal '123000'
 		end
 		it "deve considerar o tamanho pelo parametro para formatar o valor" do
+			subject.stubs(:percentual_juros).returns(9.87)
 			number
-			BrBoleto::Helper::Number.expects(:new).with(subject.percentual_juros).returns(number)
+			BrBoleto::Helper::Number.expects(:new).with(9.87).returns(number)
 			number.expects(:formata_valor_percentual).with(3).returns('1234')
 			subject.percentual_juros_formatado(3).must_equal '123'
+		end
+		it "deve gerar o valor corretamente - Teste sem MOCK" do
+			subject.stubs(:percentual_juros).returns(12.438)
+			subject.percentual_juros_formatado(7).must_equal '1243800'
 		end
 	end
 

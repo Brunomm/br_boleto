@@ -7,17 +7,17 @@ module BrBoleto
 					BrBoleto::Conta::Sicoob
 				end
 				
-				#       Tipo Formulário - 01 posição  (15 a 15):
-				#            "1" -auto-copiativo
-				#            "3" -auto-envelopável
-				#            "4" -A4 sem envelopamento
-				#            "6" -A4 sem envelopamento 3 vias
+				# Tipo Formulário - 01 posição  (15 a 15):
+				#      "1" -auto-copiativo
+				#      "3" -auto-envelopável
+				#      "4" -A4 sem envelopamento
+				#      "6" -A4 sem envelopamento 3 vias
 				attr_accessor :tipo_formulario
 
 				#################### VALIDAÇÕES DA CONTA #####################
 					def modalidade_required;     true end # <= Modalidade é obrigatória
-					def conta_corrente_required; true end # <= Conta corrente obrigatória
 					def codigo_cedente_required; true end # <= Código do cedente/beneficiário/convenio deve ser obrigatorio
+					def conta_corrente_required; true end # <= Conta corrente obrigatória
 					def conta_corrente_maximum;  12   end # <= Máximo de digitos da conta corrente
 					def modalidade_length;       2    end # <= Modalidade deve ter 2 digitos
 				##############################################################
