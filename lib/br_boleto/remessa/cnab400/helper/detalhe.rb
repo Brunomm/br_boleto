@@ -56,7 +56,7 @@ module BrBoleto
 					# Tipo: Numero
 					# Tamanho: 014
 					def detalhe_posicao_004_017
-						"#{conta.cpf_cnpj}".adjust_size_to(14)
+						"#{conta.cpf_cnpj}".adjust_size_to(14, '0', :right)
 					end
 
 					# Informações da conta
