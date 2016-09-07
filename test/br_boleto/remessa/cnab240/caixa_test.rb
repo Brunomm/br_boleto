@@ -17,8 +17,8 @@ describe BrBoleto::Remessa::Cnab240::Caixa do
 				conta_must_be_msg_error(:carteira, :blank)
 			end
 
-			it 'carteira_length' do
-				# subject.send(:carteira_length).must_equal 2
+			it 'valid_carteira_length' do
+				# subject.send(:valid_carteira_length).must_equal 2
 				subject.conta.carteira = '1234567890123456'
 				conta_must_be_msg_error(:carteira, :custom_length_is, {count: 2})
 			end

@@ -90,24 +90,24 @@ module BrBoleto
 
 			###############################  VALIDAÇÕES DINÂMICAS ###############################
 			# => Modalidade
-				attr_accessor :modalidade_length
-				attr_accessor :modalidade_minimum
-				attr_accessor :modalidade_maximum
-				attr_accessor :modalidade_required
-				attr_accessor :modalidade_inclusion
-				validates :modalidade, custom_length: {is:      :modalidade_length},  if: :modalidade_length
-				validates :modalidade, custom_length: {minimum: :modalidade_minimum}, if: :modalidade_minimum
-				validates :modalidade, custom_length: {maximum: :modalidade_maximum}, if: :modalidade_maximum
-				validates :modalidade, presence: true, if: :modalidade_required
-				validates :modalidade, custom_inclusion: {in: :modalidade_inclusion}, if: :modalidade_inclusion
+				attr_accessor :valid_modalidade_length
+				attr_accessor :valid_modalidade_minimum
+				attr_accessor :valid_modalidade_maximum
+				attr_accessor :valid_modalidade_required
+				attr_accessor :valid_modalidade_inclusion
+				validates :modalidade, custom_length: {is:      :valid_modalidade_length},  if: :valid_modalidade_length
+				validates :modalidade, custom_length: {minimum: :valid_modalidade_minimum}, if: :valid_modalidade_minimum
+				validates :modalidade, custom_length: {maximum: :valid_modalidade_maximum}, if: :valid_modalidade_maximum
+				validates :modalidade, presence: true, if: :valid_modalidade_required
+				validates :modalidade, custom_inclusion: {in: :valid_modalidade_inclusion}, if: :valid_modalidade_inclusion
 
 			# => CARTEIRA
-				attr_accessor :carteira_length
+				attr_accessor :valid_carteira_length
 				attr_accessor :carteira_minimum
 				attr_accessor :carteira_maximum
 				attr_accessor :carteira_required
 				attr_accessor :carteira_inclusion
-				validates :carteira, custom_length: {is:      :carteira_length},  if: :carteira_length
+				validates :carteira, custom_length: {is:      :valid_carteira_length},  if: :valid_carteira_length
 				validates :carteira, custom_length: {minimum: :carteira_minimum}, if: :carteira_minimum
 				validates :carteira, custom_length: {maximum: :carteira_maximum}, if: :carteira_maximum
 				validates :carteira, presence: true, if: :carteira_required

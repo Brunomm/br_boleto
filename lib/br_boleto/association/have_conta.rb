@@ -30,16 +30,16 @@ module BrBoleto
 		def conta_corrente_minimum;  end
 		def conta_corrente_maximum;  end
 		def conta_corrente_required; end
-		def modalidade_length;       end
-		def modalidade_minimum;      end
-		def modalidade_maximum;      end
-		def modalidade_required;     end
+		def valid_modalidade_length;       end
+		def valid_modalidade_minimum;      end
+		def valid_modalidade_maximum;      end
+		def valid_modalidade_required;     end
 		def codigo_cedente_length;   end
 		def codigo_cedente_minimum;  end
 		def codigo_cedente_maximum;  end
 		def codigo_cedente_required; end
 		def endereco_required;       end
-		def carteira_length;         end
+		def valid_carteira_length;         end
 		def carteira_minimum;        end
 		def carteira_maximum;        end
 		def carteira_required;       end
@@ -47,7 +47,7 @@ module BrBoleto
 		def convenio_minimum;        end
 		def convenio_maximum;        end
 		def convenio_required;       end
-		def modalidade_inclusion;    end
+		def valid_modalidade_inclusion;    end
 		def carteira_inclusion;      end
 		def convenio_inclusion;      end
 		def valid_versao_aplicativo_required; end # Banco da Caixa
@@ -58,15 +58,15 @@ module BrBoleto
 			conta.conta_corrente_maximum  = conta_corrente_maximum  if "#{conta_corrente_maximum}".present?
 			conta.conta_corrente_required = conta_corrente_required if "#{conta_corrente_required}".present?
 			
-			conta.modalidade_length       = modalidade_length       if "#{modalidade_length}".present?
-			conta.modalidade_minimum      = modalidade_minimum      if "#{modalidade_minimum}".present?
-			conta.modalidade_maximum      = modalidade_maximum      if "#{modalidade_maximum}".present?
-			conta.modalidade_required     = modalidade_required     if "#{modalidade_required}".present?
-			conta.modalidade_inclusion    = modalidade_inclusion    if "#{modalidade_inclusion}".present?
+			conta.valid_modalidade_length       = valid_modalidade_length       if "#{valid_modalidade_length}".present?
+			conta.valid_modalidade_minimum      = valid_modalidade_minimum      if "#{valid_modalidade_minimum}".present?
+			conta.valid_modalidade_maximum      = valid_modalidade_maximum      if "#{valid_modalidade_maximum}".present?
+			conta.valid_modalidade_required     = valid_modalidade_required     if "#{valid_modalidade_required}".present?
+			conta.valid_modalidade_inclusion    = valid_modalidade_inclusion    if "#{valid_modalidade_inclusion}".present?
 			
 			conta.endereco_required       = endereco_required       if "#{endereco_required}".present?
 			
-			conta.carteira_length         = carteira_length         if "#{carteira_length}".present?
+			conta.valid_carteira_length         = valid_carteira_length         if "#{valid_carteira_length}".present?
 			conta.carteira_minimum        = carteira_minimum        if "#{carteira_minimum}".present?
 			conta.carteira_maximum        = carteira_maximum        if "#{carteira_maximum}".present?
 			conta.carteira_required       = carteira_required       if "#{carteira_required}".present?

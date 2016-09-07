@@ -13,17 +13,17 @@ describe BrBoleto::Conta::Sicoob do
 		it "deve setar a modalidade com '01' " do
 			subject.class.new.modalidade.must_equal '01'
 		end
-		it "deve setar a modalidade_required com true " do
-			subject.class.new.modalidade_required.must_equal true
+		it "deve setar a valid_modalidade_required com true " do
+			subject.class.new.valid_modalidade_required.must_equal true
 		end
-		it "deve setar a modalidade_length com 2 " do
-			subject.class.new.modalidade_length.must_equal 2
+		it "deve setar a valid_modalidade_length com 2 " do
+			subject.class.new.valid_modalidade_length.must_equal 2
 		end
 		it "deve setar a carteira_required com true " do
 			subject.class.new.carteira_required.must_equal true
 		end
-		it "deve setar a carteira_length com 1 " do
-			subject.class.new.carteira_length.must_equal 1
+		it "deve setar a valid_carteira_length com 1 " do
+			subject.class.new.valid_carteira_length.must_equal 1
 		end
 		it "deve setar a conta_corrente_required com true " do
 			subject.class.new.conta_corrente_required.must_equal true

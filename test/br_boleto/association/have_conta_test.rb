@@ -100,17 +100,17 @@ describe BrBoleto::HaveConta do
 	end
 
 	it 'Validação para modalidade' do
-		subject.stubs(:modalidade_length).returns      (5)
-		subject.stubs(:modalidade_minimum).returns     (5)
-		subject.stubs(:modalidade_maximum).returns     (5)
-		subject.stubs(:modalidade_required).returns    (true)
+		subject.stubs(:valid_modalidade_length).returns      (5)
+		subject.stubs(:valid_modalidade_minimum).returns     (5)
+		subject.stubs(:valid_modalidade_maximum).returns     (5)
+		subject.stubs(:valid_modalidade_required).returns    (true)
 		must_be_message_error(:base, "#{BrBoleto::Conta::Base.human_attribute_name(:modalidade)} #{get_message(:blank, {})}")
 		must_be_message_error(:base, "#{BrBoleto::Conta::Base.human_attribute_name(:modalidade)} #{get_message(:custom_length_is,       {count: 5}) }")
 		must_be_message_error(:base, "#{BrBoleto::Conta::Base.human_attribute_name(:modalidade)} #{get_message(:custom_length_minimum,  {count: 5}) }")
 		subject.conta.modalidade = '123456'
 		must_be_message_error(:base, "#{BrBoleto::Conta::Base.human_attribute_name(:modalidade)} #{get_message(:custom_length_maximum,  {count: 5}) }")
 		
-		subject.stubs(:modalidade_inclusion).returns(['50','60'])
+		subject.stubs(:valid_modalidade_inclusion).returns(['50','60'])
 		must_be_message_error(:base, "#{BrBoleto::Conta::Base.human_attribute_name(:modalidade)} #{get_message(:custom_inclusion,  {list: '50, 60'}) }")
 
 	end
@@ -133,7 +133,7 @@ describe BrBoleto::HaveConta do
 	end
 
 	it 'Validação para carteira' do
-		subject.stubs(:carteira_length).returns        (5)
+		subject.stubs(:valid_carteira_length).returns        (5)
 		subject.stubs(:carteira_minimum).returns       (5)
 		subject.stubs(:carteira_maximum).returns       (5)
 		subject.stubs(:carteira_required).returns      (true)
@@ -169,12 +169,12 @@ describe BrBoleto::HaveConta do
 			subject.conta.conta_corrente_minimum  = 3
 			subject.conta.conta_corrente_maximum  = 4
 			subject.conta.conta_corrente_required = false
-			subject.conta.modalidade_length       = 6
-			subject.conta.modalidade_minimum      = 7
-			subject.conta.modalidade_maximum      = 8
-			subject.conta.modalidade_required     = true
+			subject.conta.valid_modalidade_length       = 6
+			subject.conta.valid_modalidade_minimum      = 7
+			subject.conta.valid_modalidade_maximum      = 8
+			subject.conta.valid_modalidade_required     = true
 			subject.conta.endereco_required       = false
-			subject.conta.carteira_length         = 15
+			subject.conta.valid_carteira_length         = 15
 			subject.conta.carteira_minimum        = 16
 			subject.conta.carteira_maximum        = 17
 			subject.conta.carteira_required       = false
@@ -183,7 +183,7 @@ describe BrBoleto::HaveConta do
 			subject.conta.convenio_maximum        = 21
 			subject.conta.convenio_required       = false
 			
-			subject.conta.modalidade_inclusion  = ['10','20']
+			subject.conta.valid_modalidade_inclusion  = ['10','20']
 			subject.conta.carteira_inclusion    = ['10','20']
 			subject.conta.convenio_inclusion    = ['10','20']
 		end
@@ -202,11 +202,11 @@ describe BrBoleto::HaveConta do
 				must_be_message_error(:base, "#{BrBoleto::Conta::Base.human_attribute_name(:conta_corrente)} #{get_message(:custom_length_maximum,  {count: 15}) }")
 			end
 			it '#modalidade' do
-				subject.stubs(:modalidade_length).returns      (16)
-				subject.stubs(:modalidade_minimum).returns     (17)
-				subject.stubs(:modalidade_maximum).returns     (18)
-				subject.stubs(:modalidade_required).returns    (false)				
-				subject.stubs(:modalidade_inclusion).returns  ['30','40']
+				subject.stubs(:valid_modalidade_length).returns      (16)
+				subject.stubs(:valid_modalidade_minimum).returns     (17)
+				subject.stubs(:valid_modalidade_maximum).returns     (18)
+				subject.stubs(:valid_modalidade_required).returns    (false)				
+				subject.stubs(:valid_modalidade_inclusion).returns  ['30','40']
 				
 				wont_be_message_error(:base, "#{BrBoleto::Conta::Base.human_attribute_name(:modalidade)} #{get_message(:blank, {})}")
 				must_be_message_error(:base, "#{BrBoleto::Conta::Base.human_attribute_name(:modalidade)} #{get_message(:custom_length_is,       {count: 16}) }")
@@ -232,7 +232,7 @@ describe BrBoleto::HaveConta do
 				must_be_message_error(:base, "#{BrBoleto::Conta::Base.human_attribute_name(:endereco)} #{get_message(:blank, {})}")
 			end
 			it '#carteira' do
-				subject.stubs(:carteira_length).returns        (22)
+				subject.stubs(:valid_carteira_length).returns        (22)
 				subject.stubs(:carteira_minimum).returns       (23)
 				subject.stubs(:carteira_maximum).returns       (24)
 				subject.stubs(:carteira_required).returns      (true)

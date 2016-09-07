@@ -15,11 +15,11 @@ module BrBoleto
 				attr_accessor :tipo_formulario
 
 				#################### VALIDAÇÕES DA CONTA #####################
-					def modalidade_required;     true end # <= Modalidade é obrigatória
+					def valid_modalidade_required;     true end # <= Modalidade é obrigatória
 					def codigo_cedente_required; true end # <= Código do cedente/beneficiário/convenio deve ser obrigatorio
 					def conta_corrente_required; true end # <= Conta corrente obrigatória
 					def conta_corrente_maximum;  12   end # <= Máximo de digitos da conta corrente
-					def modalidade_length;       2    end # <= Modalidade deve ter 2 digitos
+					def valid_modalidade_length;       2    end # <= Modalidade deve ter 2 digitos
 				##############################################################
 
 				validates :tipo_formulario, presence: true

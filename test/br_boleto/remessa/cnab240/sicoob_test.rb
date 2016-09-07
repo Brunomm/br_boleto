@@ -15,8 +15,8 @@ describe BrBoleto::Remessa::Cnab240::Sicoob do
 
 	context "validations" do
 		describe 'Validações personalizadas da conta' do
-			it 'modalidade_required' do
-				subject.send(:modalidade_required).must_equal true
+			it 'valid_modalidade_required' do
+				subject.send(:valid_modalidade_required).must_equal true
 				subject.conta.modalidade = ''
 				conta_must_be_msg_error(:modalidade, :blank)
 			end
@@ -36,8 +36,8 @@ describe BrBoleto::Remessa::Cnab240::Sicoob do
 				subject.conta.conta_corrente = '1234567890123456'
 				conta_must_be_msg_error(:conta_corrente, :custom_length_maximum, {count: 12})
 			end
-			it 'modalidade_length' do
-				subject.send(:modalidade_length).must_equal 2
+			it 'valid_modalidade_length' do
+				subject.send(:valid_modalidade_length).must_equal 2
 				subject.conta.modalidade = '1234567890123456'
 				conta_must_be_msg_error(:modalidade, :custom_length_is, {count: 2})
 			end

@@ -73,35 +73,35 @@ describe BrBoleto::Remessa::Base do
 				wont_be_message_error(:modalidade)
 			end
 
-			context "#modalidade_required" do
+			context "#valid_modalidade_required" do
 				it "quando setado deve validar a obrigatoriedade" do
 					wont validate_presence_of(:modalidade)
 					
-					subject.modalidade_required = true
+					subject.valid_modalidade_required = true
 					must validate_presence_of(:modalidade)
 				end
 			end
-			context "#modalidade_length" do
+			context "#valid_modalidade_length" do
 				it "quando setado um valor deve validar através do valor setado" do
-					subject.modalidade_length = 7
+					subject.valid_modalidade_length = 7
 					subject.modalidade = '12345678'
 					must_be_message_error(:modalidade, :custom_length_is, {count: 7})
 					subject.modalidade = '1234567'
 					wont_be_message_error(:modalidade, :custom_length_is, {count: 7})
 				end
 			end
-			context "#modalidade_minimum" do
+			context "#valid_modalidade_minimum" do
 				it "quando setado um valor deve validar através do valor setado" do
-					subject.modalidade_minimum = 5
+					subject.valid_modalidade_minimum = 5
 					subject.modalidade = '1'
 					must_be_message_error(:modalidade, :custom_length_minimum, {count: 5})
 					subject.modalidade = '1234567'
 					wont_be_message_error(:modalidade, :custom_length_minimum, {count: 5})
 				end
 			end
-			context "#modalidade_maximum" do
+			context "#valid_modalidade_maximum" do
 				it "quando setado um valor deve validar através do valor setado" do
-					subject.modalidade_maximum = 3
+					subject.valid_modalidade_maximum = 3
 					subject.modalidade = '1234'
 					must_be_message_error(:modalidade, :custom_length_maximum, {count: 3})
 					subject.modalidade = '123'
@@ -109,12 +109,12 @@ describe BrBoleto::Remessa::Base do
 				end
 			end
 
-			context "#modalidade_inclusion" do
+			context "#valid_modalidade_inclusion" do
 				it "deve validar que o valor deve estar entre um dos valores passados" do
-					subject.modalidade_inclusion = 3
+					subject.valid_modalidade_inclusion = 3
 					subject.modalidade = '4'
 					must_be_message_error(:modalidade, :custom_inclusion, {list: '3'})
-					subject.modalidade_inclusion = [1,2,'03']
+					subject.valid_modalidade_inclusion = [1,2,'03']
 					subject.modalidade = '04'
 					must_be_message_error(:modalidade, :custom_inclusion, {list: '1, 2, 03'})
 
@@ -182,9 +182,9 @@ describe BrBoleto::Remessa::Base do
 					must validate_presence_of(:carteira)
 				end
 			end
-			context "#carteira_length" do
+			context "#valid_carteira_length" do
 				it "quando setado um valor deve validar através do valor setado" do
-					subject.carteira_length = 7
+					subject.valid_carteira_length = 7
 					subject.carteira = '12345678'
 					must_be_message_error(:carteira, :custom_length_is, {count: 7})
 					subject.carteira = '1234567'
