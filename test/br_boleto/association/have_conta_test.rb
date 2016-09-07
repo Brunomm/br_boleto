@@ -134,16 +134,16 @@ describe BrBoleto::HaveConta do
 
 	it 'Validação para carteira' do
 		subject.stubs(:valid_carteira_length).returns        (5)
-		subject.stubs(:carteira_minimum).returns       (5)
-		subject.stubs(:carteira_maximum).returns       (5)
-		subject.stubs(:carteira_required).returns      (true)
+		subject.stubs(:valid_carteira_minimum).returns       (5)
+		subject.stubs(:valid_carteira_maximum).returns       (5)
+		subject.stubs(:valid_carteira_required).returns      (true)
 		must_be_message_error(:base, "#{BrBoleto::Conta::Base.human_attribute_name(:carteira)} #{get_message(:blank, {})}")
 		must_be_message_error(:base, "#{BrBoleto::Conta::Base.human_attribute_name(:carteira)} #{get_message(:custom_length_is,       {count: 5}) }")
 		must_be_message_error(:base, "#{BrBoleto::Conta::Base.human_attribute_name(:carteira)} #{get_message(:custom_length_minimum,  {count: 5}) }")
 		subject.conta.carteira = '123456'
 		must_be_message_error(:base, "#{BrBoleto::Conta::Base.human_attribute_name(:carteira)} #{get_message(:custom_length_maximum,  {count: 5}) }")
 
-		subject.stubs(:carteira_inclusion).returns(['50','60'])
+		subject.stubs(:valid_carteira_inclusion).returns(['50','60'])
 		must_be_message_error(:base, "#{BrBoleto::Conta::Base.human_attribute_name(:carteira)} #{get_message(:custom_inclusion,  {list: '50, 60'}) }")
 	end
 
@@ -175,16 +175,16 @@ describe BrBoleto::HaveConta do
 			subject.conta.valid_modalidade_required     = true
 			subject.conta.endereco_required       = false
 			subject.conta.valid_carteira_length         = 15
-			subject.conta.carteira_minimum        = 16
-			subject.conta.carteira_maximum        = 17
-			subject.conta.carteira_required       = false
+			subject.conta.valid_carteira_minimum        = 16
+			subject.conta.valid_carteira_maximum        = 17
+			subject.conta.valid_carteira_required       = false
 			subject.conta.convenio_length         = 19
 			subject.conta.convenio_minimum        = 20
 			subject.conta.convenio_maximum        = 21
 			subject.conta.convenio_required       = false
 			
 			subject.conta.valid_modalidade_inclusion  = ['10','20']
-			subject.conta.carteira_inclusion    = ['10','20']
+			subject.conta.valid_carteira_inclusion    = ['10','20']
 			subject.conta.convenio_inclusion    = ['10','20']
 		end
 
@@ -233,10 +233,10 @@ describe BrBoleto::HaveConta do
 			end
 			it '#carteira' do
 				subject.stubs(:valid_carteira_length).returns        (22)
-				subject.stubs(:carteira_minimum).returns       (23)
-				subject.stubs(:carteira_maximum).returns       (24)
-				subject.stubs(:carteira_required).returns      (true)
-				subject.stubs(:carteira_inclusion).returns    ['30','40']
+				subject.stubs(:valid_carteira_minimum).returns       (23)
+				subject.stubs(:valid_carteira_maximum).returns       (24)
+				subject.stubs(:valid_carteira_required).returns      (true)
+				subject.stubs(:valid_carteira_inclusion).returns    ['30','40']
 				
 				must_be_message_error(:base, "#{BrBoleto::Conta::Base.human_attribute_name(:carteira)} #{get_message(:blank, {})}")
 				must_be_message_error(:base, "#{BrBoleto::Conta::Base.human_attribute_name(:carteira)} #{get_message(:custom_length_is,       {count: 22}) }")

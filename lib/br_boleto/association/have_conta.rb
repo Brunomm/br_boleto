@@ -40,15 +40,15 @@ module BrBoleto
 		def codigo_cedente_required; end
 		def endereco_required;       end
 		def valid_carteira_length;         end
-		def carteira_minimum;        end
-		def carteira_maximum;        end
-		def carteira_required;       end
+		def valid_carteira_minimum;        end
+		def valid_carteira_maximum;        end
+		def valid_carteira_required;       end
 		def convenio_length;         end
 		def convenio_minimum;        end
 		def convenio_maximum;        end
 		def convenio_required;       end
 		def valid_modalidade_inclusion;    end
-		def carteira_inclusion;      end
+		def valid_carteira_inclusion;      end
 		def convenio_inclusion;      end
 		def valid_versao_aplicativo_required; end # Banco da Caixa
 
@@ -67,10 +67,10 @@ module BrBoleto
 			conta.endereco_required       = endereco_required       if "#{endereco_required}".present?
 			
 			conta.valid_carteira_length         = valid_carteira_length         if "#{valid_carteira_length}".present?
-			conta.carteira_minimum        = carteira_minimum        if "#{carteira_minimum}".present?
-			conta.carteira_maximum        = carteira_maximum        if "#{carteira_maximum}".present?
-			conta.carteira_required       = carteira_required       if "#{carteira_required}".present?
-			conta.carteira_inclusion      = carteira_inclusion      if "#{carteira_inclusion}".present?
+			conta.valid_carteira_minimum        = valid_carteira_minimum        if "#{valid_carteira_minimum}".present?
+			conta.valid_carteira_maximum        = valid_carteira_maximum        if "#{valid_carteira_maximum}".present?
+			conta.valid_carteira_required       = valid_carteira_required       if "#{valid_carteira_required}".present?
+			conta.valid_carteira_inclusion      = valid_carteira_inclusion      if "#{valid_carteira_inclusion}".present?
 			
 			# Se tiver alguma validação setada em convênio é o que deve prevalecer
 			conta.codigo_cedente_length   = codigo_cedente_length   if "#{codigo_cedente_length}".present?

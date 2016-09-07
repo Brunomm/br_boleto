@@ -24,9 +24,9 @@ module BrBoleto
 			def default_values
 				super.merge({
 					carteira:             '14', # Com registro
-					carteira_required:     true,         # <- Validação dinâmica que a modalidade é obrigatória
+					valid_carteira_required:     true,         # <- Validação dinâmica que a modalidade é obrigatória
 					valid_carteira_length:       2,            # <- Validação dinâmica que a modalidade deve ter 2 digitos
-					carteira_inclusion:    %w[11 14 21], # <- Validação dinâmica de valores aceitos para a modalidade
+					valid_carteira_inclusion:    %w[11 14 21], # <- Validação dinâmica de valores aceitos para a modalidade
 					convenio_required:     true,         # <- Validação que a convenio deve ter obrigatório
 					convenio_maximum:      6,            # <- Validação que a convenio deve ter no máximo 6 digitos
 					versao_aplicativo:     '0',

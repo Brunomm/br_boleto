@@ -11,8 +11,8 @@ describe BrBoleto::Remessa::Cnab240::Caixa do
 
 	context "validations" do
 		describe 'Validações personalizadas da conta' do
-			it 'carteira_required' do
-				# subject.send(:carteira_required).must_equal true
+			it 'valid_carteira_required' do
+				# subject.send(:valid_carteira_required).must_equal true
 				subject.conta.carteira = ''
 				conta_must_be_msg_error(:carteira, :blank)
 			end

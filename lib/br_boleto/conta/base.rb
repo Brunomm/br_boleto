@@ -103,15 +103,15 @@ module BrBoleto
 
 			# => CARTEIRA
 				attr_accessor :valid_carteira_length
-				attr_accessor :carteira_minimum
-				attr_accessor :carteira_maximum
-				attr_accessor :carteira_required
-				attr_accessor :carteira_inclusion
+				attr_accessor :valid_carteira_minimum
+				attr_accessor :valid_carteira_maximum
+				attr_accessor :valid_carteira_required
+				attr_accessor :valid_carteira_inclusion
 				validates :carteira, custom_length: {is:      :valid_carteira_length},  if: :valid_carteira_length
-				validates :carteira, custom_length: {minimum: :carteira_minimum}, if: :carteira_minimum
-				validates :carteira, custom_length: {maximum: :carteira_maximum}, if: :carteira_maximum
-				validates :carteira, presence: true, if: :carteira_required
-				validates :carteira, custom_inclusion: {in: :carteira_inclusion}, if: :carteira_inclusion
+				validates :carteira, custom_length: {minimum: :valid_carteira_minimum}, if: :valid_carteira_minimum
+				validates :carteira, custom_length: {maximum: :valid_carteira_maximum}, if: :valid_carteira_maximum
+				validates :carteira, presence: true, if: :valid_carteira_required
+				validates :carteira, custom_inclusion: {in: :valid_carteira_inclusion}, if: :valid_carteira_inclusion
 			
 			# => CONTA CORRENTE
 				attr_accessor :conta_corrente_length

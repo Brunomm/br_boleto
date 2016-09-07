@@ -20,9 +20,9 @@ module BrBoleto
 					valid_modalidade_required:     true,         # <- Validação dinâmica que a modalidade é obrigatória
 					valid_modalidade_length:       2,            # <- Validação dinâmica que a modalidade deve ter 2 digitos
 					valid_modalidade_inclusion:    %w[01 02 03], # <- Validação dinâmica de valores aceitos para a modalidade
-					carteira_required:       true,    # <- Validação dinâmica que a carteira é obrigatória
+					valid_carteira_required:       true,    # <- Validação dinâmica que a carteira é obrigatória
 					valid_carteira_length:         1,       # <- Validação dinâmica que a carteira deve ter 1 digito
-					carteira_inclusion:      %w[1 3], # <- Validação dinâmica de valores aceitos para a carteira
+					valid_carteira_inclusion:      %w[1 3], # <- Validação dinâmica de valores aceitos para a carteira
 					conta_corrente_required: true,    # <- Validação dinâmica que a conta_corrente é obrigatória
 					conta_corrente_maximum:  8,       # <- Validação que a conta_corrente deve ter no máximo 8 digitos
 					codigo_cedente_maximum:  7,       # <- Validação que a codigo_cedente/convênio deve ter no máximo 7 digitos

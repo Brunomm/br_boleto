@@ -11,14 +11,14 @@ describe BrBoleto::Conta::Caixa do
 		it "deve setar a carteira com 14'" do
 			subject.class.new.carteira.must_equal '14'
 		end
-		it "deve setar a carteira_required com true" do
-			subject.class.new.carteira_required.must_equal true
+		it "deve setar a valid_carteira_required com true" do
+			subject.class.new.valid_carteira_required.must_equal true
 		end
 		it "deve setar a valid_carteira_length com 2" do
 			subject.class.new.valid_carteira_length.must_equal 2
 		end
-		it "deve setar a carteira_inclusion com %w[11 14 21]" do
-			subject.class.new.carteira_inclusion.must_equal %w[11 14 21]
+		it "deve setar a valid_carteira_inclusion com %w[11 14 21]" do
+			subject.class.new.valid_carteira_inclusion.must_equal %w[11 14 21]
 		end
 		it "deve setar a convenio_maximum com 6" do
 			subject.class.new.convenio_maximum.must_equal 6

@@ -174,11 +174,11 @@ describe BrBoleto::Remessa::Base do
 				wont_be_message_error(:carteira)
 			end
 
-			context "#carteira_required" do
+			context "#valid_carteira_required" do
 				it "quando setado deve validar a obrigatoriedade" do
 					wont validate_presence_of(:carteira)
 					
-					subject.carteira_required = true
+					subject.valid_carteira_required = true
 					must validate_presence_of(:carteira)
 				end
 			end
@@ -191,30 +191,30 @@ describe BrBoleto::Remessa::Base do
 					wont_be_message_error(:carteira, :custom_length_is, {count: 7})
 				end
 			end
-			context "#carteira_minimum" do
+			context "#valid_carteira_minimum" do
 				it "quando setado um valor deve validar através do valor setado" do
-					subject.carteira_minimum = 5
+					subject.valid_carteira_minimum = 5
 					subject.carteira = '1'
 					must_be_message_error(:carteira, :custom_length_minimum, {count: 5})
 					subject.carteira = '1234567'
 					wont_be_message_error(:carteira, :custom_length_minimum, {count: 5})
 				end
 			end
-			context "#carteira_maximum" do
+			context "#valid_carteira_maximum" do
 				it "quando setado um valor deve validar através do valor setado" do
-					subject.carteira_maximum = 3
+					subject.valid_carteira_maximum = 3
 					subject.carteira = '1234'
 					must_be_message_error(:carteira, :custom_length_maximum, {count: 3})
 					subject.carteira = '123'
 					wont_be_message_error(:carteira, :custom_length_maximum, {count: 3})
 				end
 			end
-			context "#carteira_inclusion" do
+			context "#valid_carteira_inclusion" do
 				it "deve validar que o valor deve estar entre um dos valores passados" do
-					subject.carteira_inclusion = 3
+					subject.valid_carteira_inclusion = 3
 					subject.carteira = '4'
 					must_be_message_error(:carteira, :custom_inclusion, {list: '3'})
-					subject.carteira_inclusion = [1,2,'03']
+					subject.valid_carteira_inclusion = [1,2,'03']
 					subject.carteira = '04'
 					must_be_message_error(:carteira, :custom_inclusion, {list: '1, 2, 03'})
 
