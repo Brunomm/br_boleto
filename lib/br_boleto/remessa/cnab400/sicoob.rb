@@ -20,7 +20,7 @@ module BrBoleto
 					# 041  046  006  Número do convênio líder: Brancos
 					info =  "#{conta.agencia}".adjust_size_to(4, '0')
 					info << "#{conta.agencia_dv}".adjust_size_to(1,'0')
-					info << "#{conta.codigo_cedente}".adjust_size_to(8,'0')
+					info << "#{conta.codigo_cedente}".adjust_size_to(8,'0', :right)
 					info << "#{conta.codigo_cedente_dv}".adjust_size_to(1,'0')
 
 					# A unica diferença entre o header e o delathe é que no
@@ -31,6 +31,7 @@ module BrBoleto
 
 					info.adjust_size_to(20)
 				end
+
 
 				# Complemento do registro
 				# Posição: 101 até 394
@@ -189,7 +190,7 @@ module BrBoleto
 					#                      Se o código da moeda for REAL, o valor restante representa o IOF. 
 					#                      Se o código da moeda for diferente de REAL, o valor restante será a quantidade monetária.
 					detalhe << "#{pagamento.codigo_moeda}".adjust_size_to(1,'9')
-					detalhe << pagamento.moeda_real? ? ''.ljust(12 ,'0') : pagamento.valor_iof_formatado(12)
+					detalhe << (pagamento.moeda_real? ? ''.ljust(12 ,'0') : pagamento.valor_iof_formatado(12))
 					
 					# 206	218	013	9(11)V99	Valor Abatimento
 					detalhe << "#{pagamento.valor_abatimento_formatado}".adjust_size_to(13,'0', :right)
@@ -224,7 +225,7 @@ module BrBoleto
 					info << "#{pagamento.pagador.cidade}".adjust_size_to(15)
 
 					# 350  351  002  A(02)  UF do Pagador
-					info << "#{pagamento.pagador.uf}".adjust_size_to(15)
+					info << "#{pagamento.pagador.uf}".adjust_size_to(2)
 					
 					# 352  391  040  X(40)  "Observações/Mensagem ou Sacador/Avalista:
 					#                          Quando o SEQ 14 – Indicativo de Mensagem ou Sacador/Avalista - for preenchido com Brancos, 
