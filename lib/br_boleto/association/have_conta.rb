@@ -26,10 +26,10 @@ module BrBoleto
 	private
 		#######################  VALIDAÇÔES DA CONTA #######################
 		# Devem ser sobrescrita a cada classe que utilizar, pois pode variar
-		def conta_corrente_length;   end
-		def conta_corrente_minimum;  end
-		def conta_corrente_maximum;  end
-		def conta_corrente_required; end
+		def valid_conta_corrente_length;   end
+		def valid_conta_corrente_minimum;  end
+		def valid_conta_corrente_maximum;  end
+		def valid_conta_corrente_required; end
 		def valid_modalidade_length;       end
 		def valid_modalidade_minimum;      end
 		def valid_modalidade_maximum;      end
@@ -53,10 +53,10 @@ module BrBoleto
 		def valid_versao_aplicativo_required; end # Banco da Caixa
 
 		def conta_validations
-			conta.conta_corrente_length   = conta_corrente_length   if "#{conta_corrente_length}".present?
-			conta.conta_corrente_minimum  = conta_corrente_minimum  if "#{conta_corrente_minimum}".present?
-			conta.conta_corrente_maximum  = conta_corrente_maximum  if "#{conta_corrente_maximum}".present?
-			conta.conta_corrente_required = conta_corrente_required if "#{conta_corrente_required}".present?
+			conta.valid_conta_corrente_length   = valid_conta_corrente_length   if "#{valid_conta_corrente_length}".present?
+			conta.valid_conta_corrente_minimum  = valid_conta_corrente_minimum  if "#{valid_conta_corrente_minimum}".present?
+			conta.valid_conta_corrente_maximum  = valid_conta_corrente_maximum  if "#{valid_conta_corrente_maximum}".present?
+			conta.valid_conta_corrente_required = valid_conta_corrente_required if "#{valid_conta_corrente_required}".present?
 			
 			conta.valid_modalidade_length       = valid_modalidade_length       if "#{valid_modalidade_length}".present?
 			conta.valid_modalidade_minimum      = valid_modalidade_minimum      if "#{valid_modalidade_minimum}".present?

@@ -88,10 +88,10 @@ describe BrBoleto::HaveConta do
 	end
 
 	it 'Validação para conta_corrente' do
-		subject.stubs(:conta_corrente_length).returns  (5)
-		subject.stubs(:conta_corrente_minimum).returns (5)
-		subject.stubs(:conta_corrente_maximum).returns (5)
-		subject.stubs(:conta_corrente_required).returns(true)
+		subject.stubs(:valid_conta_corrente_length).returns  (5)
+		subject.stubs(:valid_conta_corrente_minimum).returns (5)
+		subject.stubs(:valid_conta_corrente_maximum).returns (5)
+		subject.stubs(:valid_conta_corrente_required).returns(true)
 		must_be_message_error(:base, "#{BrBoleto::Conta::Base.human_attribute_name(:conta_corrente)} #{get_message(:blank, {})}")
 		must_be_message_error(:base, "#{BrBoleto::Conta::Base.human_attribute_name(:conta_corrente)} #{get_message(:custom_length_is,       {count: 5}) }")
 		must_be_message_error(:base, "#{BrBoleto::Conta::Base.human_attribute_name(:conta_corrente)} #{get_message(:custom_length_minimum,  {count: 5}) }")
@@ -165,10 +165,10 @@ describe BrBoleto::HaveConta do
 
 	context "o valor setado nas validações devem obedecer a classe que inclui a conta. Mesmo que a conta tenha uma validação diferente" do
 		before do
-			subject.conta.conta_corrente_length   = 2
-			subject.conta.conta_corrente_minimum  = 3
-			subject.conta.conta_corrente_maximum  = 4
-			subject.conta.conta_corrente_required = false
+			subject.conta.valid_conta_corrente_length   = 2
+			subject.conta.valid_conta_corrente_minimum  = 3
+			subject.conta.valid_conta_corrente_maximum  = 4
+			subject.conta.valid_conta_corrente_required = false
 			subject.conta.valid_modalidade_length       = 6
 			subject.conta.valid_modalidade_minimum      = 7
 			subject.conta.valid_modalidade_maximum      = 8
@@ -190,10 +190,10 @@ describe BrBoleto::HaveConta do
 
 		context "Se os metodos do objeto que temm a conta tiverem valor nos seus metodos deve permanecer esses valores" do
 			it '#conta_corrente' do
-				subject.stubs(:conta_corrente_length).returns  (13)
-				subject.stubs(:conta_corrente_minimum).returns (14)
-				subject.stubs(:conta_corrente_maximum).returns (15)
-				subject.stubs(:conta_corrente_required).returns(true)
+				subject.stubs(:valid_conta_corrente_length).returns  (13)
+				subject.stubs(:valid_conta_corrente_minimum).returns (14)
+				subject.stubs(:valid_conta_corrente_maximum).returns (15)
+				subject.stubs(:valid_conta_corrente_required).returns(true)
 				
 				must_be_message_error(:base, "#{BrBoleto::Conta::Base.human_attribute_name(:conta_corrente)} #{get_message(:blank, {})}")
 				must_be_message_error(:base, "#{BrBoleto::Conta::Base.human_attribute_name(:conta_corrente)} #{get_message(:custom_length_is,       {count: 13}) }")

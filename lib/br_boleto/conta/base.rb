@@ -114,14 +114,14 @@ module BrBoleto
 				validates :carteira, custom_inclusion: {in: :valid_carteira_inclusion}, if: :valid_carteira_inclusion
 			
 			# => CONTA CORRENTE
-				attr_accessor :conta_corrente_length
-				attr_accessor :conta_corrente_minimum
-				attr_accessor :conta_corrente_maximum
-				attr_accessor :conta_corrente_required
-				validates :conta_corrente, custom_length: {is:      :conta_corrente_length},  if: :conta_corrente_length
-				validates :conta_corrente, custom_length: {minimum: :conta_corrente_minimum}, if: :conta_corrente_minimum
-				validates :conta_corrente, custom_length: {maximum: :conta_corrente_maximum}, if: :conta_corrente_maximum
-				validates :conta_corrente, presence: true, if: :conta_corrente_required
+				attr_accessor :valid_conta_corrente_length
+				attr_accessor :valid_conta_corrente_minimum
+				attr_accessor :valid_conta_corrente_maximum
+				attr_accessor :valid_conta_corrente_required
+				validates :conta_corrente, custom_length: {is:      :valid_conta_corrente_length},  if: :valid_conta_corrente_length
+				validates :conta_corrente, custom_length: {minimum: :valid_conta_corrente_minimum}, if: :valid_conta_corrente_minimum
+				validates :conta_corrente, custom_length: {maximum: :valid_conta_corrente_maximum}, if: :valid_conta_corrente_maximum
+				validates :conta_corrente, presence: true, if: :valid_conta_corrente_required
 
 			
 			# => CONVÊNIO / CODIGO CEDENTE / CONTRATO / CODIGO BENEFICIÁRIO

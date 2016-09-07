@@ -21,8 +21,8 @@ describe BrBoleto::Remessa::Cnab240::Sicoob do
 				conta_must_be_msg_error(:modalidade, :blank)
 			end
 
-			it 'conta_corrente_required' do
-				subject.send(:conta_corrente_required).must_equal true
+			it 'valid_conta_corrente_required' do
+				subject.send(:valid_conta_corrente_required).must_equal true
 				subject.conta.conta_corrente = ''
 				conta_must_be_msg_error(:conta_corrente, :blank)
 			end
@@ -31,8 +31,8 @@ describe BrBoleto::Remessa::Cnab240::Sicoob do
 				subject.conta.codigo_cedente = ''
 				conta_must_be_msg_error(:convenio, :blank)
 			end
-			it 'conta_corrente_maximum' do
-				subject.send(:conta_corrente_maximum).must_equal 12
+			it 'valid_conta_corrente_maximum' do
+				subject.send(:valid_conta_corrente_maximum).must_equal 12
 				subject.conta.conta_corrente = '1234567890123456'
 				conta_must_be_msg_error(:conta_corrente, :custom_length_maximum, {count: 12})
 			end

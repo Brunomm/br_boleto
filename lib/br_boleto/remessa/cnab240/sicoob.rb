@@ -17,8 +17,8 @@ module BrBoleto
 				#################### VALIDAÇÕES DA CONTA #####################
 					def valid_modalidade_required;     true end # <= Modalidade é obrigatória
 					def codigo_cedente_required; true end # <= Código do cedente/beneficiário/convenio deve ser obrigatorio
-					def conta_corrente_required; true end # <= Conta corrente obrigatória
-					def conta_corrente_maximum;  12   end # <= Máximo de digitos da conta corrente
+					def valid_conta_corrente_required; true end # <= Conta corrente obrigatória
+					def valid_conta_corrente_maximum;  12   end # <= Máximo de digitos da conta corrente
 					def valid_modalidade_length;       2    end # <= Modalidade deve ter 2 digitos
 				##############################################################
 

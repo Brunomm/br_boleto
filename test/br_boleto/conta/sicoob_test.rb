@@ -25,11 +25,11 @@ describe BrBoleto::Conta::Sicoob do
 		it "deve setar a valid_carteira_length com 1 " do
 			subject.class.new.valid_carteira_length.must_equal 1
 		end
-		it "deve setar a conta_corrente_required com true " do
-			subject.class.new.conta_corrente_required.must_equal true
+		it "deve setar a valid_conta_corrente_required com true " do
+			subject.class.new.valid_conta_corrente_required.must_equal true
 		end
-		it "deve setar a conta_corrente_maximum com 8 " do
-			subject.class.new.conta_corrente_maximum.must_equal 8
+		it "deve setar a valid_conta_corrente_maximum com 8 " do
+			subject.class.new.valid_conta_corrente_maximum.must_equal 8
 		end
 		it "deve setar a codigo_cedente_maximum com 7 " do
 			subject.class.new.codigo_cedente_maximum.must_equal 7

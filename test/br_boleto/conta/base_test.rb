@@ -30,35 +30,35 @@ describe BrBoleto::Remessa::Base do
 				wont_be_message_error(:conta_corrente)
 			end
 
-			context "#conta_corrente_required" do
+			context "#valid_conta_corrente_required" do
 				it "quando setado deve validar a obrigatoriedade" do
 					wont validate_presence_of(:conta_corrente)
 					
-					subject.conta_corrente_required = true
+					subject.valid_conta_corrente_required = true
 					must validate_presence_of(:conta_corrente)
 				end
 			end
-			context "#conta_corrente_length" do
+			context "#valid_conta_corrente_length" do
 				it "quando setado um valor deve validar através do valor setado" do
-					subject.conta_corrente_length = 7
+					subject.valid_conta_corrente_length = 7
 					subject.conta_corrente = '12345678'
 					must_be_message_error(:conta_corrente, :custom_length_is, {count: 7})
 					subject.conta_corrente = '1234567'
 					wont_be_message_error(:conta_corrente, :custom_length_is, {count: 7})
 				end
 			end
-			context "#conta_corrente_minimum" do
+			context "#valid_conta_corrente_minimum" do
 				it "quando setado um valor deve validar através do valor setado" do
-					subject.conta_corrente_minimum = 5
+					subject.valid_conta_corrente_minimum = 5
 					subject.conta_corrente = '1'
 					must_be_message_error(:conta_corrente, :custom_length_minimum, {count: 5})
 					subject.conta_corrente = '1234567'
 					wont_be_message_error(:conta_corrente, :custom_length_minimum, {count: 5})
 				end
 			end
-			context "#conta_corrente_maximum" do
+			context "#valid_conta_corrente_maximum" do
 				it "quando setado um valor deve validar através do valor setado" do
-					subject.conta_corrente_maximum = 3
+					subject.valid_conta_corrente_maximum = 3
 					subject.conta_corrente = '1234'
 					must_be_message_error(:conta_corrente, :custom_length_maximum, {count: 3})
 					subject.conta_corrente = '123'
