@@ -112,6 +112,11 @@ module BrBoleto
 			autoload :Sicoob
 			autoload :Caixa
 		end
+		module Cnab400
+			extend ActiveSupport::Autoload
+			autoload :Base
+			autoload :Sicoob
+		end
 	end
 
 	

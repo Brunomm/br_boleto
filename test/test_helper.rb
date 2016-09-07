@@ -37,6 +37,11 @@ class MiniTest::Spec
 	include Shoulda::Matchers::ActiveModel
 	include FactoryGirl::Syntax::Methods
 
+	def open_fixture(path)
+		file_path = File.expand_path('../fixtures', __FILE__) + '/'+ path
+		File.open(file_path)
+	end
+
 	def read_fixture(path)
 		file_path = File.expand_path('../fixtures', __FILE__) + '/'+ path
 		File.read(file_path)

@@ -11,6 +11,7 @@ module BrBoleto
 
 			def string_to_date(value, format = "%d%m%Y")
 				return value if value.is_a?(Date)
+				format = '%d%m%y' if value.strip.size == 6
 				begin Date.strptime(value, format) rescue nil end
 			end			
 		end

@@ -395,6 +395,7 @@ describe BrBoleto::Remessa::Cnab240::Sicoob do
 				codigo_multa:     '2', 
 				data_multa:       Date.parse('07/09/2016'),
 				valor_multa:      2.00,
+				data_emissao:     Date.parse('06/09/2016'),
 			})
 		}
 		let(:lote) { BrBoleto::Remessa::Lote.new(pagamentos: pagamento) } 

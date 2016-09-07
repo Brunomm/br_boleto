@@ -43,8 +43,8 @@ describe BrBoleto::Retorno::Cnab240::Base do
 			pagamento.valor_iof.must_equal                              0.0
 			pagamento.valor_pago.must_equal                             129.39
 			pagamento.valor_liquido.must_equal                          129.39
-			pagamento.valor_coutras_despesas.must_equal                 0.0
-			pagamento.valor_coutros_creditos.must_equal                 0.0
+			pagamento.valor_outras_despesas.must_equal                 0.0
+			pagamento.valor_outros_creditos.must_equal                 0.0
 			pagamento.data_ocorrencia.must_equal                        Date.parse('02/05/2016')
 			pagamento.data_credito.must_equal                           Date.parse('03/05/2016')
 			pagamento.codigo_ocorrencia_sacado.must_equal               ""
@@ -83,8 +83,8 @@ describe BrBoleto::Retorno::Cnab240::Base do
 			pagamento.valor_iof.must_equal                              0.0
 			pagamento.valor_pago.must_equal                             29.0
 			pagamento.valor_liquido.must_equal                          29.0
-			pagamento.valor_coutras_despesas.must_equal                 0.0
-			pagamento.valor_coutros_creditos.must_equal                 0.0
+			pagamento.valor_outras_despesas.must_equal                 0.0
+			pagamento.valor_outros_creditos.must_equal                 0.0
 			pagamento.data_ocorrencia.must_equal                        Date.parse('05/05/2016')
 			pagamento.data_credito.must_equal                           Date.parse('06/05/2016')
 			pagamento.codigo_ocorrencia_sacado.must_equal               ""
@@ -123,8 +123,8 @@ describe BrBoleto::Retorno::Cnab240::Base do
 			pagamento.valor_iof.must_equal                              0.0
 			pagamento.valor_pago.must_equal                             89.1
 			pagamento.valor_liquido.must_equal                          89.1
-			pagamento.valor_coutras_despesas.must_equal                 0.0
-			pagamento.valor_coutros_creditos.must_equal                 0.0
+			pagamento.valor_outras_despesas.must_equal                 0.0
+			pagamento.valor_outros_creditos.must_equal                 0.0
 			pagamento.data_ocorrencia.must_equal                        Date.parse('05/05/2016')
 			pagamento.data_credito.must_equal                           Date.parse('06/05/2016')
 			pagamento.codigo_ocorrencia_sacado.must_equal               ""
@@ -163,8 +163,8 @@ describe BrBoleto::Retorno::Cnab240::Base do
 			pagamento.valor_iof.must_equal                              0.0
 			pagamento.valor_pago.must_equal                             29.0
 			pagamento.valor_liquido.must_equal                          29.0
-			pagamento.valor_coutras_despesas.must_equal                 0.0
-			pagamento.valor_coutros_creditos.must_equal                 0.0
+			pagamento.valor_outras_despesas.must_equal                 0.0
+			pagamento.valor_outros_creditos.must_equal                 0.0
 			pagamento.data_ocorrencia.must_equal                        Date.parse('06/05/2016')
 			pagamento.data_credito.must_equal                           nil
 			pagamento.codigo_ocorrencia_sacado.must_equal               ""
@@ -202,8 +202,8 @@ describe BrBoleto::Retorno::Cnab240::Base do
 			pagamento.valor_iof.must_equal                              0.0
 			pagamento.valor_pago.must_equal                             47.37
 			pagamento.valor_liquido.must_equal                          47.37
-			pagamento.valor_coutras_despesas.must_equal                 0.0
-			pagamento.valor_coutros_creditos.must_equal                 0.0
+			pagamento.valor_outras_despesas.must_equal                 0.0
+			pagamento.valor_outros_creditos.must_equal                 0.0
 			pagamento.data_ocorrencia.must_equal                        Date.parse('06/05/2016')
 			pagamento.data_credito.must_equal                           nil
 			pagamento.codigo_ocorrencia_sacado.must_equal               ""
