@@ -14,8 +14,8 @@ describe BrBoleto::Pagador do
 				it { wont validate_presence_of(:cidade) } 
 				it { wont validate_presence_of(:uf) }
 			end
-			context "se setar o endereco_required então valida a presença do endereço" do
-				before { subject.endereco_required = true }
+			context "se setar o valid_endereco_required então valida a presença do endereço" do
+				before { subject.valid_endereco_required = true }
 				it { must validate_presence_of(:endereco) } 
 				it { must validate_presence_of(:bairro) }
 				it { must validate_presence_of(:cep) } 

@@ -26,8 +26,8 @@ describe BrBoleto::Remessa::Cnab240::Sicoob do
 				subject.conta.conta_corrente = ''
 				conta_must_be_msg_error(:conta_corrente, :blank)
 			end
-			it 'codigo_cedente_required' do
-				subject.send(:codigo_cedente_required).must_equal true
+			it 'valid_codigo_cedente_required' do
+				subject.send(:valid_codigo_cedente_required).must_equal true
 				subject.conta.codigo_cedente = ''
 				conta_must_be_msg_error(:convenio, :blank)
 			end

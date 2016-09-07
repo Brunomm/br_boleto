@@ -31,8 +31,8 @@ describe BrBoleto::Conta::Sicoob do
 		it "deve setar a valid_conta_corrente_maximum com 8 " do
 			subject.class.new.valid_conta_corrente_maximum.must_equal 8
 		end
-		it "deve setar a codigo_cedente_maximum com 7 " do
-			subject.class.new.codigo_cedente_maximum.must_equal 7
+		it "deve setar a valid_codigo_cedente_maximum com 7 " do
+			subject.class.new.valid_codigo_cedente_maximum.must_equal 7
 		end
 	end
 	describe "Validations" do

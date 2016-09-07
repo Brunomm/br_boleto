@@ -116,10 +116,10 @@ describe BrBoleto::HaveConta do
 	end
 
 	it 'Validação para codigo_cedente (convênio)' do
-		subject.stubs(:codigo_cedente_length).returns  (5)
-		subject.stubs(:codigo_cedente_minimum).returns (5)
-		subject.stubs(:codigo_cedente_maximum).returns (5)
-		subject.stubs(:codigo_cedente_required).returns(true)
+		subject.stubs(:valid_codigo_cedente_length).returns  (5)
+		subject.stubs(:valid_codigo_cedente_minimum).returns (5)
+		subject.stubs(:valid_codigo_cedente_maximum).returns (5)
+		subject.stubs(:valid_codigo_cedente_required).returns(true)
 		must_be_message_error(:base, "#{BrBoleto::Conta::Base.human_attribute_name(:convenio)} #{get_message(:blank, {})}")
 		must_be_message_error(:base, "#{BrBoleto::Conta::Base.human_attribute_name(:convenio)} #{get_message(:custom_length_is,       {count: 5}) }")
 		must_be_message_error(:base, "#{BrBoleto::Conta::Base.human_attribute_name(:convenio)} #{get_message(:custom_length_minimum,  {count: 5}) }")
@@ -128,7 +128,7 @@ describe BrBoleto::HaveConta do
 	end
 
 	it 'Validação para endereco' do
-		subject.stubs(:endereco_required).returns(true)
+		subject.stubs(:valid_endereco_required).returns(true)
 		must_be_message_error(:base, "#{BrBoleto::Conta::Base.human_attribute_name(:endereco)} #{get_message(:blank, {})}")
 	end
 
@@ -148,17 +148,17 @@ describe BrBoleto::HaveConta do
 	end
 
 	it 'Validação para convenio' do
-		subject.stubs(:convenio_length).returns        (5)
-		subject.stubs(:convenio_minimum).returns       (5)
-		subject.stubs(:convenio_maximum).returns       (5)
-		subject.stubs(:convenio_required).returns      (true)
+		subject.stubs(:valid_convenio_length).returns        (5)
+		subject.stubs(:valid_convenio_minimum).returns       (5)
+		subject.stubs(:valid_convenio_maximum).returns       (5)
+		subject.stubs(:valid_convenio_required).returns      (true)
 		must_be_message_error(:base, "#{BrBoleto::Conta::Base.human_attribute_name(:convenio)} #{get_message(:blank, {})}")
 		must_be_message_error(:base, "#{BrBoleto::Conta::Base.human_attribute_name(:convenio)} #{get_message(:custom_length_is,       {count: 5}) }")
 		must_be_message_error(:base, "#{BrBoleto::Conta::Base.human_attribute_name(:convenio)} #{get_message(:custom_length_minimum,  {count: 5}) }")
 		subject.conta.convenio = '123456'
 		must_be_message_error(:base, "#{BrBoleto::Conta::Base.human_attribute_name(:convenio)} #{get_message(:custom_length_maximum,  {count: 5}) }")
 
-		subject.stubs(:convenio_inclusion).returns(['50','60'])
+		subject.stubs(:valid_convenio_inclusion).returns(['50','60'])
 		must_be_message_error(:base, "#{BrBoleto::Conta::Base.human_attribute_name(:convenio)} #{get_message(:custom_inclusion,  {list: '50, 60'}) }")
 	end
 
@@ -173,19 +173,19 @@ describe BrBoleto::HaveConta do
 			subject.conta.valid_modalidade_minimum      = 7
 			subject.conta.valid_modalidade_maximum      = 8
 			subject.conta.valid_modalidade_required     = true
-			subject.conta.endereco_required       = false
+			subject.conta.valid_endereco_required       = false
 			subject.conta.valid_carteira_length         = 15
 			subject.conta.valid_carteira_minimum        = 16
 			subject.conta.valid_carteira_maximum        = 17
 			subject.conta.valid_carteira_required       = false
-			subject.conta.convenio_length         = 19
-			subject.conta.convenio_minimum        = 20
-			subject.conta.convenio_maximum        = 21
-			subject.conta.convenio_required       = false
+			subject.conta.valid_convenio_length         = 19
+			subject.conta.valid_convenio_minimum        = 20
+			subject.conta.valid_convenio_maximum        = 21
+			subject.conta.valid_convenio_required       = false
 			
 			subject.conta.valid_modalidade_inclusion  = ['10','20']
 			subject.conta.valid_carteira_inclusion    = ['10','20']
-			subject.conta.convenio_inclusion    = ['10','20']
+			subject.conta.valid_convenio_inclusion    = ['10','20']
 		end
 
 		context "Se os metodos do objeto que temm a conta tiverem valor nos seus metodos deve permanecer esses valores" do
@@ -216,10 +216,10 @@ describe BrBoleto::HaveConta do
 				must_be_message_error(:base, "#{BrBoleto::Conta::Base.human_attribute_name(:modalidade)} #{get_message(:custom_inclusion, {list: '30, 40'}) }")
 			end
 			it '#codigo_cedente (convênio)' do
-				subject.stubs(:codigo_cedente_length).returns  (19)
-				subject.stubs(:codigo_cedente_minimum).returns (20)
-				subject.stubs(:codigo_cedente_maximum).returns (21)
-				subject.stubs(:codigo_cedente_required).returns(false)
+				subject.stubs(:valid_codigo_cedente_length).returns  (19)
+				subject.stubs(:valid_codigo_cedente_minimum).returns (20)
+				subject.stubs(:valid_codigo_cedente_maximum).returns (21)
+				subject.stubs(:valid_codigo_cedente_required).returns(false)
 
 				wont_be_message_error(:base, "#{BrBoleto::Conta::Base.human_attribute_name(:convenio)} #{get_message(:blank, {})}")
 				must_be_message_error(:base, "#{BrBoleto::Conta::Base.human_attribute_name(:convenio)} #{get_message(:custom_length_is,       {count: 19}) }")
@@ -228,7 +228,7 @@ describe BrBoleto::HaveConta do
 				must_be_message_error(:base, "#{BrBoleto::Conta::Base.human_attribute_name(:convenio)} #{get_message(:custom_length_maximum,  {count: 21}) }")
 			end
 			it '#endereco' do
-				subject.stubs(:endereco_required).returns(true)
+				subject.stubs(:valid_endereco_required).returns(true)
 				must_be_message_error(:base, "#{BrBoleto::Conta::Base.human_attribute_name(:endereco)} #{get_message(:blank, {})}")
 			end
 			it '#carteira' do
@@ -246,11 +246,11 @@ describe BrBoleto::HaveConta do
 				must_be_message_error(:base, "#{BrBoleto::Conta::Base.human_attribute_name(:carteira)} #{get_message(:custom_inclusion,   {list: '30, 40'}) }")
 			end
 			it '#convenio' do
-				subject.stubs(:convenio_length).returns        (25)
-				subject.stubs(:convenio_minimum).returns       (26)
-				subject.stubs(:convenio_maximum).returns       (27)
-				subject.stubs(:convenio_required).returns      (true)
-				subject.stubs(:convenio_inclusion).returns    ['30','40']
+				subject.stubs(:valid_convenio_length).returns        (25)
+				subject.stubs(:valid_convenio_minimum).returns       (26)
+				subject.stubs(:valid_convenio_maximum).returns       (27)
+				subject.stubs(:valid_convenio_required).returns      (true)
+				subject.stubs(:valid_convenio_inclusion).returns    ['30','40']
 				
 				must_be_message_error(:base, "#{BrBoleto::Conta::Base.human_attribute_name(:convenio)} #{get_message(:blank, {})}")
 				must_be_message_error(:base, "#{BrBoleto::Conta::Base.human_attribute_name(:convenio)} #{get_message(:custom_length_is,       {count: 25}) }")
@@ -280,10 +280,10 @@ describe BrBoleto::HaveConta do
 			end
 			
 			it '#codigo_cedente (convenio)' do
-				subject.conta.codigo_cedente_length   = 10
-				subject.conta.codigo_cedente_minimum  = 11
-				subject.conta.codigo_cedente_maximum  = 12
-				subject.conta.codigo_cedente_required = true
+				subject.conta.valid_codigo_cedente_length   = 10
+				subject.conta.valid_codigo_cedente_minimum  = 11
+				subject.conta.valid_codigo_cedente_maximum  = 12
+				subject.conta.valid_codigo_cedente_required = true
 
 				must_be_message_error(:base, "#{BrBoleto::Conta::Base.human_attribute_name(:convenio)} #{get_message(:blank, {})}")
 				must_be_message_error(:base, "#{BrBoleto::Conta::Base.human_attribute_name(:convenio)} #{get_message(:custom_length_is,       {count: 10}) }")

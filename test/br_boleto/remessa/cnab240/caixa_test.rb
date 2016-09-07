@@ -23,14 +23,14 @@ describe BrBoleto::Remessa::Cnab240::Caixa do
 				conta_must_be_msg_error(:carteira, :custom_length_is, {count: 2})
 			end
 
-			it 'convenio_required' do
-				# subject.send(:convenio_required).must_equal true
+			it 'valid_convenio_required' do
+				# subject.send(:valid_convenio_required).must_equal true
 				subject.conta.convenio = ''
 				conta_must_be_msg_error(:convenio, :blank)
 			end
 
-			it 'convenio_length' do
-				# subject.send(:convenio_length).must_equal 2
+			it 'valid_convenio_length' do
+				# subject.send(:valid_convenio_length).must_equal 2
 				subject.conta.convenio = '1234567890123456'
 				conta_must_be_msg_error(:convenio, :custom_length_maximum, {count: 6})
 			end

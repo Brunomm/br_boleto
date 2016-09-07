@@ -20,8 +20,8 @@ describe BrBoleto::Conta::Caixa do
 		it "deve setar a valid_carteira_inclusion com %w[11 14 21]" do
 			subject.class.new.valid_carteira_inclusion.must_equal %w[11 14 21]
 		end
-		it "deve setar a convenio_maximum com 6" do
-			subject.class.new.convenio_maximum.must_equal 6
+		it "deve setar a valid_convenio_maximum com 6" do
+			subject.class.new.valid_convenio_maximum.must_equal 6
 		end
 		it "deve setar a versao_aplicativo com '0'" do
 			subject.class.new.versao_aplicativo.must_equal '0000'

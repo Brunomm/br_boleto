@@ -77,7 +77,7 @@ describe BrBoleto::HavePagador do
 	end
 
 	it 'Validação para endereco' do
-		subject.stubs(:endereco_required).returns(true)
+		subject.stubs(:valid_endereco_required).returns(true)
 		must_be_message_error(:base, "#{BrBoleto::Pagador.human_attribute_name(:endereco)} #{get_message(:blank, {})}")
 		must_be_message_error(:base, "#{BrBoleto::Pagador.human_attribute_name(:bairro)} #{get_message(:blank, {})}")
 		must_be_message_error(:base, "#{BrBoleto::Pagador.human_attribute_name(:cep)} #{get_message(:blank, {})}")
@@ -87,11 +87,11 @@ describe BrBoleto::HavePagador do
 
 	context "o valor setado nas validações devem obedecer a classe que inclui a pagador. Mesmo que a pagador tenha uma validação diferente" do
 		before do
-			subject.pagador.endereco_required = true
+			subject.pagador.valid_endereco_required = true
 		end
 
 		it "Se os metodos do objeto que temm a pagador tiverem valor nos seus metodos deve permanecer esses valores" do
-			subject.stubs(:endereco_required).returns(false)
+			subject.stubs(:valid_endereco_required).returns(false)
 			wont_be_message_error(:base, "#{BrBoleto::Pagador.human_attribute_name(:endereco)} #{get_message(:blank, {})}")
 			wont_be_message_error(:base, "#{BrBoleto::Pagador.human_attribute_name(:bairro)} #{get_message(:blank, {})}")
 			wont_be_message_error(:base, "#{BrBoleto::Pagador.human_attribute_name(:cep)} #{get_message(:blank, {})}")

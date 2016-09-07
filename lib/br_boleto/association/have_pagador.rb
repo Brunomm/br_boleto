@@ -24,10 +24,10 @@ module BrBoleto
 			BrBoleto::Pagador
 		end
 
-		def endereco_required;       end
+		def valid_endereco_required;       end
 		
 		def pagador_validations
-			pagador.endereco_required = endereco_required if "#{endereco_required}".present?
+			pagador.valid_endereco_required = valid_endereco_required if "#{valid_endereco_required}".present?
 			if pagador.invalid?
 				pagador.errors.full_messages.each do |msg|
 					errors.add(:base, msg)

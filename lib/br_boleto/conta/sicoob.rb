@@ -25,7 +25,7 @@ module BrBoleto
 					valid_carteira_inclusion:      %w[1 3], # <- Validação dinâmica de valores aceitos para a carteira
 					valid_conta_corrente_required: true,    # <- Validação dinâmica que a conta_corrente é obrigatória
 					valid_conta_corrente_maximum:  8,       # <- Validação que a conta_corrente deve ter no máximo 8 digitos
-					codigo_cedente_maximum:  7,       # <- Validação que a codigo_cedente/convênio deve ter no máximo 7 digitos
+					valid_codigo_cedente_maximum:  7,       # <- Validação que a codigo_cedente/convênio deve ter no máximo 7 digitos
 				})
 			end
 

@@ -125,31 +125,31 @@ module BrBoleto
 
 			
 			# => CONVÊNIO / CODIGO CEDENTE / CONTRATO / CODIGO BENEFICIÁRIO
-				attr_accessor :convenio_length
-				attr_accessor :convenio_minimum
-				attr_accessor :convenio_maximum
-				attr_accessor :convenio_required
-				attr_accessor :convenio_inclusion
-				alias_attribute :codigo_beneficiario_length,    :convenio_length
-				alias_attribute :codigo_beneficiario_minimum,   :convenio_minimum
-				alias_attribute :codigo_beneficiario_maximum,   :convenio_maximum
-				alias_attribute :codigo_beneficiario_required,  :convenio_required
-				alias_attribute :codigo_beneficiario_inclusion, :convenio_inclusion
-				alias_attribute :codigo_cedente_length,         :convenio_length
-				alias_attribute :codigo_cedente_minimum,        :convenio_minimum
-				alias_attribute :codigo_cedente_maximum,        :convenio_maximum
-				alias_attribute :codigo_cedente_required,       :convenio_required
-				alias_attribute :codigo_cedente_inclusion,      :convenio_inclusion
+				attr_accessor :valid_convenio_length
+				attr_accessor :valid_convenio_minimum
+				attr_accessor :valid_convenio_maximum
+				attr_accessor :valid_convenio_required
+				attr_accessor :valid_convenio_inclusion
+				alias_attribute :valid_codigo_beneficiario_length,    :valid_convenio_length
+				alias_attribute :valid_codigo_beneficiario_minimum,   :valid_convenio_minimum
+				alias_attribute :valid_codigo_beneficiario_maximum,   :valid_convenio_maximum
+				alias_attribute :valid_codigo_beneficiario_required,  :valid_convenio_required
+				alias_attribute :valid_codigo_beneficiario_inclusion, :valid_convenio_inclusion
+				alias_attribute :valid_codigo_cedente_length,         :valid_convenio_length
+				alias_attribute :valid_codigo_cedente_minimum,        :valid_convenio_minimum
+				alias_attribute :valid_codigo_cedente_maximum,        :valid_convenio_maximum
+				alias_attribute :valid_codigo_cedente_required,       :valid_convenio_required
+				alias_attribute :valid_codigo_cedente_inclusion,      :valid_convenio_inclusion
 
-				validates :convenio, custom_length: {is:      :convenio_length},  if: :convenio_length
-				validates :convenio, custom_length: {minimum: :convenio_minimum}, if: :convenio_minimum
-				validates :convenio, custom_length: {maximum: :convenio_maximum}, if: :convenio_maximum
-				validates :convenio, presence: true, if: :convenio_required
-				validates :convenio, custom_inclusion: {in: :convenio_inclusion}, if: :convenio_inclusion
+				validates :convenio, custom_length: {is:      :valid_convenio_length},  if: :valid_convenio_length
+				validates :convenio, custom_length: {minimum: :valid_convenio_minimum}, if: :valid_convenio_minimum
+				validates :convenio, custom_length: {maximum: :valid_convenio_maximum}, if: :valid_convenio_maximum
+				validates :convenio, presence: true, if: :valid_convenio_required
+				validates :convenio, custom_inclusion: {in: :valid_convenio_inclusion}, if: :valid_convenio_inclusion
 			
 			# => ENDEREÇO
-				attr_accessor :endereco_required
-				validates :endereco, presence: true, if: :endereco_required
+				attr_accessor :valid_endereco_required
+				validates :endereco, presence: true, if: :valid_endereco_required
 			#####################################################################################
 
 			validates :agencia, :razao_social, :cpf_cnpj, presence: true
