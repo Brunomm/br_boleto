@@ -3,7 +3,6 @@ module BrBoleto
 	module Retorno
 		module Cnab400
 			class Base < BrBoleto::Retorno::Base
-			# Esta classe foi desenvolvida baseando-se no manual disponibilizado pelo Sicoob
 			# É necessário sobrescrever o método `detalhe_fields` para cada banco, pois o CNAB 400
 			# Não apresenta um padrão definido.
 			# 
@@ -37,6 +36,8 @@ module BrBoleto
 					raise NotImplementedError.new('Sobreescreva este método na classe referente ao banco que você esta criando')
 				end
 
+				# Pega o código do banco que está presente no Header do arquivo, onde que por 
+				# padrão é encontrado nas posições 77,78 e 79.
 				def set_codigo_banco(lines)
 					return if lines.blank?
 					self.codigo_banco = "_#{lines[0]}"[77..79]

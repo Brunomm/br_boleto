@@ -2,7 +2,7 @@ require 'test_helper'
 
 describe BrBoleto::Retorno::Cnab240::Sicoob do
 	subject { BrBoleto::Retorno::Cnab240::Sicoob.new(file) }
-	let(:file) { File.join(BrBoleto.root, "test", "files", "retorno", "cnab240", "padrao240.ret") } 
+	let(:file) { open_fixture('retorno/cnab240/padrao240.ret') }
 
 	it "Deve ler o código do banco" do
 		subject.codigo_banco.must_equal '756'
