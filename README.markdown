@@ -517,7 +517,8 @@ Essa biblioteca é baseada em outras **ótimas** bibliotecas.
 
 * Brcobranca [https://github.com/kivanio/brcobranca](https://github.com/kivanio/brcobranca)
 * Gem de Boleto Bancário [https://github.com/tomas-stefano/boleto_bancario](https://github.com/tomas-stefano/boleto_bancario)
-* 
+
+ 
 ## Contribuições
 
 Seja um contribuidor. Você pode contribuir de N formas. Seguem elas:
