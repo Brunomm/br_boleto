@@ -33,22 +33,22 @@ describe BrBoleto::HaveConta do
 			hav.conta do |co|
 				co.razao_social = 'Empresa banco'
 				co.cpf_cnpj     = '074.554.663-87'
-				co.agencia      = '456'
+				co.agencia      = '6695'
 			end
 		end
 		result.conta.razao_social.must_equal 'Empresa banco'
 		result.conta.cpf_cnpj.must_equal     '07455466387'
-		result.conta.agencia.must_equal      '456'
+		result.conta.agencia.must_equal      '6695'
 	end
 
 	it "Deve ser possivel editar a conta com um bloco" do
 		subject.conta.razao_social = 'razao_1'
 		subject.conta do |co|
 			co.razao_social = 'razao_2'
-			co.agencia      = '456'
+			co.agencia      = '0456'
 		end
 		subject.conta.razao_social.must_equal 'razao_2'
-		subject.conta.agencia.must_equal '456'
+		subject.conta.agencia.must_equal '0456'
 	end
 
 	it "Deve ser possivel inicializar o objeto passando a conta como hash" do
@@ -56,12 +56,12 @@ describe BrBoleto::HaveConta do
 			conta: {
 				razao_social:  'Empresa banco',
 				cpf_cnpj:      '074.554.663-87',
-				agencia:       '456',
+				agencia:       '3456',
 			}
 		})
 		result.conta.razao_social.must_equal 'Empresa banco'
 		result.conta.cpf_cnpj.must_equal '07455466387'
-		result.conta.agencia.must_equal '456'
+		result.conta.agencia.must_equal '3456'
 	end
 
 	it "Deve ser possivel editar a conta com um hash" do
@@ -69,10 +69,10 @@ describe BrBoleto::HaveConta do
 		subject.conta.razao_social = 'razao_1'
 		subject.conta = {
 			razao_social: 'razao_2',
-			agencia:      '456',
+			agencia:      '1234',
 		}
 		subject.conta.razao_social.must_equal 'razao_2'
-		subject.conta.agencia.must_equal '456'
+		subject.conta.agencia.must_equal '1234'
 		subject.conta.cpf_cnpj.must_equal '12345678901'
 	end
 

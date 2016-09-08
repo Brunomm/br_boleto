@@ -44,7 +44,7 @@ describe BrBoleto::Remessa::Cnab240::Caixa do
 			it 'agencia_length' do
 				# subject.send(:agencia_length).must_equal 2
 				subject.conta.agencia = '1234567890123456'
-				conta_must_be_msg_error(:agencia, :custom_length_maximum, {count: 5})
+				conta_must_be_msg_error(:agencia, :custom_length_is, {count: 4})
 			end
 
 			it 'versao_aplicativo_required' do

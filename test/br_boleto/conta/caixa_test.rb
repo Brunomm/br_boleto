@@ -35,19 +35,6 @@ describe BrBoleto::Conta::Caixa do
 			subject.agencia_dv = 21
 			must_be_message_error(:agencia_dv, :custom_length_is, {count: 1})
 		end
-		
-		it 'agencia deve ter no maximo 5 digitos' do
-			subject.agencia = '123456'
-			must_be_message_error(:agencia, :custom_length_maximum, {count: 5})
-			subject.agencia = '12345'
-			wont_be_message_error(:agencia, :custom_length_maximum, {count: 5})
-		end
-		it 'agencia deve ter no minimo 4 digitos' do
-			subject.agencia = '123'
-			must_be_message_error(:agencia, :custom_length_minimum, {count: 4})
-			subject.agencia = '1234'
-			wont_be_message_error(:agencia, :custom_length_minimum, {count: 4})
-		end
 
 		it 'versao_aplicativo deve ter no maximo 4 digitos' do
 			subject.versao_aplicativo = '12345'
@@ -131,10 +118,35 @@ describe BrBoleto::Conta::Caixa do
 		end
 	end
 
+	describe '#convenio_dv' do
+		it "deve ser personalizavel pelo usuario" do
+			subject.convenio_dv = 88
+			subject.convenio_dv.must_equal 88
+		end
+		it "se não passar valor deve calcular automatico" do
+			subject.convenio_dv = nil
+			subject.convenio = '6688'
+			BrBoleto::Calculos::Modulo11FatorDe2a9RestoZero.expects(:new).with('006688').returns(stub(to_s: 5))
+
+			subject.convenio_dv.must_equal 5
+		end
+	end
+
 	describe '#versao_aplicativo' do
 		it "deve ajustar  valor para 4 digitos" do
 			subject.versao_aplicativo = 14
 			subject.versao_aplicativo.must_equal '0014'
+		end
+	end
+
+	describe "#carteira_formatada - Conforme o manual da caixa deve retornar RG para carteira com registro e SR para carteira sem registro" do
+		it "para a carteira 14 deve retornar RG" do
+			subject.carteira = '14'
+			subject.carteira_formatada.must_equal 'RG'
+		end
+		it "para a carteira 24 deve retornar SR" do
+			subject.carteira = '24'
+			subject.carteira_formatada.must_equal 'SR'
 		end
 	end
 

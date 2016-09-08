@@ -19,6 +19,9 @@ describe BrBoleto::Conta::Sicoob do
 		it "deve setar a valid_modalidade_length com 2 " do
 			subject.class.new.valid_modalidade_length.must_equal 2
 		end
+		it "deve setar a valid_agencia_length com 4 " do
+			subject.class.new.valid_agencia_length.must_equal 4
+		end
 		it "deve setar a valid_carteira_required com true " do
 			subject.class.new.valid_carteira_required.must_equal true
 		end
@@ -31,8 +34,8 @@ describe BrBoleto::Conta::Sicoob do
 		it "deve setar a valid_conta_corrente_maximum com 8 " do
 			subject.class.new.valid_conta_corrente_maximum.must_equal 8
 		end
-		it "deve setar a valid_codigo_cedente_maximum com 7 " do
-			subject.class.new.valid_codigo_cedente_maximum.must_equal 7
+		it "deve setar a valid_codigo_cedente_maximum com 6 " do
+			subject.class.new.valid_codigo_cedente_maximum.must_equal 6
 		end
 	end
 	describe "Validations" do
@@ -44,12 +47,6 @@ describe BrBoleto::Conta::Sicoob do
 			must_be_message_error(:agencia_dv, :custom_length_is, {count: 1})
 		end
 		
-		it 'agencia deve ter 4 digitos' do
-			subject.agencia = '123'
-			must_be_message_error(:agencia, :custom_length_is, {count: 4})
-			subject.agencia = '1234'
-			wont_be_message_error(:agencia, :custom_length_is, {count: 4})
-		end
 		context 'Validações padrões da modalidade' do
 			subject { BrBoleto::Conta::Sicoob.new }
 			it { must validate_presence_of(:modalidade) }
@@ -84,9 +81,9 @@ describe BrBoleto::Conta::Sicoob do
 		end
 		context 'Validações padrões da codigo_cedente' do
 			subject { BrBoleto::Conta::Sicoob.new }
-			it 'Tamanho deve ter o tamanho maximo de 8' do
-				subject.codigo_cedente = '123456789'
-				must_be_message_error(:convenio, :custom_length_maximum, {count: 7})
+			it 'Tamanho deve ter o tamanho maximo de 6' do
+				subject.codigo_cedente = '1234567'
+				must_be_message_error(:convenio, :custom_length_maximum, {count: 6})
 			end
 		end
 	end
@@ -137,7 +134,7 @@ describe BrBoleto::Conta::Sicoob do
 		it "se não passar valor deve calcular automatico" do
 			subject.conta_corrente_dv = nil
 			subject.conta_corrente = '6688'
-			BrBoleto::Calculos::Modulo11FatorDe2a9RestoZero.expects(:new).with('6688').returns(stub(to_s: 5))
+			BrBoleto::Calculos::Modulo11FatorDe2a9RestoZero.expects(:new).with('00006688').returns(stub(to_s: 5))
 
 			subject.conta_corrente_dv.must_equal 5
 		end

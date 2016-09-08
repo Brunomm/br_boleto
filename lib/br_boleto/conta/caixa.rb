@@ -4,10 +4,10 @@ module BrBoleto
 		class Caixa < BrBoleto::Conta::Base
 			
 			# MODALIDADE CARTEIRA
-			#   opcoes:
-			#     11: título Registrado emissão CAIXA
-			#     14: título Registrado emissão Cedente
-			#     21: título Sem Registro emissão CAIXA
+			#  opcoes:
+			#    11: título Registrado emissão CAIXA
+			#    14: título Registrado emissão Cedente
+			#    21: título Sem Registro emissão CAIXA
 
 			# versão do aplicativo da caixa
 			attr_accessor :versao_aplicativo
@@ -17,19 +17,18 @@ module BrBoleto
 				attr_accessor :valid_versao_aplicativo_required
 			#####################################################################################
 
-			validates :agencia,           custom_length: { maximum: 5, minimum: 4 }
 			validates :versao_aplicativo, custom_length: { maximum: 4 }
 			validates :versao_aplicativo, presence: true, if: :valid_versao_aplicativo_required
 
 			def default_values
 				super.merge({
-					carteira:             '14', # Com registro
-					valid_carteira_required:     true,         # <- Validação dinâmica que a modalidade é obrigatória
-					valid_carteira_length:       2,            # <- Validação dinâmica que a modalidade deve ter 2 digitos
-					valid_carteira_inclusion:    %w[11 14 21], # <- Validação dinâmica de valores aceitos para a modalidade
-					valid_convenio_required:     true,         # <- Validação que a convenio deve ter obrigatório
-					valid_convenio_maximum:      6,            # <- Validação que a convenio deve ter no máximo 6 digitos
-					versao_aplicativo:     '0',
+					carteira:                 '14', # Com registro
+					valid_carteira_required:  true,         # <- Validação dinâmica que a modalidade é obrigatória
+					valid_carteira_length:    2,            # <- Validação dinâmica que a modalidade deve ter 2 digitos
+					valid_carteira_inclusion: %w[11 14 21], # <- Validação dinâmica de valores aceitos para a modalidade
+					valid_convenio_required:  true,         # <- Validação que a convenio deve ter obrigatório
+					valid_convenio_maximum:   6,            # <- Validação que a convenio deve ter no máximo 6 digitos
+					versao_aplicativo:        '0',
 				})
 			end
 
@@ -61,14 +60,50 @@ module BrBoleto
 			end
 
 			def conta_corrente_dv
-				# utilizando a conta corrente com 5 digitos
-				# para calcular o digito
 				@conta_corrente_dv ||= BrBoleto::Calculos::Modulo11FatorDe2a9RestoZero.new(conta_corrente).to_s
+			end
+
+			def convenio_dv
+				@convenio_dv ||= BrBoleto::Calculos::Modulo11FatorDe2a9RestoZero.new(convenio).to_s
 			end
 
 			def versao_aplicativo
 				"#{@versao_aplicativo}".rjust(4, '0') if @versao_aplicativo.present?
 			end
+
+			# Formata a carteira dependendo se ela é registrada ou não.
+			#
+			# Para cobrança COM registro usar: <b>RG</b>
+			# Para Cobrança SEM registro usar: <b>SR</b>
+			#
+			# @return [String]
+			#
+			def carteira_formatada
+				if carteira.in?(carteiras_com_registro)
+					'RG'
+				else
+					'SR'
+				end
+			end
+
+			# Retorna as carteiras com registro da Caixa Econômica Federal.
+			# <b>Você pode sobrescrever esse método na subclasse caso exista mais
+			# carteiras com registro na Caixa Econômica Federal.</b>
+			#
+			# @return [Array]
+			#
+			def carteiras_com_registro
+				%w(14)
+			end
+
+			# Campo Agência / Código do Cedente
+			#
+			# @return [String]
+			#
+			def agencia_codigo_cedente
+				"#{agencia} / #{codigo_cedente}-#{codigo_cedente_dv}"
+			end
+
 		end
 	end
 end

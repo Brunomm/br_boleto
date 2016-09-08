@@ -65,6 +65,26 @@ describe BrBoleto::Remessa::Base do
 					wont_be_message_error(:conta_corrente, :custom_length_maximum, {count: 3})
 				end
 			end
+			context "sempre retorna o valor ajustado para o tamanho máximo" do
+				it "se tiver valor setado deve formatar o tamanho maximo" do
+					subject.valid_conta_corrente_maximum = 5
+					subject.conta_corrente = '123'
+					subject.conta_corrente.must_equal '00123'
+					
+					subject.valid_conta_corrente_maximum = 7
+					subject.conta_corrente.must_equal '0000123'
+				end
+				it "se não tiver valor setado não ajusta os digitos para o tamanho maximo" do
+					subject.valid_conta_corrente_maximum = 5
+					subject.conta_corrente = ''
+					subject.conta_corrente.must_equal ''
+				end
+				it "se não tiver tamanho maximo definido deve retornar o valor setado" do
+					subject.valid_conta_corrente_maximum = nil
+					subject.conta_corrente = 456
+					subject.conta_corrente.must_equal '456'
+				end
+			end
 		end
 
 		context "#modalidade" do
@@ -120,6 +140,27 @@ describe BrBoleto::Remessa::Base do
 
 					subject.modalidade = '2'
 					wont_be_message_error(:modalidade)
+				end
+			end
+
+			context "sempre retorna o valor ajustado para o tamanho máximo" do
+				it "se tiver valor setado deve formatar o tamanho maximo" do
+					subject.valid_modalidade_maximum = 5
+					subject.modalidade = '123'
+					subject.modalidade.must_equal '00123'
+					
+					subject.valid_modalidade_maximum = 7
+					subject.modalidade.must_equal '0000123'
+				end
+				it "se não tiver valor setado não ajusta os digitos para o tamanho maximo" do
+					subject.valid_modalidade_maximum = 5
+					subject.modalidade = ''
+					subject.modalidade.must_equal ''
+				end
+				it "se não tiver tamanho maximo definido deve retornar o valor setado" do
+					subject.valid_modalidade_maximum = nil
+					subject.modalidade = 456
+					subject.modalidade.must_equal '456'
 				end
 			end
 		end
@@ -222,6 +263,26 @@ describe BrBoleto::Remessa::Base do
 					wont_be_message_error(:carteira)
 				end
 			end
+			context "sempre retorna o valor ajustado para o tamanho máximo" do
+				it "se tiver valor setado deve formatar o tamanho maximo" do
+					subject.valid_carteira_maximum = 5
+					subject.carteira = '123'
+					subject.carteira.must_equal '00123'
+					
+					subject.valid_carteira_maximum = 7
+					subject.carteira.must_equal '0000123'
+				end
+				it "se não tiver valor setado não ajusta os digitos para o tamanho maximo" do
+					subject.valid_carteira_maximum = 5
+					subject.carteira = ''
+					subject.carteira.must_equal ''
+				end
+				it "se não tiver tamanho maximo definido deve retornar o valor setado" do
+					subject.valid_carteira_maximum = nil
+					subject.carteira = 456
+					subject.carteira.must_equal '456'
+				end
+			end
 		end
 
 		context "#convenio" do
@@ -278,6 +339,26 @@ describe BrBoleto::Remessa::Base do
 					wont_be_message_error(:convenio)
 				end
 			end
+			context "sempre retorna o valor ajustado para o tamanho máximo" do
+				it "se tiver valor setado deve formatar o tamanho maximo" do
+					subject.valid_convenio_maximum = 5
+					subject.convenio = '123'
+					subject.convenio.must_equal '00123'
+					
+					subject.valid_convenio_maximum = 7
+					subject.convenio.must_equal '0000123'
+				end
+				it "se não tiver valor setado não ajusta os digitos para o tamanho maximo" do
+					subject.valid_convenio_maximum = 5
+					subject.convenio = ''
+					subject.convenio.must_equal ''
+				end
+				it "se não tiver tamanho maximo definido deve retornar o valor setado" do
+					subject.valid_convenio_maximum = nil
+					subject.convenio = 456
+					subject.convenio.must_equal '456'
+				end
+			end
 		end
 	end
 
@@ -289,8 +370,8 @@ describe BrBoleto::Remessa::Base do
 	end
 
 	it "agencia deve retornar sempre uma string se tiver um valor" do
-		subject.agencia = 123
-		subject.agencia.must_equal '123'
+		subject.agencia = 1230
+		subject.agencia.must_equal '1230'
 		subject.agencia = nil
 		subject.agencia.must_be_nil
 	end

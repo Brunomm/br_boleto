@@ -89,6 +89,10 @@ module BrBoleto
 			attr_accessor :nome_banco
 
 			###############################  VALIDAÇÕES DINÂMICAS ###############################
+				attr_accessor :valid_agencia_length
+				def valid_agencia_length; @valid_agencia_length ||= 4 end
+				validates :agencia, custom_length: {is: :valid_agencia_length}, if: :valid_agencia_length
+
 			# => Modalidade
 				attr_accessor :valid_modalidade_length
 				attr_accessor :valid_modalidade_minimum
@@ -155,16 +159,43 @@ module BrBoleto
 			validates :agencia, :razao_social, :cpf_cnpj, presence: true
 			validates :agencia_dv, custom_length: {is: 1}
 
-			# Força valores para retornar como string
-			def carteira
-				@carteira.try(:to_s)
-			end			
-			def agencia
-				@agencia.try(:to_s)
-			end			
-			def codigo_cedente
-				@convenio.try(:to_s)
-			end
+			###################### FORMATAÇÂO DE VALORES CONFORME TAMANHO ########################
+				def modalidade
+					if valid_modalidade_maximum && @modalidade.present?
+						@modalidade.to_s.rjust(valid_modalidade_maximum, '0')
+					else
+						@modalidade.try(:to_s)
+					end
+				end
+				def carteira
+					if valid_carteira_maximum && @carteira.present?
+						@carteira.to_s.rjust(valid_carteira_maximum, '0')
+					else
+						@carteira.try(:to_s)
+					end
+				end
+				def conta_corrente
+					if valid_conta_corrente_maximum && @conta_corrente.present?
+						@conta_corrente.to_s.rjust(valid_conta_corrente_maximum, '0')
+					else
+						@conta_corrente.try(:to_s)
+					end
+				end
+				def convenio
+					if valid_convenio_maximum && @convenio.present?
+						@convenio.to_s.rjust(valid_convenio_maximum, '0')
+					else
+						@convenio.try(:to_s)
+					end
+				end			
+				def agencia
+					if valid_agencia_length && @agencia.present?
+						@agencia.to_s.rjust(valid_agencia_length, '0')
+					else
+						@agencia.try(:to_s)
+					end
+				end
+			#################################################################################
 
 			# Código do Banco.
 			# <b>Esse campo é específico para cada banco</b>.
