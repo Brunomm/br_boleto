@@ -10,108 +10,73 @@ describe BrBoleto::Remessa::Cnab240::Caixa do
 	end
 
 	context "validations" do
-		it { must validate_presence_of(:modalidade_carteira) }
-		it { must validate_presence_of(:agencia) }
-		it { must validate_presence_of(:versao_aplicativo) }
-		it { must validate_presence_of(:convenio) }
+		describe 'Validações personalizadas da conta' do
+			it 'valid_carteira_required' do
+				# subject.send(:valid_carteira_required).must_equal true
+				subject.conta.carteira = ''
+				conta_must_be_msg_error(:carteira, :blank)
+			end
 
-		it { must validate_length_of(:convenio         ).is_at_most(6).with_message("deve ter no máximo 6 dígitos.") }
-		it { must validate_length_of(:versao_aplicativo).is_at_most(4).with_message("deve ter no máximo 4 dígitos.") }
-		it { must validate_length_of(:agencia          ).is_at_most(5).with_message("deve ter no máximo 5 dígitos.") }
-		it { must validate_length_of(:modalidade_carteira).is_equal_to(2).with_message("deve ter 2 dígitos.") }
-	end
+			it 'valid_carteira_length' do
+				# subject.send(:valid_carteira_length).must_equal 2
+				subject.conta.carteira = '1234567890123456'
+				conta_must_be_msg_error(:carteira, :custom_length_is, {count: 2})
+			end
 
-	describe "#default_values" do
-		it "for emissao_boleto" do	
-			object = subject.class.new()
-			object.emissao_boleto.must_equal '2'
-		end
+			it 'valid_convenio_required' do
+				# subject.send(:valid_convenio_required).must_equal true
+				subject.conta.convenio = ''
+				conta_must_be_msg_error(:convenio, :blank)
+			end
 
-		it "for distribuicao_boleto" do	
-			object = subject.class.new()
-			object.distribuicao_boleto.must_equal '2'
-		end
+			it 'valid_convenio_length' do
+				# subject.send(:valid_convenio_length).must_equal 2
+				subject.conta.convenio = '1234567890123456'
+				conta_must_be_msg_error(:convenio, :custom_length_maximum, {count: 6})
+			end
 
-		it "for especie_titulo" do	
-			object = subject.class.new()
-			object.especie_titulo.must_equal '02'
-		end
+			it 'agencia_required' do
+				# subject.send(:agencia_required).must_equal true
+				subject.conta.agencia = ''
+				conta_must_be_msg_error(:agencia, :blank)
+			end
 
-		it "for modalidade_carteira" do	
-			object = subject.class.new()
-			object.modalidade_carteira.must_equal '14'
-		end
+			it 'agencia_length' do
+				# subject.send(:agencia_length).must_equal 2
+				subject.conta.agencia = '1234567890123456'
+				conta_must_be_msg_error(:agencia, :custom_length_is, {count: 4})
+			end
 
-		it "for forma_cadastramento" do	
-			object = subject.class.new()
-			object.forma_cadastramento.must_equal '0'
-		end
+			it 'versao_aplicativo_required' do
+				# subject.send(:versao_aplicativo_required).must_equal true
+				subject.conta.versao_aplicativo = ''
+				conta_must_be_msg_error(:versao_aplicativo, :blank)
+			end
 
-		it "for versao_aplicativo" do	
-			object = subject.class.new()
-			object.instance_variable_get(:@versao_aplicativo).must_equal '0'
-		end
+			it 'versao_aplicativo_length' do
+				# subject.send(:versao_aplicativo_length).must_equal 2
+				subject.conta.versao_aplicativo = '1234567890123456'
+				conta_must_be_msg_error(:versao_aplicativo, :custom_length_maximum, {count: 4})
+			end
+			
+			private
 
-		it "for codigo_carteira" do	
-			object = subject.class.new()
-			object.codigo_carteira.must_equal '1'
-		end
-
-		context "deve manter os defaults da classe Base" do
-			it "deve continuar com o default da superclass" do
-				object = subject.class.new()
-				object.aceite.must_equal 'N'
+			def conta_must_be_msg_error(attr_validation, msg_key, options_msg={})
+				must_be_message_error(:base, "#{BrBoleto::Conta::Caixa.human_attribute_name(attr_validation)} #{get_message(msg_key, options_msg)}")
 			end
 		end
 	end
 
-	it "codigo_banco deve ser 104" do
-		subject.codigo_banco.must_equal '104'
-	end
-
-	it "metodo nome_banco deve retornar CAIXA ECONOMICA FEDERAL com 30 posições" do
-		subject.nome_banco.must_equal 'CAIXA ECONOMICA FEDERAL'.ljust(30, ' ')
-	end
-
-	it "metodo versao_layout_arquivo deve retornar 050" do
-		subject.versao_layout_arquivo.must_equal '050'
-	end
-
-	it "metodo versao_layout_lote deve retornar 030" do
-		subject.versao_layout_lote.must_equal '030'
-	end
-
-	describe "#versao_aplicativo" do
-		it "se contém algum valor na variavel @versao_aplicativo deve ajustála para 4 posições adicionado zeros a esquerda" do
-			subject.instance_variable_set(:@versao_aplicativo, '88')
-			subject.versao_aplicativo.must_equal '0088'
-
-			subject.versao_aplicativo = '777'
-			subject.versao_aplicativo.must_equal '0777'
-		end
-
-		it "se não contém valor na variavel @versao_aplicativo deve retornar nil" do
-			subject.instance_variable_set(:@versao_aplicativo, '')
-			subject.versao_aplicativo.must_be_nil
-		end
-	end
-
-	it "o digito_agencia deve calcular o modulo11 de 2 a 9 com resto zero " do
-		subject.agencia = '33'
-		BrBoleto::Calculos::Modulo11FatorDe2a9RestoZero.expects(:new).with('33').returns(1)
-		subject.digito_agencia.must_equal '1'
-	end
-		
 	it "o codigo_convenio deve ter 20 posições com Zeros" do
 		subject.codigo_convenio.must_equal '0' * 20
 	end
 
 	describe "#convenio_lote" do
 		it "as 6 primeiras posições deve ser o valor do convenio ajustado com zeros a esquerda" do
-			subject.convenio = '88'
+			subject.conta.convenio = '88'
 			subject.convenio_lote(lote)[0..5].must_equal '000088'
 
-			subject.convenio = '2878'
+			subject.conta.convenio = '2878'
 			subject.convenio_lote(lote)[0..5].must_equal '002878'
 		end
 		it "as 14 ultimas posições deve ser tudo Zeros" do
@@ -129,23 +94,23 @@ describe BrBoleto::Remessa::Cnab240::Caixa do
 		end
 
 		it "1 - Primeira parte = agencia 5 posicoes - ajustados com zeros a esquerda" do
-			subject.agencia = '123'
+			subject.conta.agencia = '123'
 			subject.informacoes_da_conta[0..4].must_equal '00123'
 		
-			subject.agencia = '1234'
+			subject.conta.agencia = '1234'
 			subject.informacoes_da_conta[0..4].must_equal '01234'
 		end
 
-		it "2 - Segunda parte = digito_agencia" do
-			subject.expects(:digito_agencia).returns("&")
-			subject.informacoes_da_conta[5].must_equal "&"			
+		it "2 - Segunda parte = agencia_dv" do
+			subject.conta.expects(:agencia_dv).returns("&")
+			subject.informacoes_da_conta[5].must_equal "&"
 		end
 
 		it "3 - Terceira parte = convenio 6 posicoes - ajustados com zeros a esquerda" do
-			subject.convenio = '123'
+			subject.conta.convenio = '123'
 			subject.informacoes_da_conta[6..11].must_equal '000123'
 		
-			subject.convenio = '1234'
+			subject.conta.convenio = '1234'
 			subject.informacoes_da_conta[6..11].must_equal '001234'
 		end
 
@@ -154,7 +119,7 @@ describe BrBoleto::Remessa::Cnab240::Caixa do
 		end
 
 		it "5 - Quinta parte = Exclusivo caixa - Deve ter 1 zero" do
-			subject.informacoes_da_conta[19].must_equal('0')			
+			subject.informacoes_da_conta[19].must_equal('0')
 		end
 	end
 
@@ -164,10 +129,10 @@ describe BrBoleto::Remessa::Cnab240::Caixa do
 		end
 
 		it "1 - Primeira parte = versao_aplicativo 4 posicoes - ajustados com zeros a esquerda" do
-			subject.versao_aplicativo = '12'
+			subject.conta.versao_aplicativo = '12'
 			subject.complemento_header_arquivo[0..3].must_equal '0012'
 		
-			subject.versao_aplicativo = '123'
+			subject.conta.versao_aplicativo = '123'
 			subject.complemento_header_arquivo[0..3].must_equal '0123'
 		end
 
@@ -183,10 +148,10 @@ describe BrBoleto::Remessa::Cnab240::Caixa do
 		end
 
 		it "1 - Primeira parte = convenio com 6 posicoes - ajustados com zeros a esquerda" do
-			subject.convenio = '12'
+			subject.conta.convenio = '12'
 			subject.complemento_p(pagamento)[0..5].must_equal '000012'
 		
-			subject.convenio = '123'
+			subject.conta.convenio = '123'
 			subject.complemento_p(pagamento)[0..5].must_equal '000123'
 		end
 		
@@ -195,9 +160,9 @@ describe BrBoleto::Remessa::Cnab240::Caixa do
 		end
 
 		it "3 - Terceira parte = Modalidade carteira com 2 posicoes" do
-			subject.modalidade_carteira = '14'
+			subject.conta.carteira = '14'
 			subject.complemento_p(pagamento)[17..18].must_equal '14'			
-			subject.modalidade_carteira = 'XX'
+			subject.conta.carteira = 'XX'
 			subject.complemento_p(pagamento)[17..18].must_equal 'XX'
 		end
 

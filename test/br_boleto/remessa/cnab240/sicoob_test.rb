@@ -9,109 +9,56 @@ describe BrBoleto::Remessa::Cnab240::Sicoob do
 		subject.class.superclass.must_equal BrBoleto::Remessa::Cnab240::Base
 	end
 
-	context "validations" do
-		it { must validate_presence_of(:modalidade_carteira) }
-		it { must validate_presence_of(:tipo_formulario) }
-		it { must validate_presence_of(:parcela) }
-		it { must validate_presence_of(:conta_corrente) }
-		# Segundo a documentação do Sicoob o convênio deve ter 20 caracteres em branco
-		# Então ele não pode ser obrigatorio
-		it { wont validate_presence_of(:convenio) } 
-
-		it { must validate_length_of(:conta_corrente     ).is_at_most(12).with_message("deve ter no máximo 12 dígitos.") }
-		it { must validate_length_of(:agencia            ).is_equal_to(4).with_message("deve ter 4 dígitos.") }
-		it { must validate_length_of(:modalidade_carteira).is_equal_to(2).with_message("deve ter 2 dígitos.") }
+	it "A conta deve ser da class Sicoob" do
+		subject.conta.must_be_kind_of BrBoleto::Conta::Sicoob
 	end
 
-	describe "conveio" do
-		it "por padrão tem 20 caracteres em branco" do
-			subject.convenio = nil
-			subject.convenio.must_equal "".rjust(20, ' ')
-		end
+	context "validations" do
+		describe 'Validações personalizadas da conta' do
+			it 'valid_modalidade_required' do
+				subject.send(:valid_modalidade_required).must_equal true
+				subject.conta.modalidade = ''
+				conta_must_be_msg_error(:modalidade, :blank)
+			end
 
-		it "deve ser possivel setar um valor" do
-			subject.convenio = "123"
-			subject.convenio.must_equal "123".ljust(20, " ")
+			it 'valid_conta_corrente_required' do
+				subject.send(:valid_conta_corrente_required).must_equal true
+				subject.conta.conta_corrente = ''
+				conta_must_be_msg_error(:conta_corrente, :blank)
+			end
+			it 'valid_codigo_cedente_required' do
+				subject.send(:valid_codigo_cedente_required).must_equal true
+				subject.conta.codigo_cedente = ''
+				conta_must_be_msg_error(:convenio, :blank)
+			end
+			it 'valid_conta_corrente_maximum' do
+				subject.send(:valid_conta_corrente_maximum).must_equal 12
+				subject.conta.conta_corrente = '1234567890123456'
+				conta_must_be_msg_error(:conta_corrente, :custom_length_maximum, {count: 12})
+			end
+			it 'valid_modalidade_length' do
+				subject.send(:valid_modalidade_length).must_equal 2
+				subject.conta.modalidade = '1234567890123456'
+				conta_must_be_msg_error(:modalidade, :custom_length_is, {count: 2})
+			end
+
+			private
+		
+			def conta_must_be_msg_error(attr_validation, msg_key, options_msg={})
+				must_be_message_error(:base, "#{BrBoleto::Conta::Sicoob.human_attribute_name(attr_validation)} #{get_message(msg_key, options_msg)}")
+			end
 		end
+		it { must validate_presence_of(:tipo_formulario) }
 	end
 
 	describe "#default_values" do
-		it "for emissao_boleto" do	
-			object = subject.class.new()
-			object.emissao_boleto.must_equal '2'
-		end
-
-		it "for distribuicao_boleto" do	
-			object = subject.class.new()
-			object.distribuicao_boleto.must_equal '2'
-		end
-
-		it "for especie_titulo" do	
-			object = subject.class.new()
-			object.especie_titulo.must_equal '02'
-		end
-
 		it "for tipo_formulario" do	
 			object = subject.class.new()
 			object.tipo_formulario.must_equal '4'
 		end
-
-		it "for parcela" do	
-			object = subject.class.new()
-			object.parcela.must_equal '01'
-		end
-
-		it "for modalidade_carteira" do	
-			object = subject.class.new()
-			object.modalidade_carteira.must_equal '01'
-		end
-
-		context "Deve sobrescrever os campos default se houver algum igual" do
-			it "forma_cadastramento deve ser sobrescrita" do	
-				object = subject.class.new()
-				object.forma_cadastramento.must_equal '0' # Na classe base é '1'
-			end
-		end
-		context "deve manter os defaults da classe Base" do
-			it "for codigo_carteira" do	
-				object = subject.class.new()
-				object.codigo_carteira.must_equal '1'
-			end
-			it "deve continuar com o default da superclass" do
-				object = subject.class.new()
-				object.aceite.must_equal 'N'
-			end
-		end
 	end
 
-	it "codigo_banco deve ser 756" do
-		subject.codigo_banco.must_equal '756'
-	end
-
-	it "metodo nome_banco deve retornar SICOOB com 30 posições" do
-		subject.nome_banco.must_equal 'SICOOB'.ljust(30, ' ')
-	end
-
-	it "metodo versao_layout_arquivo deve retornar 081" do
-		subject.versao_layout_arquivo.must_equal '081'
-	end
-
-	it "metodo versao_layout_lote deve retornar 040" do
-		subject.versao_layout_lote.must_equal '040'
-	end
-
-	it "o digito_agencia deve calcular o modulo11 de 2 a 9 com resto zero " do
-		subject.agencia = '33'
-		BrBoleto::Calculos::Modulo11FatorDe2a9RestoZero.expects(:new).with('33').returns(1)
-		subject.digito_agencia.must_equal '1'
-	end
 	
-	it "o digito_conta deve calcular o modulo11 de 2 a 9 com resto zero " do
-		subject.conta_corrente = '34'
-		BrBoleto::Calculos::Modulo11FatorDe2a9RestoZero.expects(:new).with('34').returns(1)
-		subject.digito_conta.must_equal '1'
-	end
-
 	it "o codigo_convenio deve ter 20 posições em branco" do
 		subject.codigo_convenio.must_equal ''.rjust(20, ' ')
 	end
@@ -127,38 +74,38 @@ describe BrBoleto::Remessa::Cnab240::Sicoob do
 		end
 		context "1 Primeira parte = agencia 5 posicoes" do
 			it "se for menor que 5 deve preencher com zero" do
-				subject.agencia = '123'
+				subject.conta.agencia = '123'
 				subject.informacoes_da_conta[0..4].must_equal '00123'
 			end
 			it "quando agencia tiver as 5 posições" do
-				subject.agencia = '12345'
+				subject.conta.agencia = '12345'
 				subject.informacoes_da_conta[0..4].must_equal '12345'
 			end
 		end
 
-		context "2 - Segunda parte = digito_agencia" do
+		context "2 - Segunda parte = agencia_dv" do
 			it "deve pegar o digito da agencia" do
-				subject.expects(:digito_agencia).returns("&")
+				subject.conta.expects(:agencia_dv).returns("&")
 				subject.informacoes_da_conta[5].must_equal "&"
 			end
 		end
 
 		context "3 - Terceira parte = conta_corrente com 12 posições" do
 			it "se tiver menos que 12 caracteres deve preencher com zero" do
-				subject.stubs(:digito_conta)
-				subject.expects(:conta_corrente).returns("123456")
+				subject.conta.stubs(:conta_corrente_dv)
+				subject.conta.expects(:conta_corrente).returns("123456")
 				subject.informacoes_da_conta[6..17].must_equal "123456".rjust(12, '0')
 			end
 			it "se tiver 12 caracteres deve manter" do
-				subject.stubs(:digito_conta)
-				subject.expects(:conta_corrente).returns("".rjust(12, '1'))
+				subject.conta.stubs(:conta_corrente_dv)
+				subject.conta.expects(:conta_corrente).returns("".rjust(12, '1'))
 				subject.informacoes_da_conta[6..17].must_equal "1".rjust(12, '1')
 			end
 		end
 
-		context "4 - Quarta parte = digito_conta" do
-			it "deve buscar o valor do metodo digito_conta" do
-				subject.expects(:digito_conta).returns('*')
+		context "4 - Quarta parte = conta_corrente_dv" do
+			it "deve buscar o valor do metodo conta_corrente_dv" do
+				subject.conta.expects(:conta_corrente_dv).returns('*')
 				subject.informacoes_da_conta[18].must_equal('*')
 			end
 		end
@@ -262,44 +209,49 @@ describe BrBoleto::Remessa::Cnab240::Sicoob do
 
 	describe "#formata_nosso_numero" do
 		it "posicao 0 até 9 deve pegar o nosso_numero passado por parametro e ajustar para 10 posições" do
-			subject.formata_nosso_numero(123)[0..9].must_equal "123".rjust(10, '0')
+			pagamento.nosso_numero = 123
+			subject.formata_nosso_numero(pagamento)[0..9].must_equal "123".rjust(10, '0')
 		end
 		it "posicao 10 até 11 deve ter o numero da parcela" do
-			subject.expects(:parcela).returns("99")
-			subject.formata_nosso_numero(1)[10..11].must_equal "99"
+			pagamento.expects(:parcela).returns("99")
+			pagamento.nosso_numero = 1
+			subject.formata_nosso_numero(pagamento)[10..11].must_equal "99"
 		end
-		it "posicao 12 até 13 deve ter a modalidade_carteira" do
-			subject.expects(:modalidade_carteira).returns("23")
-			subject.formata_nosso_numero(1)[12..13].must_equal "23"
+		it "posicao 12 até 13 deve ter a conta.modalidade" do
+			subject.conta.expects(:modalidade).returns("23")
+			pagamento.nosso_numero = 1
+			subject.formata_nosso_numero(pagamento)[12..13].must_equal "23"
 		end
 		it "posicao 14 deve ter o tipo_formulario" do
 			subject.expects(:tipo_formulario).returns("4")
-			subject.formata_nosso_numero(1)[14].must_equal "4"
+			subject.formata_nosso_numero(pagamento)[14].must_equal "4"
 		end
 		it "posição 15 até 19 deve ser valor em branco" do
-			subject.formata_nosso_numero(123)[15..19].must_equal "".rjust(5, ' ')
+			pagamento.nosso_numero = 123
+			subject.formata_nosso_numero(pagamento)[15..19].must_equal "".rjust(5, ' ')
 		end
 		it "deve ajustar a string para no maximo 20 posições" do
-			subject.expects(:modalidade_carteira).returns("".rjust(20, "1"))
-			subject.formata_nosso_numero(123456).size.must_equal 20
+			subject.conta.expects(:modalidade).returns("".rjust(20, "1"))
+			pagamento.nosso_numero = 123456
+			subject.formata_nosso_numero(pagamento).size.must_equal 20
 		end
 	end
 
 	describe "#complemento_p" do
 		it "posicao 0 até 11 deve ter a conta_corrente" do
-			subject.stubs(:digito_conta)
-			subject.expects(:conta_corrente).returns(123456789)
+			subject.conta.stubs(:conta_corrente_dv)
+			subject.conta.expects(:conta_corrente).returns(123456789)
 			subject.complemento_p(pagamento)[0..11].must_equal "000123456789"
 		end
-		it "posicao 12 deve te o digito_conta" do
-			subject.expects(:digito_conta).returns("%")
+		it "posicao 12 deve te o conta_corrente_dv" do
+			subject.conta.expects(:conta_corrente_dv).returns("%")
 			subject.complemento_p(pagamento)[12].must_equal "%"
 		end
 		it "posição 13 deve ser um caracter em branco" do
 			subject.complemento_p(pagamento)[13].must_equal " "
 		end
 		it "posição 14 até 33 deve ter o valor do metodo formata_nosso_numero passando o nosso_numero do pagamento" do
-			subject.expects(:formata_nosso_numero).with(pagamento.nosso_numero).returns("12345678901234567890")
+			subject.expects(:formata_nosso_numero).with(pagamento).returns("12345678901234567890")
 			subject.complemento_p(pagamento)[14..33].must_equal '12345678901234567890'
 		end
 	end
@@ -311,36 +263,36 @@ describe BrBoleto::Remessa::Cnab240::Sicoob do
 	end
 
 	describe "#tipo_cobranca_formatada" do
-		it "deve ser :simples se modalidade_carteira for 01" do
-			subject.modalidade_carteira = '01'
+		it "deve ser :simples se conta.modalidade for 01" do
+			subject.conta.modalidade = '01'
 			subject.tipo_cobranca_formatada.must_equal :simples
 		end
-		it "deve ser :simples se modalidade_carteira for 1" do
-			subject.modalidade_carteira = 1
+		it "deve ser :simples se conta.modalidade for 1" do
+			subject.conta.modalidade = 1
 			subject.tipo_cobranca_formatada.must_equal :simples
 		end
-		it "deve ser :simples se modalidade_carteira for 02" do
-			subject.modalidade_carteira = '02'
+		it "deve ser :simples se conta.modalidade for 02" do
+			subject.conta.modalidade = '02'
 			subject.tipo_cobranca_formatada.must_equal :simples
 		end
-		it "deve ser :simples se modalidade_carteira for 2" do
-			subject.modalidade_carteira = 2
+		it "deve ser :simples se conta.modalidade for 2" do
+			subject.conta.modalidade = 2
 			subject.tipo_cobranca_formatada.must_equal :simples
 		end
-		it "deve ser :caucionada se modalidade_carteira for 03" do
-			subject.modalidade_carteira = '03'
+		it "deve ser :caucionada se conta.modalidade for 03" do
+			subject.conta.modalidade = '03'
 			subject.tipo_cobranca_formatada.must_equal :caucionada
 		end
-		it "deve ser :caucionada se modalidade_carteira for 3" do
-			subject.modalidade_carteira = 3
+		it "deve ser :caucionada se conta.modalidade for 3" do
+			subject.conta.modalidade = 3
 			subject.tipo_cobranca_formatada.must_equal :caucionada
 		end
-		it "deve ser nil se modalidade_carteira for outro numero" do
-			subject.modalidade_carteira = 4
+		it "deve ser nil se conta.modalidade for outro numero" do
+			subject.conta.modalidade = 4
 			subject.tipo_cobranca_formatada.must_be_nil
 		end
-		it "deve ser nil se modalidade_carteira for nil" do
-			subject.modalidade_carteira = nil
+		it "deve ser nil se conta.modalidade for nil" do
+			subject.conta.modalidade = nil
 			subject.tipo_cobranca_formatada.must_be_nil
 		end
 	end
@@ -402,6 +354,59 @@ describe BrBoleto::Remessa::Cnab240::Sicoob do
 				pagamento.codigo_juros = '4'
 				subject.send(:segmento_p_posicao_118_a_118, pagamento).must_equal '0'
 			end
+		end
+	end
+
+	describe 'Geração do arquivo' do
+		let(:conta) do 
+			{
+				razao_social:   'EMPRESA EMITENTE',
+				cpf_cnpj:       '33.486.451/0001-30',
+				carteira:       '1',
+				modalidade:     '01',
+				agencia:        '3040',
+				codigo_cedente: '82819',
+				conta_corrente: '54843'
+
+			} 
+		end
+		let(:pagador) { 
+			{
+				nome:     'Benjamin Francisco Marcos Vinicius Fernandes',
+				cpf_cnpj: '787.933.211-12',
+				endereco: 'Rua Principal s/n 881',
+				bairro:   'Centro',
+				cep:      '79210-972',
+				cidade:   'Anastácio',
+				uf:       'MS',
+			}
+		}
+		let(:pagamento) { 
+			BrBoleto::Remessa::Pagamento.new({
+				nosso_numero:     '00157804',
+				numero_documento: '00157804',
+				data_vencimento:  Date.parse('06/09/2016'),
+				valor_documento:  147.89,
+				pagador:          pagador,
+				especie_titulo:   '02',
+				codigo_juros:     '1', 
+				data_juros:       Date.parse('07/09/2016'),
+				valor_juros:      0.25,
+				codigo_multa:     '2', 
+				data_multa:       Date.parse('07/09/2016'),
+				valor_multa:      2.00,
+				data_emissao:     Date.parse('06/09/2016'),
+			})
+		}
+		let(:lote) { BrBoleto::Remessa::Lote.new(pagamentos: pagamento) } 
+		it "deve gerar o arquivo de remessa corretamente com as informações passadas" do
+			remessa = BrBoleto::Remessa::Cnab240::Sicoob.new({
+				data_hora_arquivo:  Time.parse('06/09/2016 09:43:52'),
+				sequencial_remessa: 11,
+				conta:              conta,
+				lotes:              [lote],
+			})
+			remessa.dados_do_arquivo.must_equal read_fixture('remessa/cnab240/sicoob.rem')
 		end
 	end
 end

@@ -50,13 +50,13 @@ module Helper
 		
 		def test_SegmentoSHelper_deve_ter_240_posicoes_com_tipo_impressao_1_ou_2
 			pagamento.tipo_impressao = '1'
-			subject.stubs(:codigo_banco).returns("123")
+			subject.conta.stubs(:codigo_banco).returns("123")
 			subject.monta_segmento_s(pagamento, 1, 2).size.must_equal 240			
 		end
 
 		def test_SegmentoSHelper_deve_ter_240_posicoes_com_tipo_impressao_3
 			pagamento.tipo_impressao = '3'
-			subject.stubs(:codigo_banco).returns("123")
+			subject.conta.stubs(:codigo_banco).returns("123")
 			subject.monta_segmento_s(pagamento, 1, 2).size.must_equal 240			
 		end
 
@@ -64,7 +64,7 @@ module Helper
 		# 3 posições
 		#
 		def test_SegmentoSHelper_metodo_segmento_s_posicao_001_a_003 
-			subject.expects(:codigo_banco).returns("123")
+			subject.conta.expects(:codigo_banco).returns("123")
 			subject.segmento_s_posicao_001_a_003 .must_equal '123'
 		end
 

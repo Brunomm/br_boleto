@@ -2,7 +2,13 @@
 module BrBoleto
 	module Remessa
 		class Pagamento < BrBoleto::ActiveModelBase
+			
+			# conté o metodo 'pagador'
+			# CNAB: 240 e 400
+			include BrBoleto::HavePagador
+
 			# <b>REQUERIDO</b>: nosso numero
+			# CNAB: 240 e 400
 			attr_accessor :nosso_numero
 
 			# <b>OPCIONAL</b>: Número do Documento de Cobrança - Número adotado e controlado pelo Cliente,
@@ -10,37 +16,20 @@ module BrBoleto
 			# Informação utilizada para referenciar a identificação do documento objeto de cobrança.
 			# Poderá conter número de duplicata, no caso de cobrança de duplicatas; número da apólice,
 			# no caso de cobrança de seguros, etc
+			# CNAB: 240 e 400
 			attr_accessor :numero_documento
 
 			# <b>REQUERIDO</b>: data do vencimento do boleto
+			# CNAB: 240 e 400
 			attr_accessor :data_vencimento
 
 			# <b>REQUERIDO</b>: data de emissao do boleto
+			# CNAB: 240 e 400
 			attr_accessor :data_emissao
 
 			# <b>REQUERIDO</b>: valor_documento do boleto
+			# CNAB: 240 e 400
 			attr_accessor :valor_documento
-
-			# <b>REQUERIDO</b>: documento do sacado (cliente)
-			attr_accessor :documento_sacado
-
-			# <b>REQUERIDO</b>: nome do sacado (cliente)
-			attr_accessor :nome_sacado
-
-			# <b>REQUERIDO</b>: endereco do sacado (cliente)
-			attr_accessor :endereco_sacado
-
-			# <b>REQUERIDO</b>: bairro do sacado (cliente)
-			attr_accessor :bairro_sacado
-
-			# <b>REQUERIDO</b>: CEP do sacado (cliente)
-			attr_accessor :cep_sacado
-
-			# <b>REQUERIDO</b>: cidade do sacado (cliente)
-			attr_accessor :cidade_sacado
-
-			# <b>REQUERIDO</b>: UF do sacado (cliente)
-			attr_accessor :uf_sacado
 
 			# <b>REQUERIDO</b>: Tipor de impressão
 			#                   1 - Frente do Bloqueto
@@ -49,12 +38,6 @@ module BrBoleto
 			# 
 			attr_accessor :tipo_impressao # Default '1'
 
-			# <b>OPCIONAL</b>: nome do avalista
-			attr_accessor :nome_avalista
-
-			# <b>OPCIONAL</b>: documento do avalista
-			attr_accessor :documento_avalista
-
 			# <b>OPCIONAL</b>: codigo da 1a instrucao
 			attr_accessor :cod_primeira_instrucao
 
@@ -62,12 +45,16 @@ module BrBoleto
 			attr_accessor :cod_segunda_instrucao
 
 			# <b>OPCIONAL</b>: valor da mora ao dia
+			# Dependendo do banco será o valor percentual ou valor em reais
+			# CNAB: 240 e 400
 			attr_accessor :valor_mora
 
 			# <b>OPCIONAL</b>: data limite para o desconto
+			# CNAB: 240 e 400
 			attr_accessor :data_desconto
 
 			# <b>OPCIONAL</b>: valor a ser concedido de desconto
+			# CNAB: 240 e 400
 			attr_accessor :valor_desconto
 
 			# <b>OPCIONAL</b>: codigo do desconto (para CNAB240)
@@ -91,7 +78,12 @@ module BrBoleto
 			#      - '2' Taxa Mensal
 			#      - '3' Isento
 			#      - E Ainda alguns bancos como o SICOOB não conseguem seguir o padrão e usam o cód '0' para Isento
-			attr_accessor :codigo_multa, :data_multa, :valor_multa
+			attr_accessor :codigo_multa, :data_multa
+			#CNAB 240 e 400
+			attr_accessor :valor_multa      # Valor R$
+			def percentual_multa # Valor % Ex: 2.5% = 2.5
+				BrBoleto::Helper::Number.new(valor_multa).get_percent_by_total(valor_documento)
+			end
 
 			# <b>OPCIONAL</b>: Informações para Juros
 			#  Código do juros pode ser:
@@ -99,22 +91,149 @@ module BrBoleto
 			#      - '2' Taxa Mensal
 			#      - '3' Isento
 			#      - E Ainda alguns bancos como o SICOOB não conseguem seguir o padrão e usam o cód '0' para Isento
-			attr_accessor :codigo_juros, :data_juros, :valor_juros
+			attr_accessor :codigo_juros, :data_juros
+			attr_accessor :valor_juros      # Valor R$			
+			# É calculado em base no valor do juros 
+			def percentual_juros # Valor % Ex: 2.5% = 2.5
+				BrBoleto::Helper::Number.new(valor_juros).get_percent_by_total(valor_documento)
+			end
+			
+			# <b>OPCIONAL</b>: Número da parquela que o pagamento representa
+			# Padrão: 1
+			# CNAB: 240 e 400
+			attr_accessor :parcela
+			
+			# Tipo de Emissão: 1-Banco/Cooperativa 2-Cliente
+			# Banco Sicoob utiliza
+			# CNAB: 240 e 400
+			attr_accessor :tipo_emissao
 
-			def cep_sacado
-				"#{@cep_sacado}".gsub(/[^0-9]/, "")
+			# Comando/Identificação da cobrança/Movimento
+			# Default: '01'
+			# Exemplos de valores
+			# 01 - Registro de títulos
+			# 02 - Solicitação de baixa
+			# 03 - Pedido de débito em conta
+			# 04 - Concessão de abatimento
+			# 05 - Cancelamento de abatimento
+			# 06 - Alteração de vencimento de título
+			# 07 - Alteração do número de controle do participante
+			# 08 - Alteração do número do titulo dado pelo cedente
+			# 09 - Instrução para protestar (Nota 09)
+			# 10 - Instrução para sustar protesto
+			# 11 - Instrução para dispensar juros
+			# 12 - Alteração de nome e endereço do Sacado
+			# 16 – Alterar Juros de Mora (Vide Observações)
+			# 31 - Conceder desconto
+			# 32 - Não conceder desconto
+			# 33 - Retificar dados da concessão de desconto
+			# 34 - Alterar data para concessão de desconto
+			# 35 - Cobrar multa (Nota 11)
+			# 36 - Dispensar multa (Nota 11)
+			# 37 - Dispensar indexador
+			# 38 - Dispensar prazo limite de recebimento (Nota 11)
+			# 39 - Alterar prazo limite de recebimento (Nota 11)
+			# 40 – Alterar modalidade (Vide Observações) 
+			# CNAB: 400
+			attr_accessor :identificacao_ocorrencia
+
+			# Espécie do Título:
+			# Default: 01
+			#  01 = Duplicata Mercantil
+			#  02 = Nota Promissória
+			#  03 = Nota de Seguro
+			#  05 = Recibo
+			#  06 = Duplicata Rural
+			#  08 = Letra de Câmbio
+			#  09 = Warrant
+			#  10 = Cheque
+			#  12 = Duplicata de Serviço
+			#  13 = Nota de Débito
+			#  14 = Triplicata Mercantil
+			#  15 = Triplicata de Serviço
+			#  18 = Fatura
+			#  20 = Apólice de Seguro
+			#  21 = Mensalidade Escolar
+			#  22 = Parcela de Consórcio
+			#  99 = Outros
+			#  CNAB: 240 e 400
+			attr_accessor :especie_titulo
+
+			# Aceite título
+			# "0" = Sem aceite / "1" = Com aceite" / Depende de
+			# "N" = Sem aceite / "S" = Com aceite" \ cada banco
+			# "N" = Sem aceite / "A" = Com aceite" \ 
+			#  CNAB: 240 e 400
+			# Setar true para Aceite e false para Não aceite
+			attr_accessor :aceite
+
+			# Moeda
+			# '9' = Real
+			#  CNAB: 400
+			attr_accessor :codigo_moeda
+
+			# forma de cadastramento dos titulos (campo nao tratado pelo Banco do Brasil)
+			#   opcoes:
+			#     1 - com cadastramento (cobrança registrada)
+			#     2 - sem cadastramento (cobrança sem registro)
+			attr_accessor :forma_cadastramento
+
+			# Identificação da Emissão do Boleto de Pagamento
+			# Código adotado pela FEBRABAN para identificar o responsável e a forma de emissão do
+			# Boleto de Pagamento.
+			# Domínio:
+			# '1' = Banco Emite
+			# '2' = Cliente Emite
+			# '3' = Banco Pré-emite e Cliente Complementa
+			# '4' = Banco Reemite
+			# '5' = Banco Não Reemite
+			# '7' = Banco Emitente - Aberta
+			# '8' = Banco Emitente - Auto-envelopável
+			# Os códigos '4' e '5' só serão aceitos para código de movimento para remessa '31'
+			attr_accessor :emissao_boleto
+
+			# Identificação da Distribuição
+			# Código adotado pela FEBRABAN para identificar o responsável pela distribuição do
+			# Boleto de Pagamento.
+			# Domínio:
+			# '1' = Banco Distribui
+			# '2' = Cliente Distribui
+			# ‘3’ = Banco envia e-mail
+			# ‘4’ = Banco envia SMS
+			attr_accessor :distribuicao_boleto
+
+			########################  VALIDAÇÕES PERSONALIZADAS  ########################
+				attr_accessor :valid_tipo_impressao_required
+				validates :tipo_impressao, presence: true, if: :valid_tipo_impressao_required
+				
+				attr_accessor :valid_cod_desconto_length
+				validates :cod_desconto, custom_length: {is: :valid_cod_desconto_length}, if: :valid_cod_desconto_length
+
+				attr_accessor :valid_emissao_boleto_length
+				validates :emissao_boleto, custom_length: {is: :valid_emissao_boleto_length}, if: :valid_emissao_boleto_length
+				
+				attr_accessor :valid_distribuicao_boleto_length
+				validates :distribuicao_boleto, custom_length: {is: :valid_distribuicao_boleto_length}, if: :valid_distribuicao_boleto_length
+			#############################################################################
+
+			def moeda_real?
+				"#{codigo_moeda}" == '9'
+			end
+			def codigo_moeda
+				@codigo_moeda = '9' if @codigo_moeda.blank?
+				@codigo_moeda
+			end
+
+			def parcela
+				@parcela = '1' if @parcela.blank?
+				@parcela
 			end
 
 			def nosso_numero
 				"#{@nosso_numero}".gsub(/[^0-9]/, "")
 			end
 
-			validates :nosso_numero, :data_vencimento, :valor_documento, :documento_sacado, :nome_sacado, 
-			          :endereco_sacado, :cep_sacado, :cidade_sacado, :uf_sacado, :bairro_sacado, :tipo_impressao,
-			          presence: true
-
-			validates :cep_sacado,   length: {is: 8, message: 'deve ter 8 dígitos.'}
-			validates :cod_desconto, length: {is: 1, message: 'deve ter 1 dígito.'}
+			validates :nosso_numero, :data_vencimento, :valor_documento, presence: true
 
 			def default_values
 				{
@@ -123,7 +242,6 @@ module BrBoleto
 					valor_desconto:    0.0,
 					valor_iof:         0.0,
 					valor_abatimento:  0.0,
-					nome_avalista:     '',
 					cod_desconto:      '0',
 					desconto_2_codigo: '0',
 					desconto_2_valor:  0.0,
@@ -133,8 +251,23 @@ module BrBoleto
 					codigo_juros:      '3', # Isento
 					valor_multa:       0.0,
 					valor_juros:       0.0,
-					tipo_impressao:    '1'
+					parcela:           '1',
+					tipo_impressao:    '1',
+					tipo_emissao:      '2',
+					identificacao_ocorrencia: '01',
+					especie_titulo:           '01',
+					codigo_moeda:             '9',
+					forma_cadastramento:      '0',
+					emissao_boleto:           '2',
+					distribuicao_boleto:      '2',
 				}
+			end
+
+			def data_vencimento_formatado(formato='%d%m%Y')
+				formata_data(data_vencimento, formato)
+			end
+			def data_emissao_formatado(formato='%d%m%Y')
+				formata_data(data_emissao, formato)
 			end
 
 			# Formata a data de descontos de acordo com o formato passado
@@ -215,26 +348,30 @@ module BrBoleto
 			#
 			# @param tamanho [Integer]
 			#   quantidade de caracteres a ser retornado
-			#
+			# CNAB: 240 e 400
 			def valor_abatimento_formatado(tamanho = 13)
 				BrBoleto::Helper::Number.new(valor_abatimento).formata_valor_monetario(tamanho) 
 			end
 
-			# Retorna a identificacao do pagador
-			# Se for pessoa fisica (CPF com 11 digitos) é 1
-			# Se for juridica (CNPJ com 14 digitos) é 2
+			# Formata o valor percentual da multa
+			# Ex:
+			#   2.5%    = 2.5  = 025000
+			#   21.567% = 21.5 = 215670
 			#
-			def tipo_documento_sacado(tamanho = 2)
-				BrBoleto::Helper::CpfCnpj.new(documento_sacado).tipo_documento(tamanho)
+			def percentual_multa_formatado(tamanho = 6)
+				BrBoleto::Helper::Number.new(percentual_multa).formata_valor_percentual(tamanho).adjust_size_to(tamanho, '0')
+			end
+			
+			# Formata o valor percentual do juros
+			# Ex:
+			#   2.5%    = 2.5  = 025000
+			#   21.567% = 21.5 = 215670
+			#
+			def percentual_juros_formatado(tamanho = 6)
+				BrBoleto::Helper::Number.new(percentual_juros).formata_valor_percentual(tamanho).adjust_size_to(tamanho, '0')
 			end
 
-			# Retorna a identificacao do avalista
-			# Se for pessoa fisica (CPF com 11 digitos) é 1
-			# Se for juridica (CNPJ com 14 digitos) é 2
-			#
-			def tipo_documento_avalista(tamanho = 2)
-				BrBoleto::Helper::CpfCnpj.new(documento_avalista).tipo_documento(tamanho)
-			end
+			
 		private
 
 			def formata_data(value, formato="%d%m%Y")

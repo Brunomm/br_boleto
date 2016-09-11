@@ -1,0 +1,89 @@
+en:
+  activemodel:
+    errors:
+      messages:
+        custom_length_maximum: 
+          one: "must have no more than 1 digit"
+          other: "must have a maximum of %{count} digits"
+        custom_length_minimum: 
+          one: "must be at least 1 digit"
+          other: "must have at least %{count} digits"
+        custom_length_is: 
+          one: "must have 1 digit"
+          other: "must have %{count} digits"
+        custom_inclusion: 'must contain one of the following values: %{list}'
+        at_least_one: must be at least 1
+    attributes:
+      br_boleto/pagador:
+        nome: Name
+        cpf_cnpj: 'CPF/CNPJ'
+        endereco: Street
+        bairro: District
+        cep: Zip code
+        cidade: City
+        uf: UF
+        nome_avalista: Guarantor
+        documento_avalista: 'CPF/CNPJ Guarantor'
+      br_boleto/boleto/base:
+        data_vencimento: Validity
+        numero_documento: Document number
+        valor_documento: Document value
+        conta_corrente: Current account
+        codigo_moeda: Currency code
+        especie: Kind of money
+        especie_documento: Kind of Document
+        data_documento: Document date
+        local_pagamento: Payment place
+        aceite: Acceptance
+        instrucoes1: Message 1
+        instrucoes2: Message 2
+        instrucoes3: Message 3
+        instrucoes4: Message 4
+        instrucoes5: Message 5
+        instrucoes6: Message 6
+        parcelas: Plots
+      br_boleto/conta/base:
+        modalidade: Modality
+        razao_social: Company name
+        cpf_cnpj: CNPJ
+        endereco: Address
+        carteira: Carteira
+        agencia: Agency
+        agencia_dv: DV Agency
+        conta_corrente: Conta corrente
+        conta_corrente_dv: DV Conta corrente
+        convenio: Convênio
+        convenio_dv: Dígito do convênio
+        codigo_cedente: Código do cedente
+        codigo_cedente_dv: Dígito código cedente
+        nome_banco: Nome do banco
+      br_boleto/remessa/pagamento:
+        nosso_numero: Nosso número
+        numero_documento: Número do documento
+        data_vencimento: Data de vencimento
+        data_emissao: Data emissão
+        valor_documento: Valor do documento
+        tipo_impressao: Tipo de impressão
+        cod_primeira_instrucao: Cód. 1ª instrução
+        cod_segunda_instrucao: Cód. 2ª instrução
+        valor_mora: Valor mora
+        data_desconto: Data do desconto
+        valor_desconto: Valor de desconto
+        cod_desconto: Código de desconto
+        valor_iof: Valor IOF
+        valor_abatimento: Valor de abatimento
+        desconto_2_codigo: Código do 2° desconto
+        desconto_3_codigo: Código do 3° desconto
+        codigo_multa: Código da multa
+        valor_multa: Valor da multa
+        codigo_juros: Cpodigo do juros
+        valor_juros: Valor do juros
+        parcela: Parcela
+        tipo_emissao: Tipo de emissão
+        identificacao_ocorrencia: ID Ocorrência
+        especie_titulo: Espécie do título
+        aceite: Aceite
+        codigo_moeda: Código moeda
+        forma_cadastramento: Forma de cadastramento
+        emissao_boleto: Emissão do boleto
+        distribuicao_boleto: Tipo de distribuição do boleto

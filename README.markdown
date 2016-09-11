@@ -10,21 +10,15 @@ Emissão de Boletos Bancários em Ruby.
 
  1. Boleto bancário (apenas os cálculos para o boleto, sem a interface) para os bancos:
 - Sicoob 
-- Caixa
+- Caixa (em andamento)
  2. Arquivo de remessa para os Bancos:
-- Sicoob (CNAB 240)
+- Sicoob (CNAB 240 e CNAB400)
 - Caixa  (CNAB 240)
  3. Arquivo de retorno para os Bancos:
-- Sicoob (CNAB 240)
+- Sicoob (CNAB 240 e CNAB400)
 - Caixa  (CNAB 240)
 
-## Alternativas
 
-Essa biblioteca é baseada em outras **ótimas** bibliotecas.
-**Recomendo analisar muito bem cada solução**:
-
-* Brcobranca [https://github.com/kivanio/brcobranca](https://github.com/kivanio/brcobranca)
-* Gem de Boleto Bancário [https://github.com/tomas-stefano/boleto_bancario](https://github.com/tomas-stefano/boleto_bancario)
 
 ## Instalação
 **Manualmente**
@@ -76,55 +70,228 @@ Para todos os bancos e carteiras implementadas, **seguimos as documentações** 
 <table>
   <tr>
     <th>Nome do Banco</th>
+    <th>CNAB</th>
     <th>Testada/Homologada no banco</th>
     <th>Autor </th>
   </tr>
   <tr>
     <td>Sicoob</td>
+    <td>240</td>
     <td>Homologado dia 07/08/2015</td>
     <td>Bruno M. Mergen</td>
   </tr>
   <tr>
+    <td>Sicoob</td>
+    <td>400</td>
+    <td>Pendente</td>
+    <td>Bruno M. Mergen</td>
+  </tr>
+  <tr>
     <td>Caixa</td>
+    <td>240</td>
     <td>Pendente</td>
     <td></td>
   </tr>
 </table>
 
-## Como usar
+# Como usar
 
-Você pode usar as próprias classes da gem, porém, **recomendo criar uma subclasse** para os bancos que você gostaria de desenvolver.
+## Começando
+Em todas as classes desenvolvidas é possível instanciar objetos em forma de `Hash` ou `Block`. Exemplo:
+```ruby
+obj1 = BrBoleto::Pagador.new(nome: 'João')
+obj2 = BrBoleto::Pagador.new do |pagador|
+  pagador.nome = 'João'
+end
+```
 
-### Exemplo
+As associações também podem ser instanciadas em forma de `Hash`ou `Block`. Exemplo:
+```ruby
+boleto1 = BrBoleto::Boleto::Sicoob.new do |boleto|
+   boleto.conta do |ct|
+      ct.agencia  = 1234
+      ct.carteira  = 1
+   end
+end
+
+ boleto1.conta.agencia
+ # => "1234"
+
+# OU
+
+boleto2 = BrBoleto::Boleto::Sicoob.new({
+   conta: {
+      agencia:  7465,
+      carteira: 2
+   }
+}
+
+ boleto2.conta.agencia
+ # => "7465"
+
+# OU
+
+conta = BrBoleto::Conta::Sicoob.new(agencia:  4522)
+boleto2 = BrBoleto::Boleto::Sicoob.new(conta: conta)
+boleto2.conta.agencia
+ # => "4522"
+```
+
+
+### Classes auxiliares
+Devido a falta de padronização de regras e nomenclaturas entre os banco, essa gem é composta por classes auxiliares para conseguir manter o minimo de padronização com sua utilização e nomenclaturas.
+
+#### Conta
+Para gerar **boletos** e **remessas**  é necessário de uma conta bancária, certo? Pensando nisso foi criado uma classe onde contém todas as regras e informações referente a conta bancária. Existe uma classe para cada banco desenvolvido.  **Vejamos um exemplo com o banco Sicoob:**
+```ruby
+conta = BrBoleto::Conta::Sicoob.new({
+  codigo_beneficiario:     '253167',
+  codigo_beneficiario_dv:  '4', # Se não passar o dv irá gerar automaticamente
+  conta_corrente:    '887469',
+  conta_corrente_dv: '7', # Se não passar o dv irá gerar automaticamente
+  agencia:           '3069',
+  carteira:          '1',
+  modalidade:        '02'  ,
+  razao_social:      'Razao Social emitente',
+  cpf_cnpj:          '98137264000196',
+  endereco:          'Rua nome da rua, 9999',
+})
+  
+```
+
+#### Pagador
+O pagador é o "cliente" que vai pagar o boleto/cobrança. É utilizado no boleto e no Pagamento da remessa.
+```ruby
+pagador = BrBoleto::Pagador.new do
+  nome =      'João da Silva'
+  cpf_cnpj =  '33.669.170/0001-12' # Gerado pelo gerador de cnpj
+  endereco =  'RUA DO PAGADOR'
+  bairro =    'Bairro do pagador'
+  cep =       '89885-000'
+  cidade =    'Chapecó'
+  uf =        'SC'
+  nome_avalista =      'Maria avalista'
+  documento_avalista = '840.106.990-43' # Gerado pelo gerador de CPF
+end
+```
+
+#### Pagamento
+É utilizado apenas para gerar remessas. Cada pagamento representa 1 boleto (por exemplo). Exemplo:
+
+```ruby
+pagamento = BrBoleto::Remessa::Pagamento.new({
+  nosso_numero:     "123456",
+  numero_documento: "977897",
+  data_vencimento:  Date.tomorrow,
+  valor_documento:  100.12,
+  pagador:          { 
+    nome:     'João da Silva',
+    cpf_cnpj: '33.669.170/0001-12', # Gerado pelo gerador de pdf online
+    # ....
+  },
+  data_emissao:      Date.today, # Valor default
+  valor_mora:        0.0, # Valor default
+  valor_desconto:    0.0, # Valor default
+  valor_iof:         0.0, # Valor default
+  valor_abatimento:  0.0, # Valor default
+  cod_desconto:      '0', # Valor default
+  desconto_2_codigo: '0', # Valor default
+  desconto_2_valor:  0.0, # Valor default
+  desconto_3_codigo: '0', # Valor default
+  desconto_3_valor:  0.0, # Valor default
+  codigo_multa:      '3', # Valor default
+  codigo_juros:      '3', # Valor default
+  valor_multa:       0.0, # Valor default
+  valor_juros:       0.0, # Valor default
+  parcela:           '1', # Valor default
+  tipo_impressao:    '1', # Valor default
+  tipo_emissao:      '2', # Valor default
+  identificacao_ocorrencia: '01', # Valor default
+  especie_titulo:           '01', # Valor default
+  codigo_moeda:             '9', # Valor default
+  forma_cadastramento:      '0', # Valor default
+  emissao_boleto:           '2', # Valor default
+  distribuicao_boleto:      '2', # Valor default
+})
+```
+
+## Sobrescrevendo classes e validações
+
+Você pode usar as próprias classes da gem, porém, **recomendo criar uma subclasse** para os bancos que você gostaria de desenvolver. Com isso também é possível sobrescrever validações e métodos da gem. (*Isso pode ser útil caso precise tratar alguma particularidade*)
+
+##### **Exemplo:**
 
 ```ruby
 class BoletoSicoob < BrBoleto::Boleto::Sicoob
+  def default_values
+    {
+      local_pagamento:   'PREFERENCIALMENTE NA EMPRESA XXXXX',
+      aceite: true
+    }
+  end
 end
 
+boleto = BoletoSicoob.new()
+boleto.aceite # true
+boleto.local_pagamento # PREFERENCIALMENTE NA EMPRESA XXXXX
+```
+
+Você pode também sobrescrever a `class` da conta, mas para isso será necessário sobrescrever um método na `class` do boleto para que funcione adequadamente:
+```ruby
+class MinhaContaSicoob < BrBoleto::Conta::Sicoob
+  # Suas regras aqui
+end
+class MeuBoletoSicoob < BrBoleto::Boleto::Sicoob
+  def conta_class
+    MinhaContaSicoob # Sem isso sua conta personalizada não vai funcioanr
+  end
+end
+
+boleto = MeuBoletoSicoob.new
+boleto.conta.class
+# => MinhaContaSicoob
+```
+
+Você pode sobrescrever os comportamentos na subclasse.
+Por exemplo, imagine que você quer sobrescrever a forma como é tratada a segunda parte do código de barras.
+**Seguindo a interface da classe BrBoleto::Boleto::Base** fica bem simples:
+
+```ruby
+class BoletoSicoob < BrBoleto::Boleto::Sicoob
+  def codigo_de_barras_do_banco
+   # Sua implementação ...
+  end
+end
 ```
 
 ### Criando os boletos / Validações
 
-Agora você pode emitir um boleto, **usando a classe criada no exemplo acima**:
+Agora você pode emitir um boleto, **usando a classe criada no exemplo anterior**:
 
 ```ruby
-BoletoSicoob.new(agencia: '3195', codigo_cedente: '6532', numero_documento: '1101', carteira: '1', valor_documento: 105.78) 
+BoletoSicoob.new(conta: {agencia: '3195', codigo_cedente: '6532', carteira: '1'}, numero_documento: '1101', valor_documento: 105.78) 
 ```
 
 Você pode usar blocos se quiser:
 
 ```ruby
 boleto_sicoob = BoletoSicoob.new do |boleto|
-  boleto.agencia               = '0097'
-  boleto.carteira              = '1'
-  boleto.cedente               = 'Razao Social da Empresa'
-  boleto.codigo_cedente        = '90901'
-  boleto.endereco_cedente      = 'Rua nome da rua, 9999'
+  boleto.conta = {
+    agencia:        '0097',
+    carteira:       '1',
+    modalidade:     '01',
+    razao_social:   'Razao Social da Empresa',
+    codigo_cedente: '90901',
+    endereco:       'Rua nome da rua, 9999',
+    cpf_cnpj:       '98137264000196', # Gerado pelo gerador de cnpj
+  }
+  boleto.pagador do |pag|
+    pag.nome     = 'Nome do Sacado'
+    pag.cpf_cnpj = '35433793990'
+  end
   boleto.numero_documento      = '12345678'
-  boleto.sacado                = 'Nome do Sacado'
-  boleto.documento_sacado      = '35433793990'
   boleto.data_vencimento       = Date.tomorrow
-  boleto.valor_documento       = 31678.99
+  boleto.valor_documento       = 31_678.99
 end
 ```
 
@@ -152,9 +319,9 @@ boleto_sicoob.linha_digitavel
 
 boleto_sicoob.nosso_numero
 
-boleto_sicoob.agencia_codigo_cedente
+boleto_sicoob.conta.agencia_codigo_cedente
 
-boleto_sicoob.carteira_formatada # Formata a carteira, para mostrar no boleto.
+boleto_sicoob.conta.carteira_formatada # Formata a carteira, para mostrar no boleto.
 
 boleto_sicoob.numero_documento
 
@@ -165,23 +332,9 @@ boleto_sicoob.especie
 boleto_sicoob.especie_documento
 ```
 
-## Sobrescrevendo comportamentos
-
-Você pode sobrescrever os comportamentos na subclasse.
-
-Por exemplo, imagine que você quer sobrescrever a forma como é tratada a segunda parte do código de barras.
-**Seguindo a interface da classe BrBoleto::Boleto** fica bem simples:
-
-```ruby
-class BoletoSicoob < BrBoleto::Boleto::Sicoob
-  def codigo_de_barras_do_banco
-   # Sua implementação ...
-  end
-end
-```
 #**Arquivo de remessa**
 
-##**CNAB 240**
+## **CNAB 240**
 Um arquivo de remessa é composto de UM ou VÁRIOS lotes (class BrBoleto::Remessa::Lote).
 Estes lotes são compostos de UM ou VÁRIOS pagamentos (class BrBoleto::Remessa::Pagamento).
 
@@ -191,18 +344,26 @@ Com isso, deve-se instanciar um lote passando os dois pagamentos instanciados. E
 Exemplo:
 ```ruby
 boleto_1 = BrBoleto::Boleto::Sicoob.new({
-  agencia:          3069,
-  codigo_cedente:   6532,
+  conta: {
+    agencia:          3069,
+    codigo_cedente:   6532,
+    carteira:         1,
+    conta_corrente:   '5679',
+    razao_social:     'Cedente 1',
+    cpf_cnpj:        '12345678901',
+  },
+  pagador: {
+    nome:     'Sacado',
+    cpf_cnpj: '725.275.005-10',
+    endereco: 'Rua teste, 23045',
+    bairro:   'Centro',
+    cep:      '89804-457',
+    cidade:   'Chapecó',
+    uf:       'SC'
+  },
   numero_documento: 10001,
-  carteira:         1,
   valor_documento:  100.78,
-  data_vencimento:  Date.tomorrow,
-  conta_corrente:   '5679',
-  cedente:          'Cedente 1',
-  documento_cedente:'12345678901',
-  sacado:           'Sacado',
-  documento_sacado: '725.275.005-10',
-  endereco_sacado:  'Rua teste, 23045',
+  data_vencimento:  Date.tomorrow,  
   instrucoes1:      'Lembrar de algo 1',
   instrucoes2:      'Lembrar de algo 2',
   instrucoes3:      'Lembrar de algo 3',
@@ -212,18 +373,26 @@ boleto_1 = BrBoleto::Boleto::Sicoob.new({
 })
 
 boleto_2 = BrBoleto::Boleto::Sicoob.new({
-  agencia:          3069,
-  codigo_cedente:   6532,
-  numero_documento: 10002,
-  carteira:         1,
+  conta: {
+    agencia:          3069,
+    codigo_cedente:   6532,
+    carteira:         1,
+    conta_corrente:   '5679',
+    razao_social:     'Cedente 1',
+    cpf_cnpj:        '12345678901',
+  },
+  pagador: {
+    nome:     'Sacado 2',
+    cpf_cnpj: '725.275.005-10',
+    endereco: 'Rua teste, 648',
+    bairro:   'Centro',
+    cep:      '89804-301',
+    cidade:   'Xaxim',
+    uf:       'SC'
+  },
   valor_documento:  200.78,
   data_vencimento:  Date.tomorrow,
-  conta_corrente:   '5679',
-  cedente:          'Cedente 2',
-  documento_cedente:'12345678901',
-  sacado:           'Sacado',
-  documento_sacado: '725.275.005-10',
-  endereco_sacado:  'Rua teste, 23045',
+  numero_documento: 10002,
   instrucoes1:      'Lembrar de algo 1',
   instrucoes2:      'Lembrar de algo 2',
   instrucoes3:      'Lembrar de algo 3',
@@ -237,44 +406,30 @@ pagamento_1 = BrBoleto::Remessa::Pagamento.new({
   nosso_numero:     boleto_1.nosso_numero,
   data_vencimento:  boleto_1.data_vencimento,
   valor_documento:  boleto_1.valor_documento,
-  documento_sacado: boleto_1.documento_sacado,
-  nome_sacado:      boleto_1.sacado,
-  endereco_sacado:  "R. TESTE DO SACADO",
-  cep_sacado:       "89888000",
-  cidade_sacado:    "PIRÁPORA",
-  uf_sacado:        "SC",
-  bairro_sacado:    "Bairro"
+  pagador:          boleto_1.pagador
 })
 
 pagamento_2 = BrBoleto::Remessa::Pagamento.new({
   nosso_numero:     boleto_2.nosso_numero,
   data_vencimento:  boleto_2.data_vencimento,
   valor_documento:  boleto_2.valor_documento,
-  documento_sacado: boleto_2.documento_sacado,
-  nome_sacado:      boleto_2.sacado,
-  endereco_sacado:  "R. TESTE DO SACADO",
-  cep_sacado:       "89888000",
-  cidade_sacado:    "PIRÁPORA",
-  uf_sacado:        "SC",
-  bairro_sacado:    "Bairro"
+  pagador:          boleto_2.pagador
 })
 
 
 lote = BrBoleto::Remessa::Lote.new(pagamentos: [pagamento_1, pagamento_2])
 
 remessa = BrBoleto::Remessa::Cnab240::Sicoob.new({
-  lotes:               lote,
-  nome_empresa:        "Sacado",
-  agencia:             "3069",
-  conta_corrente:      "5679", # Sem DV
-  digito_conta:        "5",
-  carteira:            "1",
-  sequencial_remessa:  1,
-  documento_cedente:   '12345678901',
-  convenio:            '1',
-  emissao_boleto:      '2',
-  distribuicao_boleto: '2',
-  especie_titulo:      '02'
+  conta: {
+    agencia:          3069,
+    codigo_cedente:   6532,
+    carteira:         1,
+    conta_corrente:   '5679',
+    razao_social:     'Cedente 1',
+    cpf_cnpj:        '12345678901',
+  },
+  lotes: lote,
+  sequencial_remessa:  1
 })
 
 
@@ -325,20 +480,45 @@ lotes << BrBoleto::Remessa::Lote.new(pagamentos: pagamento_2)
 
 remessa = BrBoleto::Remessa::Cnab240::Sicoob.new({
   lotes:               lotes,
-  nome_empresa:        "Sacado",
-  agencia:             "3069",
-  conta_corrente:      "5679", # Sem DV
-  digito_conta:        "5",
-  carteira:            "1",
-  sequencial_remessa:  1,
-  documento_cedente:   '12345678901',
-  convenio:            '1',
-  emissao_boleto:      '2',
-  distribuicao_boleto: '2',
-  especie_titulo:      '02'
+ conta: {
+    agencia:          3069,
+    codigo_cedente:   6532,
+    carteira:         1,
+    conta_corrente:   '5679',
+    razao_social:     'Cedente 1',
+    cpf_cnpj:        '12345678901',
+  },
+  sequencial_remessa:  2
 })
 ```
+##**CNAB 400**
+O CNAB400 é composto por 1 ou vários pagamentos. A diferença de utilização entre o CNAB 240 e o 400 é que no 400 não existe lotes, apenas pagamentos. Exemplo:
 
+```ruby
+  
+remessa = BrBoleto::Remessa::Cnab400::Sicoob.new do |rem|
+  rem.conta = {
+    agencia:          3069,
+    codigo_cedente:   6532,
+    carteira:         1,
+    conta_corrente:   '5679',
+    razao_social:     'Cedente 1',
+    cpf_cnpj:        '12345678901',
+  }
+  pagamentos = [pagamento1, pagamento2]
+  sequencial_remessa = 5
+end
+```
+
+## Alternativas
+
+Essa biblioteca é baseada em outras **ótimas** bibliotecas.
+**Recomendo analisar muito bem cada solução**:
+
+* Brcobranca [https://github.com/kivanio/brcobranca](https://github.com/kivanio/brcobranca)
+* Gem de Boleto Bancário [https://github.com/tomas-stefano/boleto_bancario](https://github.com/tomas-stefano/boleto_bancario)
+
+ 
 ## Contribuições
 
 Seja um contribuidor. Você pode contribuir de N formas. Seguem elas:
@@ -352,5 +532,5 @@ Seja um contribuidor. Você pode contribuir de N formas. Seguem elas:
 
 ## Licença
 
-- BSD
-- Copyleft 2015 Bruno M. Mergen
+- MIT
+- Copyleft 2016 Bruno M. Mergen

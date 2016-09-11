@@ -37,114 +37,45 @@ module BrBoleto
 				# Utilizado para montar o trailer do arquivo
 				include BrBoleto::Remessa::Cnab240::Helper::TrailerArquivo
 
-				# documento do cedente (CPF/CNPJ)
-				attr_accessor :documento_cedente
-
-				# convenio do cedente
-				attr_accessor :convenio
-
 				# mensagem 1
 				attr_accessor :mensagem_1
 
 				# mensagem 2
 				attr_accessor :mensagem_2
 
-				# Data e hora da geração do arquivo
-				attr_accessor :data_hora_arquivo
+				# variavel que terá os lotes no qual será gerado o arquivo de remessa
+				# um lote deve conter no minimo 1 pagamento
+				# Pode haver 1 ou vários lotes para o mesmo arquivo
+				attr_accessor :lotes
 
-				# modalidade da carteira
-				#   opcoes:
-				#     11: título Registrado emissão CAIXA
-				#     14: título Registrado emissão Cedente
-				#     21: título Sem Registro emissão CAIXA
-				attr_accessor :codigo_carteira
+				def self.class_for_lote
+					BrBoleto::Remessa::Lote
+				end
 
-				# forma de cadastramento dos titulos (campo nao tratado pelo Banco do Brasil)
-				#   opcoes:
-				#     1 - com cadastramento (cobrança registrada)
-				#     2 - sem cadastramento (cobrança sem registro)
-				attr_accessor :forma_cadastramento
-
-				# identificacao da emissao do boleto (verificar opcoes nas classes referentes aos bancos)
-				attr_accessor :emissao_boleto
-
-				# identificacao da distribuicao do boleto (verificar opcoes nas classes referentes aos bancos)
-				attr_accessor :distribuicao_boleto
-
-				# especie do titulo (verificar o padrao nas classes referentes aos bancos)
-				attr_accessor :especie_titulo
-
-				
-				def self.tamanho_codigo_carteira
+				def pagamento_valid_emissao_boleto_length
 					1
 				end
 
-				def self.tamanho_forma_cadastramento
+				def pagamento_valid_distribuicao_boleto_length
 					1
 				end
 
-				def self.tamanho_emissao_boleto
-					1
+				validates_each :lotes do |record, attr, value|
+					record.errors.add(attr, :blank) if value.empty?
+					value.each do |lote|
+						lote.pagamento_valid_tipo_impressao_required    = record.pagamento_valid_tipo_impressao_required
+						lote.pagamento_valid_cod_desconto_length        = record.pagamento_valid_cod_desconto_length
+						lote.pagamento_valid_emissao_boleto_length      = record.pagamento_valid_emissao_boleto_length
+						lote.pagamento_valid_distribuicao_boleto_length = record.pagamento_valid_distribuicao_boleto_length
+						if lote.invalid?
+							lote.errors.full_messages.each { |msg| record.errors.add(:base, msg) }
+						end
+					end				
 				end
 
-				def self.tamanho_distribuicao_boleto
-					1
-				end
-
-				def self.tamanho_especie_titulo
-					2
-				end
-
-				def convenio_obrigatorio?
-					true
-				end
-
-				validates :convenio,          presence: true, if: :convenio_obrigatorio?
-				validates :documento_cedente, presence: true
-
-				validates :codigo_carteira,     length: {is: tamanho_codigo_carteira,     message: "deve ter #{tamanho_codigo_carteira} dígito."}
-				validates :forma_cadastramento, length: {is: tamanho_forma_cadastramento, message: "deve ter #{tamanho_forma_cadastramento} dígito."}
-				validates :emissao_boleto,      length: {is: tamanho_emissao_boleto,      message: "deve ter #{tamanho_emissao_boleto} dígito."}
-				validates :distribuicao_boleto, length: {is: tamanho_distribuicao_boleto, message: "deve ter #{tamanho_distribuicao_boleto} dígito."}
-				validates :especie_titulo,      length: {is: tamanho_especie_titulo,      message: "deve ter #{tamanho_especie_titulo} dígitos."}
-
-				def default_values
-					super.merge({
-						codigo_carteira:     '1',
-						forma_cadastramento: '1'
-					})
-				end
-
-				# Tipo de inscricao do cedente
-				# (pessoa fisica ou juridica)
-				#
-				# @return [String]
-				#
-				def tipo_inscricao
-					# Retorna 1 se CPF e 2 se CNPJ
-					BrBoleto::Helper::CpfCnpj.new(documento_cedente).tipo_documento(1)
-				end
-
-				# Data de geracao do arquivo
-				#
-				# @return [String]
-				#
-				def data_geracao
-					data_hora_arquivo.to_date.strftime('%d%m%Y')
-				end
-
-				# Hora de geracao do arquivo
-				#
-				# @return [String]
-				#
-				def hora_geracao
-					data_hora_arquivo.strftime('%H%M%S')
-				end
-				
-				def data_hora_arquivo
-					@data_hora_arquivo.to_time
-				rescue
-					return Time.current
+				# O atributo lotes sempre irá retornar umm Array 
+				def lotes
+					@lotes = [@lotes].flatten.compact.select{|l| l.is_a?(self.class.class_for_lote) }
 				end
 
 				# Monta um lote para o arquivo
@@ -244,43 +175,11 @@ module BrBoleto
 					raise NotImplementedError.new('Sobreescreva este método na classe referente ao banco que você esta criando')
 				end
 
-				# Numero da versao do layout do arquivo
-				#
-				# Este metodo deve ser sobrescrevido na classe do banco
-				#
-				def versao_layout_arquivo
-					raise NotImplementedError.new('Sobreescreva este método na classe referente ao banco que você esta criando')
-				end
-
-				# Numero da versao do layout do lote
-				#
-				# Este metodo deve ser sobrescrevido na classe do banco
-				#
-				def versao_layout_lote
-					raise NotImplementedError.new('Sobreescreva este método na classe referente ao banco que você esta criando')
-				end
-
 				# Informacoes do convenio para o lote
 				#
 				# Este metodo deve ser sobrescrevido na classe do banco
 				#
 				def convenio_lote(lote)
-					raise NotImplementedError.new('Sobreescreva este método na classe referente ao banco que você esta criando')
-				end
-
-				# Nome do banco
-				#
-				# Este metodo deve ser sobrescrevido na classe do banco
-				#
-				def nome_banco
-					raise NotImplementedError.new('Sobreescreva este método na classe referente ao banco que você esta criando')
-				end
-
-				# Codigo do banco
-				#
-				# Este metodo deve ser sobrescrevido na classe do banco
-				#
-				def codigo_banco
 					raise NotImplementedError.new('Sobreescreva este método na classe referente ao banco que você esta criando')
 				end
 
@@ -297,14 +196,6 @@ module BrBoleto
 				# Este metodo deve ser sobrescrevido na classe do banco
 				#
 				def codigo_convenio
-					raise NotImplementedError.new('Sobreescreva este método na classe referente ao banco que você esta criando')
-				end
-
-				# Digito verificado da agência
-				# Normalmente calculado pelo Modulo 11
-				# Deve ser sobrescrito na classe do banco
-				#
-				def digito_agencia
 					raise NotImplementedError.new('Sobreescreva este método na classe referente ao banco que você esta criando')
 				end
 

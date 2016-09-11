@@ -18,7 +18,7 @@ module Helper
 		# Por padrão deve retornar o "codigo_banco"
 		#
 		def test_TrailerArquivo_metodo_trailer_arquivo_posicao_001_a_003
-			subject.expects(:codigo_banco).returns("669")
+			subject.conta.expects(:codigo_banco).returns("669")
 			subject.trailer_arquivo_posicao_001_a_003.must_equal("669")
 		end
 

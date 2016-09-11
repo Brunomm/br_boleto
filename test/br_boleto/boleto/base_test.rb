@@ -3,17 +3,113 @@ require 'test_helper'
 describe BrBoleto::Boleto::Base do
 	subject { FactoryGirl.build(:boleto_base) }
 
-	it { must validate_numericality_of(:valor_documento).is_less_than_or_equal_to(99999999.99) }
+	before do
+		subject.stubs(:conta_class).returns(BrBoleto::Conta::Sicoob)
+	end
 
-	describe "model_name" do
-		it "must return BrBoleto::Boleto::Base" do
-			BrBoleto::Boleto::Base.model_name.must_equal 'BrBoleto::Boleto::Base'
+	it "deve herdar de ActiveModelBase" do
+		subject.must_be_kind_of BrBoleto::ActiveModelBase
+	end
+
+	it "deve ter o module HaveConta incluso" do
+		subject.class.included_modules.must_include BrBoleto::HaveConta
+	end
+
+	it "deve ter o module HavePagador incluso" do
+		subject.class.included_modules.must_include BrBoleto::HavePagador
+	end
+
+	describe '#validations' do
+		it { must validate_presence_of(:valor_documento) }
+		it { must validate_presence_of(:numero_documento) }
+		it { must validate_presence_of(:data_vencimento) }
+
+		context "tamanho maximo do numero_documento" do
+			it "por padrão deve ter o tamanho máximo de 6 digitos" do
+				subject.send(:valid_numero_documento_maximum).must_equal 6
+				subject.numero_documento = '1234567'
+				must_be_message_error(:numero_documento, :custom_length_maximum, {count: 6})
+			end
+			it "se mudar o valor do metodo valid_numero_documento_maximum dev validar o tamanho maximo a com o valor setado" do
+				subject.stubs(:valid_numero_documento_maximum).returns(4)
+				subject.numero_documento = '1234567'
+				must_be_message_error(:numero_documento, :custom_length_maximum, {count: 4})
+			end
+			it "se não tiver valor setado em valid_numero_documento_maximum, não deve validar" do
+				subject.stubs(:valid_numero_documento_maximum).returns(nil)
+				subject.numero_documento = '1234567'
+				wont_be_message_error(:numero_documento)
+			end
+		end
+		context "#valor_documento" do
+			it "por padrão deve ter a validação de tamanho maximo com 99999999.99" do
+				must validate_numericality_of(:valor_documento).is_less_than_or_equal_to(99999999.99)
+			end
+			it "deve validar o valor maximo a partir do metodo valid_valor_documento_tamanho_maximo" do
+				subject.stubs(:valid_valor_documento_tamanho_maximo).returns(100.00)
+				must validate_numericality_of(:valor_documento).is_less_than_or_equal_to(100.0)
+			end
+			it "não deve validar o valor maximo se o metodo valid_valor_documento_tamanho_maximo estiver nil" do
+				subject.stubs(:valid_valor_documento_tamanho_maximo).returns(nil)
+				wont validate_numericality_of(:valor_documento)
+			end
+		end
+
+		it "data_vencimento deve ser uma data" do
+			subject.data_vencimento = 13
+			must_be_message_error :data_vencimento, :invalid
+			subject.data_vencimento = '13'
+			must_be_message_error :data_vencimento, :invalid
+			subject.data_vencimento = Time.current
+			must_be_message_error :data_vencimento, :invalid
+
+			subject.data_vencimento = Date.current
+			wont_be_message_error :data_vencimento, :invalid
 		end
 	end
 
-	describe "human_attribute_name" do
-		it "must respond_to internationalization attribute" do
-			BrBoleto::Boleto::Base.human_attribute_name(:same_thing).must_equal "Same thing"
+	describe "#default_values" do
+		it 'for codigo_moeda' do
+			subject.class.new.codigo_moeda.must_equal '9'
+		end
+		it 'for especie' do
+			subject.class.new.especie.must_equal 'R$'
+		end
+		it 'for especie_documento' do
+			subject.class.new.especie_documento.must_equal 'DM'
+		end
+		it 'for local_pagamento' do
+			subject.class.new.local_pagamento.must_equal 'PAGÁVEL EM QUALQUER BANCO ATÉ O VENCIMENTO'
+		end
+		it 'for data_documento' do
+			subject.class.new.data_documento.must_equal Date.current
+		end
+		it 'for aceite' do
+			subject.class.new.aceite.must_equal false
+		end
+	end
+
+	describe '#numero_documento' do
+		it "deve ajustar o tamanho do numero conforme valid_numero_documento_maximum" do
+			subject.numero_documento = 354
+			subject.numero_documento.must_equal '000354'
+			
+			subject.stubs(:valid_numero_documento_maximum).returns(4)
+			subject.numero_documento.must_equal '0354'
+			
+			subject.stubs(:valid_numero_documento_maximum).returns(nil)
+			subject.numero_documento.must_equal 354
+		end
+	end
+
+	describe "#parcelas" do
+		it "se não tiver parcelas setadas, deve retornar 001" do
+			subject.parcelas = ''
+			subject.parcelas.must_equal "001"
+		end
+		it "deve permitir a modificação do número de parcelas" do
+			subject.parcelas = 2
+			subject.parcelas.must_equal "002"
 		end
 	end
 
@@ -23,212 +119,14 @@ describe BrBoleto::Boleto::Base do
 		end
 	end
 
-	describe "to_model" do
-		it "must returns the same object for comparison purposes" do
-			subject.to_model.must_equal subject
-		end
-	end
-
-	describe "#tipo_cobranca_formatada" do
-		it "default é nil" do
-			subject.tipo_cobranca_formatada.must_be_nil
-		end
-	end
-
-	context '#initialize' do
-		context "when passing a Hash" do
-			before do 
-				@object = subject.class.new({
-					numero_documento: '123',
-					valor_documento:  101.99,
-					data_vencimento:  Date.new(2015, 07, 10),
-					carteira:         '175',
-					agencia:          '98',
-					conta_corrente:   '98701',
-					cedente:          'Nome da razao social',
-					sacado:           'Teste',
-					documento_sacado: '725.275.005-10',
-					endereco_sacado:  'Rua teste, 23045',
-					instrucoes1:      'Lembrar de algo 1',
-					instrucoes2:      'Lembrar de algo 2',
-					instrucoes3:      'Lembrar de algo 3',
-					instrucoes4:      'Lembrar de algo 4',
-					instrucoes5:      'Lembrar de algo 5',
-					instrucoes6:      'Lembrar de algo 6',
-				})
-			end
-			it{ @object.numero_documento.must_equal  '000123' }
-			it{ @object.valor_documento.must_equal   101.99 }
-			it{ @object.data_vencimento.must_equal   Date.new(2015, 07, 10) }
-			it{ @object.carteira.must_equal          '175' }
-			it{ @object.agencia.must_equal           '0098' }
-			it{ @object.conta_corrente.must_equal    '98701' }
-			it{ @object.codigo_moeda.must_equal      '9' }
-			it{ @object.cedente.must_equal           'Nome da razao social' }
-			it{ @object.especie.must_equal           'R$' }
-			it{ @object.especie_documento.must_equal 'DM' }
-			it{ @object.data_documento.must_equal    Date.today }
-			it{ @object.sacado.must_equal            'Teste' }
-			it{ @object.documento_sacado.must_equal  '72527500510' }
-			it{ @object.endereco_sacado.must_equal   'Rua teste, 23045'}
-			it{ @object.local_pagamento.must_equal   'PAGÁVEL EM QUALQUER BANCO ATÉ O VENCIMENTO' }
-			it{ @object.instrucoes1.must_equal       'Lembrar de algo 1'}
-			it{ @object.instrucoes2.must_equal       'Lembrar de algo 2'}
-			it{ @object.instrucoes3.must_equal       'Lembrar de algo 3'}
-			it{ @object.instrucoes4.must_equal       'Lembrar de algo 4'}
-			it{ @object.instrucoes5.must_equal       'Lembrar de algo 5'}
-			it{ @object.instrucoes6.must_equal       'Lembrar de algo 6'}
-		end
-
-		context "when passing a block" do
-			before do
-				@object = subject.class.new do |boleto|
-					boleto.numero_documento   = '187390'
-					boleto.valor_documento    = 1
-					boleto.data_vencimento    = Date.new(2012, 10, 10)
-					boleto.carteira           = '109'
-					boleto.agencia            = '0914'
-					boleto.conta_corrente     = '82369'
-					boleto.codigo_cedente     = '90182'
-					boleto.endereco_cedente   = 'Rua Itapaiuna, 2434'
-					boleto.cedente            = 'Nome da razao social'
-					boleto.documento_cedente  = '62.526.713/0001-40'
-					boleto.sacado             = 'Teste'
-					boleto.instrucoes1        = 'Lembrar de algo 1'
-					boleto.instrucoes2        = 'Lembrar de algo 2'
-					boleto.instrucoes3        = 'Lembrar de algo 3'
-					boleto.instrucoes4        = 'Lembrar de algo 4'
-					boleto.instrucoes5        = 'Lembrar de algo 5'
-					boleto.instrucoes6        = 'Lembrar de algo 6'
-				end
-			end
-
-			it {@object.numero_documento.must_equal  '187390' }
-			it {@object.valor_documento.must_equal   1 }
-			it {@object.carteira.must_equal          '109' }
-			it {@object.agencia.must_equal           '0914' }
-			it {@object.conta_corrente.must_equal    '82369' }
-			it {@object.codigo_moeda.must_equal      '9' }
-			it {@object.codigo_cedente.must_equal    '090182' }
-			it {@object.endereco_cedente.must_equal  'Rua Itapaiuna, 2434' }
-			it {@object.cedente.must_equal           'Nome da razao social' }
-			it {@object.documento_cedente.must_equal '62526713000140' }
-			it {@object.sacado.must_equal            'Teste' }
-			it {@object.aceite.must_equal            true }
-			it {@object.instrucoes1.must_equal       'Lembrar de algo 1' }
-			it {@object.instrucoes2.must_equal       'Lembrar de algo 2' }
-			it {@object.instrucoes3.must_equal       'Lembrar de algo 3' }
-			it {@object.instrucoes4.must_equal       'Lembrar de algo 4' }
-			it {@object.instrucoes5.must_equal       'Lembrar de algo 5' }
-			it {@object.instrucoes6.must_equal       'Lembrar de algo 6' }
-		end
-	end
-
-	describe "#documento_cedente" do
-		context "com CPF" do
-			before do
-				subject.documento_cedente = 2273542143
-			end
-			it "deve preencher com zeros a esquerda se for menor que 11" do
-				subject.documento_cedente.must_equal '02273542143'
-			end
-			it "deve remover a formatacao" do
-				subject.documento_cedente = '022.735.421-43'
-				subject.documento_cedente.must_equal '02273542143'
-			end
-			describe "metodo documento_cedente_formatado " do
-				it { subject.documento_cedente_formatado.must_equal '022.735.421-43' }
-			end
-			describe "metodo documento_cedente_formatado_com_label " do
-				it { subject.documento_cedente_formatado_com_label.must_equal 'CPF 022.735.421-43' }
-			end
-		end
-
-		context "com CNPJ" do
-			before do
-				subject.documento_cedente = 9372490000121
-			end
-			it "deve preencher com zeros a esquerda se tamanho for 12" do
-				subject.documento_cedente = 123456789012
-				subject.documento_cedente.must_equal '00123456789012'
-			end
-			it "deve preencher com zeros a esquerda se tamanho for 13" do
-				subject.documento_cedente = 9372490000121
-				subject.documento_cedente.must_equal '09372490000121'
-			end
-			it "deve remover a formatacao" do
-				subject.documento_cedente = '09.372.490/0001-21'
-				subject.documento_cedente.must_equal '09372490000121'
-			end
-			describe "metodo documento_cedente_formatado " do
-				it { subject.documento_cedente_formatado.must_equal '09.372.490/0001-21' }
-			end
-			describe "metodo documento_cedente_formatado_com_label " do
-				it { subject.documento_cedente_formatado_com_label.must_equal 'CNPJ 09.372.490/0001-21' }
-			end
-		end
-	end
-
-	describe "#documento_sacado" do
-		context "com CPF" do
-			before do
-				subject.documento_sacado = 2273542143
-			end
-			it "deve preencher com zeros a esquerda se for menor que 11" do
-				subject.documento_sacado.must_equal '02273542143'
-			end
-			it "deve remover a formatacao" do
-				subject.documento_sacado = '022.735.421-43'
-				subject.documento_sacado.must_equal '02273542143'
-			end
-			describe "metodo documento_sacado_formatado " do
-				it { subject.documento_sacado_formatado.must_equal '022.735.421-43' }
-			end
-			describe "metodo documento_sacado_formatado_com_label " do
-				it { subject.documento_sacado_formatado_com_label.must_equal 'CPF 022.735.421-43' }
-			end
-		end
-
-		context "com CNPJ" do
-			before do
-				subject.documento_sacado = 9372490000121
-			end
-			it "deve preencher com zeros a esquerda se tamanho for 12" do
-				subject.documento_sacado = 123456789012
-				subject.documento_sacado.must_equal '00123456789012'
-			end
-			it "deve preencher com zeros a esquerda se tamanho for 13" do
-				subject.documento_sacado = 9372490000121
-				subject.documento_sacado.must_equal '09372490000121'
-			end
-			it "deve remover a formatacao" do
-				subject.documento_sacado = '09.372.490/0001-21'
-				subject.documento_sacado.must_equal '09372490000121'
-			end
-			describe "metodo documento_sacado_formatado " do
-				it { subject.documento_sacado_formatado.must_equal '09.372.490/0001-21' }
-			end
-			describe "metodo documento_sacado_formatado_com_label " do
-				it { subject.documento_sacado_formatado_com_label.must_equal 'CNPJ 09.372.490/0001-21' }
-			end
-		end
-	end
-
-	context "#carteira_formatada" do
-		it "returns 'carteira' as default" do
-			subject.stubs(:carteira).returns('Foo')
-			subject.carteira_formatada.must_equal 'Foo'
-		end
-	end
-
 	describe "#valor_documento_formatado" do
-		context "when period" do
+		context "valor maior que 100" do
 			before { subject.stubs(:valor_documento).returns(123.45) }
 
 			it {subject.valor_formatado_para_codigo_de_barras.must_equal '0000012345' }
 		end
 
-		context "when less than ten" do
+		context "valor menor que 100" do
 			before { subject.stubs(:valor_documento).returns(5.0) }
 
 			it {subject.valor_formatado_para_codigo_de_barras.must_equal '0000000500'}
@@ -285,21 +183,49 @@ describe BrBoleto::Boleto::Base do
 		end
 	end
 
-	it "#codigo_banco" do
-		assert_raises NotImplementedError do
-			subject.codigo_banco
+	describe '#codigo_de_barras' do
+		it 'deve montar o código de barras com o codigo_de_barras_padrao e codigo_de_barras_do_banco' do
+			subject.expects(:codigo_de_barras_padrao).returns(''.rjust(18, '1'))
+			subject.expects(:codigo_de_barras_do_banco).returns(''.rjust(25, '3'))
+			subject.expects(:digito_codigo_de_barras).returns('2')
+
+			subject.codigo_de_barras.must_equal '1111211111111111111'+''.ljust(25, '3')
 		end
 	end
 
-	it "#digito_codigo_banco" do
-		assert_raises NotImplementedError do
-			subject.digito_codigo_banco
+	describe '#codigo_de_barras_padrao' do
+		it "deve montar a parte do codigo de barras padrão para todos os bancos" do
+			subject.data_vencimento = Date.parse('21/02/2025') # dia 21/02/2025 vai parar de funcionar
+			subject.codigo_moeda    = '8'
+			subject.valor_documento   = 5_123.05
+			subject.conta.expects(:codigo_banco).returns('554')
+			
+			resul = subject.codigo_de_barras_padrao
+			resul.size.must_equal 18
+			resul[0..2].must_equal '554'  # Código do banco
+			resul[ 3  ].must_equal '8'    # Código da moeda
+			resul[4..7].must_equal '9999' # Fator de vencimento
+			resul[8..17].must_equal '0000512305' # Valor do documento			
 		end
 	end
 
-	it "#agencia_codigo_cedente" do
-		assert_raises NotImplementedError do
-			subject.agencia_codigo_cedente
+	describe '#digito_codigo_de_barras' do
+		it "deve calcular o digito pelo Modulo11FatorDe2a9 com os valores de codigo_de_barras_padrao e codigo_de_barras_do_banco" do
+			subject.expects(:codigo_de_barras_padrao).returns('123456')
+			subject.expects(:codigo_de_barras_do_banco).returns('789012')
+			BrBoleto::Calculos::Modulo11FatorDe2a9.expects(:new).with('123456789012').returns(7)
+
+			subject.digito_codigo_de_barras.must_equal 7
+		end
+	end
+
+	describe '#linha_digitavel' do
+		it "deve gerar a linha_digitavel a partir do calculo LinhaDigitavel passando o codigo de barras" do
+			subject.expects(:codigo_de_barras).returns('CODIGOBARRAS')
+
+			BrBoleto::Calculos::LinhaDigitavel.expects(:new).with('CODIGOBARRAS').returns('LinhaDigitavel')
+
+			subject.linha_digitavel.must_equal 'LinhaDigitavel'
 		end
 	end
 

@@ -1,52 +1,13 @@
 # encoding: utf-8
 module BrBoleto
 	module Boleto
-		# @abstract Métodos { #codigo_banco, #digito_codigo_banco, #agencia_codigo_cedente, #nosso_numero, #codigo_de_barras_do_banco}
+		# @abstract Métodos {  #nosso_numero, #codigo_de_barras_do_banco}
 		# Métodos para serem escritos nas subclasses (exitem outros opcionais, conforme visto nessa documentação).
 		#
 		class Base < BrBoleto::ActiveModelBase
-			include BrBoleto::Calculos			
-
-			# Nome/Razão social que aparece no campo 'Cedente' no boleto.
-			#
-			attr_accessor :cedente
-
-			# <b>Código do Cedente é o código do cliente, fornecido pelo banco.</b>
-			#
-			# Alguns bancos, dependendo do banco e da carteira, precisam desse campo preenchido.
-			# Em compensação, outros bancos (a minoria) não fazem utilização desse campo.
-			#
-			attr_accessor :codigo_cedente # com DV
-
-			# Código do beneficiário e codigo cedente é a mesma coisa
-			# Por isso foi criado um alias para que cada um utilize a nomenclatura que preferir.
-			#
-			alias_attribute :codigo_beneficiario, :codigo_cedente
-
-			# Formatação para o código do cedente conforme o tamanho definido por cada banco
-			# Perceba que é obrigatório ter o metodo self.tamanho_maximo_codigo_cedente implementado
-			# na classe de cada banco
-			#
-			# @return [String]
-			#
-			def codigo_cedente
-				@codigo_cedente.to_s.rjust(self.class.tamanho_maximo_codigo_cedente, '0') if @codigo_cedente.present?
-			end
-
-			# Documento do Cedente (CPF ou CNPJ).
-			# <b>OBS.: Esse campo não possui validação do campo. Caso você precise imeplemente na subclasse.</b>
-			#
-			# Esse campo serve apenas para mostrar no boleto no campo "CPF/CNPJ".
-			#
-			attr_accessor :documento_cedente
-
-			# Deve ser informado o endereço completo do Cedente.
-			# Se o título possuir a figura de Sacador Avalista o endereço informado
-			# deverá ser do Sacador Avalista, conforme Lei Federal 12.039 de 01/10/2009.
-			#
-			# <b>Campo Obrigatório</b>
-			#
-			attr_accessor :endereco_cedente
+			include BrBoleto::Calculos
+			include BrBoleto::HaveConta
+			include BrBoleto::HavePagador
 
 			# Data do vencimento do boleto. Campo auto explicativo.
 			#
@@ -58,11 +19,12 @@ module BrBoleto
 			# Campo de resposabilidade do Cedente e cada banco possui um tamanho esperado.
 			#
 			attr_accessor :numero_documento
-			#
-			# @return [String]
-			#
 			def numero_documento
-				@numero_documento.to_s.rjust(self.class.tamanho_maximo_numero_documento, '0') if @numero_documento.present?
+				if valid_numero_documento_maximum && @numero_documento.present?
+					@numero_documento.to_s.rjust(valid_numero_documento_maximum, '0')
+				else
+					@numero_documento
+				end
 			end
 
 			# Valor total do documento. Campo auto explicativo.
@@ -70,36 +32,7 @@ module BrBoleto
 			# <b>Campo Obrigatório</b>.
 			#
 			attr_accessor :valor_documento
-
-			# Uma carteira de cobrança define o modo como o boleto é tratado pelo banco.
-			# Existem duas grandes divisões: carteiras não registradas e carteiras registradas.
-			#
-			# === Carteiras Não Registradas
-			#
-			# Significa que não há registro no banco sobre os boletos gerados, ou seja, você não precisa
-			# notificar o banco a cada boleto gerado.
-			# Neste caso a cobrança de taxa bancária é feita por boleto pago.
-			#
-			# === Carteiras Registradas
-			#
-			# Você precisa notificar o banco sobre todos os boletos gerados, em geral enviando um
-			# arquivo chamado "arquivo de remessa".
-			# Neste caso, normalmente existe uma taxa bancária por boleto gerado, independentemente de ele ser pago.
-			# Nestas carteiras também se encaixam serviços bancários adicionais, como protesto em caso de não pagamento.
-			#
-			# <b>Campo Obrigatório</b>
-			#
-			attr_accessor :carteira
-
-			# Número da agência. Campo auto explicativo.
-			#
-			attr_accessor :agencia
-			#
-			# @return [String] 4 caracteres
-			#
-			def agencia
-				@agencia.to_s.rjust(self.class.tamanho_maximo_agencia, '0') if @agencia.present?
-			end
+			
 
 			# Número da Conta corrente. Campo auto explicativo.
 			#
@@ -145,32 +78,6 @@ module BrBoleto
 			#
 			attr_accessor :data_documento
 
-			# Nome do sacado.
-			#
-			# O sacado é a pessoa para o qual o boleto está sendo emitido, podemos resumir dizendo
-			# que o sacado é o cliente do Cedente, ou aquele para o qual uma determina mercadoria
-			# foi vendida e o pagamento desta será efetuado por meio de boleto de cobrança.
-			#
-			# <b>Campo Obrigatório</b>.
-			#
-			attr_accessor :sacado
-
-			# Documento do sacado.
-			#
-			# <b>OBS.: Esse campo não possui validação do campo. Caso você precise imeplemente na subclasse.</b>
-			#
-			# Esse campo serve apenas para mostrar no boleto no campo "CPF/CNPJ".
-			#
-			attr_accessor :documento_sacado
-
-			# Endereço do sacado.
-			#
-			# <b>OBS.: Esse campo não possui validação do campo. Caso você precise imeplemente na subclasse.</b>
-			#
-			# Esse campo serve apenas para mostrar no boleto no campo "Sacado".
-			#
-			attr_accessor :endereco_sacado
-
 			# Descrição do local do pagamento.
 			#
 			attr_accessor :local_pagamento
@@ -185,89 +92,47 @@ module BrBoleto
 			# São permitidas até seis linhas de instruções a serem mostradas no boleto
 
 			attr_accessor :instrucoes1,
-										:instrucoes2,
-										:instrucoes3,
-										:instrucoes4,
-										:instrucoes5,
-										:instrucoes6
+			              :instrucoes2,
+			              :instrucoes3,
+			              :instrucoes4,
+			              :instrucoes5,
+			              :instrucoes6
 
 			# Caminho do logo do banco.
 			#
 			attr_accessor :logo
 
-			# Tamanho maximo do valor do documento do boleto.
-			# Acredito que não existirá valor de documento nesse valor,
-			# <b>porém a biblioteca precisa manter a consistência</b>.
-			#
-			# No código de barras o valor do documento precisa
-			# ter um tamanho de 8 caracteres para os reais (acrescentando zeros à esquerda),
-			# e 2 caracteres nos centavos (acrescentando zeros à esquerda).
-			#
-			# @return [Float] 99999999.99
-			#
-			def self.valor_documento_tamanho_maximo
-				99999999.99
-			end
-
-			# Validações de todos os boletos
-			#
-			validates :carteira, :valor_documento, :numero_documento, :data_vencimento, presence: true
-			validates :cedente, :endereco_cedente, presence: true
-			validates :sacado,  :documento_sacado, presence: true
-			validates :valor_documento, numericality: { less_than_or_equal_to: ->(object) { object.class.valor_documento_tamanho_maximo } }
-			validate  :data_vencimento_deve_ser_uma_data
-
-			# Passing the attributes as Hash or block
-			#
-			# @overload initialize(options = {}, &block)
-			# @param  [Hash] options Passing a hash accessing the attributes of the self.
-			# @option options [String] :cedente
-			# @option options [String] :codigo_cedente
-			# @option options [String] :documento_cedente
-			# @option options [String] :endereco_cedente
-			# @option options [String] :conta_corrente
-			# @option options [String] :agencia
-			# @option options [Date]   :data_vencimento
-			# @option options [String] :numero_documento
-			# @option options [Float]  :valor_documento
-			# @option options [String] :codigo_moeda
-			# @option options [String] :especie
-			# @option options [String] :especie_documento
-			# @option options [String] :sacado
-			# @option options [String] :documento_sacado
-			#
-			# @param [Proc] block Optional params. Passing a block accessing the attributes of the self.
-			#
-			# For the options, waiting for the ActiveModel 4 and the ActiveModel::Model. :)
-			#
-			# === Exemplos
-			#
-			# O recomendado é usar os boletos herdando de seu respectivo banco. Por exemplo:
-			#
-			#     class Sicoob < BrBoleto::Sicoob
-			#     end
-			#
-			# Agora você pode emitir um boleto usando a classe criada acima:
-			#
-			#     Sicoob.new(conta_corrente: '89755', agencia: '0097', :carteira => '195')
-			#
-			# Você pode usar blocos se quiser:
-			#
-			#     Sicoob.new do |boleto|
-			#       boleto.conta_corrente   = '89755'
-			#       boleto.agencia          = '0097'
-			#       boleto.carteira         = '198'
-			#       boleto.numero_documento = '12345678'
-			#       boleto.codigo_cedente   = '909014'
-			#     end
-			#
-			def initialize(options={}, &block)
-				default_values.merge(options).each do |attribute, value|
-					send("#{attribute}=", value) if respond_to?("#{attribute}=")
+			# Quantidade de parcelas que o boleto possui
+			# Liberando a possibilidade de edição
+			attr_accessor :parcelas
+			def parcelas
+				if @parcelas.present?
+					@parcelas.to_s.rjust(3, '0')
+				else
+					'001'
 				end
-
-				yield(self) if block_given?
 			end
+
+			#################  VALIDAÇÕES DINÂMICAS  #################
+				
+				def valid_numero_documento_maximum;  6 end
+				validates :numero_documento, custom_length: {maximum: :valid_numero_documento_maximum}, if: :valid_numero_documento_maximum
+
+				# Tamanho maximo do valor do documento do boleto.
+				# Acredito que não existirá valor de documento nesse valor,
+				# <b>porém a biblioteca precisa manter a consistência</b>.
+				#
+				# No código de barras o valor do documento precisa
+				# ter um tamanho de 8 caracteres para os reais (acrescentando zeros à esquerda),
+				# e 2 caracteres nos centavos (acrescentando zeros à esquerda).
+				#
+				# @return [Float] 99999999.99
+				#
+				def valid_valor_documento_tamanho_maximo; 99999999.99 end
+				validates :valor_documento, numericality: { less_than_or_equal_to: ->(obj) { obj.valid_valor_documento_tamanho_maximo } }, if: :valid_valor_documento_tamanho_maximo
+			##########################################################
+			validates :valor_documento, :numero_documento, :data_vencimento, presence: true
+			validate  :data_vencimento_deve_ser_uma_data
 
 			# Opções default.
 			#
@@ -288,78 +153,13 @@ module BrBoleto
 			#
 			def default_values
 				{
-					:codigo_moeda      => '9',
-					:especie           => 'R$',
-					:especie_documento => 'DM',
-					:local_pagamento   => 'PAGÁVEL EM QUALQUER BANCO ATÉ O VENCIMENTO',
-					:data_documento    => Date.current,
-					:aceite            => true
+					codigo_moeda:      '9',
+					especie:           'R$',
+					especie_documento: 'DM',
+					local_pagamento:   'PAGÁVEL EM QUALQUER BANCO ATÉ O VENCIMENTO',
+					data_documento:    Date.current,
+					aceite:            false
 				}
-			end
-
-			# Tipo de cobrança
-			# Ex: :com_registro, :sem_registro, :caucionada
-			# A implementação para esse valor deve ser implementada para cada banco, 
-			# pois cada banco tem uma maneira diferente para saber o tipo de cobrança.
-			#
-			# Obs: O VALOR DESSE METODO NÃO INFLUÊNCIA NA GERAÇÃO DO BOLETO
-			# É APENAS PARA QUESTÃO DE INFORMAÇÃO CASO PRECISE PARA OUTRAS COISAS, POR EXEMPLO:
-			# É UTILIZADO NOS PAGAMENTOS DAS REMESSAS, MAIS ESPECIFICAMENTE NO COMPLEMENTO TRAILER
-			# DO LOTE PARA O BANCO SICOOB NO CNAB 240.
-			def tipo_cobranca_formatada
-			end
-
-			# Código do Banco.
-			# <b>Esse campo é específico para cada banco</b>.
-			#
-			# @return [String] Corresponde ao código do banco.
-			#
-			# @raise [NotImplementedError] Precisa implementar nas subclasses.
-			#
-			def codigo_banco
-				raise NotImplementedError.new("Not implemented #codigo_banco in #{self}.")
-			end
-
-			# Dígito do código do banco.
-			# <b>Esse campo é específico para cada banco</b>.
-			#
-			# @return [String] Corresponde ao dígito do código do banco.
-			# @raise [NotImplementedError] Precisa implementar nas subclasses.
-			#
-			def digito_codigo_banco
-				raise NotImplementedError.new("Not implemented #digito_codigo_banco in #{self}.")
-			end
-
-			# Esses métodos servem apenas para questão de testes
-			# Não são utilizados nas subclasses.
-			# Devem obrigatóriamente ser sobrescritos nas subclasses
-			def self.tamanho_maximo_agencia
-				4
-			end
-			def self.tamanho_maximo_codigo_cedente
-				6
-			end
-			def self.tamanho_maximo_numero_documento
-				6
-			end
-
-			# Formata o código do banco com o dígito do código do banco.
-			# Método usado para o campo de código do banco localizado no cabeçalho do boleto.
-			#
-			# @return [String]
-			#
-			def codigo_banco_formatado
-				"#{codigo_banco}-#{digito_codigo_banco}"
-			end
-
-			# Agência, código do cedente ou nosso número.
-			# <b>Esse campo é específico para cada banco</b>.
-			#
-			# @return [String] - Corresponde aos campos "Agencia / Codigo do Cedente".
-			# @raise [NotImplementedError] Precisa implementar nas subclasses.
-			#
-			def agencia_codigo_cedente
-				raise NotImplementedError.new("Not implemented #agencia_codigo_cedente in #{self}.")
 			end
 
 			# O Nosso Número é o número que identifica unicamente um boleto para uma conta.
@@ -394,24 +194,6 @@ module BrBoleto
 				valor_documento_formatado = (Integer(valor_documento.to_f * 100) / Float(100))
 				real, centavos            = valor_documento_formatado.to_s.split(/\./)
 				"#{real.rjust(8, '0')}#{centavos.ljust(2, '0')}"
-			end
-
-			# Força a carteira a retornar o valor como string
-			#
-			# @return [String]
-			#
-			def carteira
-				@carteira.to_s if @carteira.present?
-			end
-
-			# Embora o padrão seja mostrar o número da carteira no boleto,
-			# <b>alguns bancos</b> requerem que seja mostrado um valor diferente na carteira.
-			# <b>Para essas exceções, sobrescreva esse método na subclasse.</b>
-			#
-			# @return [String] retorna o número da carteira
-			#
-			def carteira_formatada
-				carteira
 			end
 
 			# Se o aceite for 'true', retorna 'S'.
@@ -463,7 +245,7 @@ module BrBoleto
 			# @return [String] Primeiras 18 posições do código de barras (<b>Não retorna o DAC do código de barras</b>).
 			#
 			def codigo_de_barras_padrao
-				"#{codigo_banco}#{codigo_moeda}#{fator_de_vencimento}#{valor_formatado_para_codigo_de_barras}"
+				"#{conta.codigo_banco}#{codigo_moeda}#{fator_de_vencimento}#{valor_formatado_para_codigo_de_barras}"
 			end
 
 			# Segunda parte do código de barras.
@@ -547,122 +329,11 @@ module BrBoleto
 				false
 			end
 
-			# Método usado para verificar se deve realizar a validação de tamanho do campo 'agência'.
-			# <b>Sobrescreva esse método na subclasse, caso você mesmo queira fazer as validações</b>.
-			#
-			# @return [True]
-			#
-			def deve_validar_agencia?
-				true
-			end
-
-			# Método usado para verificar se deve realizar a validação de tamanho do campo 'conta_corrente'.
-			# <b>Sobrescreva esse método na subclasse, caso você mesmo queira fazer as validações</b>.
-			#
-			# @return [True]
-			#
-			def deve_validar_conta_corrente?
-				true
-			end
-
-			# Método usado para verificar se deve realizar a validação de tamanho do campo 'codigo_cedente'.
-			# <b>Sobrescreva esse método na subclasse, caso você mesmo queira fazer as validações</b>.
-			#
-			# @return [True]
-			#
-			def deve_validar_codigo_cedente?
-				true
-			end
-
-			# Método usado para verificar se deve realizar a validação de tamanho do campo 'numero_documento'.
-			# <b>Sobrescreva esse método na subclasse, caso você mesmo queira fazer as validações</b>.
-			#
-			# @return [True]
-			#
-			def deve_validar_numero_documento?
-				true
-			end
-
-			# Método usado para verificar se deve realizar a validação do campo 'carteira'.
-			# <b>Sobrescreva esse método na subclasse, caso você mesmo queira fazer as validações</b>.
-			#
-			# @return [True]
-			#
-			def deve_validar_carteira?
-				true
-			end
-
 			# Verifica e valida se a data do vencimento deve ser uma data válida.
 			# <b>Precisa ser uma data para o cálculo do fator do vencimento.</b>
 			#
 			def data_vencimento_deve_ser_uma_data
 				errors.add(:data_vencimento, :invalid) unless data_vencimento.kind_of?(Date)
-			end
-
-
-			################ FORMATAÇÃO PARA CPF OU CNPJ ################
-			# tanto o documento do sacado quandto do cedente possui 3 tipos de formatação
-			# EX: 
-			#   documento_sacado = '12345678901'
-			#   atributo + '_formatado':
-			#       documento_sacado_formatado = '123.456.789-01'
-			#   atributo + '_formatado_com_label':
-			#       documento_sacado_formatado_com_label = 'CPF 123.456.789-01'
-			#
-			# OBS: O documento_cedente e documento_sacado SEMPRE irão retornar o valor sem a formatação
-			#      mesmo que seja setado
-			##############################################################
-
-			# Retorna o documento do sacado com tamanho 0, 11 ou 14 caracteres
-			# Sempre retorna o valor sem a formatação
-			#
-			# @return String
-			#
-			def documento_sacado
-				return "" unless @documento_sacado.present?
-				BrBoleto::Helper::CpfCnpj.new(@documento_sacado).sem_formatacao
-			end
-
-			# Retorna o documento do sacado formatado
-			#
-			# @return String
-			#
-			def documento_sacado_formatado
-				BrBoleto::Helper::CpfCnpj.new(documento_sacado).com_formatacao
-			end
-
-			# Retorna o documento do sacado formatado com label de CNPJ ou CPF
-			#
-			# @return String
-			#
-			def documento_sacado_formatado_com_label
-				BrBoleto::Helper::CpfCnpj.new(documento_sacado).formatado_com_label
-			end
-
-			# Retorna o documento do cedente com tamanho 0, 11 ou 14 caracteres
-			# Sempre retorna o valor sem a formatação
-			#
-			# @return String
-			#
-			def documento_cedente
-				return "" unless @documento_cedente.present?
-				BrBoleto::Helper::CpfCnpj.new(@documento_cedente).sem_formatacao
-			end
-
-			# Retorna o documento do cedente formatado
-			#
-			# @return String
-			#
-			def documento_cedente_formatado
-				BrBoleto::Helper::CpfCnpj.new(documento_cedente).com_formatacao
-			end
-
-			# Retorna o documento do cedente formatado com label de CNPJ ou CPF
-			#
-			# @return String
-			#
-			def documento_cedente_formatado_com_label
-				BrBoleto::Helper::CpfCnpj.new(documento_cedente).formatado_com_label
 			end
 		end
 	end

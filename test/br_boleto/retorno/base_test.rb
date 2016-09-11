@@ -1,6 +1,5 @@
 require 'test_helper'
 
-require 'pry'
 describe BrBoleto::Retorno::Base do
 
 	subject { BrBoleto::Retorno::Base.new('') } 

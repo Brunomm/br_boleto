@@ -12,6 +12,8 @@ require 'shoulda/matchers'
 require "minitest/reporters"
 require 'mocha/mini_test'
 
+require 'pry'
+
 
 require 'factory_girl_rails'
 
@@ -34,4 +36,72 @@ end
 class MiniTest::Spec
 	include Shoulda::Matchers::ActiveModel
 	include FactoryGirl::Syntax::Methods
+
+	def open_fixture(path)
+		file_path = File.expand_path('../fixtures', __FILE__) + '/'+ path
+		File.open(file_path)
+	end
+
+	def read_fixture(path)
+		file_path = File.expand_path('../fixtures', __FILE__) + '/'+ path
+		File.read(file_path)
+	end
+
+	def wont_be_message_error(column, message=nil, msg_params={}, exec_valid = true)
+		message = get_message(message, msg_params, column) if message
+		subject.valid? if exec_valid
+		messages = subject.errors.messages[column.to_sym]
+		if message.nil?
+			messages.nil?.must_equal true, "Não deveria ter mensagem de erro para o atributo #{column}, mas foi encontrado os erros: \n -> #{messages ? messages.join("\n -> ") : '' }"
+		elsif messages.blank?
+			assert true
+		elsif messages.include?(message) 
+			flunk "Não deveria ter o erro \"#{message}\" para o atributo \"#{column}\"" 
+		end
+	end
+
+	def must_be_message_error(column, message=nil, msg_params={}, exec_valid = true)
+		message = get_message(message, msg_params, column) if message
+		subject.valid? if exec_valid
+		messages = subject.errors.messages[column.to_sym]
+		if message.nil?
+			messages.nil?.must_equal false, "Deveria ter alguma mensagem de erro para o atributo #{column}"
+		elsif messages.blank?
+			flunk "Deveria ter o erro \"#{message}\" para o atributo \"#{column}\", porém não há erro algum." 
+		elsif messages.include?(message) 
+			assert true
+		else
+			flunk "Deveria ter o erro \"#{message}\" para o atributo \"#{column}\", mas foi encontrado apenas os erros: \n -> #{messages.join("\n -> ") }" 			
+		end
+	end
+
+	def must_have_alias_attribute(alias_name, attribute, test_value=1)
+		subject.send("#{attribute}=", test_value)
+		subject.send(alias_name).must_equal test_value
+
+		subject.send("#{alias_name}=", test_value)
+		subject.send(attribute).must_equal test_value
+	end
+
+private
+
+	def get_message(msg, msg_params, column=:base)
+		if !msg.is_a?(Symbol)
+			msg
+		else
+			if I18n.exists?("activemodel.errors.models.#{subject.class.name.underscore}.attributes.#{column}.#{msg}")
+				I18n.t("activemodel.errors.models.#{subject.class.name.underscore}.#{msg}", msg_params)
+			elsif I18n.exists?("activemodel.errors.models.#{subject.class.name.underscore}.#{msg}")
+				I18n.t("activemodel.errors.models.#{subject.class.name.underscore}.#{msg}", msg_params)
+			elsif I18n.exists?("activemodel.errors.models.#{subject.class.superclass.name.underscore}.#{msg}")
+				I18n.t("activemodel.errors.models.#{subject.class.superclass.name.underscore}.#{msg}", msg_params)
+			elsif I18n.exists?("errors.messages.#{subject.class.name.underscore}.#{msg}")
+				I18n.t("errors.messages.#{subject.class.name.underscore}.#{msg}", msg_params)
+			elsif I18n.exists?("activemodel.errors.messages.#{msg}")
+				I18n.t("activemodel.errors.messages.#{msg}", msg_params)
+			else
+				I18n.t("errors.messages.#{msg}", msg_params)
+			end					
+		end
+	end
 end

@@ -82,8 +82,8 @@ module BrBoleto
 						valor_iof:                               63..77,
 						valor_pago:                              78..92,
 						valor_liquido:                           93..107,
-						valor_coutras_despesas:                 108..122,
-						valor_coutros_creditos:                 123..137,
+						valor_outras_despesas:                 108..122,
+						valor_outros_creditos:                 123..137,
 						data_ocorrencia:                        138..145,
 						data_credito:                           146..153,
 						codigo_ocorrencia_sacado:               154..157,
@@ -93,14 +93,6 @@ module BrBoleto
 						codigo_ocorrencia_banco_correspondente: 211..213,
 						nosso_numero_banco_correspondente:      214..133,
 					}				
-				end
-
-				# Resolve problema quando existe algum caractere com acentuação e encode UTF-16
-				# converte esse caractere para ? e converte para o encode UTF-8.
-				# Fix issue #5
-				#
-				def adjust_encode(line)
-					line.encode!("UTF-16be", invalid: :replace, replace: "?").encode!('UTF-8')
 				end
 
 			end

@@ -4,60 +4,65 @@ require 'test_helper'
 describe BrBoleto::Boleto::Caixa do
 	subject { FactoryGirl.build(:boleto_caixa) }
 
+		context "on validations" do
+			it { must validate_length_of(:numero_documento).is_at_most(15).with_message(:custom_length_maximum) }
+			
+			context '#conta.carteira' do
+				it { subject.valid_carteira_inclusion.must_equal ['14','24'] }
+				it 'carteira deve ter 2 digitos' do
+					subject.valid_carteira_length.must_equal 2
+					subject.conta.carteira = '1'
+					conta_must_be_msg_error(:carteira, :custom_length_is, {count: 2})
+					subject.conta.carteira = '123'
+					conta_must_be_msg_error(:carteira, :custom_length_is, {count: 2})
+					subject.conta.carteira = '12'
+					conta_wont_be_msg_error(:carteira, :custom_length_is, {count: 2})
+				end
+				it "validação da carteira da conta" do
+					subject.conta.carteira = '5'
+					conta_must_be_msg_error(:carteira, :custom_inclusion, {list: '14, 24'})
+					subject.conta.carteira = '24'
+					conta_wont_be_msg_error(:carteira, :custom_inclusion, {list: '14, 24'})
+				end
+			end
+
+			describe '#conta.convenio / codigo_cedente' do
+				it { subject.valid_convenio_maximum.must_equal 6 }
+				it { subject.valid_convenio_required.must_equal true }
+				
+				it "validação obrigatoriedade do codigo_cedente da conta" do
+					subject.conta.codigo_cedente = ''
+					conta_must_be_msg_error(:convenio, :blank)
+					subject.conta.codigo_cedente = '123456'
+					conta_wont_be_msg_error(:convenio, :blank)
+				end
+				it "validação tamaho maximo do codigo_cedente da conta" do
+					subject.conta.codigo_cedente = '1234567'
+					conta_must_be_msg_error(:convenio, :custom_length_maximum, {count: 6})
+					subject.conta.codigo_cedente = '123456'
+					conta_wont_be_msg_error(:convenio, :custom_length_maximum, {count: 6})
+				end
+			end
+
+			private
+
+			def conta_must_be_msg_error(attr_validation, msg_key, options_msg={})
+				must_be_message_error(:base, "#{BrBoleto::Conta::Sicoob.human_attribute_name(attr_validation)} #{get_message(msg_key, options_msg)}")
+			end
+			def conta_wont_be_msg_error(attr_validation, msg_key, options_msg={})
+				wont_be_message_error(:base, "#{BrBoleto::Conta::Sicoob.human_attribute_name(attr_validation)} #{get_message(msg_key, options_msg)}")
+			end
+		end
+
 	describe "#default_values" do
 		it "deve setar um valor padrão de local_pagamento com o valor descrito na documentação" do
 			BrBoleto::Boleto::Caixa.new.local_pagamento.must_equal 'PREFERENCIALMENTE NAS CASAS LOTÉRICAS ATÉ O VALOR LIMITE'
 		end
 	end
 
-	describe "validations" do
-		it { must validate_presence_of(:agencia) }
-		it { must validate_presence_of(:codigo_cedente) }
-
-		it { must validate_length_of(:agencia         ).is_at_most(4) }		
-		it { must validate_length_of(:codigo_cedente  ).is_at_most(6) }
-		it { must validate_length_of(:numero_documento).is_at_most(15) }
-		
-		it { must validate_inclusion_of(:carteira).in_array(%w(14 24)) }
-		
-		it { must validate_numericality_of(:valor_documento).is_less_than_or_equal_to(99999999.99) }
-	end
-
-	describe "#codigo_banco - banco da caixa deve ser 104" do
-		it{ subject.codigo_banco.must_equal '104' }
-	end
-
-	describe "#digito_codigo_banco - deve ser zero" do
-		it { subject.digito_codigo_banco.must_equal '0' }
-	end
-
-	describe "#agencia_codigo_cedente" do
-		it "deve retornar no formato: agencia / codigo_cedente-dv_codigo_cedente" do
-			subject.assign_attributes(agencia: '557', codigo_cedente: '35412')
-			subject.expects(:digito_verificador_codigo_cedente).returns('7')
-			subject.agencia_codigo_cedente.must_equal "0557 / 035412-7"
-		end
-	end
-
-	describe "#digito_verificador_codigo_cedente" do
-		it "deve utilizar o calculo de Modulo11FatorDe2a9RestoZero para calcular o DV" do
-			subject.codigo_cedente = '999999'
-			BrBoleto::Calculos::Modulo11FatorDe2a9RestoZero.expects(:new).with('999999').returns('5')
-
-			subject.digito_verificador_codigo_cedente.must_equal '5'
-		end
-		
-		describe "#digito_verificador_codigo_beneficiario" do
-			it "deve retornar o mesmo valor de #digito_verificador_codigo_cedente" do
-				subject.expects(:digito_verificador_codigo_cedente).returns('valor')
-				subject.digito_verificador_codigo_beneficiario.must_equal 'valor'
-			end
-		end
-	end
-
 	describe "#digito_verificador_nosso_numero " do
 		it "deve utilizar o Modulo11FatorDe2a9RestoZero para calcular o digito passando a carteira e numero_documento" do
-			subject.assign_attributes(carteira: '14', numero_documento: '77445')
+			subject.assign_attributes(conta: {carteira: '14'}, numero_documento: '77445')
 			BrBoleto::Calculos::Modulo11FatorDe2a9RestoZero.expects(:new).with("14000000000077445").returns('8')
 
 			subject.digito_verificador_nosso_numero.must_equal '8'
@@ -67,7 +72,7 @@ describe BrBoleto::Boleto::Caixa do
 	describe "#nosso_numero " do
 		it "deve utilizar a carteira, numero_documento e o DV do nosso_numero" do
 			subject.expects(:digito_verificador_nosso_numero).returns('7')
-			subject.assign_attributes(carteira: '24', numero_documento: '789')
+			subject.assign_attributes(conta: {carteira: '24'}, numero_documento: '789')
 			subject.nosso_numero.must_equal('24000000000000789-7')
 		end
 	end
@@ -95,50 +100,31 @@ describe BrBoleto::Boleto::Caixa do
 
 	describe "#tipo_cobranca" do
 		it "deve pegar o primeiro caracter da carteira se houver valor na carteira" do
-			subject.carteira = 'X7'
+			subject.conta.carteira = 'X7'
 			subject.tipo_cobranca.must_equal 'X'
-			subject.carteira = 'A7'
+			subject.conta.carteira = 'A7'
 			subject.tipo_cobranca.must_equal 'A'
 		end
 		it "se carteira for nil não deve dar erro" do
-			subject.carteira = nil
+			subject.conta.carteira = nil
 			subject.tipo_cobranca.must_be_nil
-		end
-
-		describe "#modalidade_cobranca" do
-			it "deve simplemente pegar o valor do tipo_cobranca" do
-				subject.expects(:tipo_cobranca).returns(:valor)
-				subject.modalidade_cobranca.must_equal :valor				
-			end
 		end
 	end
 
 	describe "#identificador_de_emissao" do
 		it "deve retornar o ultimo caractere da carteira" do
-			subject.carteira = 'X71'
+			subject.conta.carteira = 'X71'
 			subject.identificador_de_emissao.must_equal '1'
-			subject.carteira = 'A2'
+			subject.conta.carteira = 'A2'
 			subject.identificador_de_emissao.must_equal '2'
 		end
 	end
 
-	describe "#carteira_formatada - Conforme o manual da caixa deve retornar RG para carteira com registro e SR para carteira sem registro" do
-		it "para a carteira 14 deve retornar RG" do
-			subject.carteira = '14'
-			subject.carteira_formatada.must_equal 'RG'
-		end
-		it "para a carteira 24 deve retornar SR" do
-			subject.carteira = '24'
-			subject.carteira_formatada.must_equal 'SR'
-		end
-	end
-
-
 	describe "#composicao_codigo_barras" do
 		before do
-			subject.codigo_beneficiario = '123456'
-			subject.agencia = '2391'
-			subject.carteira = '14'
+			subject.conta.codigo_beneficiario = '123456'
+			subject.conta.agencia = '2391'
+			subject.conta.carteira = '14'
 			subject.numero_documento = 'ABCDEFGHIJKLMNO'
 		end
 

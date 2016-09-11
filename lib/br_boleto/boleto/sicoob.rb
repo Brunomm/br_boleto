@@ -9,140 +9,37 @@ module BrBoleto
 		# 'documentacoes_dos_boletos/sicoob' dentro dessa biblioteca.
 		#
 		class Sicoob < Base
-			# === Carteira/Modalidade:
-			#
-			#   '1/01' - Simples com registro
-			#   '1/02' - Simples sem registro
-			#   '3/03' - Garantida Caucionada
-			#
-			attr_accessor :modalidade_cobranca
+			def conta_class
+				BrBoleto::Conta::Sicoob
+			end
 
-			def modalidade_cobranca
-				if @modalidade_cobranca.present?
-					@modalidade_cobranca.to_s.rjust(2, '0')
-				else
-					'01'
+			#################  VALIDAÇÕES DINÂMICAS  #################
+				def valid_numero_documento_maximum
+					7
 				end
-			end
-
-			#Modalidades de cobranças válidas conforme a documentação
-			def self.modalidade_cobranca_validas
-				%{'01' '02' '03'}
-			end
-
-			def deve_validar_modalidade_cobranca?
-				true
-			end
-
-			# Quantidade de parcelas que o boleto possui
-			# Liberando a possibilidade de edição
-			attr_accessor :parcelas
-			def parcelas
-				if @parcelas.present?
-					@parcelas.to_s.rjust(3, '0')
-				else
-					'001'
+				def valid_modalidade_inclusion
+					%w{01 02 03}
 				end
-			end
 
+				def valid_carteira_inclusion
+					%w[1 3]
+				end
+				
+				# Tamanho máximo para o codigo_cedente/Convênio
+				def valid_convenio_maximum 
+					6
+				end
 
-			# Tamanho máximo de uma agência no Banco Sicoob.
-			# <b>Método criado justamente para ficar documentado o tamanho máximo aceito até a data corrente.</b>
-			#
-			# @return [Fixnum] 4
-			#
-			def self.tamanho_maximo_agencia
-				4
-			end
-
-			# Tamanho máximo do codigo cedente no Banco Sicoob.
-			# <b>Método criado justamente para ficar documentado o tamanho máximo aceito até a data corrente.</b>
-			#
-			# @return [Fixnum] 7
-			#
-			def self.tamanho_maximo_codigo_cedente
-				7
-			end
-
-			# Tamanho máximo do numero do documento no Boleto.
-			# <b>Método criado justamente para ficar documentado o tamanho máximo aceito até a data corrente.</b>
-			#
-			# @return [Fixnum] 6
-			#
-			def self.tamanho_maximo_numero_documento
-				7
-			end
-
-			# <b>Carteiras suportadas.</b>
-			#
-			# <b>Método criado para validar se a carteira informada é suportada.</b>
-			#
-			# @return [Array]
-			#
-			def self.carteiras_suportadas
-				%w[1 3]
-			end
-
-			# Validações para os campos abaixo:
-			#
-			# * Agencia
-			# * Codigo Cedente
-			# * Número do documento
-			#
-			# Se você quiser sobrescrever os metodos, <b>ficará a sua responsabilidade.</b>
-			# Basta você sobrescrever os métodos de validação:
-			#
-			#    class Sicoob < BrBoleto::Core::Sicoob
-			#       def self.tamanho_maximo_agencia
-			#         6
-			#       end
-			#
-			#       def self.tamanho_maximo_codigo_cedente
-			#         9
-			#       end
-			#
-			#       def self.tamanho_maximo_numero_documento
-			#         10
-			#       end
-			#    end
-			#
-			# Obs.: Mudar as regras de validação podem influenciar na emissão do boleto em si.
-			# Talvez você precise analisar o efeito no #codigo_de_barras e na #linha_digitável (ambos podem ser
-			# sobreescritos também).
-			#
-			validates :agencia, :codigo_cedente, presence: true
-
-			validates :agencia,          length: { maximum: tamanho_maximo_agencia          }, if: :deve_validar_agencia?
-			validates :codigo_cedente,   length: { maximum: tamanho_maximo_codigo_cedente   }, if: :deve_validar_codigo_cedente?
-			validates :numero_documento, length: { maximum: tamanho_maximo_numero_documento }, if: :deve_validar_numero_documento?
-
-			validates :carteira, inclusion: { in: ->(object) { object.class.carteiras_suportadas } }, if: :deve_validar_carteira?
-			validates :modalidade_cobranca, inclusion: { in: ->(object) { object.class.modalidade_cobranca_validas } }, if: :deve_validar_modalidade_cobranca?
+				# codigo_cedente/Convênio deve ser obrigatório
+				def valid_convenio_required
+					true
+				end
+			##########################################################
 
 			def default_values
 				super.merge({
 					local_pagamento: "PREFERENCIALMENTE COOPERATIVAS DA REDE SICOOB"
 				})
-			end
-
-			# @return [String] Código do Banco descrito na documentação.
-			#
-			def codigo_banco
-				'756'
-			end
-
-			# @return [String] Dígito do código do banco descrito na documentação.
-			#
-			def digito_codigo_banco
-				'0'
-			end
-
-			# Campo Agência / Código do Cedente
-			#
-			# @return [String]
-			#
-			def agencia_codigo_cedente
-				"#{agencia} / #{codigo_cedente}"
 			end
 
 			# O nosso número descrino na documentação é formado pelo numero do documento mais o digito
@@ -153,24 +50,6 @@ module BrBoleto
 			def nosso_numero
 				"#{numero_documento}-#{digito_verificador_nosso_numero}"
 			end
-
-			# Tipo de cobrança
-			# Ex: :com_registro, :sem_registro, :garantia_caucionada
-			#
-			# Obs: O VALOR DESSE METODO NÃO INFLUÊNCIA NA GERAÇÃO DO BOLETO
-			# É APENAS PARA QUESTÃO DE INFORMAÇÃO CASO PRECISE PARA OUTRAS COISAS.
-			#
-			def tipo_cobranca_formatada
-				case "#{modalidade_cobranca}".rjust(2, "0")
-				when '01'
-					:com_registro
-				when '02'
-					:sem_registro
-				when '03'
-					:caucionada
-				end
-			end
-
 
 			#  === Código de barras do banco
 			#
@@ -184,15 +63,16 @@ module BrBoleto
 			#    | 34 - 41 |    08   | Nosso Número do título                |
 			#    | 42 - 44 |    03   | Número da Parcela do Título (001)     |
 			#    |___________________________________________________________|
+			#   Tamanho total: 25 
 			#
 			# @return [String]
 			#
 			def codigo_de_barras_do_banco
-				"#{carteira}#{agencia}#{modalidade_cobranca}#{codigo_cedente}#{nosso_numero.gsub('-','')}#{parcelas}"
+				"#{conta.carteira}#{conta.agencia}#{conta.modalidade}#{conta.codigo_cedente}#{conta.codigo_cedente_dv}#{nosso_numero.gsub('-','')}#{parcelas}"
 			end
 
 			def digito_verificador_nosso_numero
-				BrBoleto::Calculos::Modulo11Fator3197.new("#{agencia}#{codigo_cedente.rjust(10, '0')}#{numero_documento}")
+				BrBoleto::Calculos::Modulo11Fator3197.new("#{conta.agencia}#{conta.codigo_cedente.rjust(9, '0')}#{conta.codigo_cedente_dv}#{numero_documento}")
 			end
 		end
 	end

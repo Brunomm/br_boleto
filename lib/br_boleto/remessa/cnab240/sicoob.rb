@@ -3,80 +3,31 @@ module BrBoleto
 	module Remessa
 		module Cnab240
 			class Sicoob < BrBoleto::Remessa::Cnab240::Base
-				
-				#O banco siccob utiliza a combinação da carteira e modalidade para
-				# saber se é um pagamento com registro, sem registrou ou caucionada.
-				# Carteira / Modalidade  =  Tipo de pagamento
- 				#    1     /    01       = Simples com Registro
-				#    1     /    02       = Simples sem Registro
-				#    3     /    03       = Garantia caicionada
-				# 
-				attr_accessor :modalidade_carteira
-				
-
-				attr_accessor :tipo_formulario
-				#       Tipo Formulário - 01 posição  (15 a 15):
-				#            "1" -auto-copiativo
-				#            "3" -auto-envelopável
-				#            "4" -A4 sem envelopamento
-				#            "6" -A4 sem envelopamento 3 vias
-
-				attr_accessor :parcela
-				#       Parcela - 02 posições (11 a 12) - "01" se parcela única
-
-				def convenio_obrigatorio?
-					false
+				def conta_class
+					BrBoleto::Conta::Sicoob
 				end
+				
+				# Tipo Formulário - 01 posição  (15 a 15):
+				#      "1" -auto-copiativo
+				#      "3" -auto-envelopável
+				#      "4" -A4 sem envelopamento
+				#      "6" -A4 sem envelopamento 3 vias
+				attr_accessor :tipo_formulario
 
-				validates :modalidade_carteira, :tipo_formulario, :conta_corrente, :parcela, presence: true
-				# Remessa 400 - 8 digitos
-				# Remessa 240 - 12 digitos
-				validates :conta_corrente,      length: {maximum: 12, message: 'deve ter no máximo 12 dígitos.'}
-				validates :agencia,             length: {is: 4, message: 'deve ter 4 dígitos.'}
-				validates :modalidade_carteira, length: {is: 2, message: 'deve ter 2 dígitos.'}
+				#################### VALIDAÇÕES DA CONTA #####################
+					def valid_modalidade_required;     true end # <= Modalidade é obrigatória
+					def valid_codigo_cedente_required; true end # <= Código do cedente/beneficiário/convenio deve ser obrigatorio
+					def valid_conta_corrente_required; true end # <= Conta corrente obrigatória
+					def valid_conta_corrente_maximum;  12   end # <= Máximo de digitos da conta corrente
+					def valid_modalidade_length;       2    end # <= Modalidade deve ter 2 digitos
+				##############################################################
 
+				validates :tipo_formulario, presence: true
+				
 				def default_values
 					super.merge({
-						emissao_boleto: '2',
-						distribuicao_boleto: '2',
-						especie_titulo: '02', # 02 = DM Duplicata mercantil
-						tipo_formulario: '4',
-						parcela: '01',
-						modalidade_carteira: '01',
-						forma_cadastramento: '0'
+						tipo_formulario:     '4'
 					})
-				end
-
-				def convenio
-					"#{@convenio}".adjust_size_to(20)
-				end
-
-				def codigo_banco
-					'756'
-				end
-
-				def nome_banco
-					'SICOOB'.ljust(30, ' ')
-				end
-
-				def versao_layout_arquivo
-					'081'
-				end
-
-				def versao_layout_lote
-					'040'
-				end
-
-				def digito_agencia
-					# utilizando a agencia com 4 digitos
-					# para calcular o digito
-					BrBoleto::Calculos::Modulo11FatorDe2a9RestoZero.new(agencia).to_s
-				end
-
-				def digito_conta
-					# utilizando a conta corrente com 5 digitos
-					# para calcular o digito
-					BrBoleto::Calculos::Modulo11FatorDe2a9RestoZero.new(conta_corrente).to_s
 				end
 
 				def codigo_convenio
@@ -96,7 +47,11 @@ module BrBoleto
 					# conta corrente         12
 					# digito conta           1
 					# digito agencia/conta   1
-					"#{agencia.rjust(5, '0')}#{digito_agencia}#{conta_corrente.rjust(12, '0')}#{digito_conta}".adjust_size_to(20)
+					result =  "#{conta.agencia}".adjust_size_to(5, '0', :right)
+					result << "#{conta.agencia_dv}"
+					result << "#{conta.conta_corrente}".adjust_size_to(12, '0', :right)
+					result << "#{conta.conta_corrente_dv}"
+					result.adjust_size_to(20)
 				end
 
 				def complemento_header_arquivo
@@ -107,9 +62,13 @@ module BrBoleto
 					# CAMPO                   TAMANHO
 					# conta corrente          12
 					# digito conta            1
-					# digito agencia/conta    1
+					# digito agencia/conta    1 # Branco
 					# ident. titulo no banco  20
-					"#{conta_corrente.to_s.rjust(12, '0')}#{digito_conta} #{formata_nosso_numero(pagamento.nosso_numero)}"
+					result =  "#{conta.conta_corrente}".adjust_size_to(12, '0', :right)
+					result << "#{conta.conta_corrente_dv}".adjust_size_to(1)
+					result << " "
+					result << "#{formata_nosso_numero(pagamento)}"
+					result
 				end
 
 				# Tipo de cobrança
@@ -119,7 +78,7 @@ module BrBoleto
 				# É APENAS PARA QUESTÃO DE INFORMAÇÃO CASO PRECISE PARA OUTRAS COISAS.
 				#
 				def tipo_cobranca_formatada
-					case "#{modalidade_carteira}".rjust(2, "0")
+					case "#{conta.modalidade}".rjust(2, "0")
 					when '01', '02'
 						:simples
 					when '03'
@@ -142,8 +101,12 @@ module BrBoleto
 				#            "4" -A4 sem envelopamento
 				#            "6" -A4 sem envelopamento 3 vias
 				#       Em branco - 05 posições (16 a 20)
-				def formata_nosso_numero(nosso_numero)
-					"#{nosso_numero.to_s.rjust(10, '0')}#{parcela}#{modalidade_carteira}#{tipo_formulario}".adjust_size_to(20)
+				def formata_nosso_numero(pagamento)
+					result = "#{pagamento.nosso_numero}".adjust_size_to(10, '0', :right)
+					result << "#{pagamento.parcela}".adjust_size_to(2, '0', :right)
+					result << "#{conta.modalidade}".adjust_size_to(2, '0', :right)
+					result << "#{tipo_formulario}".adjust_size_to(1, '1')
+					result.adjust_size_to(20)					
 				end
 
 				def complemento_trailer_lote(lote, nr_lote)

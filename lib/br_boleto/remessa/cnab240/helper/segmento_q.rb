@@ -46,7 +46,7 @@ module BrBoleto
 					# 3 posições
 					#
 					def segmento_q_posicao_001_a_003 
-						codigo_banco
+						conta.codigo_banco
 					end
 
 					# Lote de Serviço: Número seqüencial para identificar univocamente um lote de serviço. 
@@ -56,7 +56,7 @@ module BrBoleto
 					# 4 posições
 					#
 					def segmento_q_posicao_004_a_007(numero_do_lote)
-						numero_do_lote.to_s.rjust(4, '0')
+						"#{numero_do_lote}".adjust_size_to(4, '0', :right)
 					end
 
 					# Tipo do registro -> Padrão 3
@@ -70,7 +70,7 @@ module BrBoleto
 					# 5 posições
 					#
 					def segmento_q_posicao_009_a_013(sequencial)
-						sequencial.to_s.rjust(5, '0')
+						"#{sequencial}".adjust_size_to(5, '0', :right)
 					end
 
 					# Cód. Segmento do Registro Detalhe
@@ -98,84 +98,84 @@ module BrBoleto
 					# 1 posição
 					#
 					def segmento_q_posicao_018_a_018(pagamento)
-						pagamento.tipo_documento_sacado(1)
+						pagamento.pagador.tipo_cpf_cnpj(1)
 					end
 
 					# Número de Inscrição
 					# 15 posições
 					#
 					def segmento_q_posicao_019_a_033(pagamento)
-						BrBoleto::Helper::CpfCnpj.new(pagamento.documento_sacado).sem_formatacao.rjust(15, '0')
+						"#{pagamento.pagador.cpf_cnpj}".adjust_size_to(15, '0', :right)
 					end
 
 					# Nome do sacado
 					# 40 posições
 					#
 					def segmento_q_posicao_034_a_073(pagamento)
-						pagamento.nome_sacado.adjust_size_to(40)
+						"#{pagamento.pagador.nome}".adjust_size_to(40)
 					end
 
 					# Endereço sacado
 					# 40 posições
 					#
 					def segmento_q_posicao_074_a_113(pagamento)
-						pagamento.endereco_sacado.adjust_size_to(40)
+						"#{pagamento.pagador.endereco}".adjust_size_to(40)
 					end
 
 					# Bairro do sacado
 					# 15 posições
 					#
 					def segmento_q_posicao_114_a_128(pagamento)
-						pagamento.bairro_sacado.adjust_size_to(15)
+						"#{pagamento.pagador.bairro}".adjust_size_to(15)
 					end
 
 					# CEP (prefixo)
 					# 5 posições
 					#
 					def segmento_q_posicao_129_a_133(pagamento)
-						pagamento.cep_sacado[0..4]
+						"#{pagamento.pagador.cep}"[0..4]
 					end
 
 					# CEP sufixo
 					# 3 posições
 					#
 					def segmento_q_posicao_134_a_136(pagamento)
-						pagamento.cep_sacado[5..7]
+						"#{pagamento.pagador.cep}"[5..7]
 					end
 
 					# Cidade
 					# 15 posições
 					#
 					def segmento_q_posicao_137_a_151(pagamento)
-						pagamento.cidade_sacado.adjust_size_to(15)
+						"#{pagamento.pagador.cidade}".adjust_size_to(15)
 					end
 
 					# Unidade da Federação
 					# 2 posuções
 					#
 					def segmento_q_posicao_152_a_153(pagamento)
-						pagamento.uf_sacado
+						"#{pagamento.pagador.uf}".adjust_size_to(2)
 					end
 
 					# Tipo de Inscrição
 					# 1 posição
 					#
 					def segmento_q_posicao_154_a_154(pagamento)
-						pagamento.tipo_documento_avalista(1)
+						pagamento.pagador.tipo_documento_avalista(1)
 					end
 
-					# Número de Inscrição
+					# CNPF/CNPJ Avalista
 					# 15 posições
 					#
 					def segmento_q_posicao_155_a_169(pagamento)
-						BrBoleto::Helper::CpfCnpj.new("#{pagamento.documento_avalista}").sem_formatacao.rjust(15, '0')
+						"#{pagamento.pagador.documento_avalista}".adjust_size_to(15, '0', :right)
 					end
 
 					# Nome do avalista
 					# 40 posições
 					#
 					def segmento_q_posicao_170_a_209(pagamento)
-						"#{pagamento.nome_avalista}".adjust_size_to(40)
+						"#{pagamento.pagador.nome_avalista}".adjust_size_to(40)
 					end
 
 					# Cód. Bco. Corresp. na Compensação

@@ -11,70 +11,93 @@ require 'br_boleto/remessa/cnab240/helper/trailer_lote_test'
 describe BrBoleto::Remessa::Cnab240::Base do
 	subject { FactoryGirl.build(:remessa_cnab240_base, lotes: lote) }
 	let(:pagamento) { FactoryGirl.build(:remessa_pagamento) } 
-	let(:lote) { FactoryGirl.build(:remessa_lote, pagamentos: pagamento) } 
+	let(:lote) { FactoryGirl.build(:remessa_lote, pagamentos: pagamento) }
 
-	context "validations" do
-		it { must validate_presence_of(:documento_cedente) }
-		it { must validate_presence_of(:convenio) }
-
-		it { must validate_length_of(:codigo_carteira    ).is_equal_to(1).with_message("deve ter 1 dígito.") }
-		it { must validate_length_of(:forma_cadastramento).is_equal_to(1).with_message("deve ter 1 dígito.") }
-		it { must validate_length_of(:emissao_boleto     ).is_equal_to(1).with_message("deve ter 1 dígito.") }
-		it { must validate_length_of(:distribuicao_boleto).is_equal_to(1).with_message("deve ter 1 dígito.") }
-		it { must validate_length_of(:especie_titulo     ).is_equal_to(2).with_message("deve ter 2 dígitos.") }
+	before do 
+		subject.stubs(:conta_class).returns(BrBoleto::Conta::Sicoob)
+		subject.stubs(:conta).returns FactoryGirl.build(:conta_sicoob)
 	end
 
-	describe "#default_values" do
-		it "for codigo_carteira" do	
-			object = subject.class.new()
-			object.codigo_carteira.must_equal '1'
-		end
-		it "for forma_cadastramento" do	
-			object = subject.class.new()
-			object.forma_cadastramento.must_equal '1'
-		end
-		it "deve continuar com o default da superclass" do
-			object = subject.class.new()
-			object.aceite.must_equal 'N'
-		end
+	context "TESTE DAS PARTES DO ARQUIVO" do
+		# Em cada banco pode incluir esses modules para testar sobrescrevendo os testes específicos
+		include Helper::HeaderArquivoTest
+		include Helper::HeaderLoteTest
+		include Helper::SegmentoPTest
+		include Helper::SegmentoQTest
+		include Helper::SegmentoRTest
+		include Helper::SegmentoSTest
+		include Helper::TrailerArquivoTest
+		include Helper::TrailerLoteTest
 	end
 
-	describe "#tipo_inscricao" do
-		it "se for cpf deve retornar 1" do
-			subject.documento_cedente = '12345678901'
-			subject.tipo_inscricao.must_equal '1'
+	describe "Validações personalizadas para os pagamentos dos lotes" do
+		it 'pagamento_valid_emissao_boleto_length' do
+			subject.pagamento_valid_emissao_boleto_length.must_equal 1
+			pagamento.emissao_boleto = '123'
+			pagamentos_must_be_msg_error(pagamento, :emissao_boleto, :custom_length_is, {count: 1})
 		end
-		it "se for cnpj deve retornar 2" do
-			subject.documento_cedente = '12345678901234'
-			subject.tipo_inscricao.must_equal '2'
+		it 'pagamento_valid_distribuicao_boleto_length' do
+			subject.pagamento_valid_distribuicao_boleto_length.must_equal 1
+			pagamento.distribuicao_boleto = '123'
+			pagamentos_must_be_msg_error(pagamento, :distribuicao_boleto, :custom_length_is, {count: 1})
 		end
+
+		private
+	
+		def pagamentos_must_be_msg_error(pagamento, attr_validation, msg_key, options_msg={})
+			must_be_message_error(:base, "#{BrBoleto::Remessa::Lote.human_attribute_name(:pagamentos)} #{pagamento.nosso_numero}: #{BrBoleto::Remessa::Pagamento.human_attribute_name(attr_validation)} #{get_message(msg_key, options_msg)}")
+		end	
 	end
 
-	describe "#data_hora_arquivo" do
-		it "se for nil deve pegar o time now" do
-			subject.data_hora_arquivo = nil
-			now = Time.now
-			Time.stubs(:now).returns(now)
-			subject.data_hora_arquivo.must_equal now
+	describe "#lotes" do
+		it "deve haver ao menos 1 lote" do
+			wont allow_value([]).for(:lotes).with_message(:blank)
 		end
-		it "se passar um date_time deve converter para time" do
-			now = DateTime.now
-			subject.data_hora_arquivo = now
-			subject.data_hora_arquivo.must_equal now.to_time
+		it "deve ser válido com um lote válido" do
+			must allow_value([lote]).for(:lotes)
 		end
-	end
+		it "não deve ser válido se houver algum lote inválido" do
+			subject.lotes = [FactoryGirl.build(:remessa_lote, pagamentos: [])]
+			must_be_message_error(:base)
+		end
+		it "deve ser válido se passar apenas um lote sem Array" do
+			must allow_value(lote).for(:lotes)
+		end
+		it "se setar apenas 1 lote sem array deve retornar um array de 1 posicao" do
+			subject.lotes = lote
+			subject.lotes.size.must_equal 1
+			subject.lotes.is_a?(Array).must_equal true
+			subject.lotes[0].must_equal lote
+		end
+		it "posso setar mais que 1 lote" do
+			lote2 = FactoryGirl.build(:remessa_lote)
+			subject.lotes = [lote, lote2]
+			subject.lotes.size.must_equal 2
+			subject.lotes.is_a?(Array).must_equal true
+			subject.lotes[0].must_equal lote
+			subject.lotes[1].must_equal lote2
+		end
 
-	describe "#data_geracao" do
-		it "deve pegar a data com 8 posições do atributo data_hora_arquivo" do
-			subject.data_hora_arquivo = Time.parse("30/12/2015 01:02:03")
-			subject.data_geracao.must_equal "30122015"
+		it "posso incrementar os lotes com <<" do
+			lote2 = FactoryGirl.build(:remessa_lote)
+			subject.lotes = lote
+			subject.lotes.size.must_equal 1
+			subject.lotes << lote2
+			subject.lotes.size.must_equal 2
+			subject.lotes.is_a?(Array).must_equal true
+			subject.lotes[0].must_equal lote
+			subject.lotes[1].must_equal lote2
 		end
-	end
 
-	describe "#hora_geracao" do
-		it "deve pegar a hora minuto e segundo da data_hora_arquivo" do
-			subject.data_hora_arquivo = Time.parse("30/12/2015 01:02:03")
-			subject.hora_geracao.must_equal "010203"
+		it "retorna apenas objetos de Lote" do
+			lote2 = FactoryGirl.build(:remessa_lote)
+			subject.lotes << 123
+			subject.lotes << lote2
+			subject.lotes << '123'
+
+			subject.lotes.size.must_equal 2
+			subject.lotes.must_include lote
+			subject.lotes.must_include lote2
 		end
 	end
 
@@ -92,33 +115,9 @@ describe BrBoleto::Remessa::Cnab240::Base do
 			end
 		end
 
-		it "#versao_layout_arquivo" do
-			assert_raises NotImplementedError do
-				subject.versao_layout_arquivo
-			end
-		end
-
-		it "#versao_layout_lote" do
-			assert_raises NotImplementedError do
-				subject.versao_layout_lote
-			end
-		end
-
 		it "#convenio_lote" do
 			assert_raises NotImplementedError do
 				subject.convenio_lote(lote)
-			end
-		end
-
-		it "#nome_banco" do
-			assert_raises NotImplementedError do
-				subject.nome_banco
-			end
-		end
-
-		it "#codigo_banco" do
-			assert_raises NotImplementedError do
-				subject.codigo_banco
 			end
 		end
 
@@ -133,12 +132,6 @@ describe BrBoleto::Remessa::Cnab240::Base do
 				subject.codigo_convenio
 			end
 		end
-
-		it "#digito_agencia" do
-			assert_raises NotImplementedError do
-				subject.digito_agencia
-			end
-		end
 	end
 
 	context "#complemento_trailer_lote" do
@@ -146,21 +139,8 @@ describe BrBoleto::Remessa::Cnab240::Base do
 			subject.complemento_trailer_lote(nil, nil).must_equal ''.rjust(217, ' ')
 		end
 	end
-	context "TESTE DAS PARTES DO ARQUIVO" do
-		# Em cada banco pode incluir esses modules para testar sobrescrevendo os testes específicos
-		
-		include Helper::HeaderArquivoTest
-		include Helper::HeaderLoteTest
-		include Helper::SegmentoPTest
-		include Helper::SegmentoQTest
-		include Helper::SegmentoRTest
-		include Helper::SegmentoSTest
-		include Helper::TrailerArquivoTest
-		include Helper::TrailerLoteTest
-	end
+	
 	context "MONTAGEM DO ARQUIVO " do
-		
-
 		before do
 			# Stub nos metodos que devem ser sobrescritos nos bancos
 			subject.stubs(:complemento_header_arquivo).returns(      ''.rjust(29, ' '))
@@ -194,7 +174,7 @@ describe BrBoleto::Remessa::Cnab240::Base do
 					subject.expects(:monta_lote).with(lote_2, 2).returns(["LOTE_lote_2"])
 					resultado = subject.dados_do_arquivo
 					resultado[10..21].must_equal "\nLOTE_LOTE_1"
-					resultado[22..33].must_equal "\nLOTE_LOTE_2"				
+					resultado[22..33].must_equal "\nLOTE_LOTE_2"
 				end
 
 				it "com 1 lote" do
@@ -401,5 +381,5 @@ describe BrBoleto::Remessa::Cnab240::Base do
 			end
 		end
 	end
-	
+
 end

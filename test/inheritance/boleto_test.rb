@@ -2,8 +2,11 @@
 require 'test_helper'
 
 class TesteBoleto < BrBoleto::Boleto::Base
-  def self.valor_documento_tamanho_maximo
+  def valid_valor_documento_tamanho_maximo
     9_999.99 # Default 99999999.99
+  end
+  def conta_class
+  	BrBoleto::Conta::Sicoob
   end
 end
 

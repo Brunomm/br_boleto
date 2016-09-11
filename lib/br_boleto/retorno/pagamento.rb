@@ -134,15 +134,15 @@ module BrBoleto
 			#   15        93-107
 			attr_accessor :valor_liquido
 
-			# VALRO COM COUTRAS DESPESAS
+			# VALRO COM outras DESPESAS
 			# Tamanho    Posição
 			#   15        108-122
-			attr_accessor :valor_coutras_despesas
+			attr_accessor :valor_outras_despesas
 
-			# VALRO COM COUTROS CRÉDITOS
+			# VALRO COM outros CRÉDITOS
 			# Tamanho    Posição
 			#   15        123-137
-			attr_accessor :valor_coutros_creditos
+			attr_accessor :valor_outros_creditos
 
 			# DATA OCORRÊNCIA
 			# Tamanho    Posição
@@ -190,6 +190,12 @@ module BrBoleto
 			# É implementado apenas para os bancos que não conseguem seguir um padrão estabelecido
 			attr_accessor :modalidade
 
+
+			attr_accessor :parcela
+
+			# Prefixo do Título: Informa Espécie do Título
+			attr_accessor :especie_titulo
+			
 			def initialize(attributes = {})
 				define_formatted_methods!
 				super
@@ -209,8 +215,8 @@ module BrBoleto
 					valor_iof:               {type: :float},
 					valor_pago:              {type: :float},
 					valor_liquido:           {type: :float},
-					valor_coutras_despesas:  {type: :float},
-					valor_coutros_creditos:  {type: :float},
+					valor_outras_despesas:  {type: :float},
+					valor_outros_creditos:  {type: :float},
 					valor_ocorrencia_sacado: {type: :float},
 				}
 			end

@@ -30,7 +30,7 @@ module Helper
 		# Por padrão deve retornar o "codigo_banco"
 		#
 		def test_HeaderArquivoTest_metodo_header_arquivo_posicao_001_a_003
-			subject.expects(:codigo_banco).returns("669")
+			subject.conta.expects(:codigo_banco).returns("669")
 			subject.header_arquivo_posicao_001_a_003.must_equal("669")
 		end
 
@@ -63,7 +63,7 @@ module Helper
 		# retorna o valor do metodo "tipo_inscricao"
 		#
 		def test_HeaderArquivoTest_metodo_header_arquivo_posicao_018_a_018
-			subject.expects(:tipo_inscricao).returns("5")
+			subject.conta.expects(:tipo_cpf_cnpj).with(1).returns("5")
 			subject.header_arquivo_posicao_018_a_018.must_equal("5")
 		end
 
@@ -72,7 +72,7 @@ module Helper
 		# Retorna o documento_cedente com 14 posições preenchendo com zeros
 		#
 		def test_HeaderArquivoTest_metodo_header_arquivo_posicao_019_a_032
-			subject.expects(:documento_cedente).returns("1234567890")
+			subject.conta.expects(:cpf_cnpj).returns("1234567890")
 			subject.header_arquivo_posicao_019_a_032.must_equal("00001234567890")
 		end
 
@@ -81,8 +81,8 @@ module Helper
 		# Deve retornar o valor do metodo "codigo_convenio"
 		# 
 		def test_HeaderArquivoTest_metodo_header_arquivo_posicao_033_a_052
-			subject.expects(:codigo_convenio).returns("1345646432132")
-			subject.header_arquivo_posicao_033_a_052.must_equal("1345646432132")
+			subject.expects(:codigo_convenio).returns("123456789012345")
+			subject.header_arquivo_posicao_033_a_052.must_equal("123456789012345     ")
 		end
 
 		# Informações da conta bancária
@@ -107,8 +107,8 @@ module Helper
 		# retorna o valor do metodo "nome_empresa_formatada"
 		# 
 		def test_HeaderArquivoTest_metodo_header_arquivo_posicao_073_a_102
-			subject.expects(:nome_empresa_formatada).returns("EMPRESA")
-			subject.header_arquivo_posicao_073_a_102.must_equal("EMPRESA")
+			subject.conta.expects(:razao_social).returns("EMPRESA")
+			subject.header_arquivo_posicao_073_a_102.must_equal("EMPRESA".ljust(30, ' '))
 		end
 
 		# Nome do Banco
@@ -116,8 +116,8 @@ module Helper
 		# retorna o valor do metodo "nome_banco"
 		#
 		def test_HeaderArquivoTest_metodo_header_arquivo_posicao_103_a_132
-			subject.expects(:nome_banco).returns("nome_banco")
-			subject.header_arquivo_posicao_103_a_132.must_equal('nome_banco')
+			subject.conta.expects(:nome_banco).returns("nome_banco")
+			subject.header_arquivo_posicao_103_a_132.must_equal('nome_banco'.ljust(30, ' '))
 		end
 
 		# Uso Exclusivo FEBRABAN / CNAB
@@ -168,8 +168,8 @@ module Helper
 		# Deve pegar o valor contido no metodo "versao_layout_arquivo"
 		#
 		def test_HeaderArquivoTest_metodo_header_arquivo_posicao_164_a_166
-			subject.expects(:versao_layout_arquivo).returns("123")
-			subject.header_arquivo_posicao_164_a_166.must_equal("123")
+			subject.conta.expects(:versao_layout_arquivo_cnab_240).returns("1")
+			subject.header_arquivo_posicao_164_a_166.must_equal("001")
 		end
 
 		# Densidade de Gravação do Arquivo 

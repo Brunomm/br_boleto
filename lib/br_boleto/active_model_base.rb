@@ -9,7 +9,7 @@ module BrBoleto
 		include ActiveModel::Model
 
 		def initialize(attributes = {})
-			attributes = default_values.merge!(attributes)
+			attributes = default_values.deep_merge!(attributes)
 			assign_attributes(attributes)
 			yield self if block_given?
 		end

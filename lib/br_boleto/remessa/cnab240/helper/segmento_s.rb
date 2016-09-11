@@ -36,7 +36,7 @@ module BrBoleto
 					# 3 posições
 					#
 					def segmento_s_posicao_001_a_003 
-						codigo_banco
+						conta.codigo_banco
 					end
 
 					# Lote de Serviço: Número seqüencial para identificar univocamente um lote de serviço. 
@@ -46,7 +46,7 @@ module BrBoleto
 					# 4 posições
 					#
 					def segmento_s_posicao_004_a_007(numero_do_lote)
-						numero_do_lote.to_s.rjust(4, '0')
+						"#{numero_do_lote}".adjust_size_to(4, '0', :right)
 					end
 
 					# Tipo do registro -> Padrão 3
@@ -60,7 +60,7 @@ module BrBoleto
 					# 5 posições
 					#
 					def segmento_s_posicao_009_a_013(sequencial)
-						sequencial.to_s.rjust(5, '0')
+						"#{sequencial}".adjust_size_to(5, '0', :right)
 					end
 
 					# Cód. Segmento do Registro Detalhe

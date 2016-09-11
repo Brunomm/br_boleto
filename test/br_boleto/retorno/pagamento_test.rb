@@ -145,20 +145,20 @@ describe BrBoleto::Retorno::Pagamento do
 				subject.valor_titulo.must_equal 7_745.67
 			end
 		end
-		describe "#valor_coutras_despesas" do
+		describe "#valor_outras_despesas" do
 			it "deve converter o valor string para float mantendo os 2 ultimos characteres com decimais" do
-				subject.valor_coutras_despesas = '00087944'
-				subject.valor_coutras_despesas.must_equal 879.44
+				subject.valor_outras_despesas = '00087944'
+				subject.valor_outras_despesas.must_equal 879.44
 			end
 			it "se o valor setado for um numero deve mante-lo" do
 				subject.valor_titulo = 7_745.67
 				subject.valor_titulo.must_equal 7_745.67
 			end
 		end
-		describe "#valor_coutros_creditos" do
+		describe "#valor_outros_creditos" do
 			it "deve converter o valor string para float mantendo os 2 ultimos characteres com decimais" do
-				subject.valor_coutros_creditos = '00087944'
-				subject.valor_coutros_creditos.must_equal 879.44
+				subject.valor_outros_creditos = '00087944'
+				subject.valor_outros_creditos.must_equal 879.44
 			end
 			it "se o valor setado for um numero deve mante-lo" do
 				subject.valor_titulo = 7_745.67
