@@ -145,4 +145,14 @@ describe BrBoleto::Pagador do
 		end
 	end
 
+	describe '#endereco_formatado' do
+		it "deve trazer todo o endereço se estiver completo" do
+			subject.assign_attributes(endereco: 'RUA 45', bairro: 'BAIRRO', cep: '89885-000', cidade: 'São Carlos', uf: 'SC')
+			subject.endereco_formatado.must_equal 'RUA 45 - BAIRRO - 89885-000 - São Carlos-SC'
+		end
+		it "Desconsidera os valores vazios" do
+			subject.assign_attributes(endereco: 'RUA 45', bairro: '', cep: '', cidade: 'São Carlos', uf: 'SC')
+			subject.endereco_formatado.must_equal 'RUA 45 - São Carlos-SC'
+		end
+	end
 end

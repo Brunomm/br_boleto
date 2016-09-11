@@ -1,55 +1,55 @@
-en:
+pt-BR:
   activemodel:
     errors:
       messages:
         custom_length_maximum: 
-          one: "must have no more than 1 digit"
-          other: "must have a maximum of %{count} digits"
+          one: "deve ter no máximo 1 dígito"
+          other: "deve ter no máximo %{count} dígitos"
         custom_length_minimum: 
-          one: "must be at least 1 digit"
-          other: "must have at least %{count} digits"
+          one: "deve ter no mínimo 1 dígito"
+          other: "deve ter no mínimo %{count} dígitos"
         custom_length_is: 
-          one: "must have 1 digit"
-          other: "must have %{count} digits"
-        custom_inclusion: 'must contain one of the following values: %{list}'
-        at_least_one: must be at least 1
+          one: "deve ter 1 dígito"
+          other: "deve ter %{count} dígitos"
+        custom_inclusion: 'deve conter um dos valores a seguir: %{list}'
+        at_least_one: deve ter no mínimo 1
     attributes:
       br_boleto/pagador:
-        nome: Name
+        nome: Nome
         cpf_cnpj: 'CPF/CNPJ'
-        endereco: Street
-        bairro: District
-        cep: Zip code
-        cidade: City
+        endereco: Rua
+        bairro: Bairro
+        cep: CEP
+        cidade: Cidade
         uf: UF
-        nome_avalista: Guarantor
-        documento_avalista: 'CPF/CNPJ Guarantor'
+        nome_avalista: Avalista
+        documento_avalista: CPF/CNPJ Avalista
       br_boleto/boleto/base:
-        data_vencimento: Validity
-        numero_documento: Document number
-        valor_documento: Document value
-        conta_corrente: Current account
-        codigo_moeda: Currency code
-        especie: Kind of money
-        especie_documento: Kind of Document
-        data_documento: Document date
-        local_pagamento: Payment place
-        aceite: Acceptance
-        instrucoes1: Message 1
-        instrucoes2: Message 2
-        instrucoes3: Message 3
-        instrucoes4: Message 4
-        instrucoes5: Message 5
-        instrucoes6: Message 6
-        parcelas: Plots
+        data_vencimento: Vencimento
+        numero_documento: Número do documento
+        valor_documento: Valor
+        conta_corrente: Conta corrente
+        codigo_moeda: Código da moeda
+        especie: Espécie
+        especie_documento: Espécie Doc.
+        data_documento: Data do documento
+        local_pagamento: Local de pagamento
+        aceite: Aceite
+        instrucoes1: Mensagem 1
+        instrucoes2: Mensagem 2
+        instrucoes3: Mensagem 3
+        instrucoes4: Mensagem 4
+        instrucoes5: Mensagem 5
+        instrucoes6: Mensagem 6
+        parcelas: Parcelas
       br_boleto/conta/base:
-        modalidade: Modality
-        razao_social: Company name
+        modalidade: Modalidade
+        razao_social: Razão social
         cpf_cnpj: CNPJ
-        endereco: Address
+        endereco: Endereço
         carteira: Carteira
-        agencia: Agency
-        agencia_dv: DV Agency
+        agencia: Agência
+        agencia_dv: DV Agência
         conta_corrente: Conta corrente
         conta_corrente_dv: DV Conta corrente
         convenio: Convênio

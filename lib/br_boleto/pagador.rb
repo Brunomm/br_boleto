@@ -19,6 +19,14 @@ module BrBoleto
 
 		validates :nome, :cpf_cnpj, presence: true
 
+		def endereco_formatado
+			addr = []
+			addr << endereco unless endereco.blank?
+			addr << bairro   unless bairro.blank?
+			addr << @cep     unless cep.blank?
+			addr << "#{cidade}-#{uf}" unless cidade.blank?
+			addr.join(' - ')
+		end
 
 		def cep
 			"#{@cep}".only_numbers
