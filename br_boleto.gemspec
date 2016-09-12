@@ -12,9 +12,11 @@ Gem::Specification.new do |gem|
   
   gem.homepage      = "https://github.com/Brunomm/br_boleto"
 
-  gem.files         = `git ls-files`.split($\).reject { |f| ['.pdf','.xls'].include?(File.extname(f)) }
-  gem.test_files    = `git ls-files -- test/**/*`.split("\n")
-  gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
+  gem.files         = `git ls-files`.split("\n").reject{|fil| 
+    fil.include?('documentacoes_boletos/')
+  }
+  gem.test_files    = `git ls-files -- test`.split("\n")
+  # gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.require_paths = ["lib"]
 
   gem.required_ruby_version = '~> 2.1'
