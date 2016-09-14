@@ -111,12 +111,6 @@ describe BrBoleto::Remessa::Cnab240::Sicoob do
 		end
 	end
 
-	describe "#complemento_header_arquivo" do
-		it "deve ter 29 posições em branco" do
-			subject.complemento_header_arquivo.must_equal ''.rjust(29, ' ')
-		end
-	end
-
 	describe "#complemento_trailer_lote" do
 		let(:pagamento_2) { FactoryGirl.build(:remessa_pagamento, valor_documento: 50.25) } 
 		it "deve carregar os dados dos metodos complemento_trailer_lote na sequencia" do
@@ -237,25 +231,6 @@ describe BrBoleto::Remessa::Cnab240::Sicoob do
 		end
 	end
 
-	describe "#complemento_p" do
-		it "posicao 0 até 11 deve ter a conta_corrente" do
-			subject.conta.stubs(:conta_corrente_dv)
-			subject.conta.expects(:conta_corrente).returns(123456789)
-			subject.complemento_p(pagamento)[0..11].must_equal "000123456789"
-		end
-		it "posicao 12 deve te o conta_corrente_dv" do
-			subject.conta.expects(:conta_corrente_dv).returns("%")
-			subject.complemento_p(pagamento)[12].must_equal "%"
-		end
-		it "posição 13 deve ser um caracter em branco" do
-			subject.complemento_p(pagamento)[13].must_equal " "
-		end
-		it "posição 14 até 33 deve ter o valor do metodo formata_nosso_numero passando o nosso_numero do pagamento" do
-			subject.expects(:formata_nosso_numero).with(pagamento).returns("12345678901234567890")
-			subject.complemento_p(pagamento)[14..33].must_equal '12345678901234567890'
-		end
-	end
-
 	describe "#dados_do_arquivo" do
 		it "deve gerar os dados do arquivo" do
 			subject.dados_do_arquivo.size.must_equal 1927
@@ -297,6 +272,27 @@ describe BrBoleto::Remessa::Cnab240::Sicoob do
 		end
 	end
 
+	describe "particularidades do header_arquivo" do
+		describe "#complemento_header_arquivo" do
+			it "deve ter 29 posições em branco" do
+				subject.complemento_header_arquivo.must_equal ''.rjust(29, ' ')
+			end
+		end
+
+		it "#header_arquivo_posicao_172_a_191 deve ter 20 posições em branco" do
+			subject.header_arquivo_posicao_172_a_191.must_equal ''.rjust(20, ' ')
+		end
+		it "#header_arquivo_posicao_192_a_211 deve ter 20 posições em branco" do
+			subject.header_arquivo_posicao_192_a_211.must_equal ''.rjust(20, ' ')
+		end
+	end
+
+	describe "particularidades header_lote" do
+		it "#header_lote_posicao_012_a_013 deve ter 2 digitos em branco" do
+			subject.header_lote_posicao_012_a_013.must_equal '  '
+		end
+	end
+
 	describe "particularidades do Segmento R" do
 		describe "#segmento_r_posicao_066_a_066 - Codigo da multa " do
 			# Para o Sicoob o código reference a Isento é '0', diferente do padrão
@@ -328,6 +324,24 @@ describe BrBoleto::Remessa::Cnab240::Sicoob do
 	end
 
 	describe "particularidades do Segmento P" do
+		describe "#complemento_p" do
+			it "posicao 0 até 11 deve ter a conta_corrente" do
+				subject.conta.stubs(:conta_corrente_dv)
+				subject.conta.expects(:conta_corrente).returns(123456789)
+				subject.complemento_p(pagamento)[0..11].must_equal "000123456789"
+			end
+			it "posicao 12 deve te o conta_corrente_dv" do
+				subject.conta.expects(:conta_corrente_dv).returns("%")
+				subject.complemento_p(pagamento)[12].must_equal "%"
+			end
+			it "posição 13 deve ser um caracter em branco" do
+				subject.complemento_p(pagamento)[13].must_equal " "
+			end
+			it "posição 14 até 33 deve ter o valor do metodo formata_nosso_numero passando o nosso_numero do pagamento" do
+				subject.expects(:formata_nosso_numero).with(pagamento).returns("12345678901234567890")
+				subject.complemento_p(pagamento)[14..33].must_equal '12345678901234567890'
+			end
+		end
 		describe "#segmento_p_posicao_118_a_118 - Codigo de Juros " do
 			# Para o Sicoob o código reference a Isento é '0', diferente do padrão
 			# estabelecido pela FEBRABAN onde o código de isento é '3'
@@ -354,6 +368,9 @@ describe BrBoleto::Remessa::Cnab240::Sicoob do
 				pagamento.codigo_juros = '4'
 				subject.send(:segmento_p_posicao_118_a_118, pagamento).must_equal '0'
 			end
+		end
+		it "#segmento_p_posicao_060_a_060 deve ter 1 digito em branco" do
+			subject.segmento_p_posicao_060_a_060.must_equal ' '
 		end
 	end
 

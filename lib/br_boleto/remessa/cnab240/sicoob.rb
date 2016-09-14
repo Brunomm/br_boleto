@@ -54,6 +54,26 @@ module BrBoleto
 					result.adjust_size_to(20)
 				end
 
+				# Espaço reservado para o Banco
+				# 20 posições
+				# Brancos
+				#
+				def header_arquivo_posicao_172_a_191
+					''.rjust(20, ' ')
+				end
+
+				# Espaço reservado para a Empresa
+				# 20 posições
+				# Brancos
+				#
+				def header_arquivo_posicao_192_a_211
+					''.rjust(20, ' ')
+				end
+
+				# Posição 212 a 240 do Header do Arquivo
+				# Para o sicoob esse espaço deve ter 'Brancos'
+				# 29 posições
+				#
 				def complemento_header_arquivo
 					''.rjust(29, ' ')
 				end
@@ -69,6 +89,14 @@ module BrBoleto
 					result << " "
 					result << "#{formata_nosso_numero(pagamento)}"
 					result
+				end
+
+				# Tipo de Documento
+				# 1 posição
+				# Branco
+				#
+				def segmento_p_posicao_060_a_060
+					' '
 				end
 
 				# Tipo de cobrança
@@ -122,6 +150,14 @@ module BrBoleto
 					complemento << complemento_trailer_lote_posicao_116_a_123(lote)
 					complemento << complemento_trailer_lote_posicao_124_a_240
 					complemento.upcase
+				end
+
+				# Forma de Lançamento
+				# 2 posições
+				# Brancos
+				#
+				def header_lote_posicao_012_a_013
+					'  '
 				end
 
 				# Quantidade de titulos de cobrança simples
