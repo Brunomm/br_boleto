@@ -43,12 +43,17 @@ module BrBoleto
 					true
 				end
 
-				# Carteira deve ter 2 digitos
-				def valid_carteira_length
+				# Modalidade deve ter 2 digitos
+				def valid_modalidade_length
 					2
 				end
-				def valid_carteira_inclusion
+				def valid_modalidade_inclusion
 					%w{14 24}
+				end				
+
+				# Carteira deve ter 1 digitos
+				def valid_carteira_length
+					1
 				end
 			##########################################################
 
@@ -62,7 +67,7 @@ module BrBoleto
 			end
 
 			def digito_verificador_nosso_numero
-				BrBoleto::Calculos::Modulo11FatorDe2a9RestoZero.new("#{conta.carteira}#{numero_documento}")
+				BrBoleto::Calculos::Modulo11FatorDe2a9RestoZero.new("#{conta.modalidade}#{numero_documento}")
 			end
 
 			# Mostra o campo nosso número calculando o dígito verificador do nosso número.
@@ -70,7 +75,7 @@ module BrBoleto
 			# @return [String]
 			#
 			def nosso_numero
-				"#{conta.carteira}#{numero_documento}-#{digito_verificador_nosso_numero}"
+				"#{conta.modalidade}#{numero_documento}-#{digito_verificador_nosso_numero}"
 			end
 
 
@@ -86,21 +91,14 @@ module BrBoleto
 				nosso_numero[8..16]
 			end
 
-			# O Tipo de cobrança é o 1° caracter da carteira
-			#
-			# @return [String]
-			#
-			def tipo_cobranca
-				conta.carteira[0] if conta.carteira.present?
-			end
 
-			# O Identificado de Emissão é o 2° e ultimo caracter da carteira
+			# O Identificado de Emissão é o 2° e ultimo caracter da modalidade
 			# Normalmente é 4 onde significa que o Beneficiário emitiu o boleto.
 			#
 			# @return [String]
 			#
 			def identificador_de_emissao
-				conta.carteira.last if conta.carteira.present?
+				conta.modalidade.last if conta.modalidade.present?
 			end
 
 			#  === Código de barras do banco
@@ -131,7 +129,7 @@ module BrBoleto
 				@composicao_codigo_barras =  "#{conta.codigo_cedente}"
 				@composicao_codigo_barras << "#{conta.codigo_cedente_dv}"
 				@composicao_codigo_barras << "#{nosso_numero_de_3_a_5}"
-				@composicao_codigo_barras << "#{tipo_cobranca}"
+				@composicao_codigo_barras << "#{conta.carteira}"
 				@composicao_codigo_barras << "#{nosso_numero_de_6_a_8}"
 				@composicao_codigo_barras << "#{identificador_de_emissao}"
 				@composicao_codigo_barras << "#{nosso_numero_de_9_a_17}"

@@ -11,16 +11,16 @@ describe BrBoleto::Remessa::Cnab240::Caixa do
 
 	context "validations" do
 		describe 'Validações personalizadas da conta' do
-			it 'valid_carteira_required' do
-				# subject.send(:valid_carteira_required).must_equal true
-				subject.conta.carteira = ''
-				conta_must_be_msg_error(:carteira, :blank)
+			it 'valid_modalidade_required' do
+				# subject.send(:valid_modalidade_required).must_equal true
+				subject.conta.modalidade = ''
+				conta_must_be_msg_error(:modalidade, :blank)
 			end
 
-			it 'valid_carteira_length' do
-				# subject.send(:valid_carteira_length).must_equal 2
-				subject.conta.carteira = '1234567890123456'
-				conta_must_be_msg_error(:carteira, :custom_length_is, {count: 2})
+			it 'valid_modalidade_length' do
+				# subject.send(:valid_modalidade_length).must_equal 2
+				subject.conta.modalidade = '1234567890123456'
+				conta_must_be_msg_error(:modalidade, :custom_length_is, {count: 2})
 			end
 
 			it 'valid_convenio_required' do
@@ -160,9 +160,9 @@ describe BrBoleto::Remessa::Cnab240::Caixa do
 		end
 
 		it "3 - Terceira parte = Modalidade carteira com 2 posicoes" do
-			subject.conta.carteira = '14'
+			subject.conta.modalidade = '14'
 			subject.complemento_p(pagamento)[17..18].must_equal '14'			
-			subject.conta.carteira = 'XX'
+			subject.conta.modalidade = 'XX'
 			subject.complemento_p(pagamento)[17..18].must_equal 'XX'
 		end
 

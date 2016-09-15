@@ -8,17 +8,23 @@ describe BrBoleto::Conta::Caixa do
 	end
 
 	context "valores padrões" do
-		it "deve setar a carteira com 14'" do
-			subject.class.new.carteira.must_equal '14'
+		it "deve setar a modalidade da carteira com 14'" do
+			subject.class.new.modalidade.must_equal '14'
+		end		
+		it "deve setar a carteira com o primeiro digito da modalidade'" do
+			subject.modalidade = '14'
+			subject.carteira.must_equal '1'
 		end
+
 		it "deve setar a valid_carteira_required com true" do
 			subject.class.new.valid_carteira_required.must_equal true
 		end
-		it "deve setar a valid_carteira_length com 2" do
-			subject.class.new.valid_carteira_length.must_equal 2
+		it "deve setar a valid_carteira_length com 1" do
+			subject.class.new.valid_carteira_length.must_equal 1
 		end
-		it "deve setar a valid_carteira_inclusion com %w[11 14 21]" do
-			subject.class.new.valid_carteira_inclusion.must_equal %w[11 14 21]
+		
+		it "deve setar a valid_modalidade_inclusion com %w[11 14 21]" do
+			subject.class.new.valid_modalidade_inclusion.must_equal %w[11 14 21]
 		end
 		it "deve setar a valid_convenio_maximum com 6" do
 			subject.class.new.valid_convenio_maximum.must_equal 6
@@ -43,16 +49,16 @@ describe BrBoleto::Conta::Caixa do
 			wont_be_message_error(:versao_aplicativo, :custom_length_maximum, {count: 4})
 		end
 
-		context 'Validações padrões da carteira' do
+		context 'Validações padrões da modalidade da carteira' do
 			subject { BrBoleto::Conta::Caixa.new }
-			it { must validate_presence_of(:carteira) }
+			it { must validate_presence_of(:modalidade) }
 			it 'Tamanho deve ser de 2' do
-				subject.carteira = '132'
-				must_be_message_error(:carteira, :custom_length_is, {count: 2})
+				subject.modalidade = '132'
+				must_be_message_error(:modalidade, :custom_length_is, {count: 2})
 			end
 			it "valores aceitos" do
-				subject.carteira = '04'
-				must_be_message_error(:carteira, :custom_inclusion, {list: '11, 14, 21'})
+				subject.modalidade = '04'
+				must_be_message_error(:modalidade, :custom_inclusion, {list: '11, 14, 21'})
 			end
 		end
 
@@ -140,12 +146,12 @@ describe BrBoleto::Conta::Caixa do
 	end
 
 	describe "#carteira_formatada - Conforme o manual da caixa deve retornar RG para carteira com registro e SR para carteira sem registro" do
-		it "para a carteira 14 deve retornar RG" do
-			subject.carteira = '14'
+		it "para a modalidade 14 deve retornar RG" do
+			subject.modalidade = '14'
 			subject.carteira_formatada.must_equal 'RG'
 		end
-		it "para a carteira 24 deve retornar SR" do
-			subject.carteira = '24'
+		it "para a modalidade 24 deve retornar SR" do
+			subject.modalidade = '24'
 			subject.carteira_formatada.must_equal 'SR'
 		end
 	end

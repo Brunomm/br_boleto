@@ -7,22 +7,22 @@ describe BrBoleto::Boleto::Caixa do
 		context "on validations" do
 			it { must validate_length_of(:numero_documento).is_at_most(15).with_message(:custom_length_maximum) }
 			
-			context '#conta.carteira' do
-				it { subject.valid_carteira_inclusion.must_equal ['14','24'] }
-				it 'carteira deve ter 2 digitos' do
-					subject.valid_carteira_length.must_equal 2
-					subject.conta.carteira = '1'
-					conta_must_be_msg_error(:carteira, :custom_length_is, {count: 2})
-					subject.conta.carteira = '123'
-					conta_must_be_msg_error(:carteira, :custom_length_is, {count: 2})
-					subject.conta.carteira = '12'
-					conta_wont_be_msg_error(:carteira, :custom_length_is, {count: 2})
+			context '#conta.modalidade' do
+				it { subject.valid_modalidade_inclusion.must_equal ['14','24'] }
+				it 'modalidade deve ter 2 digitos' do
+					subject.valid_modalidade_length.must_equal 2
+					subject.conta.modalidade = '1'
+					conta_must_be_msg_error(:modalidade, :custom_length_is, {count: 2})
+					subject.conta.modalidade = '123'
+					conta_must_be_msg_error(:modalidade, :custom_length_is, {count: 2})
+					subject.conta.modalidade = '12'
+					conta_wont_be_msg_error(:modalidade, :custom_length_is, {count: 2})
 				end
-				it "validação da carteira da conta" do
-					subject.conta.carteira = '5'
-					conta_must_be_msg_error(:carteira, :custom_inclusion, {list: '14, 24'})
-					subject.conta.carteira = '24'
-					conta_wont_be_msg_error(:carteira, :custom_inclusion, {list: '14, 24'})
+				it "validação da modalidade da conta" do
+					subject.conta.modalidade = '5'
+					conta_must_be_msg_error(:modalidade, :custom_inclusion, {list: '14, 24'})
+					subject.conta.modalidade = '24'
+					conta_wont_be_msg_error(:modalidade, :custom_inclusion, {list: '14, 24'})
 				end
 			end
 
@@ -70,9 +70,9 @@ describe BrBoleto::Boleto::Caixa do
 	end
 
 	describe "#nosso_numero " do
-		it "deve utilizar a carteira, numero_documento e o DV do nosso_numero" do
+		it "deve utilizar a modalidade, numero_documento e o DV do nosso_numero" do
 			subject.expects(:digito_verificador_nosso_numero).returns('7')
-			subject.assign_attributes(conta: {carteira: '24'}, numero_documento: '789')
+			subject.assign_attributes(conta: {modalidade: '24'}, numero_documento: '789')
 			subject.nosso_numero.must_equal('24000000000000789-7')
 		end
 	end
@@ -98,24 +98,24 @@ describe BrBoleto::Boleto::Caixa do
 		end
 	end
 
-	describe "#tipo_cobranca" do
-		it "deve pegar o primeiro caracter da carteira se houver valor na carteira" do
-			subject.conta.carteira = 'X7'
-			subject.tipo_cobranca.must_equal 'X'
-			subject.conta.carteira = 'A7'
-			subject.tipo_cobranca.must_equal 'A'
-		end
-		it "se carteira for nil não deve dar erro" do
-			subject.conta.carteira = nil
-			subject.tipo_cobranca.must_be_nil
-		end
-	end
+	# describe "#tipo_cobranca" do
+	# 	it "deve pegar o primeiro caracter da carteira se houver valor na carteira" do
+	# 		subject.conta.carteira = 'X7'
+	# 		subject.tipo_cobranca.must_equal 'X'
+	# 		subject.conta.carteira = 'A7'
+	# 		subject.tipo_cobranca.must_equal 'A'
+	# 	end
+	# 	it "se carteira for nil não deve dar erro" do
+	# 		subject.conta.carteira = nil
+	# 		subject.tipo_cobranca.must_be_nil
+	# 	end
+	# end
 
 	describe "#identificador_de_emissao" do
-		it "deve retornar o ultimo caractere da carteira" do
-			subject.conta.carteira = 'X71'
+		it "deve retornar o ultimo caractere da modalidade" do
+			subject.conta.modalidade = 'X71'
 			subject.identificador_de_emissao.must_equal '1'
-			subject.conta.carteira = 'A2'
+			subject.conta.modalidade = 'A2'
 			subject.identificador_de_emissao.must_equal '2'
 		end
 	end
