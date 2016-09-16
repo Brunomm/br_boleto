@@ -23,8 +23,8 @@ describe BrBoleto::Conta::Caixa do
 			subject.class.new.valid_carteira_length.must_equal 1
 		end
 		
-		it "deve setar a valid_modalidade_inclusion com %w[11 14 21]" do
-			subject.class.new.valid_modalidade_inclusion.must_equal %w[11 14 21]
+		it "deve setar a valid_modalidade_inclusion com %w[14 24]" do
+			subject.class.new.valid_modalidade_inclusion.must_equal %w[14 24]
 		end
 		it "deve setar a valid_convenio_maximum com 6" do
 			subject.class.new.valid_convenio_maximum.must_equal 6
@@ -58,7 +58,7 @@ describe BrBoleto::Conta::Caixa do
 			end
 			it "valores aceitos" do
 				subject.modalidade = '04'
-				must_be_message_error(:modalidade, :custom_inclusion, {list: '11, 14, 21'})
+				must_be_message_error(:modalidade, :custom_inclusion, {list: '14, 24'})
 			end
 		end
 

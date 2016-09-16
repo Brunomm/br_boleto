@@ -4,10 +4,13 @@ module BrBoleto
 		class Caixa < BrBoleto::Conta::Base
 			
 			# MODALIDADE CARTEIRA
-			#  opcoes:
-			#    11: título Registrado emissão CAIXA
-			#    14: título Registrado emissão Cedente
-			#    21: título Sem Registro emissão CAIXA
+			#  Opcoes:
+			#    14: Cobrança Simples com registro
+			#    24: Cobrança Simples sem registro
+			#
+			#  Carteira/Modalidade:
+			#    1/4 = Registrada   / Emissão do boleto(4-Beneficiário) 
+			#    2/4 = Sem Registro / Emissão do boleto(4-Beneficiário) 
 
 			# versão do aplicativo da caixa
 			attr_accessor :versao_aplicativo
@@ -25,7 +28,7 @@ module BrBoleto
 					modalidade:                 '14',         # Com registro
 					valid_modalidade_required:  true,         # <- Validação dinâmica que a modalidade é obrigatória
 					valid_modalidade_length:    2,            # <- Validação dinâmica que a modalidade deve ter 2 digitos
-					valid_modalidade_inclusion: %w[11 14 21], # <- Validação dinâmica de valores aceitos para a modalidade
+					valid_modalidade_inclusion: %w[14 24],    # <- Validação dinâmica de valores aceitos para a modalidade
 					valid_carteira_required:  true,           # <- Validação dinâmica que a carteira é obrigatória
 					valid_carteira_length:    1,              # <- Validação dinâmica que a carteira deve ter 1 digito
 					valid_convenio_required:  true,           # <- Validação que a convenio deve ter obrigatório
