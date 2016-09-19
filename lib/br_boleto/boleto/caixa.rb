@@ -30,7 +30,7 @@ module BrBoleto
 
 			#################  VALIDAÇÕES DINÂMICAS  #################
 				def valid_numero_documento_maximum
-					15
+					11
 				end
 
 				# Tamanho máximo para o codigo_cedente/Convênio

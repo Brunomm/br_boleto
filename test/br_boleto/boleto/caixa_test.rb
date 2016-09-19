@@ -5,7 +5,7 @@ describe BrBoleto::Boleto::Caixa do
 	subject { FactoryGirl.build(:boleto_caixa) }
 
 		context "on validations" do
-			it { must validate_length_of(:numero_documento).is_at_most(15).with_message(:custom_length_maximum) }
+			it { must validate_length_of(:numero_documento).is_at_most(11).with_message(:custom_length_maximum) }
 			
 			context '#conta.modalidade' do
 				it { subject.valid_modalidade_inclusion.must_equal ['14','24'] }
@@ -63,7 +63,7 @@ describe BrBoleto::Boleto::Caixa do
 	describe "#digito_verificador_nosso_numero " do
 		it "deve utilizar o Modulo11FatorDe2a9RestoZero para calcular o digito passando a carteira e numero_documento" do
 			subject.assign_attributes(conta: {carteira: '14'}, numero_documento: '77445')
-			BrBoleto::Calculos::Modulo11FatorDe2a9RestoZero.expects(:new).with("14000000000077445").returns('8')
+			BrBoleto::Calculos::Modulo11FatorDe2a9RestoZero.expects(:new).with("1400000077445").returns('8')
 
 			subject.digito_verificador_nosso_numero.must_equal '8'
 		end
@@ -73,7 +73,7 @@ describe BrBoleto::Boleto::Caixa do
 		it "deve utilizar a modalidade, numero_documento e o DV do nosso_numero" do
 			subject.expects(:digito_verificador_nosso_numero).returns('7')
 			subject.assign_attributes(conta: {modalidade: '24'}, numero_documento: '789')
-			subject.nosso_numero.must_equal('24000000000000789-7')
+			subject.nosso_numero.must_equal('2400000000789-7')
 		end
 	end
 
