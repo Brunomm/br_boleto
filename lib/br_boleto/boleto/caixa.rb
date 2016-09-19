@@ -29,6 +29,10 @@ module BrBoleto
 			end
 
 			#################  VALIDAÇÕES DINÂMICAS  #################
+
+				# O valor do numero do documento esta diferente em alguns lugares 
+				# da documentação da CAIXA (11 e 15), foi deixado o valor 11 e
+				# preechido 4 posições com '0' onde usava o valor 15
 				def valid_numero_documento_maximum
 					11
 				end
