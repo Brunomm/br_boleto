@@ -67,7 +67,7 @@ module BrBoleto
 			end
 
 			def digito_verificador_nosso_numero
-				BrBoleto::Calculos::Modulo11FatorDe2a9RestoZero.new("#{conta.modalidade}#{numero_documento}")
+				BrBoleto::Calculos::Modulo11FatorDe2a9RestoZero.new("#{conta.modalidade}0000#{numero_documento}")
 			end
 
 			# Mostra o campo nosso número calculando o dígito verificador do nosso número.
@@ -75,7 +75,7 @@ module BrBoleto
 			# @return [String]
 			#
 			def nosso_numero
-				"#{conta.modalidade}#{numero_documento}-#{digito_verificador_nosso_numero}"
+				"#{conta.modalidade}0000#{numero_documento}-#{digito_verificador_nosso_numero}"
 			end
 
 

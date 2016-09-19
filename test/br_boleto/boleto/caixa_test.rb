@@ -63,7 +63,7 @@ describe BrBoleto::Boleto::Caixa do
 	describe "#digito_verificador_nosso_numero " do
 		it "deve utilizar o Modulo11FatorDe2a9RestoZero para calcular o digito passando a carteira e numero_documento" do
 			subject.assign_attributes(conta: {carteira: '14'}, numero_documento: '77445')
-			BrBoleto::Calculos::Modulo11FatorDe2a9RestoZero.expects(:new).with("1400000077445").returns('8')
+			BrBoleto::Calculos::Modulo11FatorDe2a9RestoZero.expects(:new).with("14000000000077445").returns('8')
 
 			subject.digito_verificador_nosso_numero.must_equal '8'
 		end
@@ -73,7 +73,7 @@ describe BrBoleto::Boleto::Caixa do
 		it "deve utilizar a modalidade, numero_documento e o DV do nosso_numero" do
 			subject.expects(:digito_verificador_nosso_numero).returns('7')
 			subject.assign_attributes(conta: {modalidade: '24'}, numero_documento: '789')
-			subject.nosso_numero.must_equal('2400000000789-7')
+			subject.nosso_numero.must_equal('24000000000000789-7')
 		end
 	end
 
@@ -129,7 +129,7 @@ describe BrBoleto::Boleto::Caixa do
 		end
 
 		it "codigo completo conforme a documentação" do
-			subject.composicao_codigo_barras.must_equal '1234560ABC1DEF4GHIJKLMNO'
+			subject.composicao_codigo_barras.must_equal '123456000010AB4CDEFGHIJK'
 		end
 
 		it "da posição 0 até 5 deve ter o valor de codigo_beneficiario " do
@@ -141,7 +141,7 @@ describe BrBoleto::Boleto::Caixa do
 		end
 
 		it "da posição 7 até 9 deve ter o valor de nosso_numero_de_3_a_5 " do
-			subject.composicao_codigo_barras[7..9].must_equal 'ABC'
+			subject.composicao_codigo_barras[7..9].must_equal '000'
 		end
 
 		it "da posição 10 até 10 deve ter o valor de tipo_cobranca " do
@@ -149,7 +149,7 @@ describe BrBoleto::Boleto::Caixa do
 		end
 
 		it "da posição 11 até 13 deve ter o valor de nosso_numero_de_6_a_8 " do
-			subject.composicao_codigo_barras[11..13].must_equal 'DEF'
+			subject.composicao_codigo_barras[11..13].must_equal '0AB'
 		end
 
 		it "da posição 14 até 14 deve ter o valor de identificador_de_emissao " do
@@ -157,7 +157,7 @@ describe BrBoleto::Boleto::Caixa do
 		end
 
 		it "da posição 15 até 23 deve ter o valor de nosso_numero_de_9_a_17 " do
-			subject.composicao_codigo_barras[15..23].must_equal 'GHIJKLMNO'
+			subject.composicao_codigo_barras[15..23].must_equal 'CDEFGHIJK'
 		end
 
 		it "a posição 24 deve ser nil " do
