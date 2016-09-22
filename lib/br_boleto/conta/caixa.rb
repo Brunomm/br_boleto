@@ -25,14 +25,12 @@ module BrBoleto
 
 			def default_values
 				super.merge({
-					modalidade:                 '14',         # Com registro
-					valid_modalidade_required:  true,         # <- Validação dinâmica que a modalidade é obrigatória
-					valid_modalidade_length:    2,            # <- Validação dinâmica que a modalidade deve ter 2 digitos
-					valid_modalidade_inclusion: %w[14 24],    # <- Validação dinâmica de valores aceitos para a modalidade
-					valid_carteira_required:  true,           # <- Validação dinâmica que a carteira é obrigatória
-					valid_carteira_length:    1,              # <- Validação dinâmica que a carteira deve ter 1 digito
-					valid_convenio_required:  true,           # <- Validação que a convenio deve ter obrigatório
-					valid_convenio_maximum:   6,              # <- Validação que a convenio deve ter no máximo 6 digitos
+					carteira:                 '14',         # Com registro
+					valid_carteira_required:  true,         # <- Validação dinâmica que a carteira é obrigatória
+					valid_carteira_length:    2,            # <- Validação dinâmica que a carteira deve ter 2 digitos
+					valid_carteira_inclusion: %w[14 24],    # <- Validação dinâmica de valores aceitos para a modalidade
+					valid_convenio_required:  true,         # <- Validação que a convenio deve ter obrigatório
+					valid_convenio_maximum:   6,            # <- Validação que a convenio deve ter no máximo 6 digitos
 					versao_aplicativo:        '0',
 				})
 			end
@@ -76,7 +74,7 @@ module BrBoleto
 				"#{@versao_aplicativo}".rjust(4, '0') if @versao_aplicativo.present?
 			end
 
-			# Formata a modalidade da carteira dependendo se ela é registrada ou não.
+			# Formata a carteira da carteira dependendo se ela é registrada ou não.
 			#
 			# Para cobrança COM registro usar: <b>RG</b>
 			# Para Cobrança SEM registro usar: <b>SR</b>
@@ -84,7 +82,7 @@ module BrBoleto
 			# @return [String]
 			#
 			def carteira_formatada
-				if modalidade.in?(modalidades_com_registro)
+				if carteira.in?(carteiras_com_registro)
 					'RG'
 				else
 					'SR'
@@ -97,17 +95,8 @@ module BrBoleto
 			#
 			# @return [Array]
 			#
-			def modalidades_com_registro
+			def carteiras_com_registro
 				%w(14)
-			end
-
-			# Retorna o código da Cartereira.
-			# Deve ser sempre o primeiro valor da modalidade da carteira (1 ou 2).
-
-			# O Código da Carteira é o 1° caracter da modalidade
-			# Normalmente o valor é 1 ou 2.
-			def carteira
-				modalidade.first if modalidade.present?
 			end
 
 			# Campo Agência / Código do Cedente

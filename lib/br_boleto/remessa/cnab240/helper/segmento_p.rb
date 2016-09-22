@@ -138,11 +138,11 @@ module BrBoleto
 						complemento_p(pagamento)
 					end
 
-					# Código da carteira
+					# Código da carteira ou tipo de cobrança
 					# 1 posição
 					#
 					def segmento_p_posicao_058_a_058
-						conta.carteira
+						conta.tipo_cobranca.adjust_size_to(1)
 					end
 
 					# Forma de Cadastr. do Título no Banco
