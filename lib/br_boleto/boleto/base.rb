@@ -34,10 +34,6 @@ module BrBoleto
 			attr_accessor :valor_documento
 			
 
-			# Número da Conta corrente. Campo auto explicativo.
-			#
-			attr_accessor :conta_corrente
-
 			# Código da moeda. Campo auto explicativo.
 			# Padrão '9' (Real).
 			#

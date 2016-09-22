@@ -72,6 +72,7 @@ module BrBoleto
 		autoload :Base
 		autoload :Sicoob
 		autoload :Caixa
+		autoload :Bradesco
 	end
 	
 	module Boleto
@@ -80,6 +81,7 @@ module BrBoleto
 		autoload :Base
 		autoload :Sicoob
 		autoload :Caixa
+		autoload :Bradesco
 	end
 
 
