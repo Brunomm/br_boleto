@@ -2,10 +2,10 @@
 
 FactoryGirl.define do
 	factory :conta_bradesco, class:  BrBoleto::Conta::Bradesco do
-		codigo_cedente    '909014'
+		codigo_cedente    '9090144'
 		conta_corrente    '89755'
-		conta_corrente_dv '0'
-		agencia           '0097'
+		conta_corrente_dv '8'
+		agencia           '4697'
 		carteira          '21'
 		razao_social      'Razao Social emitente'
 		cpf_cnpj          '98137264000196' # Gerado pelo gerador de cnpj
