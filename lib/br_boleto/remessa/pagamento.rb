@@ -147,6 +147,7 @@ module BrBoleto
 			#  08 = Letra de Câmbio
 			#  09 = Warrant
 			#  10 = Cheque
+			#  11 = Nota de Débito
 			#  12 = Duplicata de Serviço
 			#  13 = Nota de Débito
 			#  14 = Triplicata Mercantil
@@ -155,6 +156,7 @@ module BrBoleto
 			#  20 = Apólice de Seguro
 			#  21 = Mensalidade Escolar
 			#  22 = Parcela de Consórcio
+			#  30 = Boleto de Proposta
 			#  99 = Outros
 			#  CNAB: 240 e 400
 			attr_accessor :especie_titulo
