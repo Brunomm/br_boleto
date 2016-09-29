@@ -102,6 +102,7 @@ module BrBoleto
 			extend ActiveSupport::Autoload
 			autoload :Base
 			autoload :Sicoob
+			autoload :Bradesco
 		end
 	end
 	
@@ -120,6 +121,7 @@ module BrBoleto
 			extend ActiveSupport::Autoload
 			autoload :Base
 			autoload :Sicoob
+			autoload :Bradesco
 		end
 	end
 
