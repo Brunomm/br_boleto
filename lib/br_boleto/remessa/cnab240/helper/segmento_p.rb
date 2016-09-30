@@ -213,7 +213,7 @@ module BrBoleto
 					# 2 posições
 					#
 					def segmento_p_posicao_107_a_108(pagamento)
-						"#{pagamento.especie_titulo}".adjust_size_to(2, '0', :right)
+						"#{get_especie_titulo(pagamento.especie_titulo, 240)}".adjust_size_to(2, '0', :right)
 					end
 
 					# Identific. de Título Aceito/Não Aceito (A ou N)

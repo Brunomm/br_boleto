@@ -148,7 +148,7 @@ module BrBoleto
 					#   12-Duplicata de Serv.
 					#   30-Boleto de Proposta
 					#   99-Outros
-					dados << "#{pagamento.especie_titulo}".adjust_size_to(2, '0', :right)
+					dados << "#{get_especie_titulo(pagamento.especie_titulo, 400)}".adjust_size_to(2, '0', :right)
 					dados << 'N'
 					dados << pagamento.data_emissao_formatado('%d%m%y')
 					# 1a / 2a Instrução:

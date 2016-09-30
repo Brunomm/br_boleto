@@ -99,7 +99,7 @@ describe BrBoleto::Remessa::Cnab400::Sicoob do
 			conta.agencia_dv = 45 # Vai retornar apenas o 4
 			pagamento.data_vencimento = Date.parse('05/08/2029')
 			pagamento.valor_documento = 47.56
-			pagamento.especie_titulo  = 12
+			pagamento.especie_titulo  = "12"
 			pagamento.aceite = true
 			pagamento.data_emissao = Date.parse('15/09/2017')
 			result = subject.informacoes_do_pagamento(pagamento, 4)

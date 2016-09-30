@@ -16,6 +16,9 @@ module BrBoleto
 
 				include BrBoleto::HavePagamentos
 
+				# Utilizado para padronização dos códigos, segundo a documentação
+				include BrBoleto::Helper::DefaultCodes
+
 				# Informacoes da conta do cedente
 				# Este metodo deve ser sobrescrevido na classe do banco
 				# Tamanho: 20

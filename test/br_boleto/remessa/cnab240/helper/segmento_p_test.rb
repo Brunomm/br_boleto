@@ -232,8 +232,11 @@ module Helper
 		# Deve retornar o valro do metodo "especie_titulo"
 		#
 		def test_SegmentoPTest_metodo_segmento_p_posicao_107_a_108 
+			pagamento.expects(:especie_titulo).returns('01')
+			subject.segmento_p_posicao_107_a_108(pagamento).must_equal '01'			
+
 			pagamento.expects(:especie_titulo).returns('123')
-			subject.segmento_p_posicao_107_a_108(pagamento).must_equal '12'
+			subject.segmento_p_posicao_107_a_108(pagamento).must_equal '99'
 		end
 
 		# Identific. de Título Aceito/Não Aceito (A ou N)

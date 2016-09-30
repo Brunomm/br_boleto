@@ -7,6 +7,8 @@ module BrBoleto
 			# CNAB: 240 e 400
 			include BrBoleto::HavePagador
 
+			include BrBoleto::Helper::DefaultCodes
+			
 			# <b>REQUERIDO</b>: nosso numero
 			# CNAB: 240 e 400
 			attr_accessor :nosso_numero

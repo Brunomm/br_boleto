@@ -37,6 +37,9 @@ module BrBoleto
 				# Utilizado para montar o trailer do arquivo
 				include BrBoleto::Remessa::Cnab240::Helper::TrailerArquivo
 
+				# Utilizado para padronização dos códigos, segundo a documentação
+				include BrBoleto::Helper::DefaultCodes
+
 				# mensagem 1
 				attr_accessor :mensagem_1
 
