@@ -144,7 +144,7 @@ module Helper
 		# Deve pegar o valor do metodo "codigo_carteira"
 		#
 		def test_SegmentoPTest_metodo_segmento_p_posicao_058_a_058
-			subject.conta.expects(:carteira).returns('3')
+			subject.conta.expects(:tipo_cobranca).returns('3')
 			subject.segmento_p_posicao_058_a_058.must_equal '3'
 		end
 

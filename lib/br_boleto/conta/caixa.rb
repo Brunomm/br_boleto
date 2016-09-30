@@ -4,10 +4,13 @@ module BrBoleto
 		class Caixa < BrBoleto::Conta::Base
 			
 			# MODALIDADE CARTEIRA
-			#  opcoes:
-			#    11: título Registrado emissão CAIXA
-			#    14: título Registrado emissão Cedente
-			#    21: título Sem Registro emissão CAIXA
+			#  Opcoes:
+			#    14: Cobrança Simples com registro
+			#    24: Cobrança Simples sem registro
+			#
+			#  Carteira/Modalidade:
+			#    1/4 = Registrada   / Emissão do boleto(4-Beneficiário) 
+			#    2/4 = Sem Registro / Emissão do boleto(4-Beneficiário) 
 
 			# versão do aplicativo da caixa
 			attr_accessor :versao_aplicativo
@@ -22,10 +25,10 @@ module BrBoleto
 
 			def default_values
 				super.merge({
-					carteira:                 '14', # Com registro
-					valid_carteira_required:  true,         # <- Validação dinâmica que a modalidade é obrigatória
-					valid_carteira_length:    2,            # <- Validação dinâmica que a modalidade deve ter 2 digitos
-					valid_carteira_inclusion: %w[11 14 21], # <- Validação dinâmica de valores aceitos para a modalidade
+					carteira:                 '14',         # Com registro
+					valid_carteira_required:  true,         # <- Validação dinâmica que a carteira é obrigatória
+					valid_carteira_length:    2,            # <- Validação dinâmica que a carteira deve ter 2 digitos
+					valid_carteira_inclusion: %w[14 24],    # <- Validação dinâmica de valores aceitos para a modalidade
 					valid_convenio_required:  true,         # <- Validação que a convenio deve ter obrigatório
 					valid_convenio_maximum:   6,            # <- Validação que a convenio deve ter no máximo 6 digitos
 					versao_aplicativo:        '0',
@@ -71,7 +74,7 @@ module BrBoleto
 				"#{@versao_aplicativo}".rjust(4, '0') if @versao_aplicativo.present?
 			end
 
-			# Formata a carteira dependendo se ela é registrada ou não.
+			# Formata a carteira da carteira dependendo se ela é registrada ou não.
 			#
 			# Para cobrança COM registro usar: <b>RG</b>
 			# Para Cobrança SEM registro usar: <b>SR</b>

@@ -486,5 +486,18 @@ describe BrBoleto::Remessa::Base do
 		end
 	end
 
+	describe "#tipo_cobranca" do
+		it "deve pegar o primeiro caracter da carteira se houver valor na carteira" do
+			subject.carteira = 'X7'
+			subject.tipo_cobranca.must_equal 'X'
+			subject.carteira = 'A7'
+			subject.tipo_cobranca.must_equal 'A'
+		end
+		it "se carteira for nil não deve dar erro" do
+			subject.carteira = nil
+			subject.tipo_cobranca.must_be_nil
+		end
+	end
+
 	
 end
