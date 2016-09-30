@@ -235,6 +235,13 @@ module BrBoleto
 			def agencia_codigo_cedente
 				"#{agencia} / #{codigo_cedente}"
 			end
+
+			# Código da Carteira ou Tipo de Cobrança
+			# Código adotado pela FEBRABAN, para identificar a característica dos títulos dentro das
+			# modalidades de cobrança existentes no banco
+			def tipo_cobranca
+				carteira.first if carteira.present?
+			end
 			
 			# Embora o padrão seja mostrar o número da carteira no boleto,
 			# <b>alguns bancos</b> requerem que seja mostrado um valor diferente na carteira.
