@@ -25,13 +25,15 @@ module BrBoleto
 
 			def default_values
 				super.merge({
-					carteira:                 '14',         # Com registro
-					valid_carteira_required:  true,         # <- Validação dinâmica que a carteira é obrigatória
-					valid_carteira_length:    2,            # <- Validação dinâmica que a carteira deve ter 2 digitos
-					valid_carteira_inclusion: %w[14 24],    # <- Validação dinâmica de valores aceitos para a modalidade
-					valid_convenio_required:  true,         # <- Validação que a convenio deve ter obrigatório
-					valid_convenio_maximum:   6,            # <- Validação que a convenio deve ter no máximo 6 digitos
-					versao_aplicativo:        '0',
+					carteira:                     '14',      # Com registro
+					valid_carteira_required:      true,      # <- Validação dinâmica que a carteira é obrigatória
+					valid_carteira_length:        2,         # <- Validação dinâmica que a carteira deve ter 2 digitos
+					valid_carteira_inclusion:     %w[14 24], # <- Validação dinâmica de valores aceitos para a modalidade
+					codigo_carteira:              '1',  # Cobrança Simples
+					valid_codigo_carteira_length: 1,         # <- Validação dinâmica que a carteira deve ter 1 digito
+					valid_convenio_required:      true, # <- Validação que a convenio deve ter obrigatório
+					valid_convenio_maximum:       6,    # <- Validação que a convenio deve ter no máximo 6 digitos
+					versao_aplicativo:            '0',
 				})
 			end
 
@@ -105,6 +107,11 @@ module BrBoleto
 			#
 			def agencia_codigo_cedente
 				"#{agencia} / #{codigo_cedente}-#{codigo_cedente_dv}"
+			end
+
+			# Identificação da Distribuição exclusiva da CAIXA
+			def equivalent_distribuicao_boleto
+				super.merge({'0' => '0' }) # 0 = Postagem pelo Beneficiário
 			end
 
 		end

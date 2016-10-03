@@ -206,6 +206,17 @@ module BrBoleto
 			# ‘4’ = Banco envia SMS
 			attr_accessor :distribuicao_boleto
 
+			# Código para Protesto
+			# Código adotado pela FEBRABAN para identificar o tipo de prazo a ser considerado para o protesto.
+			# '1' =  Protestar Dias Corridos
+			# '2' =  Protestar Dias Úteis
+			# '3' =  Não Protestar
+			# '4' = Protestar Fim Falimentar - Dias Úteis
+			# '5' = Protestar Fim Falimentar - Dias Corridos
+			# '8' = Negativação sem Protesto
+			# '9' =  Cancelamento Protesto Automático (somente válido p/ Código Movimento Remessa = '31')
+			attr_accessor :codigo_protesto
+
 			########################  VALIDAÇÕES PERSONALIZADAS  ########################
 				attr_accessor :valid_tipo_impressao_required
 				validates :tipo_impressao, presence: true, if: :valid_tipo_impressao_required
@@ -262,8 +273,9 @@ module BrBoleto
 					especie_titulo:           '01',
 					codigo_moeda:             '9',
 					forma_cadastramento:      '0',
-					emissao_boleto:           '2',
-					distribuicao_boleto:      '2',
+					emissao_boleto:           '2', # Cliente Emite
+					distribuicao_boleto:      '2', # Cliente Distribui
+					codigo_protesto:          '1', # Protestar Dias Corridos
 				}
 			end
 

@@ -32,12 +32,12 @@ module Helper
 			subject.stubs(:segmento_p_posicao_151_a_165).with(pagamento).returns(" 151_a_165")
 			subject.stubs(:segmento_p_posicao_166_a_180).with(pagamento).returns(" 166_a_180")
 			subject.stubs(:segmento_p_posicao_181_a_195).with(pagamento).returns(" 181_a_195")
-			subject.stubs(:segmento_p_posicao_196_a_220).returns(" 196_a_220")
-			subject.stubs(:segmento_p_posicao_221_a_221).returns(" 221_a_221")
+			subject.stubs(:segmento_p_posicao_196_a_220).with(pagamento).returns(" 196_a_220")
+			subject.stubs(:segmento_p_posicao_221_a_221).with(pagamento).returns(" 221_a_221")
 			subject.stubs(:segmento_p_posicao_222_a_223).returns(" 222_a_223")
 			subject.stubs(:segmento_p_posicao_224_a_224).returns(" 224_a_224")
 			subject.stubs(:segmento_p_posicao_225_a_227).returns(" 225_a_227")
-			subject.stubs(:segmento_p_posicao_228_a_229).returns(" 228_a_229")
+			subject.stubs(:segmento_p_posicao_228_a_229).with(pagamento).returns(" 228_a_229")
 			subject.stubs(:segmento_p_posicao_230_a_239).returns(" 230_a_239")
 			subject.stubs(:segmento_p_posicao_240_a_240).returns(" 240_a_240")
 			# Deve dar um upcase
@@ -144,7 +144,7 @@ module Helper
 		# Deve pegar o valor do metodo "codigo_carteira"
 		#
 		def test_SegmentoPTest_metodo_segmento_p_posicao_058_a_058
-			subject.conta.expects(:tipo_cobranca).returns('3')
+			subject.conta.expects(:codigo_carteira).returns('3')
 			subject.segmento_p_posicao_058_a_058.must_equal '3'
 		end
 
@@ -170,8 +170,8 @@ module Helper
 		# Deve pegar o valor do metodo "emissao_boleto"
 		#
 		def test_SegmentoPTest_metodo_segmento_p_posicao_061_a_061
-			pagamento.expects(:emissao_boleto).returns('123')
-			subject.segmento_p_posicao_061_a_061(pagamento).must_equal '123'
+			pagamento.expects(:emissao_boleto).returns('3')
+			subject.segmento_p_posicao_061_a_061(pagamento).must_equal '3'
 		end
 
 		# Identificação da Distribuição
@@ -179,8 +179,8 @@ module Helper
 		# Deve pegar o valor do metodo "distribuicao_boleto"
 		#
 		def test_SegmentoPTest_metodo_segmento_p_posicao_062_a_062
-			pagamento.expects(:distribuicao_boleto).returns('distribuicao_boleto')
-			subject.segmento_p_posicao_062_a_062(pagamento).must_equal 'distribuicao_boleto'
+			pagamento.expects(:distribuicao_boleto).returns('2')
+			subject.segmento_p_posicao_062_a_062(pagamento).must_equal '2'
 		end
 
 		# Número do Documento de Cobrança 
@@ -306,7 +306,7 @@ module Helper
 		# Deve pegar o "cod_desconto" do pagamento
 		#
 		def test_SegmentoPTest_metodo_segmento_p_posicao_142_a_142#(pagamento)
-			pagamento.expects(:cod_desconto).returns('123')
+			pagamento.expects(:cod_desconto).returns('1')
 			subject.segmento_p_posicao_142_a_142(pagamento).must_equal '1'
 		end
 
@@ -358,8 +358,9 @@ module Helper
 		# 1 posição
 		# Por padrão é o valor '1'
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_221_a_221 
-			subject.segmento_p_posicao_221_a_221 .must_equal '1'
+		def test_SegmentoPTest_metodo_segmento_p_posicao_221_a_221#(pagamento)
+			pagamento.expects(:codigo_protesto).returns('1')
+			subject.segmento_p_posicao_221_a_221(pagamento) .must_equal '1'
 		end
 
 		# Número de Dias para Protesto 
@@ -391,7 +392,8 @@ module Helper
 		# Por padrão é o valor '09'
 		#
 		def test_SegmentoPTest_metodo_segmento_p_posicao_228_a_229
-			subject.segmento_p_posicao_228_a_229.must_equal '09'
+			pagamento.expects(:codigo_moeda).returns('09')
+			subject.segmento_p_posicao_228_a_229(pagamento).must_equal '09'
 		end
 
 		# Nº do Contrato da Operação de Crédito (Uso do banco)

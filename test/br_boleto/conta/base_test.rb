@@ -284,7 +284,30 @@ describe BrBoleto::Remessa::Base do
 				end
 			end
 		end
+		context "#codigo_carteira" do
+			it "por padrão não deve validar nada" do
+				subject.codigo_carteira = nil
+				wont_be_message_error(:codigo_carteira)
+			end
 
+			context "#valid_codigo_carteira_required" do
+				it "quando setado deve validar a obrigatoriedade" do
+					wont validate_presence_of(:codigo_carteira)
+					
+					subject.valid_codigo_carteira_required = true
+					must validate_presence_of(:codigo_carteira)
+				end
+			end
+			context "#valid_codigo_carteira_length" do
+				it "quando setado um valor deve validar através do valor setado" do
+					subject.valid_codigo_carteira_length = 7
+					subject.codigo_carteira = '12345678'
+					must_be_message_error(:codigo_carteira, :custom_length_is, {count: 7})
+					subject.codigo_carteira = '1234567'
+					wont_be_message_error(:codigo_carteira, :custom_length_is, {count: 7})
+				end
+			end
+		end
 		context "#convenio" do
 			it "por padrão não deve validar nada" do
 				subject.convenio = nil
@@ -487,7 +510,13 @@ describe BrBoleto::Remessa::Base do
 	end
 
 	describe "#tipo_cobranca" do
-		it "deve pegar o primeiro caracter da carteira se houver valor na carteira" do
+		it "deve retornar o codigo_carteira se existir" do
+			subject.codigo_carteira = '1'
+			subject.tipo_cobranca.must_equal '1'
+			subject.codigo_carteira = '2'
+			subject.tipo_cobranca.must_equal '2'
+		end
+		it "deve pegar o primeiro caracter da carteira se não houver valor no codigo_carteira" do
 			subject.carteira = 'X7'
 			subject.tipo_cobranca.must_equal 'X'
 			subject.carteira = 'A7'

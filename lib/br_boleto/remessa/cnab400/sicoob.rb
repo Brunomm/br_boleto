@@ -125,7 +125,7 @@ module BrBoleto
 					#    21 = Mensalidade Escolar
 					#    22 = Parcela de Consórcio
 					#    99 = Outros"
-					dados << "#{get_especie_titulo(pagamento.especie_titulo, 400)}".adjust_size_to(2, '0', :right)
+					dados << "#{conta.get_especie_titulo(pagamento.especie_titulo, 400)}".adjust_size_to(2, '0', :right)
 					
 					# 150  150  001  X(01)  "Aceite do Título:  "0" = Sem aceite "1" = Com aceite"
 					dados << "#{pagamento.aceite ? '1' : '0'}".adjust_size_to(1, '0')

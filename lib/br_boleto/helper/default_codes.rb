@@ -69,8 +69,7 @@ module BrBoleto
 
 			
 			# Código de Movimento Remessa:
-			# Código adotado pela FEBRABAN, para identificar o tipo de movimentação 
-			# enviado nos registros do arquivo de remessa.
+			# Código adotado pela FEBRABAN, para identificar o tipo de movimentação enviado nos registros do arquivo de remessa.
 			def get_codigo_movimento_remessa(code)
 				"#{code}".adjust_size_to(2, '0', :right)
 				equivalent_codigo_movimento_remessa[code] || ''
@@ -84,7 +83,7 @@ module BrBoleto
 					'05' => '05', # Cancelamento de Abatimento
 					'06' => '06', # Alteração de Vencimento
 					'07' => '07', # Concessão de Desconto
-					'08' => '08', # Cancelamento de Desconto (NÃO TRATADO PELO BANCO)
+					'08' => '08', # Cancelamento de Desconto
 					'09' => '09', # Protestar
 					'10' => '10', # Sustar Protesto e Baixar Título
 					'11' => '11', # Sustar Protesto e Manter em Carteira
@@ -93,24 +92,24 @@ module BrBoleto
 					'14' => '14', # Alteração de Valor/Percentual de Multa
 					'15' => '15', # Dispensar Cobrança de Multa
 					'16' => '16', # Alteração do Valor de Desconto
-					'17' => '17', # Não conceder Desconto (NÃO TRATADO PELO BANCO)
+					'17' => '17', # Não conceder Desconto
 					'18' => '18', # Alteração do Valor de Abatimento
-					'19' => '19', # Prazo Limite de Recebimento – Alterar (NÃO TRATADO PELO BANCO)
-					'20' => '20', # Prazo Limite de Recebimento – Dispensar (NÃO TRATADO PELO BANCO)
+					'19' => '19', # Prazo Limite de Recebimento – Alterar
+					'20' => '20', # Prazo Limite de Recebimento – Dispensar
 					'21' => '21', # Alterar número do título dado pelo beneficiario
 					'22' => '22', # Alterar número controle do Participante
 					'23' => '23', # Alterar dados do Pagador
 					'24' => '24', # Alterar dados do Sacador/Avalista
-					'30' => '30', # Recusa da Alegação do Pagador (NÃO TRATADO PELO BANCO)
+					'30' => '30', # Recusa da Alegação do Pagador
 					'31' => '31', # Alteração de Outros Dados
 					'33' => '33', # Alteração dos Dados do Rateio de Crédito
 					'34' => '34', # Pedido de Cancelamento dos Dados do Rateio de Crédito
 					'35' => '35', # Pedido de Desagendamento do Débito Automático
-					'40' => '40', # Alteração de Carteira (NÃO TRATADO PELO BANCO)
-					'41' => '41', # Cancelar protesto (NÃO TRATADO PELO BANCO)
+					'40' => '40', # Alteração de Carteira
+					'41' => '41', # Cancelar protesto
 					'42' => '42', # Alteração de Espécie de Título
-					'43' => '43', # Transferência de carteira/modalidade de cobrança (NÃO TRATADO PELO BANCO)
-					'44' => '44', # Alteração de contrato de cobrança (NÃO TRATADO PELO BANCO)
+					'43' => '43', # Transferência de carteira/modalidade de cobrança
+					'44' => '44', # Alteração de contrato de cobrança
 					'45' => '45', # Negativação Sem Protesto
 					'46' => '46', # Solicitação de Baixa de Título Negativado Sem Protesto
 					'47' => '47', # Alteração do Valor Nominal do Título
@@ -119,15 +118,14 @@ module BrBoleto
 				}
 			end
 
-
 			# Código da Carteira :
-			def get_codigo_carteira(code)
+			def get_tipo_cobranca(code)
 				"#{code}".adjust_size_to(1, '0', :right)
-				equivalent_codigo_carteira[code] || ''
+				equivalent_tipo_cobranca[code] || ''
 			end
 			# Código adotado pela FEBRABAN, para identificar a característica dos títulos
          # dentro das modalidades de cobrança existentes no banco.
-			def equivalent_codigo_carteira
+			def equivalent_tipo_cobranca
 				{
 					'1' => '1', # Cobrança Simples
 					'2' => '2', # Cobrança Vinculada
@@ -159,12 +157,12 @@ module BrBoleto
 
 
 			# Identificação da Distribuição :
-			def get_identificacao_distribuicao(code)
-				"#{code}".adjust_size_to(1, '0', :right)
-				equivalent_identificacao_distribuicao[code] || ''
+			def get_distribuicao_boleto(code)
+				"#{code}".rjust(1, '0')
+				equivalent_distribuicao_boleto[code] || ''
 			end
 			# Código adotado pela FEBRABAN para identificar o responsável pela distribuição do bloqueto.
-			def equivalent_identificacao_distribuicao
+			def equivalent_distribuicao_boleto
 				{
 					'1' => '1', # Banco Distribui
 					'2' => '2', # Cliente Distribui
@@ -187,7 +185,6 @@ module BrBoleto
 				}
 			end
 
-
 			# Código do Desconto 1 / 2 / 3 :
 			def get_codigo_desconto(code)
 				"#{code}".adjust_size_to(1, '0', :right)
@@ -196,6 +193,7 @@ module BrBoleto
 			# Código adotado pela FEBRABAN para identificação do tipo de desconto que deverá ser concedido.
 			def equivalent_codigo_desconto
 				{
+					'0' => '0', # Sem Desconto
 					'1' => '1', # Valor Fixo Até a Data Informada
 					'2' => '2', # Percentual Até a Data Informada
 					'3' => '3', # Valor por Antecipação Dia Corrido
@@ -225,6 +223,30 @@ module BrBoleto
 				}
 			end
 
+			# Código da Moeda :
+			def get_codigo_moeda(code)
+				"#{code}".adjust_size_to(1, '0', :right)
+				equivalent_codigo_moeda[code] || ''
+			end
+			# Código adotado pela FEBRABAN para identificar a moeda referenciada no Título
+			def equivalent_codigo_moeda
+				{
+					'01'  => '01', # Reservado para Uso Futuro
+					'02'  => '02', # Dólar Americano Comercial (Venda)
+					'03'  => '03', # Dólar Americano Turismo (Venda)
+					'04'  => '04', # ITRD
+					'05'  => '05', # IDTR
+					'06'  => '06', # UFIR Diária
+					'07'  => '07', # UFIR Mensal
+					'08'  => '08', # FAJ - TR
+					'09'  => '09', # Real
+					'10'  => '10', # TR
+					'11'  => '11', # IGPM
+					'12'  => '12', # CDI
+					'13'  => '13', # Percentual do CDI
+					'14'  => '14', # Euro
+				}
+			end
 
 		end
 	end
