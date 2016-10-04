@@ -226,7 +226,7 @@ module BrBoleto
 			# Código da Moeda :
 			def get_codigo_moeda(code)
 				"#{code}".adjust_size_to(1, '0', :right)
-				equivalent_codigo_moeda[code] || ''
+				equivalent_codigo_moeda[code] || '09'
 			end
 			# Código adotado pela FEBRABAN para identificar a moeda referenciada no Título
 			def equivalent_codigo_moeda

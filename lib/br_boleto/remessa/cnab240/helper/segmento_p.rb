@@ -327,11 +327,8 @@ module BrBoleto
 					# 2 posições
 					#
 					def segmento_p_posicao_228_a_229(pagamento)
-						moeda = "#{pagamento.codigo_moeda}".adjust_size_to(2, '0')
-
-						#ARRUAMR O adjust_size_to
-						"#{conta.get_codigo_moeda(moeda)}".adjust_size_to(2, '09')
-						##########################################################
+						moeda = "#{pagamento.codigo_moeda}".rjust(2, '0')
+						"#{conta.get_codigo_moeda(moeda)}".adjust_size_to(2, '0')
 					end
 
 					# Nº do Contrato da Operação de Crédito (Uso do banco)
