@@ -25,7 +25,7 @@ module BrBoleto
 						segmento_p << segmento_p_posicao_009_a_013(sequencial) # num. sequencial do registro no lote   5
 						segmento_p << segmento_p_posicao_014_a_014             # cod. segmento                         1
 						segmento_p << segmento_p_posicao_015_a_015             # uso exclusivo                         1
-						segmento_p << segmento_p_posicao_016_a_017             # cod. movimento remessa                2
+						segmento_p << segmento_p_posicao_016_a_017(pagamento)  # cod. movimento remessa                2
 						segmento_p << segmento_p_posicao_018_a_022             # agencia                               5
 						segmento_p << segmento_p_posicao_023_a_023             # dv agencia                            1
 						segmento_p << segmento_p_posicao_024_a_057(pagamento)  # informacoes da conta                  34
@@ -109,8 +109,9 @@ module BrBoleto
 					# cod. movimento remessa -> Padrão 01 = Entrada de Titulos
 					# 2 posições
 					#
-					def segmento_p_posicao_016_a_017
-						'01'
+					def segmento_p_posicao_016_a_017(pagamento)
+						code = "#{pagamento.identificacao_ocorrencia}".rjust(2, '0')
+						"#{conta.get_codigo_movimento_remessa(code, 240)}".adjust_size_to(2, '0')
 					end
 
 					# Agência Mantenedora da Conta 

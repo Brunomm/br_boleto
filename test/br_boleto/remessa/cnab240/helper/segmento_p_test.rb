@@ -7,7 +7,7 @@ module Helper
 			subject.stubs(:segmento_p_posicao_009_a_013).with(2).returns(" 009_a_013")
 			subject.stubs(:segmento_p_posicao_014_a_014).returns(" 014_a_014")
 			subject.stubs(:segmento_p_posicao_015_a_015).returns(" 015_a_015")
-			subject.stubs(:segmento_p_posicao_016_a_017).returns(" 016_a_017")
+			subject.stubs(:segmento_p_posicao_016_a_017).with(pagamento).returns(" 016_a_017")
 			subject.stubs(:segmento_p_posicao_018_a_022).returns(" 018_a_022")
 			subject.stubs(:segmento_p_posicao_023_a_023).returns(" 023_a_023")
 			subject.stubs(:segmento_p_posicao_024_a_057).with(pagamento).returns(" 024_a_057")
@@ -103,8 +103,9 @@ module Helper
 		# 2 posições
 		# Por padrão é o valor '01'
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_016_a_017
-			subject.segmento_p_posicao_016_a_017.must_equal '01'
+		def test_SegmentoPTest_metodo_segmento_p_posicao_016_a_017#(pagamento)
+			pagamento.expects(:identificacao_ocorrencia).returns('01')
+			subject.segmento_p_posicao_016_a_017(pagamento).must_equal '01'
 		end
 
 		# Agência Mantenedora da Conta 

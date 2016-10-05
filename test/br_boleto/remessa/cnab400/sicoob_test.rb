@@ -110,7 +110,7 @@ describe BrBoleto::Remessa::Cnab400::Sicoob do
 			result[19..21].must_equal '756' # Número Banco: "756"
 			result[22..25].must_equal "4587" # Prefixo da Cooperativa: vide e-mail enviado com os dados do processo de homologação
 			result[  26  ].must_equal "4" # Dígito Verificador do Prefixo: vide e-mail enviado com os dados do processo de homologação
-			result[27..28].must_equal "12" # Espécie do Título
+			result[27..28].must_equal "02" # Espécie do Título
 			result[  29  ].must_equal "1" # "Aceite do Título:  "0" = Sem aceite "1" = Com aceite"
 			result[30..35].must_equal '150917' # Data de Emissão do Título: formato ddmmaa
 			result[36..37].must_equal '00' # Primeira instrução codificada:
