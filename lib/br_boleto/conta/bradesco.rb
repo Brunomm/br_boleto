@@ -90,6 +90,35 @@ module BrBoleto
 				cobranca_interna[carteira.to_s]
 			end
 
+			# Espécie do Título
+			def equivalent_especie_titulo_400
+				super.merge(
+					#  Padrão    Código para  
+					{# da GEM     o Banco
+						'07'    =>   '10' , # Letra de Câmbio
+						'17'    =>   '05' , # Recibo
+						'19'    =>   '11' , # Nota de Débito
+						'32'    =>   '30' , # Boleto de Proposta
+					})
+			end
+
+			# Códigos de Movimento Remessa / Identificacao Ocorrência específicos do Banco
+			def equivalent_codigo_movimento_remessa_400
+				super.merge(
+					#  Padrão    Código para  
+					{# da GEM     o Banco
+						'10'   =>   '18' , # Sustar protesto e baixar Título
+						'11'   =>   '19' , # Sustar protesto e manter em carteira
+						'31'   =>   '22' , # Transferência Cessão Crédito
+						'33'   =>   '68' , # Acerto nos dados do rateio de Crédito
+						'43'   =>   '23' , # Transferência entre Carteiras
+						'45'   =>   '45' , # Pedido de Negativação
+						'46'   =>   '46' , # Excluir Negativação com baixa
+						'47'   =>   '47' , # Excluir negativação e manter pendente
+						'34'   =>   '69' , # Cancelamento do rateio de crédito.
+					})
+			end
+
 		end
 	end
 end

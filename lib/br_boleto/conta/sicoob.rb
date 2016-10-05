@@ -61,6 +61,17 @@ module BrBoleto
 				# para calcular o digito
 				@conta_corrente_dv ||= BrBoleto::Calculos::Modulo11FatorDe2a9RestoZero.new(conta_corrente).to_s
 			end
+
+			# Códigos de Movimento Remessa / Identificacao Ocorrência específicos do Banco
+			def equivalent_codigo_movimento_remessa_400
+				super.merge(
+					{
+						'23' => '12',  # Alteração de Pagador
+						'46' => '34',  # Baixa - Pagamento Direto ao Beneficiário
+					})
+			end
+
+
 		end
 	end
 end
