@@ -117,6 +117,7 @@ module BrBoleto
 					info << ''.adjust_size_to(2)
 					info
 				end
+			
 				
 				# Informações referente ao pagamento
 				# Posição 121 até 160
@@ -137,18 +138,7 @@ module BrBoleto
 					dados << pagamento.valor_documento_formatado(13)
 					dados << ''.adjust_size_to(3,'0', :right)
 					dados << ''.adjust_size_to(5,'0', :right)
-					# Espécie do Título :
-					#   01-Duplicata
-					#   02-Nota Promissória
-					#   03-Nota de Seguro
-					#   04-Cobrança Seriada
-					#   05-Recibo
-					#   10-Letras de Câmbio
-					#   11-Nota de Débito
-					#   12-Duplicata de Serv.
-					#   30-Boleto de Proposta
-					#   99-Outros
-					dados << "#{pagamento.especie_titulo}".adjust_size_to(2, '0', :right)
+					dados << "#{conta.get_especie_titulo(pagamento.especie_titulo, 400)}".adjust_size_to(2, '0', :right)
 					dados << 'N'
 					dados << pagamento.data_emissao_formatado('%d%m%y')
 					# 1a / 2a Instrução:

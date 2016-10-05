@@ -88,7 +88,7 @@ describe BrBoleto::Remessa::Cnab400::Bradesco do
 			conta.agencia_dv = 45 # Vai retornar apenas o 4
 			pagamento.data_vencimento = Date.parse('05/08/2029')
 			pagamento.valor_documento = 47.56
-			pagamento.especie_titulo  = 12
+			pagamento.especie_titulo  = "12"
 			pagamento.aceite = true
 			pagamento.data_emissao = Date.parse('15/09/2017')
 			result = subject.informacoes_do_pagamento(pagamento, 4)
@@ -98,7 +98,7 @@ describe BrBoleto::Remessa::Cnab400::Bradesco do
 			result[06..18].must_equal '0000000004756' # Valor do Titulo 
 			result[19..21].must_equal '000'           # 000 ou Número Banco
 			result[22..26].must_equal "00000"         # 000000 ou Agencia
-			result[27..28].must_equal "12"            # Espécie do Título
+			result[27..28].must_equal "02"            # Espécie do Título
 			result[  29  ].must_equal "N"             # dentificação (Sempre 'N')
 			result[30..35].must_equal '150917'        # Data de Emissão do Título: formato ddmmaa
 			result[36..37].must_equal '00'            # Primeira instrução codificada

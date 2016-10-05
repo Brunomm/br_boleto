@@ -92,7 +92,8 @@ module BrBoleto
 					# Padrão: '01' = Registro de títulos
 					# Tamanho: 2
 					def detalhe_posicao_109_110(pagamento, sequencial)
-						"#{pagamento.identificacao_ocorrencia}".adjust_size_to(2, '0', :right)
+						code = "#{pagamento.identificacao_ocorrencia}".rjust(2, '0')
+						"#{conta.get_codigo_movimento_remessa(code, 400)}".adjust_size_to(2, '0')
 					end
 
 					# Seu número

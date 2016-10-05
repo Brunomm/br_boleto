@@ -37,19 +37,6 @@ describe BrBoleto::Conta::Bradesco do
 			subject.agencia_dv = 21
 			must_be_message_error(:agencia_dv, :custom_length_is, {count: 1})
 		end
-		
-		# context 'Validações padrões da modalidade' do
-		# 	subject { BrBoleto::Conta::Bradesco.new }
-		# 	it { must validate_presence_of(:modalidade) }
-		# 	it 'Tamanho deve ser de 2' do
-		# 		subject.modalidade = '1'
-		# 		must_be_message_error(:modalidade, :custom_length_is, {count: 2})
-		# 	end
-		# 	it "valores aceitos" do
-		# 		subject.modalidade = '04'
-		# 		must_be_message_error(:modalidade, :custom_inclusion, {list: '01, 02, 03'})
-		# 	end
-		# end
 		context 'Validações padrões da carteira' do
 			subject { BrBoleto::Conta::Bradesco.new }
 			it { must validate_presence_of(:carteira) }
@@ -116,7 +103,6 @@ describe BrBoleto::Conta::Bradesco do
 		end
 	end
 
-
 	describe '#conta_corrente_dv' do
 		it "deve ser personalizavel pelo usuario" do
 			subject.conta_corrente_dv = 88
@@ -131,5 +117,26 @@ describe BrBoleto::Conta::Bradesco do
 		end
 	end
 
-	
+	describe "#get_especie_titulo" do
+		context "CÓDIGOS para o cnab 400 do Bradesco" do
+			it { subject.get_especie_titulo('07', 400).must_equal '10' } # Letra de Câmbio
+			it { subject.get_especie_titulo('17', 400).must_equal '05' } # Recibo
+			it { subject.get_especie_titulo('19', 400).must_equal '11' } # Nota de Débito
+			it { subject.get_especie_titulo('32', 400).must_equal '30' } # Boleto de Proposta
+		end
+	end
+
+	describe "#get_codigo_movimento_remessa" do
+		context "CÓDIGOS para o cnab 400 do Bradesco" do
+			it { subject.get_codigo_movimento_remessa('10', 400).must_equal '18' } # Sustar protesto e baixar Título
+			it { subject.get_codigo_movimento_remessa('11', 400).must_equal '19' } # Sustar protesto e manter em carteira
+			it { subject.get_codigo_movimento_remessa('31', 400).must_equal '22' } # Transferência Cessão Crédito
+			it { subject.get_codigo_movimento_remessa('33', 400).must_equal '68' } # Acerto nos dados do rateio de Crédito
+			it { subject.get_codigo_movimento_remessa('43', 400).must_equal '23' } # Transferência entre Carteiras
+			it { subject.get_codigo_movimento_remessa('45', 400).must_equal '45' } # Pedido de Negativação
+			it { subject.get_codigo_movimento_remessa('46', 400).must_equal '46' } # Excluir Negativação com baixa
+			it { subject.get_codigo_movimento_remessa('47', 400).must_equal '47' } # Excluir negativação e manter pendente
+			it { subject.get_codigo_movimento_remessa('34', 400).must_equal '69' } # Cancelamento do rateio de crédito.
+		end
+	end
 end
