@@ -64,12 +64,12 @@ module BrBoleto
 						info << '0'
 						info << "#{conta.carteira}".adjust_size_to(3, '0', :right)
 						info << "#{conta.agencia}".adjust_size_to(5, '0', :right)
-						info << "#{conta.codigo_cedente}".adjust_size_to(7, '0', :right)
-						info << "#{conta.codigo_cedente_dv}".adjust_size_to(1, '0', :right)
+						info << "#{conta.conta_corrente}".adjust_size_to(7, '0', :right)
+						info << "#{conta.conta_corrente_dv}".adjust_size_to(1, '0', :right)
 						info
 
 					# POSIÇÂO    TAM.  Descrição
-					# 018 a 037  020   Codigo da Empresa
+					# 027 a 046  020   Codigo da Empresa
 					elsif local == :header
 						info =  "#{conta.codigo_empresa}".adjust_size_to(20, '0', :right) # Será informado pelo Bradesco, quando do cadastramento da Conta beneficiário na sua Agência.
 					end
@@ -101,15 +101,15 @@ module BrBoleto
 					info = ''.adjust_size_to(3, '0')
 					if (pagamento.codigo_multa == 1 or pagamento.codigo_multa == 2)
 						info << '2'
-						info << (pagamento.percentual_multa_formatado(2)).adjust_size_to(4, '0')                # tem multa: preencher com percentual da multa com 2 decimais
+						info << (pagamento.percentual_multa_formatado(2)).adjust_size_to(4, '0')       # tem multa: preencher com percentual da multa com 2 decimais
 					else
 						info << '0'
-						info << ''.adjust_size_to(4, '0', :right) 																		 # sem multa: preencher com zeros.
+						info << ''.adjust_size_to(4, '0', :right) 						                   # sem multa: preencher com zeros.
 					end
 					info << "#{pagamento.numero_documento}".adjust_size_to(11, '0', :right)
 					info << "#{pagamento.nosso_numero}".split('').last
-					info << "#{pagamento.valor_desconto_formatado}".adjust_size_to(10,'0', :right)                     # Valor do desconto bonif./dia
-					info << '2'                                                                       # '2' : o Cliente emitiu o Boleto e o Banco somente processa o registro
+					info << "#{pagamento.valor_desconto_formatado}".adjust_size_to(10,'0', :right)    # Valor do desconto bonif./dia
+					info << "#{conta.get_identificacao_emissao(pagamento.tipo_emissao)}".adjust_size_to(1, '2') # '2' : o Cliente emitiu o Boleto e o Banco somente processa o registro
 					info << ' '                                                                       # Espaço em branco ou 'N' caso o boleto possui Condições de Registro para Débito Automático
 					info << ''.adjust_size_to(10)
 					info << ' '                                                                       # Somente deverá ser preenchido com a Letra “R”, se a Empresa contratou o serviço de rateio de crédito, caso não, informar Branco
@@ -209,10 +209,15 @@ module BrBoleto
 					info << "#{pagamento.pagador.tipo_cpf_cnpj}".adjust_size_to(2, '0', :right)
 					info << "#{pagamento.pagador.cpf_cnpj}".adjust_size_to(14, '0', :right)
 					info << "#{pagamento.pagador.nome}".adjust_size_to(40)
-					info << "#{pagamento.pagador.endereco}".adjust_size_to(40)
-					info << ''.adjust_size_to(12)                                       # 1a Mensagem
-					info << "#{pagamento.pagador.cep}".adjust_size_to(8, '0', :right)   # CEP + Sufixo do CEP
-					info << "#{pagamento.pagador.nome_avalista}".adjust_size_to(60)     # Sacador/Avalista ou 2a Mensagem
+
+					info << "#{pagamento.pagador.endereco}".adjust_size_to(18)           # Endereço Completo
+					info << "#{pagamento.pagador.bairro}".adjust_size_to(10)             # Endereço Completo
+					info << "#{pagamento.pagador.cidade}".adjust_size_to(10)             # Endereço Completo
+					info << "#{pagamento.pagador.uf}".adjust_size_to(2)                  # Endereço Completo
+					info << ''.adjust_size_to(12)                                        # 1a Mensagem
+					info << "#{pagamento.pagador.cep}".adjust_size_to(8, '0', :right)    # CEP + Sufixo do CEP
+					info << "#{pagamento.pagador.documento_avalista}".adjust_size_to(14) # Sacador/Avalista (CPF/CNPJ)
+					info << "#{pagamento.pagador.nome_avalista}".adjust_size_to(46)      # Sacador/Avalista (Nome)
 					info                                                
 				end
 ################################################################################################

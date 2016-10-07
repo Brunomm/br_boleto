@@ -23,7 +23,7 @@ module BrBoleto
 						detalhe << detalhe_posicao_002_003                        # Tipo de inscrição do beneficiario
 						detalhe << detalhe_posicao_004_017                        # CNPJ do beneficiario
 						detalhe << detalhe_posicao_018_037                        # Informações da conta
-						detalhe << detalhe_posicao_038_062                        # Numero de controle do participante
+						detalhe << detalhe_posicao_038_062(pagamento)             # Numero de controle do participante
 						detalhe << detalhe_posicao_063_076(pagamento, sequencial) # Nosso número com DV
 						detalhe << detalhe_posicao_077_108(pagamento, sequencial) # Diferente para cada banco
 						detalhe << detalhe_posicao_109_110(pagamento, sequencial) # Comando/Movimento
@@ -70,7 +70,7 @@ module BrBoleto
 					# Padrão: " " Brancos
 					# Tipo: String
 					# Tamanho: 25
-					def detalhe_posicao_038_062 
+					def detalhe_posicao_038_062(pagamento)
 						''.adjust_size_to(25)
 					end
 
