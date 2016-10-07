@@ -1,12 +1,12 @@
 require 'test_helper'
 
-describe BrBoleto::Remessa::Cnab240::Bradesco do
-	subject { FactoryGirl.build(:remessa_cnab240_bradesco, lotes: lote) }
+describe BrBoleto::Remessa::Cnab240::Unicred do
+	subject { FactoryGirl.build(:remessa_cnab240_unicred, lotes: lote) }
 	let(:pagamento) { FactoryGirl.build(:remessa_pagamento, valor_documento: 879.66) } 
 	let(:lote) { FactoryGirl.build(:remessa_lote, pagamentos: pagamento) } 
 
-	it "deve herdar da class Base" do
-		subject.class.superclass.must_equal BrBoleto::Remessa::Cnab240::Base
+	it "deve herdar da class Bradesco" do
+		subject.class.superclass.must_equal BrBoleto::Remessa::Cnab240::Bradesco
 	end
 
 	context "validations" do
@@ -50,7 +50,7 @@ describe BrBoleto::Remessa::Cnab240::Bradesco do
 			private
 
 			def conta_must_be_msg_error(attr_validation, msg_key, options_msg={})
-				must_be_message_error(:base, "#{BrBoleto::Conta::Bradesco.human_attribute_name(attr_validation)} #{get_message(msg_key, options_msg)}")
+				must_be_message_error(:base, "#{BrBoleto::Conta::Unicred.human_attribute_name(attr_validation)} #{get_message(msg_key, options_msg)}")
 			end
 		end
 	end
@@ -138,30 +138,25 @@ describe BrBoleto::Remessa::Cnab240::Bradesco do
 			subject.complemento_p(pagamento)[13..13].must_equal ' '			
 		end
 
-		it "4 - Quarta parte = carteira com 3 posicoes ajustados com zeros a esquerda" do
-			subject.conta.conta_corrente_dv = '21'
-			subject.complemento_p(pagamento)[14..16].must_equal '021'
-		end			
-
-		it "5 - Quinta parte = Exclusivo Banco com 5 posicoes preenchidas com zeros" do
-			subject.complemento_p(pagamento)[17..21].must_equal '00000'
-		end	
-
-		it "6 - Sexta parte = Numero documento com 11 posicoes" do
+		it "4 - Quarta parte = Numero documento com 11 posicoes" do
 			pagamento.numero_documento = '89378'
-			subject.complemento_p(pagamento)[22..32].must_equal '00000089378'		
+			subject.complemento_p(pagamento)[14..24].must_equal '00000089378'		
 
 			pagamento.numero_documento = '12345678901'
-			subject.complemento_p(pagamento)[22..32].must_equal '12345678901'
+			subject.complemento_p(pagamento)[14..24].must_equal '12345678901'
 		end
 
-		it "7 - Setima parte = numero_documento DV com 1 posicao - Deve ser o ultimo digito do nosso numero" do
+		it "5 - Quinta parte = numero_documento DV com 1 posicao - Deve ser o ultimo digito do nosso numero" do
 			pagamento.nosso_numero = '99/99999999999-9'
-			subject.complemento_p(pagamento)[33..33].must_equal '9'			
+			subject.complemento_p(pagamento)[25..25].must_equal '9'			
 
 			pagamento.nosso_numero = '99/99999999999-0'
-			subject.complemento_p(pagamento)[33..33].must_equal '0'
+			subject.complemento_p(pagamento)[25..25].must_equal '0'
 		end
+
+		it "6 - Sexta parte = Exclusivo Banco com 8 posicoes preenchidas com zeros" do
+			subject.complemento_p(pagamento)[26..33].must_equal ' ' * 8
+		end	
 
 	end
 

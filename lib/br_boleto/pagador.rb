@@ -15,6 +15,9 @@ module BrBoleto
 		###################### CUSTOM VALIDATIONS #################
 		attr_accessor :valid_endereco_required
 		validates :endereco, :bairro, :cep, :cidade, :uf, presence: true, if: :valid_endereco_required
+
+		attr_accessor :valid_avalista_required
+		validates :nome_avalista, :documento_avalista, presence: true, if: :valid_avalista_required
 		###########################################################
 
 		validates :nome, :cpf_cnpj, presence: true

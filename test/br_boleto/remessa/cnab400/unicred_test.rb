@@ -1,17 +1,17 @@
 require 'test_helper'
 
-describe BrBoleto::Remessa::Cnab400::Bradesco do
-	subject { FactoryGirl.build(:remessa_cnab400_bradesco, pagamentos: pagamento, conta: conta) }
+describe BrBoleto::Remessa::Cnab400::Unicred do
+	subject { FactoryGirl.build(:remessa_cnab400_unicred, pagamentos: pagamento, conta: conta) }
 	let(:pagamento) { FactoryGirl.build(:remessa_pagamento, pagador: pagador) } 
-	let(:conta)     { FactoryGirl.build(:conta_bradesco) } 
+	let(:conta)     { FactoryGirl.build(:conta_unicred) } 
 	let(:pagador)   { FactoryGirl.build(:pagador) } 
 	
-	it "deve ter a class para a conta do bradesco" do
-		BrBoleto::Remessa::Cnab400::Bradesco.new.conta_class.must_equal BrBoleto::Conta::Bradesco
+	it "deve ter a class para a conta do unicred" do
+		BrBoleto::Remessa::Cnab400::Unicred.new.conta_class.must_equal BrBoleto::Conta::Unicred
 	end
 
-	it "deve herdar de Cnab400::Base" do
-		subject.class.superclass.must_equal BrBoleto::Remessa::Cnab400::Base
+	it "deve herdar de Cnab400::Bradesco" do
+		subject.class.superclass.must_equal BrBoleto::Remessa::Cnab400::Bradesco
 	end
 
 	describe '#informacoes_da_conta' do
@@ -57,6 +57,19 @@ describe BrBoleto::Remessa::Cnab400::Bradesco do
 		end
 	end
 
+	describe '#detalhe_posicao_038_062' do
+		it "deve ter o tamanho de 25 digitos" do
+			subject.detalhe_posicao_038_062(pagamento).size.must_equal 25
+		end
+		it "deve conter numero de controle do participante nas posições corretas" do
+			pagamento.expects(:numero_documento).returns('534423')
+			result = subject.detalhe_posicao_038_062(pagamento)
+
+			result[00..13].must_equal ''.rjust(14)              # Preencher com Branco
+			result[14..24].must_equal   '534423'.rjust(11, '0') # Numero documento         
+			result.size.must_equal 25
+		end
+	end
 
 	describe '#detalhe_posicao_063_108' do
 		it "deve ter o tamanho de 46 digitos" do
@@ -137,9 +150,6 @@ describe BrBoleto::Remessa::Cnab400::Bradesco do
 			pagador.cpf_cnpj           =  '12345678901'
 			pagador.nome               =  'nome pagador'
 			pagador.endereco           =  'rua do pagador'
-			pagador.bairro             =  'bairro do pagador'
-			pagador.cidade             =  'Chapecó'
-			pagador.uf                 =  'SC'
 			pagador.cep                =  '89885-001'
 			pagador.nome_avalista      =  'Avalista'
 			pagador.documento_avalista =  '840.106.990-43'
@@ -150,15 +160,10 @@ describe BrBoleto::Remessa::Cnab400::Bradesco do
 			result[00..01].must_equal "01"                                    # Tipo de Inscrição do Pagador: "01" = CPF / "02" = CNPJ
 			result[02..15].must_equal '00012345678901'                        # Número do CNPJ ou CPF do Pagador
 			result[16..55].must_equal 'nome pagador'.adjust_size_to(40)       # Nome do Pagador
-			
-			result[56..73].must_equal 'rua do pagador'.adjust_size_to(18)     # Endereço do Pagador
-			result[74..83].must_equal 'bairro do pagador'.adjust_size_to(10)  # Endereço do Pagador
-			result[84..93].must_equal 'Chapecó'.adjust_size_to(10)            # Endereço do Pagador
-			result[94..95].must_equal 'SC'.adjust_size_to(2)                  # Endereço do Pagador
+			result[56..95].must_equal 'rua do pagador'.adjust_size_to(40)     # Endereço do Pagador
 			result[108..115].must_equal '89885001'                            # CEP do Pagador
-
-			result[116..129].must_equal '84010699043'.adjust_size_to(14)      # Observações/Mensagem ou Sacador/Avalista
-			result[130..175].must_equal 'Avalista'.adjust_size_to(46)         # Observações/Mensagem ou Sacador/Avalista
+			result[116..130].must_equal '84010699043'.rjust(15)               # Observações/Mensagem ou Sacador/Avalista
+			result[133..175].must_equal 'Avalista'.adjust_size_to(43)         # Observações/Mensagem ou Sacador/Avalista
 		end
 	end
 end

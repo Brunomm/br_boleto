@@ -67,6 +67,8 @@ module BrBoleto
 			# Por isso foi criado um alias para que cada um utilize a nomenclatura que preferir.
 			attr_accessor :convenio
 			attr_accessor :convenio_dv
+
+			alias_attribute :codigo_empresa,         :convenio
 			alias_attribute :codigo_cedente,         :convenio
 			alias_attribute :codigo_cedente_dv,      :convenio_dv
 			alias_attribute :codigo_beneficiario,    :convenio

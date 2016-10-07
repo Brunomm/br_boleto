@@ -3,5 +3,6 @@ coverage/
 **/*.subl*
 **/*.~lock.*
 dev_load_data.rb
+dev_load_data2.rb
 saida.rem
 br_boleto*.gem

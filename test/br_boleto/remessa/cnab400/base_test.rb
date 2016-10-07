@@ -171,7 +171,7 @@ describe BrBoleto::Remessa::Cnab400::Base do
 		end
 
 		it '#detalhe_posicao_038_062 - deve retornar 25 caracteres vazios' do
-			subject.detalhe_posicao_038_062.must_equal ''.rjust(25, ' ')
+			subject.detalhe_posicao_038_062(pagamento).must_equal ''.rjust(25, ' ')
 
 		end
 

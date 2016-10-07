@@ -22,8 +22,19 @@ describe BrBoleto::Pagador do
 				it { must validate_presence_of(:cidade) } 
 				it { must validate_presence_of(:uf) }
 			end
-			
 		end
+		context "validação de presença do avalsita" do
+			context "por padrão não deve ser obrigatorio" do
+				it { wont validate_presence_of(:nome_avalista) } 
+				it { wont validate_presence_of(:documento_avalista) }
+			end
+			context "se setar o valid_avalista_required então valida a presença do avalista" do
+				before { subject.valid_avalista_required = true }
+				it { must validate_presence_of(:nome_avalista) } 
+				it { must validate_presence_of(:documento_avalista) }
+			end
+		end
+
 	end
 
 	it "cep deve retornar apenas numeros" do
