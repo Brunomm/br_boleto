@@ -45,6 +45,8 @@ module BrBoleto
 					valid_conta_corrente_maximum:  5,       # <- Validação que a conta_corrente deve ter no máximo 5 digitos
 					valid_convenio_required:       true,    # <- Validação que a convenio deve ter obrigatório
 					valid_convenio_maximum:        5,       # <- Validação que a convenio deve ter no máximo 5 digitos
+					codigo_carteira:               '1',     # Cobrança Simples
+					valid_codigo_carteira_length:   1,      # <- Validação dinâmica que a modalidade deve ter 1 digito
 					posto:                         '0',     
 					valid_posto_maximum:           2,       # <- Validação que a posto deve ter no máximo 2 digitos
 					valid_posto_required:          true,    # <- Validação que a posto deve ter obrigatório
