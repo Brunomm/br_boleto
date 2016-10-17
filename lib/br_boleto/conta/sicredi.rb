@@ -14,15 +14,25 @@ module BrBoleto
      		attr_accessor :posto
 
 			# Byte de identificação do cedente do bloqueto utilizado para compor o nosso número.
-			attr_accessor :byte_idt
+			# Valores aceitos de 2 a 9, somente será "1" se forem boletos pré-impressos.
+			attr_accessor :byte_id
 
 			###############################  VALIDAÇÕES DINÂMICAS ###############################
+				attr_accessor :valid_byte_id_length
+				attr_accessor :valid_byte_id_required
+				attr_accessor :valid_byte_id_inclusion
+				attr_accessor :valid_posto_maximum
 				attr_accessor :valid_posto_required
 			#####################################################################################
 
-			validates_length_of :posto, maximum: 2, message: 'deve ser menor ou igual a 2 dígitos.'
-			validates_length_of :byte_idt, is: 1,   message: 'deve ser 1 se o numero foi gerado pela agencia ou 2-9 se foi gerado pelo beneficiário'
-			validates :posto,    presence: true, if: :valid_posto_required
+			# Byte de identificação
+			validates :byte_id, custom_length:    {is: :valid_byte_id_length},     if: :valid_byte_id_length
+			validates :byte_id, custom_inclusion: {in: :valid_byte_id_inclusion},  if: :valid_byte_id_inclusion
+			validates :byte_id, presence: true,   if:  :valid_byte_id_required
+
+			# Posto
+			validates :posto,    custom_length:    {maximum: :valid_posto_maximum},    if: :valid_posto_maximum
+			validates :posto,    presence: true,   if: :valid_posto_required
 
 
 			def default_values
@@ -35,6 +45,13 @@ module BrBoleto
 					valid_conta_corrente_maximum:  5,       # <- Validação que a conta_corrente deve ter no máximo 5 digitos
 					valid_convenio_required:       true,    # <- Validação que a convenio deve ter obrigatório
 					valid_convenio_maximum:        5,       # <- Validação que a convenio deve ter no máximo 5 digitos
+					posto:                         '0',     
+					valid_posto_maximum:           2,       # <- Validação que a posto deve ter no máximo 2 digitos
+					valid_posto_required:          true,    # <- Validação que a posto deve ter obrigatório
+					byte_id:                      '2',
+					valid_byte_id_length:         1,        # <- Validação dinâmica que o byte identificador deve ter 1 digito
+					valid_byte_id_required:       true,     # <- Validação que a byte_id deve ter obrigatório
+					valid_byte_id_inclusion:      %w[2 3 4 5 6 7 8 9], # <- Validação dinâmica de valores aceitos para o byte identificador
 				})
 			end
 
@@ -63,13 +80,16 @@ module BrBoleto
 				"#{@posto}".rjust(2, '0') if @posto.present?
 			end
 
+			def byte_id
+				"#{@byte_id}".rjust(1, '2') if @byte_id.present?
+			end
+
 			# Campo Agência / Código do Cedente
 			# @return [String] Agência com 4 caracteres . Posto do beneficiário com 2 caracteres . Código do beneficiário com 5 caracteres 
 			# Exemplo: AAAA.PP.CCCCC
 			def agencia_codigo_cedente
 				"#{agencia}.#{posto}.#{codigo_cedente}"
 			end
-
 
 			# Espécie do Título
 			def equivalent_especie_titulo_240
@@ -88,8 +108,6 @@ module BrBoleto
 						'99'    =>   'K',  # Outros (OS)
 					})
 			end
-
-
 		end
 	end
 end

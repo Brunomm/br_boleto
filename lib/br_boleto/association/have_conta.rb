@@ -59,7 +59,6 @@ module BrBoleto
 		def valid_carteira_inclusion;         end
 		def valid_convenio_inclusion;         end
 		def valid_versao_aplicativo_required; end # Banco da Caixa
-		def valid_posto_required;             end # Banco Sicredi
 
 
 		def set_regras_tamanho_e_validations!
@@ -97,8 +96,6 @@ module BrBoleto
 			@conta.valid_convenio_inclusion      = valid_convenio_inclusion      if "#{valid_convenio_inclusion}".present?
 			
 			@conta.valid_versao_aplicativo_required = valid_versao_aplicativo_required if "#{valid_versao_aplicativo_required}".present?
-
-			@conta.valid_posto_required = valid_posto_required if "#{valid_posto_required}".present?
 
 		end
 
