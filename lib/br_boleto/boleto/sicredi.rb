@@ -10,7 +10,7 @@ module BrBoleto
 
 				#################  VALIDAÇÕES DINÂMICAS  #################
 				def valid_numero_documento_maximum
-					5 # VERIFICAR ALGUNS LUGARES DA DOCUMENTAÇÃO ESTA 4 OU 6
+					5
 				end
 
 				def valid_carteira_inclusion
