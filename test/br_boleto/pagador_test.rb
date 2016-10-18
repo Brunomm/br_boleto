@@ -27,6 +27,7 @@ describe BrBoleto::Pagador do
 			context "por padrão não deve ser obrigatorio" do
 				it { wont validate_presence_of(:nome_avalista) } 
 				it { wont validate_presence_of(:documento_avalista) }
+				it { wont validate_presence_of(:endereco_avalista) }
 			end
 			context "se setar o valid_avalista_required então valida a presença do avalista" do
 				before { subject.valid_avalista_required = true }
@@ -107,7 +108,7 @@ describe BrBoleto::Pagador do
 			it "se setar o CPF com a pontuação deve sempre retornar apenas os numeros" do
 				subject.documento_avalista = '725.211.506-22'
 				subject.documento_avalista.must_equal '72521150622'
-			end
+			end		
 		end
 		
 		describe "#tipo_documento_avalista" do
@@ -154,6 +155,14 @@ describe BrBoleto::Pagador do
 				subject.documento_avalista_formatado_com_label.must_equal 'CPF 725.211.506-22'
 			end
 		end
+
+		describe "#endereco_avalista" do
+			it "deve retornar o endereço do avalista" do
+				subject.endereco_avalista = 'RUA - BAIRRO - CEP - CIDADE-UF'
+				subject.endereco_avalista.must_equal 'RUA - BAIRRO - CEP - CIDADE-UF'
+			end
+		end
+
 	end
 
 	describe '#endereco_formatado' do

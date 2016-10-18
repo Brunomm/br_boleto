@@ -7,9 +7,6 @@ module BrBoleto
 					BrBoleto::Conta::Bradesco
 				end
 
-
-
-
 				########################### HEADER ARQUIVO #############################
 					#
 					#  DESCRIÇÃO               TAMANHO      POSIÇÃO
@@ -50,7 +47,6 @@ module BrBoleto
 						informacoes.adjust_size_to(20, '0')
 					end
 
-
 				########################### HEADER LOTE #############################
 					# 
 					#  DESCRIÇÃO               TAMANHO      POSIÇÃO
@@ -60,8 +56,6 @@ module BrBoleto
 					def convenio_lote(lote)
 						codigo_convenio
 					end
-
-				
 
 				######################### SEGMENTO P #############################
 					#
@@ -93,6 +87,16 @@ module BrBoleto
 						complemento.adjust_size_to(34, '0')
 					end
 
+					# segmento_p_posicao_059_a_059
+					# POSIÇÃO      TAMANHO     DESCRIÇÃO
+					# -------------------------------------------------------------------
+					# 59 - 59        01        Forma de Cadastramento do Título no Banco
+					#
+					# TOTAL = 1 posição 
+					def segmento_p_posicao_059_a_059(pagamento)
+						'1' 
+					end
+
 					# segmento_p_posicao_063_a_077
 					# DESCRIÇÃO                      TAMANHO     POSIÇÃO
 					# ---------------------------------------------------------
@@ -104,7 +108,6 @@ module BrBoleto
 						segmento << "#{pagamento.numero_documento}".adjust_size_to(15, '0', :right)
 						segmento
 					end
-
 
 				######################### TRAILER LOTE #############################
 					#
