@@ -11,6 +11,7 @@ module BrBoleto
 
 		attr_accessor :nome_avalista
 		attr_accessor :documento_avalista
+		attr_accessor :endereco_avalista
 
 		###################### CUSTOM VALIDATIONS #################
 		attr_accessor :valid_endereco_required
