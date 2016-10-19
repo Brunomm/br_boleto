@@ -262,9 +262,10 @@ module Helper
 
 		# Código do Juros de Mora 
 		# 1 posição
-		# Por padrão é o valor '0'
+		# Por padrão é o valor '3'
 		#
 		def test_SegmentoPTest_metodo_segmento_p_posicao_118_a_118#(pagamento) 
+			pagamento.expects(:codigo_juros).returns("3")
 			subject.segmento_p_posicao_118_a_118(pagamento).must_equal '3'
 		end
 		def test_SegmentoPTest_metodo_segmento_p_posicao_118_a_118_aceita_apenas_1_2_ou_3_com_padrao_3

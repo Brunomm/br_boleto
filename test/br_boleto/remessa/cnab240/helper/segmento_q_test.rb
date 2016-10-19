@@ -7,7 +7,7 @@ module Helper
 			subject.stubs(:segmento_q_posicao_009_a_013).with(2).returns(        " 009_a_013")
 			subject.stubs(:segmento_q_posicao_014_a_014).returns(                " 014_a_014")
 			subject.stubs(:segmento_q_posicao_015_a_015).returns(                " 015_a_015")
-			subject.stubs(:segmento_q_posicao_016_a_017).returns(                " 016_a_017")
+			subject.stubs(:segmento_q_posicao_016_a_017).with(pagamento).returns(" 016_a_017")
 			subject.stubs(:segmento_q_posicao_018_a_018).with(pagamento).returns(" 018_a_018")
 			subject.stubs(:segmento_q_posicao_019_a_033).with(pagamento).returns(" 019_a_033")
 			subject.stubs(:segmento_q_posicao_034_a_073).with(pagamento).returns(" 034_a_073")
@@ -83,8 +83,9 @@ module Helper
 		# 2 posições
 		# Por padrão é o valor '01'
 		#
-		def test_SegmentoQTest_metodo_segmento_q_posicao_016_a_017
-			subject.segmento_q_posicao_016_a_017.must_equal '01'
+		def test_SegmentoQTest_metodo_segmento_q_posicao_016_a_017#(pagamento)
+			pagamento.expects(:identificacao_ocorrencia).returns('01')
+			subject.segmento_p_posicao_016_a_017(pagamento).must_equal '01'
 		end
 
 		# Tipo de Inscrição (1=CPF 2=CNPJ)

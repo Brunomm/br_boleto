@@ -237,7 +237,7 @@ module BrBoleto
 					# Padrão FEBRABAN = (1 = Valor fixo e 2 = Percentual, 3 = isento)
 					#
 					def segmento_p_posicao_118_a_118(pagamento) 
-						"#{conta.get_codigo_juros_mora(pagamento.codigo_juros)}".adjust_size_to(1, '3')
+						"#{conta.get_codigo_juros(pagamento.codigo_juros)}".adjust_size_to(1, '3')
 					end
 
 					# Data do Juros de Mora 
