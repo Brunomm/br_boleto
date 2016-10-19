@@ -21,7 +21,7 @@ module BrBoleto
 					# TOTAL = 20 posições
 					def informacoes_da_conta
 						informacoes =  "#{conta.agencia}".adjust_size_to(5, '0', :right)
-						informacoes << "#{conta.agencia_dv}"
+						informacoes << ''.adjust_size_to(1)
 						informacoes << "#{conta.conta_corrente}".adjust_size_to(12, '0', :right)
 						informacoes << "#{conta.conta_corrente_dv}".adjust_size_to(1, '0', :right)
 						informacoes << ''.adjust_size_to(1)
