@@ -448,8 +448,9 @@ describe BrBoleto::Remessa::Base do
 	describe "#agencia_codigo_cedente" do
 		it "deve trazer a agencia e o dv separados por /" do
 			subject.expects(:agencia).returns(956781)
-			subject.expects(:codigo_cedente).returns(9)
-			subject.agencia_codigo_cedente.must_equal '956781 / 9'
+			subject.expects(:codigo_cedente).returns(999)
+			subject.expects(:codigo_cedente_dv).returns(7)
+			subject.agencia_codigo_cedente.must_equal '956781 / 999-7'
 		end
 	end
 
@@ -668,11 +669,17 @@ describe BrBoleto::Remessa::Base do
 			it { subject.get_distribuicao_boleto('4').must_equal '4' } # Banco envia SMS
 			it { subject.get_distribuicao_boleto('00').must_equal '00' } 
 		end
-		describe "#get_codigo_juros_mora" do
-			it { subject.get_codigo_juros_mora('1').must_equal '1' } # Valor por Dia
-			it { subject.get_codigo_juros_mora('2').must_equal '2' } # Taxa Mensal
-			it { subject.get_codigo_juros_mora('3').must_equal '3' } # Isento
-			it { subject.get_codigo_juros_mora('00').must_equal '3' } 
+		describe "#get_codigo_juros" do
+			it { subject.get_codigo_juros('1').must_equal '1' } # Valor por Dia
+			it { subject.get_codigo_juros('2').must_equal '2' } # Taxa Mensal
+			it { subject.get_codigo_juros('3').must_equal '3' } # Isento
+			it { subject.get_codigo_juros('00').must_equal '3' } 
+		end
+		describe "#get_codigo_multa" do
+			it { subject.get_codigo_multa('1').must_equal '1' } # Valor fixo
+			it { subject.get_codigo_multa('2').must_equal '2' } # Percentual
+			it { subject.get_codigo_multa('3').must_equal '3' } # Isento
+			it { subject.get_codigo_multa('9').must_equal '3' } 
 		end
 		describe "#get_codigo_desconto" do
 			it { subject.get_codigo_desconto('0').must_equal '0' } # Sem Desconto

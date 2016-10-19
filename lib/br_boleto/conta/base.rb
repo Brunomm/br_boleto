@@ -245,9 +245,9 @@ module BrBoleto
 			# Agência, código do cedente ou nosso número.
 			# <b>Esse campo é específico para cada banco</b>.
 			#
-			# @return [String] - Corresponde aos campos "Agencia / Codigo do Cedente".
+			# @return [String] - Corresponde aos campos "Agencia / Codigo do Cedente-Digito Verificador".
 			def agencia_codigo_cedente
-				"#{agencia} / #{codigo_cedente}"
+				"#{agencia} / #{codigo_cedente}-#{codigo_cedente_dv}"
 			end
 
 			# Código da Carteira ou Tipo de Cobrança
