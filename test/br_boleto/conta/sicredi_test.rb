@@ -140,7 +140,21 @@ describe BrBoleto::Conta::Sicredi do
 			it { subject.get_especie_titulo('19', 240).must_equal 'I' }  # Nota de Débito (ND)
 			it { subject.get_especie_titulo('05', 240).must_equal 'J' }  # Duplicata de Serviço por Indicação (DSI)
 			it { subject.get_especie_titulo('99', 240).must_equal 'K' }  # Outros (OS)
+			it { subject.get_especie_titulo('32', 240).must_equal 'O' }  # Boleto de Proposta (BDP)
 		end
+	end
+
+	describe "#equivalent_tipo_cobranca" do
+		it { subject.get_tipo_cobranca('1').must_equal 'A' }  # Cobrança Simples
+	end
+	
+	describe "#equivalent_tipo_impressao" do
+		it { subject.get_tipo_impressao('1').must_equal 'A' }  # Frente do Bloqueto
+	end	
+
+	describe "#equivalent_identificacao_emissao" do
+		it { subject.get_identificacao_emissao('1').must_equal 'A' }  # Impressão é feita pelo Sicredi
+		it { subject.get_identificacao_emissao('2').must_equal 'B' }  # Impressão é feita pelo Beneficiário
 	end
 
 end

@@ -31,6 +31,7 @@ module BrBoleto
 					info << 'MX'
 					info <<  "#{sequencial_remessa}".adjust_size_to(7, '0', :right)
 					info << ''.adjust_size_to(277)
+					info
 				end
 ###############################################################################################
 

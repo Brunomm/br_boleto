@@ -97,7 +97,7 @@ module BrBoleto
 				"#{agencia}.#{posto}.#{codigo_cedente}"
 			end
 
-			# Espécie do Título
+			# Espécie do Título CNAB 240 e 400
 			def equivalent_especie_titulo_240
 				super.merge(
 					#  Padrão    Código para  
@@ -112,6 +112,27 @@ module BrBoleto
 						'19'    =>   'I',  # Nota de Débito (ND)
 						'05'    =>   'J',  # Duplicata de Serviço por Indicação (DSI)
 						'99'    =>   'K',  # Outros (OS)
+						'32'    =>   'O'   # Boleto de Proposta (BDP)
+					})
+			end
+
+			# Código da Carteira 
+			def equivalent_tipo_cobranca
+				super.merge({ '1' => 'A' }) # Cobrança Simples
+			end	
+
+			# Identificação do Tipo de Impressão : 
+			def equivalent_tipo_impressao
+				super.merge({ '1' => 'A' }) # Frente do Bloqueto
+			end	
+
+			# Identificação da Emissão do Boleto de Pagamento
+			def equivalent_identificacao_emissao
+				super.merge(
+					#  Padrão    Código para  
+					{# da GEM     o Banco
+						'1'    =>   'A',  # Impressão é feita pelo Sicredi
+						'2'    =>   'B',  # Impressão é feita pelo Beneficiário
 					})
 			end
 		end
