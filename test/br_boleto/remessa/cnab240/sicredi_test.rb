@@ -50,6 +50,12 @@ describe BrBoleto::Remessa::Cnab240::Sicredi do
 	end
 
 	context "HEADER ARQUIVO" do
+		describe "#codigo_convenio" do
+			it "deve ter 20 posições" do
+				subject.codigo_convenio.size.must_equal 20
+			end
+			it {subject.codigo_convenio.must_equal ' ' * 20 }
+		end
 		describe "#informacoes_da_conta" do
 			it "deve ter 20 posições" do
 				subject.informacoes_da_conta.size.must_equal 20

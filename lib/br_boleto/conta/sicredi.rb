@@ -86,6 +86,10 @@ module BrBoleto
 				"#{@byte_id}".rjust(1, '2') if @byte_id.present?
 			end
 
+			def agencia_dv
+				@agencia_dv ||= BrBoleto::Calculos::Modulo11FatorDe2a9.new(agencia).to_s
+			end
+
 			# Campo Agência / Código do Cedente
 			# @return [String] Agência com 4 caracteres . Posto do beneficiário com 2 caracteres . Código do beneficiário com 5 caracteres 
 			# Exemplo: AAAA.PP.CCCCC

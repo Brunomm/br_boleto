@@ -8,6 +8,14 @@ module BrBoleto
 				end
 
 				########################### HEADER ARQUIVO #############################
+
+					#  DESCRIÇÃO               TAMANHO      POSIÇÃO
+					# ---------------------------------------------------------
+					# Cód. Cedente (convênio)    20          33-52
+					# TOTAL = 20 posições
+					def codigo_convenio
+						''.adjust_size_to(20)
+					end
 				
 					# Informação da conta
 					# DESCRIÇÃO                    TAMANHO   POSIÇÃO
