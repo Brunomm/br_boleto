@@ -8,7 +8,8 @@ FactoryGirl.define do
 		conta_corrente_dv '7'
 		agencia           '3069'
 		carteira          '1'
-		modalidade        '02'  
+		modalidade        '02'
+		# codigo_carteira   '1'
 		razao_social      'Razao Social emitente'
 		cpf_cnpj          '98137264000196' # Gerado pelo gerador de cnpj
 		endereco          'Rua nome da rua, 9999'

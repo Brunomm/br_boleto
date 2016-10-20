@@ -13,6 +13,7 @@ en:
           other: "must have %{count} digits"
         custom_inclusion: 'must contain one of the following values: %{list}'
         at_least_one: must be at least 1
+        column_is_required: "%{column} can't be blank"
     attributes:
       br_boleto/pagador:
         nome: Name
