@@ -669,6 +669,13 @@ describe BrBoleto::Remessa::Base do
 			it { subject.get_distribuicao_boleto('4').must_equal '4' } # Banco envia SMS
 			it { subject.get_distribuicao_boleto('00').must_equal '00' } 
 		end
+		describe "#get_tipo_impressao" do
+			it { subject.get_tipo_impressao('1').must_equal '1' } # Frente do Bloqueto
+			it { subject.get_tipo_impressao('2').must_equal '2' } # Verso do Bloqueto
+			it { subject.get_tipo_impressao('3').must_equal '3' } # Corpo de Instruções da Ficha de Compensação do Bloqueto
+			it { subject.get_tipo_impressao('7').must_equal '7' } # Outros
+			it { subject.get_tipo_impressao('999').must_equal '999' } # Outros
+		end
 		describe "#get_codigo_juros" do
 			it { subject.get_codigo_juros('1').must_equal '1' } # Valor por Dia
 			it { subject.get_codigo_juros('2').must_equal '2' } # Taxa Mensal

@@ -242,6 +242,29 @@ module BrBoleto
 				end	
 
 			#######################################################################################
+			#####################  CÓDIGO DO TIPO DE IMPRESSÃO DO BLOQUETO  ######################
+				# Identificação do Tipo de Impressão :
+				# Default: 2
+				# Códigos padrões da GEM
+					# 1 = Frente do Bloqueto
+					# 2 = Verso do Bloqueto
+					# 3 = Corpo de Instruções da Ficha de Compensação do Bloqueto
+					#
+				def get_tipo_impressao(code)
+					"#{code}".adjust_size_to(1, '0', :right)
+					equivalent_tipo_impressao[code] || code
+				end
+				# Código adotado pela FEBRABAN para identificar o responsável e a forma de emissão do  Boleto de Pagamento.
+				# Os códigos '4' e '5' só serão aceitos para código de movimento para remessa '31'
+				def equivalent_tipo_impressao
+					{
+						'1' => '1', # Frente do Bloqueto
+						'2' => '2', # Verso do Bloqueto
+						'3' => '3', # Corpo de Instruções da Ficha de Compensação do Bloqueto
+					}
+				end
+
+			#######################################################################################
 			#####################  CÓDIGO DA IDENTIFICAÇÃO EMISSÃO DO BOLETO  #####################
 				# Identificação da Emissão do Boleto de Pagamento :
 				# Default: 2
