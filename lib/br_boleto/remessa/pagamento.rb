@@ -7,6 +7,8 @@ module BrBoleto
 			# CNAB: 240 e 400
 			include BrBoleto::HavePagador
 
+			include BrBoleto::Helper::DefaultCodes
+			
 			# <b>REQUERIDO</b>: nosso numero
 			# CNAB: 240 e 400
 			attr_accessor :nosso_numero
@@ -111,30 +113,46 @@ module BrBoleto
 			# Comando/Identificação da cobrança/Movimento
 			# Default: '01'
 			# Exemplos de valores
-			# 01 - Registro de títulos
-			# 02 - Solicitação de baixa
-			# 03 - Pedido de débito em conta
-			# 04 - Concessão de abatimento
-			# 05 - Cancelamento de abatimento
-			# 06 - Alteração de vencimento de título
-			# 07 - Alteração do número de controle do participante
-			# 08 - Alteração do número do titulo dado pelo cedente
-			# 09 - Instrução para protestar (Nota 09)
-			# 10 - Instrução para sustar protesto
-			# 11 - Instrução para dispensar juros
-			# 12 - Alteração de nome e endereço do Sacado
-			# 16 – Alterar Juros de Mora (Vide Observações)
-			# 31 - Conceder desconto
-			# 32 - Não conceder desconto
-			# 33 - Retificar dados da concessão de desconto
-			# 34 - Alterar data para concessão de desconto
-			# 35 - Cobrar multa (Nota 11)
-			# 36 - Dispensar multa (Nota 11)
-			# 37 - Dispensar indexador
-			# 38 - Dispensar prazo limite de recebimento (Nota 11)
-			# 39 - Alterar prazo limite de recebimento (Nota 11)
-			# 40 – Alterar modalidade (Vide Observações) 
-			# CNAB: 400
+			#  01 = Entrada de Títulos
+			#  02 = Pedido de Baixa
+			#  03 = Protesto para Fins Falimentares
+			#  04 = Concessão de Abatimento
+			#  05 = Cancelamento de Abatimento
+			#  06 = Alteração de Vencimento
+			#  07 = Concessão de Desconto
+			#  08 = Cancelamento de Desconto
+			#  09 = Pedido de protesto (Protestar)
+			#  10 = Sustar Protesto e Baixar Título
+			#  11 = Sustar Protesto e Manter em Carteira
+			#  12 = Alteração de Juros de Mora
+			#  13 = Dispensar Cobrança de Juros de Mora
+			#  14 = Alteração de Valor/Percentual de Multa
+			#  15 = Dispensar Cobrança de Multa
+			#  16 = Alteração do Valor de Desconto
+			#  17 = Não conceder Desconto
+			#  18 = Alteração do Valor de Abatimento
+			#  19 = Prazo Limite de Recebimento – Alterar
+			#  20 = Prazo Limite de Recebimento – Dispensar
+			#  21 = Alterar número do título dado pelo beneficiario (nosso número)
+			#  22 = Alterar número controle do Participante (seu número / número documento)
+			#  23 = Alterar dados do Pagador
+			#  24 = Alterar dados do Sacador/Avalista
+			#  30 = Recusa da Alegação do Pagador
+			#  31 = Alteração de Outros Dados
+			#  33 = Alteração dos Dados do Rateio de Crédito
+			#  34 = Pedido de Cancelamento dos Dados do Rateio de Crédito
+			#  35 = Pedido de Desagendamento do Débito Automático
+			#  40 = Alteração de Carteira
+			#  41 = Cancelar protesto
+			#  42 = Alteração de Espécie de Título
+			#  43 = Transferência de carteira/modalidade de cobrança
+			#  44 = Alteração de contrato de cobrança
+			#  45 = Negativação Sem Protesto
+			#  46 = Solicitação de Baixa de Título Negativado Sem Protesto
+			#  47 = Alteração do Valor Nominal do Título
+			#  48 = Alteração do Valor Mínimo/ Percentual
+			#  49 = Alteração do Valor Máximo/Percentua
+			#  CNAB: 240 e 400
 			attr_accessor :identificacao_ocorrencia
 
 			# Espécie do Título:
@@ -147,6 +165,7 @@ module BrBoleto
 			#  08 = Letra de Câmbio
 			#  09 = Warrant
 			#  10 = Cheque
+			#  11 = Nota de Débito
 			#  12 = Duplicata de Serviço
 			#  13 = Nota de Débito
 			#  14 = Triplicata Mercantil
@@ -155,6 +174,7 @@ module BrBoleto
 			#  20 = Apólice de Seguro
 			#  21 = Mensalidade Escolar
 			#  22 = Parcela de Consórcio
+			#  30 = Boleto de Proposta
 			#  99 = Outros
 			#  CNAB: 240 e 400
 			attr_accessor :especie_titulo
@@ -201,6 +221,17 @@ module BrBoleto
 			# ‘3’ = Banco envia e-mail
 			# ‘4’ = Banco envia SMS
 			attr_accessor :distribuicao_boleto
+
+			# Código para Protesto
+			# Código adotado pela FEBRABAN para identificar o tipo de prazo a ser considerado para o protesto.
+			# '1' =  Protestar Dias Corridos
+			# '2' =  Protestar Dias Úteis
+			# '3' =  Não Protestar
+			# '4' = Protestar Fim Falimentar - Dias Úteis
+			# '5' = Protestar Fim Falimentar - Dias Corridos
+			# '8' = Negativação sem Protesto
+			# '9' =  Cancelamento Protesto Automático (somente válido p/ Código Movimento Remessa = '31')
+			attr_accessor :codigo_protesto
 
 			########################  VALIDAÇÕES PERSONALIZADAS  ########################
 				attr_accessor :valid_tipo_impressao_required
@@ -258,8 +289,9 @@ module BrBoleto
 					especie_titulo:           '01',
 					codigo_moeda:             '9',
 					forma_cadastramento:      '0',
-					emissao_boleto:           '2',
-					distribuicao_boleto:      '2',
+					emissao_boleto:           '2', # Cliente Emite
+					distribuicao_boleto:      '2', # Cliente Distribui
+					codigo_protesto:          '1', # Protestar Dias Corridos
 				}
 			end
 
