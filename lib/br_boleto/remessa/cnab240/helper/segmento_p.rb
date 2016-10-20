@@ -3,6 +3,7 @@ module BrBoleto
 		module Cnab240
 			module Helper
 				module SegmentoP
+
 					# Monta o registro segmento P do arquivo
 					#
 					# @param pagamento [BrBoleto::Remessa::Pagamento]
@@ -24,7 +25,7 @@ module BrBoleto
 						segmento_p << segmento_p_posicao_009_a_013(sequencial) # num. sequencial do registro no lote   5
 						segmento_p << segmento_p_posicao_014_a_014             # cod. segmento                         1
 						segmento_p << segmento_p_posicao_015_a_015             # uso exclusivo                         1
-						segmento_p << segmento_p_posicao_016_a_017             # cod. movimento remessa                2
+						segmento_p << segmento_p_posicao_016_a_017(pagamento)  # cod. movimento remessa                2
 						segmento_p << segmento_p_posicao_018_a_022             # agencia                               5
 						segmento_p << segmento_p_posicao_023_a_023             # dv agencia                            1
 						segmento_p << segmento_p_posicao_024_a_057(pagamento)  # informacoes da conta                  34
@@ -50,11 +51,11 @@ module BrBoleto
 						segmento_p << segmento_p_posicao_166_a_180(pagamento)  # valor IOF                             15
 						segmento_p << segmento_p_posicao_181_a_195(pagamento)  # valor abatimento                      15
 						segmento_p << segmento_p_posicao_196_a_220(pagamento)  # identificacao titulo empresa          25  *
-						segmento_p << segmento_p_posicao_221_a_221             # cod. para protesto                    1   *
+						segmento_p << segmento_p_posicao_221_a_221(pagamento)  # cod. para protesto                    1   *
 						segmento_p << segmento_p_posicao_222_a_223             # dias para protesto                    2   *
 						segmento_p << segmento_p_posicao_224_a_224             # cod. para baixa                       1   *
 						segmento_p << segmento_p_posicao_225_a_227             # dias para baixa                       2   *
-						segmento_p << segmento_p_posicao_228_a_229             # cod. da moeda                         2
+						segmento_p << segmento_p_posicao_228_a_229(pagamento)  # cod. da moeda                         2
 						segmento_p << segmento_p_posicao_230_a_239             # uso exclusivo                         10
 						segmento_p << segmento_p_posicao_240_a_240             # uso exclusivo                         1
 						segmento_p.upcase
@@ -108,8 +109,9 @@ module BrBoleto
 					# cod. movimento remessa -> Padrão 01 = Entrada de Titulos
 					# 2 posições
 					#
-					def segmento_p_posicao_016_a_017
-						'01'
+					def segmento_p_posicao_016_a_017(pagamento)
+						code = "#{pagamento.identificacao_ocorrencia}".rjust(2, '0')
+						"#{conta.get_codigo_movimento_remessa(code, 240)}".adjust_size_to(2, '0')
 					end
 
 					# Agência Mantenedora da Conta 
@@ -138,11 +140,11 @@ module BrBoleto
 						complemento_p(pagamento)
 					end
 
-					# Código da carteira
+					# Código da carteira ou tipo de cobrança
 					# 1 posição
 					#
 					def segmento_p_posicao_058_a_058
-						conta.carteira
+						"#{conta.get_tipo_cobranca(conta.codigo_carteira)}".adjust_size_to(1, '1')
 					end
 
 					# Forma de Cadastr. do Título no Banco
@@ -163,14 +165,14 @@ module BrBoleto
 					# 1 posição
 					#
 					def segmento_p_posicao_061_a_061(pagamento)
-						pagamento.emissao_boleto
+						"#{conta.get_identificacao_emissao(pagamento.emissao_boleto)}".adjust_size_to(1, '2')
 					end
 
 					# Identificação da Distribuição
 					# 1 posição
 					#
 					def segmento_p_posicao_062_a_062(pagamento)
-						pagamento.distribuicao_boleto
+						"#{conta.get_distribuicao_boleto(pagamento.distribuicao_boleto)}".adjust_size_to(1, '2')
 					end
 
 					# Número do Documento de Cobrança 
@@ -213,7 +215,7 @@ module BrBoleto
 					# 2 posições
 					#
 					def segmento_p_posicao_107_a_108(pagamento)
-						"#{pagamento.especie_titulo}".adjust_size_to(2, '0', :right)
+						"#{conta.get_especie_titulo(pagamento.especie_titulo, 240)}".adjust_size_to(2, '0', :right)
 					end
 
 					# Identific. de Título Aceito/Não Aceito (A ou N)
@@ -235,8 +237,7 @@ module BrBoleto
 					# Padrão FEBRABAN = (1 = Valor fixo e 2 = Percentual, 3 = isento)
 					#
 					def segmento_p_posicao_118_a_118(pagamento) 
-						cod = "#{pagamento.codigo_juros}".adjust_size_to(1, '3')
-						cod.in?(['1','2','3']) ? cod : '3'
+						"#{conta.get_codigo_juros_mora(pagamento.codigo_juros)}".adjust_size_to(1, '3')
 					end
 
 					# Data do Juros de Mora 
@@ -257,7 +258,7 @@ module BrBoleto
 					# 1 posição
 					#
 					def segmento_p_posicao_142_a_142(pagamento)
-						"#{pagamento.cod_desconto}".adjust_size_to(1)
+						"#{conta.get_codigo_desconto(pagamento.cod_desconto)}".adjust_size_to(1, '0')
 					end
 
 					# Data do Desconto 1 
@@ -298,8 +299,8 @@ module BrBoleto
 					# Código para Protesto
 					# 1 posição
 					#
-					def segmento_p_posicao_221_a_221 
-						'1'
+					def segmento_p_posicao_221_a_221(pagamento)
+						"#{conta.get_codigo_protesto(pagamento.codigo_protesto)}".adjust_size_to(1, '1')
 					end
 
 					# Número de Dias para Protesto 
@@ -326,8 +327,9 @@ module BrBoleto
 					# Código da Moeda (09 para real)
 					# 2 posições
 					#
-					def segmento_p_posicao_228_a_229
-						'09'
+					def segmento_p_posicao_228_a_229(pagamento)
+						moeda = "#{pagamento.codigo_moeda}".rjust(2, '0')
+						"#{conta.get_codigo_moeda(moeda)}".adjust_size_to(2, '0')
 					end
 
 					# Nº do Contrato da Operação de Crédito (Uso do banco)

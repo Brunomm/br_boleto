@@ -80,7 +80,7 @@ module BrBoleto
 					dados << ''.rjust(6, '0')   # 096  101  006  9(06)  Numero do borderô: preencher em caso de carteira 3
 					dados << ''.rjust(4, ' ')   # 102  105  004  X(04)  Complemento do Registro: Brancos
 					
-					dados << "#{pagamento.tipo_emissao}".adjust_size_to(1) # 106  106  001  9(01)  "Tipo de Emissão: 1-Cooperativa 2-Cliente"
+					dados << "#{conta.get_identificacao_emissao(pagamento.tipo_emissao)}".adjust_size_to(1, '2') # 106  106  001  9(01)  "Tipo de Emissão: 1-Cooperativa 2-Cliente"
 					dados << "#{conta.modalidade}".adjust_size_to(2, '0', :right)   # 107  108  002  9(02)  "Carteira/Modalidade: 01 = Simples Com Registro 02 = Simples Sem Registro 03 = Garantida Caucionada "
 					dados
 				end
@@ -125,7 +125,7 @@ module BrBoleto
 					#    21 = Mensalidade Escolar
 					#    22 = Parcela de Consórcio
 					#    99 = Outros"
-					dados << "#{pagamento.especie_titulo}".adjust_size_to(2, '0', :right)
+					dados << "#{conta.get_especie_titulo(pagamento.especie_titulo, 400)}".adjust_size_to(2, '0', :right)
 					
 					# 150  150  001  X(01)  "Aceite do Título:  "0" = Sem aceite "1" = Com aceite"
 					dados << "#{pagamento.aceite ? '1' : '0'}".adjust_size_to(1, '0')
@@ -171,7 +171,7 @@ module BrBoleto
 					detalhe << pagamento.percentual_multa_formatado(6)
 					
 					# 173  173  001  9(01)  "Tipo Distribuição: 1 – Cooperativa 2 - Cliente"
-					detalhe << "#{pagamento.tipo_emissao}".adjust_size_to(1)
+					detalhe << "#{conta.get_identificacao_emissao(pagamento.tipo_emissao)}".adjust_size_to(1, '2')
 					
 					# 174  179  006  9(06)  "Data primeiro desconto:
 					#                          Informar a data limite a ser observada pelo cliente para o pagamento 

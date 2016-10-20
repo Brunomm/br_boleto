@@ -45,6 +45,12 @@ module BrBoleto
 			#
 			attr_accessor :carteira
 
+			# Cógigo da carteira / Tipo de Cobrança
+			# Código adotado pela FEBRABAN, para identificar a característica dos títulos dentro das modalidades
+			# de cobrança existentes no banco
+			# 
+			attr_accessor :codigo_carteira
+
 			# Modalidade da carteira
 			# Alguns bancos utilizam campos separados para definir a modalidade e a carteira
 			# porém normalmente é utilizado a nomenclatura "MODALIDADE DA CARTEIRA". Quando utilizado essa
@@ -61,6 +67,8 @@ module BrBoleto
 			# Por isso foi criado um alias para que cada um utilize a nomenclatura que preferir.
 			attr_accessor :convenio
 			attr_accessor :convenio_dv
+
+			alias_attribute :codigo_empresa,         :convenio
 			alias_attribute :codigo_cedente,         :convenio
 			alias_attribute :codigo_cedente_dv,      :convenio_dv
 			alias_attribute :codigo_beneficiario,    :convenio
@@ -116,7 +124,13 @@ module BrBoleto
 				validates :carteira, custom_length: {maximum: :valid_carteira_maximum}, if: :valid_carteira_maximum
 				validates :carteira, presence: true, if: :valid_carteira_required
 				validates :carteira, custom_inclusion: {in: :valid_carteira_inclusion}, if: :valid_carteira_inclusion
-			
+
+			# => COD. CARTEIRA / TIPO DE COBRANÇA
+				attr_accessor :valid_codigo_carteira_length
+				attr_accessor :valid_codigo_carteira_required
+				validates :codigo_carteira, custom_length: {is:      :valid_codigo_carteira_length},  if: :valid_codigo_carteira_length
+				validates :codigo_carteira, presence: true, if: :valid_codigo_carteira_required
+		
 			# => CONTA CORRENTE
 				attr_accessor :valid_conta_corrente_length
 				attr_accessor :valid_conta_corrente_minimum
@@ -234,6 +248,17 @@ module BrBoleto
 			# @return [String] - Corresponde aos campos "Agencia / Codigo do Cedente".
 			def agencia_codigo_cedente
 				"#{agencia} / #{codigo_cedente}"
+			end
+
+			# Código da Carteira ou Tipo de Cobrança
+			# Código adotado pela FEBRABAN, para identificar a característica dos títulos dentro das
+			# modalidades de cobrança existentes no banco
+			def tipo_cobranca
+				if codigo_carteira.present? 
+					codigo_carteira 
+				elsif carteira.present? 
+					carteira.first 
+				end
 			end
 			
 			# Embora o padrão seja mostrar o número da carteira no boleto,

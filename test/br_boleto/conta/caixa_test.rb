@@ -8,17 +8,18 @@ describe BrBoleto::Conta::Caixa do
 	end
 
 	context "valores padrões" do
-		it "deve setar a carteira com 14'" do
+		it "deve setar a carteira da carteira com 14'" do
 			subject.class.new.carteira.must_equal '14'
-		end
+		end		
 		it "deve setar a valid_carteira_required com true" do
 			subject.class.new.valid_carteira_required.must_equal true
 		end
 		it "deve setar a valid_carteira_length com 2" do
 			subject.class.new.valid_carteira_length.must_equal 2
 		end
-		it "deve setar a valid_carteira_inclusion com %w[11 14 21]" do
-			subject.class.new.valid_carteira_inclusion.must_equal %w[11 14 21]
+		
+		it "deve setar a valid_carteira_inclusion com %w[14 24]" do
+			subject.class.new.valid_carteira_inclusion.must_equal %w[14 24]
 		end
 		it "deve setar a valid_convenio_maximum com 6" do
 			subject.class.new.valid_convenio_maximum.must_equal 6
@@ -43,7 +44,7 @@ describe BrBoleto::Conta::Caixa do
 			wont_be_message_error(:versao_aplicativo, :custom_length_maximum, {count: 4})
 		end
 
-		context 'Validações padrões da carteira' do
+		context 'Validações padrões da carteira da carteira' do
 			subject { BrBoleto::Conta::Caixa.new }
 			it { must validate_presence_of(:carteira) }
 			it 'Tamanho deve ser de 2' do
@@ -52,7 +53,7 @@ describe BrBoleto::Conta::Caixa do
 			end
 			it "valores aceitos" do
 				subject.carteira = '04'
-				must_be_message_error(:carteira, :custom_inclusion, {list: '11, 14, 21'})
+				must_be_message_error(:carteira, :custom_inclusion, {list: '14, 24'})
 			end
 		end
 

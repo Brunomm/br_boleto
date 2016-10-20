@@ -171,7 +171,7 @@ describe BrBoleto::Remessa::Cnab400::Base do
 		end
 
 		it '#detalhe_posicao_038_062 - deve retornar 25 caracteres vazios' do
-			subject.detalhe_posicao_038_062.must_equal ''.rjust(25, ' ')
+			subject.detalhe_posicao_038_062(pagamento).must_equal ''.rjust(25, ' ')
 
 		end
 
@@ -188,8 +188,8 @@ describe BrBoleto::Remessa::Cnab400::Base do
 		end
 
 		it '#detalhe_posicao_109_110 - deve retornar a identificacao da ocorrencia ajustando o tamanho para 2' do # (pagamento, sequencial)
-			pagamento.expects(:identificacao_ocorrencia).returns('7')
-			subject.detalhe_posicao_109_110(pagamento, 1).must_equal '07'
+			pagamento.expects(:identificacao_ocorrencia).returns('5')
+			subject.detalhe_posicao_109_110(pagamento, 1).must_equal '05'
 		end
 
 		it '#detalhe_posicao_111_120 - deve retornar o numero do documento do pagamento' do # (pagamento, sequencial)

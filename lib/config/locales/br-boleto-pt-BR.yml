@@ -13,6 +13,7 @@ pt-BR:
           other: "deve ter %{count} dígitos"
         custom_inclusion: 'deve conter um dos valores a seguir: %{list}'
         at_least_one: deve ter no mínimo 1
+        column_is_required: "%{column} não pode ficar em branco"
     attributes:
       br_boleto/pagador:
         nome: Nome

@@ -60,6 +60,7 @@ module BrBoleto
 		def valid_convenio_inclusion;      end
 		def valid_versao_aplicativo_required; end # Banco da Caixa
 
+
 		def set_regras_tamanho_e_validations!
 			@conta ||= conta_class.new()
 			@conta.valid_conta_corrente_length   = valid_conta_corrente_length   if "#{valid_conta_corrente_length}".present?
@@ -95,6 +96,7 @@ module BrBoleto
 			@conta.valid_convenio_inclusion      = valid_convenio_inclusion      if "#{valid_convenio_inclusion}".present?
 			
 			@conta.valid_versao_aplicativo_required = valid_versao_aplicativo_required if "#{valid_versao_aplicativo_required}".present?
+
 		end
 
 		def conta_validations

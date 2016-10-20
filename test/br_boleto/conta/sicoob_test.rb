@@ -125,7 +125,6 @@ describe BrBoleto::Conta::Sicoob do
 		end
 	end
 
-
 	describe '#conta_corrente_dv' do
 		it "deve ser personalizavel pelo usuario" do
 			subject.conta_corrente_dv = 88
@@ -140,5 +139,10 @@ describe BrBoleto::Conta::Sicoob do
 		end
 	end
 
-	
+	describe "#get_codigo_movimento_remessa" do
+		context "CÓDIGOS para o cnab 400 do SICOOB" do
+			it { subject.get_codigo_movimento_remessa('23', 400).must_equal '12' } # Alteração de Pagador
+			it { subject.get_codigo_movimento_remessa('46', 400).must_equal '34' } # Baixa - Pagamento Direto ao Beneficiário
+		end
+	end
 end

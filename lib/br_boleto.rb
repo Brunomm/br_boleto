@@ -72,6 +72,8 @@ module BrBoleto
 		autoload :Base
 		autoload :Sicoob
 		autoload :Caixa
+		autoload :Bradesco
+		autoload :Unicred
 	end
 	
 	module Boleto
@@ -80,6 +82,8 @@ module BrBoleto
 		autoload :Base
 		autoload :Sicoob
 		autoload :Caixa
+		autoload :Bradesco
+		autoload :Unicred
 	end
 
 
@@ -94,11 +98,15 @@ module BrBoleto
 			autoload :Base
 			autoload :Sicoob
 			autoload :Caixa
+			autoload :Bradesco
+			autoload :Unicred
 		end
 		module Cnab400
 			extend ActiveSupport::Autoload
 			autoload :Base
 			autoload :Sicoob
+			autoload :Bradesco
+			autoload :Unicred
 		end
 	end
 	
@@ -111,11 +119,15 @@ module BrBoleto
 			autoload :Base
 			autoload :Sicoob
 			autoload :Caixa
+			autoload :Bradesco
+			autoload :Unicred
 		end
 		module Cnab400
 			extend ActiveSupport::Autoload
 			autoload :Base
 			autoload :Sicoob
+			autoload :Bradesco
+			autoload :Unicred
 		end
 	end
 
