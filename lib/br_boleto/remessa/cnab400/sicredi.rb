@@ -116,18 +116,17 @@ module BrBoleto
 					detalhe_posicao_005_016
 				end
 
-				# Detalhe Posição 048 a 062
+				# Detalhe Posição 038 a 062
 				#-----------------------------------------------
 				# POSIÇÂO         TAM.     Descrição
+				# 038 a 047       010      Deixar em Branco
 				# 048 a 056       009      Nosso número Sicredi
 				# 057 a 062       006      Deixar em Branco
 				#
-				# Tamanho: 15
+				# Tamanho: 25
 				def detalhe_posicao_038_062(pagamento)
-					detalhe_posicao_048_062(pagamento)
-				end
-				def detalhe_posicao_048_062(pagamento)
-					detalhe = "#{pagamento.nosso_numero}".adjust_size_to(9, '0', :right)
+					detalhe = "".adjust_size_to(10)
+					detalhe << "#{pagamento.nosso_numero}".adjust_size_to(9, '0', :right)
 					detalhe << "".adjust_size_to(6)
 					detalhe
 				end
@@ -247,6 +246,26 @@ module BrBoleto
 					info << "#{pagamento.pagador.documento_avalista}".adjust_size_to(14) # Sacador/Avalista (CPF/CNPJ)
 					info << "#{pagamento.pagador.nome_avalista}".adjust_size_to(41)      # Sacador/Avalista (Nome)
 					info                                                
+				end
+
+			############################ TRAILER #######################################
+
+				# Detalhe Posição 002 a 0349
+				# POSIÇÂO         TAM.     Descrição
+				#-----------------------------------------------
+				# 002 a 002       001      Identificação do arquivo remessa
+				# 003 a 005       003      Número do Sicredi (748)
+				# 006 a 010       005      Código do beneficiário
+				# 011 a 394       384      Bracos
+				#
+				# Tamanho: 393
+				def trailer_arquivo_posicao_002_a_394(sequencial)
+					dados = ''
+					dados << '1'                                                         # Identificação do arquivo remessa
+					dados << "#{conta.codigo_banco}".adjust_size_to(3, '0', :right)      # Número do Sicredi
+					dados << "#{conta.conta_corrente}".adjust_size_to(5, '0', :right)    # Código do beneficiário
+					dados << ''.adjust_size_to(384)
+					dados
 				end
 
 			end
