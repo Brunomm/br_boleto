@@ -39,7 +39,7 @@ module BrBoleto
 						info << "#{conta.conta_corrente}".adjust_size_to(5, '0', :right)
 						info << "#{conta.cpf_cnpj}".adjust_size_to(14, '0', :right)
 						info << ''.adjust_size_to(1)
-						info.adjust_size_to(20, '0', :right)
+						info
 					end
 				end
 
@@ -70,7 +70,10 @@ module BrBoleto
 				# 391 a 394       004      Versão do sistema (2.00)
 				#
 				# Tamanho: 292
-				def complemento_registro
+				def header_posicao_101_a_394
+					header_posicao_103_a_394
+				end
+				def header_posicao_103_a_394
 					info = ''.adjust_size_to(8)
 					info <<  "#{sequencial_remessa}".adjust_size_to(7, '0', :right)
 					info << ''.adjust_size_to(273)
@@ -88,11 +91,15 @@ module BrBoleto
 				# 004 a 004       001      Tipo de Impressão ("A” – Normal)
 				#
 				# Tamanho: 003
-				def detalhe_posicao_002_004
-					detalhe = 'AAA'.adjust_size_to(3)
+				def detalhe_posicao_002_004(pagamento)
+					detalhe = ''
+					detalhe << "#{conta.get_tipo_cobranca(conta.carteira)}".adjust_size_to(1, 'A')
+					detalhe << "#{conta.get_tipo_cobranca(conta.codigo_carteira)}".adjust_size_to(1, 'A')
+					detalhe << "#{conta.get_tipo_impressao(pagamento.tipo_impressao)}".adjust_size_to(1, 'A')
+					detalhe
 				end
-				def detalhe_posicao_002_003
-					detalhe_posicao_002_004
+				def detalhe_posicao_002_003(pagamento)
+					detalhe_posicao_002_004(pagamento)
 				end
 
 
@@ -116,11 +123,13 @@ module BrBoleto
 				# 057 a 062       006      Deixar em Branco
 				#
 				# Tamanho: 15
-				def detalhe_posicao_048_062(pagamento) do
-					detalhe = "#{pagamento.nosso_numero}".adjust_size_to(9, '0', :right)
-				end
 				def detalhe_posicao_038_062(pagamento)
 					detalhe_posicao_048_062(pagamento)
+				end
+				def detalhe_posicao_048_062(pagamento)
+					detalhe = "#{pagamento.nosso_numero}".adjust_size_to(9, '0', :right)
+					detalhe << "".adjust_size_to(6)
+					detalhe
 				end
 
 				# Detalhe Posição 063 a 108
@@ -139,7 +148,13 @@ module BrBoleto
 				# 097 a 108       012      Brancos
 				#
 				# Tamanho: 46
-				def dados_do_pagamento(pagamento) do
+				def detalhe_posicao_063_076(pagamento, sequencial)
+					detalhe_posicao_063_108(pagamento)
+				end
+				def detalhe_posicao_077_108(pagamento, sequencial)
+					''
+				end
+				def detalhe_posicao_063_108(pagamento)
 					dados = ''
 					dados << ''.adjust_size_to(8)
 					dados << ''.adjust_size_to(1)
@@ -154,9 +169,6 @@ module BrBoleto
 					dados << ''.adjust_size_to(12)
 					dados
 				end
-				def detalhe_posicao_077_108(pagamento, sequencial)
-					''
-				end
 
 				# Informações referente ao pagamento
 				# POSIÇÂO         TAM.     Descrição
@@ -164,19 +176,19 @@ module BrBoleto
 				# 121 a 126    006    Data do Vencimento do Título
 				# 127 a 139    013    Valor do Título
 				# 140 a 148    009    Brancos
-				# 149 a 149    002    Espécie de Título 
+				# 149 a 149    001    Espécie de Título 
 				# 150 a 150    001    Identificação (Sempre 'N')
 				# 151 a 156    006    Data da emissão do Título
 				# 157 a 158    002    1a instrução
 				# 159 a 160    002    2a instrução 
 				#
 				# Tamanho: 40
-				def informacoes_do_pagamento(pagamento, sequencial) do
+				def informacoes_do_pagamento(pagamento, sequencial)
 					info = ''
 					info << pagamento.data_vencimento_formatado('%d%m%y')
 					info << pagamento.valor_documento_formatado(13)
 					info << ''.adjust_size_to(9)
-					info << "#{conta.get_especie_titulo(pagamento.especie_titulo, 240)}".adjust_size_to(2, '0', :right)
+					info << "#{conta.get_especie_titulo(pagamento.especie_titulo, 240)}".adjust_size_to(1, '0', :right)
 					info << 'N'
 					info << pagamento.data_emissao_formatado('%d%m%y')
 					info << ''.adjust_size_to(2,'0', :right) # 1a Instrução

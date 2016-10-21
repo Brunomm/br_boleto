@@ -156,7 +156,7 @@ describe BrBoleto::Remessa::Cnab400::Base do
 
 		it '#detalhe_posicao_002_003 - deve retornar o tipo do cnpj da conta' do
 			conta.expects(:tipo_cpf_cnpj).returns('5')
-			subject.detalhe_posicao_002_003.must_equal '5'
+			subject.detalhe_posicao_002_003(pagamento).must_equal '5'
 		end
 
 		it '#detalhe_posicao_004_017 - deve retornar o cnpj da conta ajustado para 14 digitos' do

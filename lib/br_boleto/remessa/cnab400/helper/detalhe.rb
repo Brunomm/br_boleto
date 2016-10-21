@@ -20,7 +20,7 @@ module BrBoleto
 						detalhe =  ''
 
 						detalhe << detalhe_posicao_001_001                        # Identificação do Registro Detalhe
-						detalhe << detalhe_posicao_002_003                        # Tipo de inscrição do beneficiario
+						detalhe << detalhe_posicao_002_003(pagamento)             # Tipo de inscrição do beneficiario
 						detalhe << detalhe_posicao_004_017                        # CNPJ do beneficiario
 						detalhe << detalhe_posicao_018_037                        # Informações da conta
 						detalhe << detalhe_posicao_038_062(pagamento)             # Numero de controle do participante
@@ -48,7 +48,7 @@ module BrBoleto
 					# 02 = CNPJ
 					# Tipo: Numero
 					# Tamanho: 002
-					def detalhe_posicao_002_003
+					def detalhe_posicao_002_003(pagamento)
 						conta.tipo_cpf_cnpj
 					end
 

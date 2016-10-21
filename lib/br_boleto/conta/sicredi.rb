@@ -102,6 +102,8 @@ module BrBoleto
 				super.merge(
 					#  Padrão    Código para  
 					{# da GEM     o Banco
+						'01'    =>   'A',
+						'02'    =>   'A',
 						'03'    =>   'A',  # Duplicata Mercantil por Indicação (DMI)
 						'06'    =>   'B',  # Duplicata Rural (DR)
 						'12'    =>   'C',  # Nota Promissória (NP)
