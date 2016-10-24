@@ -97,8 +97,13 @@ module BrBoleto
 				"#{agencia}.#{posto}.#{codigo_cedente}"
 			end
 
-			# Espécie do Título CNAB 240 e 400
+			# Espécie do Título CNAB 240 
 			def equivalent_especie_titulo_240
+				super.merge({ '01' => '03' }) # Duplicata Mercantil por Indicação (DMI)
+			end
+
+			# Espécie do Título CNAB 400
+			def equivalent_especie_titulo_400
 				super.merge(
 					#  Padrão    Código para  
 					{# da GEM     o Banco
@@ -119,17 +124,22 @@ module BrBoleto
 			end
 
 			# Código da Carteira 
-			def equivalent_tipo_cobranca
+			def equivalent_tipo_cobranca_400
 				super.merge({ '1' => 'A' }) # Cobrança Simples
 			end	
 
 			# Identificação do Tipo de Impressão : 
-			def equivalent_tipo_impressao
+			def equivalent_tipo_impressao_400
 				super.merge({ '1' => 'A' }) # Frente do Bloqueto
 			end	
 
+			# Código da Moeda : 
+			def equivalent_codigo_moeda_400
+				super.merge({ '09' => 'A' }) # Real
+			end	
+
 			# Identificação da Emissão do Boleto de Pagamento
-			def equivalent_identificacao_emissao
+			def equivalent_identificacao_emissao_400
 				super.merge(
 					#  Padrão    Código para  
 					{# da GEM     o Banco

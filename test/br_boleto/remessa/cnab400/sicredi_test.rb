@@ -59,7 +59,7 @@ describe BrBoleto::Remessa::Cnab400::Sicredi do
 		describe '#header_posicao_095_a_102' do
 			it { subject.header_posicao_095_a_102.size.must_equal 8 }
 			it "deve conter as informações nas posições corretas" do
-				subject.data_hora_arquivo = '21102016'
+				subject.stubs(:data_hora_arquivo).returns('2016-10-21')
 				subject.header_posicao_095_a_102.must_equal '20161021'
 				subject.header_posicao_095_a_102.size.must_equal 8
 			end
@@ -122,8 +122,9 @@ describe BrBoleto::Remessa::Cnab400::Sicredi do
 			end
 			it "deve conter as informações nas posições corretas" do
 				pagamento.assign_attributes(tipo_emissao: 2)
+				pagamento.data_emissao = Date.parse('05/08/2029')
 				result = subject.detalhe_posicao_063_108(pagamento)
-				result[0..7].must_equal    ''.rjust(8)    # Data da Instrução ( Brancos )
+				result[0..7].must_equal    '20290805'     # Data da Instrução
 				result[8].must_equal       ''.rjust(1)    # Campo alterado ( Branco )
 				result[9].must_equal       'N'            # Postagem do título
 				result[10].must_equal      ''.rjust(1)    # Branco
@@ -204,7 +205,7 @@ describe BrBoleto::Remessa::Cnab400::Sicredi do
 				result = subject.informacoes_do_sacado(pagamento, 2)
 				result.size.must_equal 176
 
-				result[00..01].must_equal "01"                                    # Tipo de Inscrição do Pagador: "01" = CPF / "02" = CNPJ
+				result[00..01].must_equal "10"                                    # Tipo de Inscrição do Pagador: "01" = CPF / "02" = CNPJ
 				result[02..15].must_equal '00012345678901'                        # Número do CNPJ ou CPF do Pagador
 				result[16..55].must_equal 'nome pagador'.adjust_size_to(40)       # Nome do Pagador
 				
@@ -214,7 +215,7 @@ describe BrBoleto::Remessa::Cnab400::Sicredi do
 				result[94..95].must_equal 'SC'.adjust_size_to(2)                  # Endereço do Pagador
 				result[108..115].must_equal '89885001'                            # CEP do Pagador
 
-				result[121..134].must_equal '84010699043'.adjust_size_to(14)      # Observações/Mensagem ou Sacador/Avalista
+				result[121..134].must_equal '84010699043'.rjust(14, '0')          # Observações/Mensagem ou Sacador/Avalista
 				result[135..175].must_equal 'Avalista'.adjust_size_to(41)         # Observações/Mensagem ou Sacador/Avalista
 			end
 		end

@@ -93,9 +93,9 @@ module BrBoleto
 				# Tamanho: 003
 				def detalhe_posicao_002_004(pagamento)
 					detalhe = ''
-					detalhe << "#{conta.get_tipo_cobranca(conta.carteira)}".adjust_size_to(1, 'A')
-					detalhe << "#{conta.get_tipo_cobranca(conta.codigo_carteira)}".adjust_size_to(1, 'A')
-					detalhe << "#{conta.get_tipo_impressao(pagamento.tipo_impressao)}".adjust_size_to(1, 'A')
+					detalhe << "#{conta.get_tipo_cobranca(conta.carteira, 400)}".adjust_size_to(1, 'A')
+					detalhe << "#{conta.get_tipo_cobranca(conta.codigo_carteira, 400)}".adjust_size_to(1, 'A')
+					detalhe << "#{conta.get_tipo_impressao(pagamento.tipo_impressao, 400)}".adjust_size_to(1, 'A')
 					detalhe
 				end
 				def detalhe_posicao_002_003(pagamento)
@@ -155,11 +155,11 @@ module BrBoleto
 				end
 				def detalhe_posicao_063_108(pagamento)
 					dados = ''
-					dados << ''.adjust_size_to(8)
+					dados << "#{pagamento.data_emissao_formatado('%Y%m%d')}"
 					dados << ''.adjust_size_to(1)
 					dados << 'N'
 					dados << ''.adjust_size_to(1)
-					dados << "#{conta.get_identificacao_emissao(pagamento.emissao_boleto)}".adjust_size_to(1, 'A')
+					dados << "#{conta.get_identificacao_emissao(pagamento.emissao_boleto, 400)}".adjust_size_to(1, 'A')
 					dados << ''.adjust_size_to(2)
 					dados << ''.adjust_size_to(2)
 					dados << ''.adjust_size_to(4)
@@ -187,7 +187,7 @@ module BrBoleto
 					info << pagamento.data_vencimento_formatado('%d%m%y')
 					info << pagamento.valor_documento_formatado(13)
 					info << ''.adjust_size_to(9)
-					info << "#{conta.get_especie_titulo(pagamento.especie_titulo, 240)}".adjust_size_to(1, '0', :right)
+					info << "#{conta.get_especie_titulo(pagamento.especie_titulo, 400)}".adjust_size_to(1, '0', :right)
 					info << 'N'
 					info << pagamento.data_emissao_formatado('%d%m%y')
 					info << ''.adjust_size_to(2,'0', :right) # 1a Instrução
@@ -217,7 +217,8 @@ module BrBoleto
 				# Informações referente aos dados do sacado/pagador
 				# Posição: 219 a 394
 				# POSIÇÂO      TAM.   Descrição
-				# 219 a 220    002    Identificação do Tipo de Inscrição do Pagador
+				# 219 a 219    001    Identificação do Tipo de Inscrição do Pagador
+				# 220 a 220    001    Zero
 				# 221 a 234    014    No Inscrição do Pagador
 				# 235 a 274    040    Nome do Pagador
 				# 275 a 314    040    Endereço Completo
@@ -231,20 +232,21 @@ module BrBoleto
 				# Tamanho: 176
 				def informacoes_do_sacado(pagamento, sequencial)
 					info = ''
-					info << "#{pagamento.pagador.tipo_cpf_cnpj}".adjust_size_to(2, '0', :right)
+					info << "#{pagamento.pagador.tipo_cpf_cnpj}".last.adjust_size_to(1, '0', :right) # Tipo de Inscrição do Pagador
+					info << ''.adjust_size_to(1, '0')
 					info << "#{pagamento.pagador.cpf_cnpj}".adjust_size_to(14, '0', :right)
 					info << "#{pagamento.pagador.nome}".adjust_size_to(40)
-					info << "#{pagamento.pagador.endereco}".adjust_size_to(18)           # Endereço Completo
-					info << "#{pagamento.pagador.bairro}".adjust_size_to(10)             # Endereço Completo
-					info << "#{pagamento.pagador.cidade}".adjust_size_to(10)             # Endereço Completo
-					info << "#{pagamento.pagador.uf}".adjust_size_to(2)                  # Endereço Completo
-					info << ''.adjust_size_to(5, '0')                                    # Código do Pagador na cooperativa
-					info << ''.adjust_size_to(6, '0')                                    # Preencher com zeros
-					info << ''.adjust_size_to(1)                                         # Preencher com Espaço em Branco
-					info << "#{pagamento.pagador.cep}".adjust_size_to(8, '0', :right)    # CEP + Sufixo do CEP
-					info << ''.adjust_size_to(5, '0')                                    # Código do Pagador
-					info << "#{pagamento.pagador.documento_avalista}".adjust_size_to(14) # Sacador/Avalista (CPF/CNPJ)
-					info << "#{pagamento.pagador.nome_avalista}".adjust_size_to(41)      # Sacador/Avalista (Nome)
+					info << "#{pagamento.pagador.endereco}".adjust_size_to(18)                         # Endereço Completo
+					info << "#{pagamento.pagador.bairro}".adjust_size_to(10)                           # Endereço Completo
+					info << "#{pagamento.pagador.cidade}".adjust_size_to(10)                           # Endereço Completo
+					info << "#{pagamento.pagador.uf}".adjust_size_to(2)                                # Endereço Completo
+					info << ''.adjust_size_to(5, '0')                                                  # Código do Pagador na cooperativa
+					info << ''.adjust_size_to(6, '0')                                                  # Preencher com zeros
+					info << ''.adjust_size_to(1)                                                       # Preencher com Espaço em Branco
+					info << "#{pagamento.pagador.cep}".adjust_size_to(8, '0', :right)                  # CEP + Sufixo do CEP
+					info << ''.adjust_size_to(5, '0')                                                  # Código do Pagador
+					info << "#{pagamento.pagador.documento_avalista}".adjust_size_to(14, '0', :right)  # Sacador/Avalista (CPF/CNPJ)
+					info << "#{pagamento.pagador.nome_avalista}".adjust_size_to(41)                    # Sacador/Avalista (Nome)
 					info                                                
 				end
 

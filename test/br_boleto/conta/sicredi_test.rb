@@ -130,33 +130,39 @@ describe BrBoleto::Conta::Sicredi do
 
 	describe "#equivalent_especie_titulo_240" do
 		context "CÓDIGOS para o cnab 240 do Sicredi" do
-			it { subject.get_especie_titulo('01', 240).must_equal 'A' }  
-			it { subject.get_especie_titulo('02', 240).must_equal 'A' }  
-			it { subject.get_especie_titulo('03', 240).must_equal 'A' }  # Duplicata Mercantil por Indicação (DMI)
-			it { subject.get_especie_titulo('06', 240).must_equal 'B' }  # Duplicata Rural (DR)
-			it { subject.get_especie_titulo('12', 240).must_equal 'C' }  # Nota Promissória (NP)
-			it { subject.get_especie_titulo('13', 240).must_equal 'D' }  # Nota Promissória Rural (NR)
-			it { subject.get_especie_titulo('16', 240).must_equal 'E' }  # Nota de Seguros (NS)
-			it { subject.get_especie_titulo('17', 240).must_equal 'G' }  # Recibo (RC)
-			it { subject.get_especie_titulo('07', 240).must_equal 'H' }  # Letra de Câmbio (LC)
-			it { subject.get_especie_titulo('19', 240).must_equal 'I' }  # Nota de Débito (ND)
-			it { subject.get_especie_titulo('05', 240).must_equal 'J' }  # Duplicata de Serviço por Indicação (DSI)
-			it { subject.get_especie_titulo('99', 240).must_equal 'K' }  # Outros (OS)
-			it { subject.get_especie_titulo('32', 240).must_equal 'O' }  # Boleto de Proposta (BDP)
+			it { subject.get_especie_titulo('01', 240).must_equal '03' }  # Duplicata Mercantil por Indicação (DMI)
 		end
 	end
 
-	describe "#equivalent_tipo_cobranca" do
-		it { subject.get_tipo_cobranca('1').must_equal 'A' }  # Cobrança Simples
+	describe "#equivalent_especie_titulo_400" do
+		context "CÓDIGOS para o cnab 400 do Sicredi" do
+			it { subject.get_especie_titulo('01', 400).must_equal 'A' }  
+			it { subject.get_especie_titulo('02', 400).must_equal 'A' }  
+			it { subject.get_especie_titulo('03', 400).must_equal 'A' }  # Duplicata Mercantil por Indicação (DMI)
+			it { subject.get_especie_titulo('06', 400).must_equal 'B' }  # Duplicata Rural (DR)
+			it { subject.get_especie_titulo('12', 400).must_equal 'C' }  # Nota Promissória (NP)
+			it { subject.get_especie_titulo('13', 400).must_equal 'D' }  # Nota Promissória Rural (NR)
+			it { subject.get_especie_titulo('16', 400).must_equal 'E' }  # Nota de Seguros (NS)
+			it { subject.get_especie_titulo('17', 400).must_equal 'G' }  # Recibo (RC)
+			it { subject.get_especie_titulo('07', 400).must_equal 'H' }  # Letra de Câmbio (LC)
+			it { subject.get_especie_titulo('19', 400).must_equal 'I' }  # Nota de Débito (ND)
+			it { subject.get_especie_titulo('05', 400).must_equal 'J' }  # Duplicata de Serviço por Indicação (DSI)
+			it { subject.get_especie_titulo('99', 400).must_equal 'K' }  # Outros (OS)
+			it { subject.get_especie_titulo('32', 400).must_equal 'O' }  # Boleto de Proposta (BDP)
+		end
+	end
+
+	describe "#equivalent_tipo_cobranca_400" do
+		it { subject.get_tipo_cobranca('1', 400).must_equal 'A' }  # Cobrança Simples
 	end
 	
-	describe "#equivalent_tipo_impressao" do
-		it { subject.get_tipo_impressao('1').must_equal 'A' }  # Frente do Bloqueto
+	describe "#equivalent_tipo_impressao_400" do
+		it { subject.get_tipo_impressao('1', 400).must_equal 'A' }  # Frente do Bloqueto
 	end	
 
-	describe "#equivalent_identificacao_emissao" do
-		it { subject.get_identificacao_emissao('1').must_equal 'A' }  # Impressão é feita pelo Sicredi
-		it { subject.get_identificacao_emissao('2').must_equal 'B' }  # Impressão é feita pelo Beneficiário
+	describe "#equivalent_identificacao_emissao_400" do
+		it { subject.get_identificacao_emissao('1', 400).must_equal 'A' }  # Impressão é feita pelo Sicredi
+		it { subject.get_identificacao_emissao('2', 400).must_equal 'B' }  # Impressão é feita pelo Beneficiário
 	end
 
 end

@@ -644,23 +644,41 @@ describe BrBoleto::Remessa::Base do
 				it { subject.get_codigo_movimento_remessa('00', 400).must_equal '31' } 
 			end
 		end
-		describe "#get_tipo_cobranca" do
-			it { subject.get_tipo_cobranca('1').must_equal '1' } # Cobrança Simples
-			it { subject.get_tipo_cobranca('2').must_equal '2' } # Cobrança Vinculada
-			it { subject.get_tipo_cobranca('3').must_equal '3' } # Cobrança Caucionada
-			it { subject.get_tipo_cobranca('4').must_equal '4' } # Cobrança Descontada
-			it { subject.get_tipo_cobranca('5').must_equal '5' } # Cobrança Vendor
-			it { subject.get_tipo_cobranca('00').must_equal '00' } 
+		describe "#get_tipo_cobranca_240" do
+			it { subject.get_tipo_cobranca('1', 240).must_equal '1' } # Cobrança Simples
+			it { subject.get_tipo_cobranca('2', 240).must_equal '2' } # Cobrança Vinculada
+			it { subject.get_tipo_cobranca('3', 240).must_equal '3' } # Cobrança Caucionada
+			it { subject.get_tipo_cobranca('4', 240).must_equal '4' } # Cobrança Descontada
+			it { subject.get_tipo_cobranca('5', 240).must_equal '5' } # Cobrança Vendor
+			it { subject.get_tipo_cobranca('00', 240).must_equal '00' } 
 		end
-		describe "#get_identificacao_emissao" do
-			it { subject.get_identificacao_emissao('1').must_equal '1' } # Banco Emite
-			it { subject.get_identificacao_emissao('2').must_equal '2' } # Cliente Emite
-			it { subject.get_identificacao_emissao('3').must_equal '3' } # Banco Pré-emite e Cliente Complementa
-			it { subject.get_identificacao_emissao('4').must_equal '4' } # Banco Reemite
-			it { subject.get_identificacao_emissao('5').must_equal '5' } # Banco Não Reemite
-			it { subject.get_identificacao_emissao('7').must_equal '7' } # Banco Emitente - Aberta
-			it { subject.get_identificacao_emissao('8').must_equal '8' } # Banco Emitente - Auto-envelopável
-			it { subject.get_identificacao_emissao('00').must_equal '00' } 
+		describe "#get_tipo_cobranca_400" do
+			it { subject.get_tipo_cobranca('1', 400).must_equal '1' } # Cobrança Simples
+			it { subject.get_tipo_cobranca('2', 400).must_equal '2' } # Cobrança Vinculada
+			it { subject.get_tipo_cobranca('3', 400).must_equal '3' } # Cobrança Caucionada
+			it { subject.get_tipo_cobranca('4', 400).must_equal '4' } # Cobrança Descontada
+			it { subject.get_tipo_cobranca('5', 400).must_equal '5' } # Cobrança Vendor
+			it { subject.get_tipo_cobranca('00', 400).must_equal '00' } 
+		end
+		describe "#get_identificacao_emissao_240" do
+			it { subject.get_identificacao_emissao('1', 240).must_equal '1' } # Banco Emite
+			it { subject.get_identificacao_emissao('2', 240).must_equal '2' } # Cliente Emite
+			it { subject.get_identificacao_emissao('3', 240).must_equal '3' } # Banco Pré-emite e Cliente Complementa
+			it { subject.get_identificacao_emissao('4', 240).must_equal '4' } # Banco Reemite
+			it { subject.get_identificacao_emissao('5', 240).must_equal '5' } # Banco Não Reemite
+			it { subject.get_identificacao_emissao('7', 240).must_equal '7' } # Banco Emitente - Aberta
+			it { subject.get_identificacao_emissao('8', 240).must_equal '8' } # Banco Emitente - Auto-envelopável
+			it { subject.get_identificacao_emissao('99', 240).must_equal '99' } 
+		end
+		describe "#get_identificacao_emissao_400" do
+			it { subject.get_identificacao_emissao('1', 400).must_equal '1' } # Banco Emite
+			it { subject.get_identificacao_emissao('2', 400).must_equal '2' } # Cliente Emite
+			it { subject.get_identificacao_emissao('3', 400).must_equal '3' } # Banco Pré-emite e Cliente Complementa
+			it { subject.get_identificacao_emissao('4', 400).must_equal '4' } # Banco Reemite
+			it { subject.get_identificacao_emissao('5', 400).must_equal '5' } # Banco Não Reemite
+			it { subject.get_identificacao_emissao('7', 400).must_equal '7' } # Banco Emitente - Aberta
+			it { subject.get_identificacao_emissao('8', 400).must_equal '8' } # Banco Emitente - Auto-envelopável
+			it { subject.get_identificacao_emissao('00', 400).must_equal '00' } 
 		end
 		describe "#get_distribuicao_boleto" do
 			it { subject.get_distribuicao_boleto('1').must_equal '1' } # Banco Distribui
@@ -669,12 +687,19 @@ describe BrBoleto::Remessa::Base do
 			it { subject.get_distribuicao_boleto('4').must_equal '4' } # Banco envia SMS
 			it { subject.get_distribuicao_boleto('00').must_equal '00' } 
 		end
-		describe "#get_tipo_impressao" do
-			it { subject.get_tipo_impressao('1').must_equal '1' } # Frente do Bloqueto
-			it { subject.get_tipo_impressao('2').must_equal '2' } # Verso do Bloqueto
-			it { subject.get_tipo_impressao('3').must_equal '3' } # Corpo de Instruções da Ficha de Compensação do Bloqueto
-			it { subject.get_tipo_impressao('7').must_equal '7' } # Outros
-			it { subject.get_tipo_impressao('999').must_equal '999' } # Outros
+		describe "#get_tipo_impressao_240" do
+			it { subject.get_tipo_impressao('1', 240).must_equal '1' } # Frente do Bloqueto
+			it { subject.get_tipo_impressao('2', 240).must_equal '2' } # Verso do Bloqueto
+			it { subject.get_tipo_impressao('3', 240).must_equal '3' } # Corpo de Instruções da Ficha de Compensação do Bloqueto
+			it { subject.get_tipo_impressao('7', 240).must_equal '7' } # Outros
+			it { subject.get_tipo_impressao('999', 240).must_equal '999' } # Outros
+		end
+		describe "#get_tipo_impressao_400" do
+			it { subject.get_tipo_impressao('1', 400).must_equal '1' } # Frente do Bloqueto
+			it { subject.get_tipo_impressao('2', 400).must_equal '2' } # Verso do Bloqueto
+			it { subject.get_tipo_impressao('3', 400).must_equal '3' } # Corpo de Instruções da Ficha de Compensação do Bloqueto
+			it { subject.get_tipo_impressao('7', 400).must_equal '7' } # Outros
+			it { subject.get_tipo_impressao('999', 400).must_equal '999' } # Outros
 		end
 		describe "#get_codigo_juros" do
 			it { subject.get_codigo_juros('1').must_equal '1' } # Valor por Dia
@@ -709,23 +734,39 @@ describe BrBoleto::Remessa::Base do
 			it { subject.get_codigo_protesto('9').must_equal '9' } # Cancelamento Protesto Automático 
 			it { subject.get_codigo_protesto('55').must_equal '55' } 
 		end
-		describe "#get_codigo_moeda" do
-			it { subject.get_codigo_moeda('01').must_equal '01' } # Reservado para Uso Futuro
-			it { subject.get_codigo_moeda('02').must_equal '02' } # Dólar Americano Comercial (Venda)
-			it { subject.get_codigo_moeda('03').must_equal '03' } # Dólar Americano Turismo (Venda)
-			it { subject.get_codigo_moeda('04').must_equal '04' } # ITRD
-			it { subject.get_codigo_moeda('05').must_equal '05' } # IDTR
-			it { subject.get_codigo_moeda('06').must_equal '06' } # UFIR Diária
-			it { subject.get_codigo_moeda('07').must_equal '07' } # UFIR Mensal
-			it { subject.get_codigo_moeda('08').must_equal '08' } # FAJ - TR
-			it { subject.get_codigo_moeda('09').must_equal '09' } # Real
-			it { subject.get_codigo_moeda('10').must_equal '10' } # TR
-			it { subject.get_codigo_moeda('11').must_equal '11' } # IGPM
-			it { subject.get_codigo_moeda('12').must_equal '12' } # CDI
-			it { subject.get_codigo_moeda('13').must_equal '13' } # Percentual do CDI
-			it { subject.get_codigo_moeda('14').must_equal '14' } # Euro
-			it { subject.get_codigo_moeda('55').must_equal '55' } 
+		describe "#get_codigo_moeda_240" do
+			it { subject.get_codigo_moeda('01', 240).must_equal '01' } # Reservado para Uso Futuro
+			it { subject.get_codigo_moeda('02', 240).must_equal '02' } # Dólar Americano Comercial (Venda)
+			it { subject.get_codigo_moeda('03', 240).must_equal '03' } # Dólar Americano Turismo (Venda)
+			it { subject.get_codigo_moeda('04', 240).must_equal '04' } # ITRD
+			it { subject.get_codigo_moeda('05', 240).must_equal '05' } # IDTR
+			it { subject.get_codigo_moeda('06', 240).must_equal '06' } # UFIR Diária
+			it { subject.get_codigo_moeda('07', 240).must_equal '07' } # UFIR Mensal
+			it { subject.get_codigo_moeda('08', 240).must_equal '08' } # FAJ - TR
+			it { subject.get_codigo_moeda('09', 240).must_equal '09' } # Real
+			it { subject.get_codigo_moeda('10', 240).must_equal '10' } # TR
+			it { subject.get_codigo_moeda('11', 240).must_equal '11' } # IGPM
+			it { subject.get_codigo_moeda('12', 240).must_equal '12' } # CDI
+			it { subject.get_codigo_moeda('13', 240).must_equal '13' } # Percentual do CDI
+			it { subject.get_codigo_moeda('14', 240).must_equal '14' } # Euro
+			it { subject.get_codigo_moeda('55', 240).must_equal '55' } 
+		end
+		describe "#get_codigo_moeda_400" do
+			it { subject.get_codigo_moeda('01', 400).must_equal '01' } # Reservado para Uso Futuro
+			it { subject.get_codigo_moeda('02', 400).must_equal '02' } # Dólar Americano Comercial (Venda)
+			it { subject.get_codigo_moeda('03', 400).must_equal '03' } # Dólar Americano Turismo (Venda)
+			it { subject.get_codigo_moeda('04', 400).must_equal '04' } # ITRD
+			it { subject.get_codigo_moeda('05', 400).must_equal '05' } # IDTR
+			it { subject.get_codigo_moeda('06', 400).must_equal '06' } # UFIR Diária
+			it { subject.get_codigo_moeda('07', 400).must_equal '07' } # UFIR Mensal
+			it { subject.get_codigo_moeda('08', 400).must_equal '08' } # FAJ - TR
+			it { subject.get_codigo_moeda('09', 400).must_equal '09' } # Real
+			it { subject.get_codigo_moeda('10', 400).must_equal '10' } # TR
+			it { subject.get_codigo_moeda('11', 400).must_equal '11' } # IGPM
+			it { subject.get_codigo_moeda('12', 400).must_equal '12' } # CDI
+			it { subject.get_codigo_moeda('13', 400).must_equal '13' } # Percentual do CDI
+			it { subject.get_codigo_moeda('14', 400).must_equal '14' } # Euro
+			it { subject.get_codigo_moeda('55', 400).must_equal '55' } 
 		end
 	end
-
 end

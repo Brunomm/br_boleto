@@ -110,7 +110,7 @@ module BrBoleto
 					info << "#{pagamento.numero_documento}".adjust_size_to(11, '0', :right)
 					info << "#{pagamento.nosso_numero}".split('').last
 					info << "#{pagamento.valor_desconto_formatado}".adjust_size_to(10,'0', :right)    # Valor do desconto bonif./dia
-					info << "#{conta.get_identificacao_emissao(pagamento.tipo_emissao)}".adjust_size_to(1, '2') # '2' : o Cliente emitiu o Boleto e o Banco somente processa o registro
+					info << "#{conta.get_identificacao_emissao(pagamento.tipo_emissao, 400)}".adjust_size_to(1, '2') # '2' : o Cliente emitiu o Boleto e o Banco somente processa o registro
 					info << ' '                                                                       # Espaço em branco ou 'N' caso o boleto possui Condições de Registro para Débito Automático
 					info << ''.adjust_size_to(10)
 					info << ' '                                                                       # Somente deverá ser preenchido com a Letra “R”, se a Empresa contratou o serviço de rateio de crédito, caso não, informar Branco

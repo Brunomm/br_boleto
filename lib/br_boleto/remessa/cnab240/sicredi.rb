@@ -81,6 +81,16 @@ module BrBoleto
 
 				############################ SEGMENTO P ################################
 
+					# Dígito Verificador da Agência 
+					def segmento_p_posicao_023_a_023
+						''.adjust_size_to(1)
+					end
+
+					# Forma de Cadastr. do Título no Banco
+					def segmento_p_posicao_059_a_059(pagamento)
+						'2'
+					end
+
 					# segmento_p_posicao_024_a_057
 					# DESCRIÇÃO                     TAMANHO       POSIÇÃO
 					# ---------------------------------------------------------
@@ -98,6 +108,7 @@ module BrBoleto
 						complemento << "#{pagamento.nosso_numero}".adjust_size_to(20, '0', :right)
 						complemento.adjust_size_to(34, '0')
 					end
+
 
 					# segmento_p_posicao_063_a_077
 					# DESCRIÇÃO                      TAMANHO     POSIÇÃO

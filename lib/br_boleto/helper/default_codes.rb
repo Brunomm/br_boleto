@@ -225,13 +225,22 @@ module BrBoleto
 					# 4 = Cobrança Descontada
 					# 5 = Cobrança Vendor
 					#
-				def get_tipo_cobranca(code)
+				def get_tipo_cobranca(code, cnab)
 					"#{code}".adjust_size_to(1, '0', :right)
-					equivalent_tipo_cobranca[code] || code
+					send("equivalent_tipo_cobranca_#{cnab}")[code] || code
 				end
 				# Código adotado pela FEBRABAN, para identificar a característica dos títulos
 	         # dentro das modalidades de cobrança existentes no banco.
-				def equivalent_tipo_cobranca
+				def equivalent_tipo_cobranca_240
+					{
+						'1' => '1', # Cobrança Simples
+						'2' => '2', # Cobrança Vinculada
+						'3' => '3', # Cobrança Caucionada
+						'4' => '4', # Cobrança Descontada
+						'5' => '5', # Cobrança Vendor
+					}
+				end	
+				def equivalent_tipo_cobranca_400
 					{
 						'1' => '1', # Cobrança Simples
 						'2' => '2', # Cobrança Vinculada
@@ -250,13 +259,20 @@ module BrBoleto
 					# 2 = Verso do Bloqueto
 					# 3 = Corpo de Instruções da Ficha de Compensação do Bloqueto
 					#
-				def get_tipo_impressao(code)
+				def get_tipo_impressao(code, cnab)
 					"#{code}".adjust_size_to(1, '0', :right)
-					equivalent_tipo_impressao[code] || code
+					send("equivalent_tipo_impressao_#{cnab}")[code] || code
 				end
 				# Código adotado pela FEBRABAN para identificar o responsável e a forma de emissão do  Boleto de Pagamento.
 				# Os códigos '4' e '5' só serão aceitos para código de movimento para remessa '31'
-				def equivalent_tipo_impressao
+				def equivalent_tipo_impressao_240
+					{
+						'1' => '1', # Frente do Bloqueto
+						'2' => '2', # Verso do Bloqueto
+						'3' => '3', # Corpo de Instruções da Ficha de Compensação do Bloqueto
+					}
+				end
+				def equivalent_tipo_impressao_400
 					{
 						'1' => '1', # Frente do Bloqueto
 						'2' => '2', # Verso do Bloqueto
@@ -277,13 +293,24 @@ module BrBoleto
 					# 7 = Banco Emitente - Aberta
 					# 8 = Banco Emitente - Auto-envelopável
 					#
-				def get_identificacao_emissao(code)
+				def get_identificacao_emissao(code, cnab)
 					"#{code}".adjust_size_to(1, '0', :right)
-					equivalent_identificacao_emissao[code] || code
+					send("equivalent_identificacao_emissao_#{cnab}")[code] || code
 				end
 				# Código adotado pela FEBRABAN para identificar o responsável e a forma de emissão do  Boleto de Pagamento.
 				# Os códigos '4' e '5' só serão aceitos para código de movimento para remessa '31'
-				def equivalent_identificacao_emissao
+				def equivalent_identificacao_emissao_240
+					{
+						'1' => '1', # Banco Emite
+						'2' => '2', # Cliente Emite
+						'3' => '3', # Banco Pré-emite e Cliente Complementa
+						'4' => '4', # Banco Reemite
+						'5' => '5', # Banco Não Reemite
+						'7' => '7', # Banco Emitente - Aberta
+						'8' => '8', # Banco Emitente - Auto-envelopável
+					}
+				end
+				def equivalent_identificacao_emissao_400
 					{
 						'1' => '1', # Banco Emite
 						'2' => '2', # Cliente Emite
@@ -446,12 +473,30 @@ module BrBoleto
 					# 13 =  Percentual do CDI
 					# 14 =  Euro
 					#
-				def get_codigo_moeda(code)
+				def get_codigo_moeda(code, cnab)
 					"#{code}".adjust_size_to(2, '0', :right)
-					equivalent_codigo_moeda[code] || code
+					send("equivalent_codigo_moeda_#{cnab}")[code] || code
 				end
 				# Código adotado pela FEBRABAN para identificar a moeda referenciada no Título
-				def equivalent_codigo_moeda
+				def equivalent_codigo_moeda_240
+					{
+						'01'  => '01', # Reservado para Uso Futuro
+						'02'  => '02', # Dólar Americano Comercial (Venda)
+						'03'  => '03', # Dólar Americano Turismo (Venda)
+						'04'  => '04', # ITRD
+						'05'  => '05', # IDTR
+						'06'  => '06', # UFIR Diária
+						'07'  => '07', # UFIR Mensal
+						'08'  => '08', # FAJ - TR
+						'09'  => '09', # Real
+						'10'  => '10', # TR
+						'11'  => '11', # IGPM
+						'12'  => '12', # CDI
+						'13'  => '13', # Percentual do CDI
+						'14'  => '14', # Euro
+					}
+				end
+				def equivalent_codigo_moeda_400
 					{
 						'01'  => '01', # Reservado para Uso Futuro
 						'02'  => '02', # Dólar Americano Comercial (Venda)
