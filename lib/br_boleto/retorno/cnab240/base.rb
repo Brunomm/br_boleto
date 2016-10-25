@@ -51,6 +51,7 @@ module BrBoleto
 				
 				def segmento_t_fields #:doc:
 					{ #    ATRIBUTO               POSIÇÃO DA LINHA
+						codigo_movimento_retorno:      16..17,
 						agencia_com_dv:                18..23,
 						agencia_sem_dv:                18..22,
 						numero_conta_com_dv:           24..36,
