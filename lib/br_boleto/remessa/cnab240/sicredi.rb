@@ -140,6 +140,16 @@ module BrBoleto
 
 				############################ SEGMENTO R ################################
 
+					# Código do desconto 2
+					def segmento_r_posicao_018_a_018(pagamento)
+						'2'
+					end
+
+					# Código do desconto 3
+					def segmento_r_posicao_042_a_042(pagamento)
+						'2'
+					end
+
 					# Codigo da multa 
 					# O Sicredi apenas aceita o campo multa preenchido com '2' - Percentual.
 					# 1 posição
