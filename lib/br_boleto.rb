@@ -75,6 +75,7 @@ module BrBoleto
 		autoload :Bradesco
 		autoload :Unicred
 		autoload :Sicredi
+		autoload :Cecred
 	end
 	
 	module Boleto
@@ -86,6 +87,7 @@ module BrBoleto
 		autoload :Bradesco
 		autoload :Unicred
 		autoload :Sicredi
+		autoload :Cecred
 	end
 
 
