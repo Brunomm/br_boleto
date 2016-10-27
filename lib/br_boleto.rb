@@ -105,6 +105,7 @@ module BrBoleto
 			autoload :Bradesco
 			autoload :Unicred
 			autoload :Sicredi
+			autoload :Cecred
 		end
 		module Cnab400
 			extend ActiveSupport::Autoload
@@ -128,6 +129,7 @@ module BrBoleto
 			autoload :Bradesco
 			autoload :Unicred
 			autoload :Sicredi
+			autoload :Cecred
 		end
 		module Cnab400
 			extend ActiveSupport::Autoload
