@@ -88,13 +88,11 @@ module BrBoleto
 					end
 
 					# Forma de Cadastr. do Título no Banco
-					# TOTAL = 1 posição 
 					def segmento_p_posicao_059_a_059(pagamento)
 						'1' 
 					end
 
 					# Tipo de Documento
-					# TOTAL = 1 posição 
 					def segmento_p_posicao_060_a_060
 						'1'
 					end
@@ -106,6 +104,16 @@ module BrBoleto
 						segmento = "#{pagamento.numero_documento}".adjust_size_to(15, '0', :right)
 					end
 
+					# Código para Protesto
+					def segmento_p_posicao_221_a_221(pagamento)
+						cod_protesto = '3'
+						"#{conta.get_codigo_protesto(cod_protesto)}".adjust_size_to(1, '3')
+					end
+
+					# Código para Baixa/Devolução ('1' = Baixar / Devolver , '2' = Não Baixar / Não Devolver)
+					def segmento_p_posicao_224_a_224
+						'2'  
+					end
 
 					# Número de Dias para Baixa/Devolução
 					# Para o Cecred esse espaço deve ter 'Brancos'

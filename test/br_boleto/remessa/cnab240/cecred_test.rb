@@ -150,6 +150,27 @@ describe BrBoleto::Remessa::Cnab240::Cecred do
 		end
 	end
 
+	describe "#segmento_p_posicao_221_a_221(pagamento)" do
+		it "deve ter 1 posição" do
+			subject.segmento_p_posicao_221_a_221(pagamento).size.must_equal 1
+		end
+
+		it "deve conter o Código para Protesto" do	
+			subject.segmento_p_posicao_221_a_221(pagamento).must_equal '3'
+		end
+	end
+
+	describe "#segmento_p_posicao_224_a_224" do
+		it "deve ter 1 posição" do
+			subject.segmento_p_posicao_224_a_224.size.must_equal 1
+		end
+
+		it "deve conter o Código para Baixa/Devolução" do	
+			subject.segmento_p_posicao_224_a_224.must_equal '2'
+		end
+	end
+
+
 	describe "#complemento_trailer_lote" do
 		it "deve ter 217 posições" do
 			subject.complemento_trailer_lote(lote, 5).size.must_equal 217
