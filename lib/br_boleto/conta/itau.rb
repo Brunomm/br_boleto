@@ -4,27 +4,38 @@ module BrBoleto
 		class Itau < BrBoleto::Conta::Base
 
 			# MODALIDADE CARTEIRA:
-			#      __________________________________________________________________
-			#     | Carteira |  Descrição                                            |
-			#		|	107     |  Sem registro com emissão integral – 15 posições     | 
-			#		|	109     |  Direta eletrônica sem emissão – simples             | 
-			#		|	112     |  --------------------------------------------------- | 
-			#		|	121     |  --------------------------------------------------- | 
-			#		|	122     |  --------------------------------------------------- | 
-			#		|	126     |  --------------------------------------------------- | 
-			#		|	131     |  --------------------------------------------------- | 
-			#		|	142     |  --------------------------------------------------- | 
-			#		|	143     |  --------------------------------------------------- | 
-			#		|	146     |  --------------------------------------------------- | 
-			#		|	150     |  --------------------------------------------------- | 
-			#		|	168     |  --------------------------------------------------- |
-			#		|	169     |  --------------------------------------------------- |
-			#		|	174     | Sem registro emissão parcial com protesto borderô    | 
-			#		|	175     | Sem registro sem emissão com protesto eletrônico     | 
-			#		|	196     | Sem registro com emissão e entrega – 15 posições     | 
-			#		|	198     | Sem registro sem emissão 15 dígitos                  |
-			#     ------------------------------------------------------------------
-
+			#      _______________________________________________________________________
+			#     | Carteira |  Descrição                                                |
+			#		|	104     |  Escritural Eletrônica - Carnê                            |
+			#		|	105     |  Escritural Eletrônica - Dólar - Carnê                    |
+			#		|	107     |  Sem registro com emissão integral - 15 posições          |
+			#		|	108     |  Direta eletrônica emissão integral – carnê               |
+			#		|	109     |  Direta eletrônica sem emissão - simples                  | 
+			#		|	112     |  Escritural eletrônica - simples/contratual               | 
+			#		|	113     |  Escritural Eletrônica - TR - Carnê                       | 
+			#		|	116     |  Escritural Carnê com IOF 0,38%                           | 
+			#		|	117     |  Escritural Carnê com IOF 2,38%                           | 
+			#		|	119     |  Escritural Carnê com IOF 7,38%                           | 
+			#		|	121     |  Direta eletrônica emissão parcial - simples/contratual   | 
+			#		|	122     |  Sem registro - 15 posições                               | 
+			#		|	126     |  Direta Eletrônica Sem Emissão - Seguros                  | 
+			#		|	131     |  Direta Eletrônica com Valor em Aberto                    | 
+			#		|	134     |  Escritural com IOF 0,38%                                 | 
+			#		|	135     |  Escritural com IOF 2,38%                                 | 
+			#		|	136     |  Escritural com IOF 7,38%                                 | 
+			#		|	142     |  Sem registro - 15 posições                               | 
+			#		|	143     |  Sem registro - 15 posições                               | 
+			#		|	146     |  Direta eletrônica                                        | 
+			#		|	150     |  Direta eletrônica sem emissão - Dolar                    | 
+			#		|	168     |  Direta eletrônica sem emissão - TR                       |
+			#		|	169     |  Sem registro emissão Parcial Seguros C/IOF 7%            |
+			#		|	174     |  Sem registro emissão parcial com protesto borderô        | 
+			#		|	175     |  Sem registro sem emissão com protesto eletrônico         | 
+			#		|	180     |  Direta Eletrônica emissão integral - simples/contratual  | 
+			#		|	191     |  Duplicatas - Transferência de Desconto                   | 
+			#		|	196     |  Sem registro com emissão e entrega – 15 posições         | 
+			#		|	198     |  Sem registro sem emissão 15 dígitos                      |
+			#     ------------------------------------------------------------------------
 
 			def default_values
 				super.merge({
@@ -80,19 +91,19 @@ module BrBoleto
 
       	# Carteiras suportadas
 			def carteiras_suportadas
-				%w[107 109 112 121 122 126 131 142 143 146 150 169 175 176 178 196 198]
+				%w[104 105 107 108 109 112 113 116 117 119 121 122 126 131 134 135 136 142 143 146 150 168 169 174 175 180 191 196 198]
 			end
 
 			# As carteiras de cobrança 107, 122, 142, 143, 196 e 198 são carteiras especiais,
 			# na qual são utilizadas 15 posições numéricas para identificação do título
 			# liquidado (8 do Nosso Número e 7 do Seu Número).
-			def carteiras_especiais
+			def carteiras_especiais_codigo_barras
 				%w(107 122 142 143 196 198)
 			end
 
 			# Carteiras que devem ser calculadas o módulo 10 usando carteira e número do documento.
-			def carteiras_com_calculo_mod_10
-				%w(126 131 145 146 150 168)
+			def carteiras_especiais_nosso_numero_dv
+				%w(126 131 146 150 168)
 			end
 
 		end

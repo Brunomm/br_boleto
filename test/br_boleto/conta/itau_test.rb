@@ -46,7 +46,7 @@ describe BrBoleto::Conta::Itau do
 			end
 			it "valores aceitos" do
 				subject.carteira = '04'
-				must_be_message_error(:carteira, :custom_inclusion, {list: '107, 109, 112, 121, 122, 126, 131, 142, 143, 146, 150, 169, 175, 176, 178, 196, 198'})
+				must_be_message_error(:carteira, :custom_inclusion, {list: '104, 105, 107, 108, 109, 112, 113, 116, 117, 119, 121, 122, 126, 131, 134, 135, 136, 142, 143, 146, 150, 168, 169, 174, 175, 180, 191, 196, 198'})
 			end
 		end
 		context 'Validações padrões da conta_corrente' do
