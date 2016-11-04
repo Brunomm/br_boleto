@@ -144,7 +144,7 @@ module BrBoleto
 					# 1 posição
 					#
 					def segmento_p_posicao_058_a_058
-						"#{conta.get_tipo_cobranca(conta.codigo_carteira)}".adjust_size_to(1, '1')
+						"#{conta.get_tipo_cobranca(conta.codigo_carteira, 240)}".adjust_size_to(1, '1')
 					end
 
 					# Forma de Cadastr. do Título no Banco
@@ -165,7 +165,7 @@ module BrBoleto
 					# 1 posição
 					#
 					def segmento_p_posicao_061_a_061(pagamento)
-						"#{conta.get_identificacao_emissao(pagamento.emissao_boleto)}".adjust_size_to(1, '2')
+						"#{conta.get_identificacao_emissao(pagamento.emissao_boleto, 240)}".adjust_size_to(1, '2')
 					end
 
 					# Identificação da Distribuição
@@ -237,7 +237,7 @@ module BrBoleto
 					# Padrão FEBRABAN = (1 = Valor fixo e 2 = Percentual, 3 = isento)
 					#
 					def segmento_p_posicao_118_a_118(pagamento) 
-						"#{conta.get_codigo_juros_mora(pagamento.codigo_juros)}".adjust_size_to(1, '3')
+						"#{conta.get_codigo_juros(pagamento.codigo_juros)}".adjust_size_to(1, '3')
 					end
 
 					# Data do Juros de Mora 
@@ -329,7 +329,7 @@ module BrBoleto
 					#
 					def segmento_p_posicao_228_a_229(pagamento)
 						moeda = "#{pagamento.codigo_moeda}".rjust(2, '0')
-						"#{conta.get_codigo_moeda(moeda)}".adjust_size_to(2, '0')
+						"#{conta.get_codigo_moeda(moeda, 240)}".adjust_size_to(2, '0')
 					end
 
 					# Nº do Contrato da Operação de Crédito (Uso do banco)

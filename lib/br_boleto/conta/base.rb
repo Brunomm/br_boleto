@@ -67,6 +67,8 @@ module BrBoleto
 			# Por isso foi criado um alias para que cada um utilize a nomenclatura que preferir.
 			attr_accessor :convenio
 			attr_accessor :convenio_dv
+
+			alias_attribute :codigo_empresa,         :convenio
 			alias_attribute :codigo_cedente,         :convenio
 			alias_attribute :codigo_cedente_dv,      :convenio_dv
 			alias_attribute :codigo_beneficiario,    :convenio
@@ -243,9 +245,9 @@ module BrBoleto
 			# Agência, código do cedente ou nosso número.
 			# <b>Esse campo é específico para cada banco</b>.
 			#
-			# @return [String] - Corresponde aos campos "Agencia / Codigo do Cedente".
+			# @return [String] - Corresponde aos campos "Agencia / Codigo do Cedente-Digito Verificador".
 			def agencia_codigo_cedente
-				"#{agencia} / #{codigo_cedente}"
+				"#{agencia} / #{codigo_cedente}-#{codigo_cedente_dv}"
 			end
 
 			# Código da Carteira ou Tipo de Cobrança

@@ -30,8 +30,8 @@ describe BrBoleto::Remessa::Cnab400::Bradesco do
 		it "deve trazer as informações em suas posições quando o parametro for :detalhe" do
 			conta.agencia           = 1234
 			conta.agencia_dv        = 1
-			conta.codigo_cedente    = 123456
-			conta.codigo_cedente_dv = 2
+			conta.conta_corrente    = 89755
+			conta.conta_corrente_dv = 7
 			conta.carteira          = 21
 			result = subject.informacoes_da_conta(:detalhe)
 
@@ -39,8 +39,8 @@ describe BrBoleto::Remessa::Cnab400::Bradesco do
 			result[3].must_equal       '0'  
 			result[4..6].must_equal    '021'  
 			result[7..11].must_equal   '01234'    # Agencia
-			result[12..18].must_equal  '0123456'  # Codigo cedente
-			result[19].must_equal      '2'        # codigo_cedente DV
+			result[12..18].must_equal  '0089755'  # Conta Corrente
+			result[19].must_equal      '7'        # Conta Corrente DV
 		end
 	end
 
@@ -134,21 +134,31 @@ describe BrBoleto::Remessa::Cnab400::Bradesco do
 		end
 		it "deve conter as informações nas posições corretas" do
 			# pagador.tipo_cpf_cnpj =  '1'
-			pagador.cpf_cnpj      =  '12345678901'
-			pagador.nome          =  'nome pagador'
-			pagador.endereco      =  'rua - bairro'
-			pagador.cep           =  '89885-001'
-			pagador.nome_avalista =  'Avalista'
+			pagador.cpf_cnpj           =  '12345678901'
+			pagador.nome               =  'nome pagador'
+			pagador.endereco           =  'rua do pagador'
+			pagador.bairro             =  'bairro do pagador'
+			pagador.cidade             =  'Chapecó'
+			pagador.uf                 =  'SC'
+			pagador.cep                =  '89885-001'
+			pagador.nome_avalista      =  'Avalista'
+			pagador.documento_avalista =  '840.106.990-43'
 
 			result = subject.informacoes_do_sacado(pagamento, 2)
 			result.size.must_equal 176
 
-			result[00..01].must_equal "01"                               # "Tipo de Inscrição do Pagador: "01" = CPF / "02" = CNPJ
-			result[02..15].must_equal '00012345678901'                   # Número do CNPJ ou CPF do Pagador
-			result[16..55].must_equal 'nome pagador'.adjust_size_to(40)  # Nome do Pagador
-			result[56..95].must_equal 'rua - bairro'.adjust_size_to(40)  # Endereço do Pagador
-			result[108..115].must_equal '89885001'                       #  CEP do Pagador
-			result[116..175].must_equal 'Avalista'.adjust_size_to(60)    # Observações/Mensagem ou Sacador/Avalista
+			result[00..01].must_equal "01"                                    # Tipo de Inscrição do Pagador: "01" = CPF / "02" = CNPJ
+			result[02..15].must_equal '00012345678901'                        # Número do CNPJ ou CPF do Pagador
+			result[16..55].must_equal 'nome pagador'.adjust_size_to(40)       # Nome do Pagador
+			
+			result[56..73].must_equal 'rua do pagador'.adjust_size_to(18)     # Endereço do Pagador
+			result[74..83].must_equal 'bairro do pagador'.adjust_size_to(10)  # Endereço do Pagador
+			result[84..93].must_equal 'Chapecó'.adjust_size_to(10)            # Endereço do Pagador
+			result[94..95].must_equal 'SC'.adjust_size_to(2)                  # Endereço do Pagador
+			result[108..115].must_equal '89885001'                            # CEP do Pagador
+
+			result[116..129].must_equal '84010699043'.adjust_size_to(14)      # Observações/Mensagem ou Sacador/Avalista
+			result[130..175].must_equal 'Avalista'.adjust_size_to(46)         # Observações/Mensagem ou Sacador/Avalista
 		end
 	end
 end

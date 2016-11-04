@@ -53,7 +53,8 @@ describe BrBoleto::Retorno::Cnab240::Base do
 			pagamento.valor_ocorrencia_sacado.must_equal                0.0
 			pagamento.complemento_ocorrencia_sacado.must_equal          ""
 			pagamento.codigo_ocorrencia_banco_correspondente.must_equal "756"
-			pagamento.nosso_numero_banco_correspondente.must_equal      ""
+			pagamento.nosso_numero_banco_correspondente.must_equal      "00000000000000000000"
+			pagamento.codigo_movimento_retorno.must_equal               "06"
 		end
 		it "valores para o pagamento 2" do
 			pagamento = subject.pagamentos[1]
@@ -93,7 +94,8 @@ describe BrBoleto::Retorno::Cnab240::Base do
 			pagamento.valor_ocorrencia_sacado.must_equal                0.0
 			pagamento.complemento_ocorrencia_sacado.must_equal          ""
 			pagamento.codigo_ocorrencia_banco_correspondente.must_equal "304"
-			pagamento.nosso_numero_banco_correspondente.must_equal      ""
+			pagamento.nosso_numero_banco_correspondente.must_equal      "00000000000000000000"
+			pagamento.codigo_movimento_retorno.must_equal               "06"
 		end
 		it "valores para o pagamento 3" do
 			pagamento = subject.pagamentos[2]
@@ -133,7 +135,8 @@ describe BrBoleto::Retorno::Cnab240::Base do
 			pagamento.valor_ocorrencia_sacado.must_equal                0.0
 			pagamento.complemento_ocorrencia_sacado.must_equal          ""
 			pagamento.codigo_ocorrencia_banco_correspondente.must_equal "100"
-			pagamento.nosso_numero_banco_correspondente.must_equal      ""
+			pagamento.nosso_numero_banco_correspondente.must_equal      "00000000000000000000"
+			pagamento.codigo_movimento_retorno.must_equal               "06"
 		end
 		it "valores para o pagamento 4" do
 			pagamento = subject.pagamentos[3]
@@ -173,7 +176,8 @@ describe BrBoleto::Retorno::Cnab240::Base do
 			pagamento.valor_ocorrencia_sacado.must_equal                0.0
 			pagamento.complemento_ocorrencia_sacado.must_equal          ""
 			pagamento.codigo_ocorrencia_banco_correspondente.must_equal "756"
-			pagamento.nosso_numero_banco_correspondente.must_equal      ""
+			pagamento.nosso_numero_banco_correspondente.must_equal      "00000000000000000000"
+			pagamento.codigo_movimento_retorno.must_equal               "06"
 		end
 		it "valores para o pagamento 4" do
 			pagamento = subject.pagamentos[4]
@@ -212,7 +216,8 @@ describe BrBoleto::Retorno::Cnab240::Base do
 			pagamento.valor_ocorrencia_sacado.must_equal                0.0
 			pagamento.complemento_ocorrencia_sacado.must_equal          ""
 			pagamento.codigo_ocorrencia_banco_correspondente.must_equal "756"
-			pagamento.nosso_numero_banco_correspondente.must_equal      ""
+			pagamento.nosso_numero_banco_correspondente.must_equal      "00000000000000000000"
+			pagamento.codigo_movimento_retorno.must_equal               "06"
 		end
 	end
 end

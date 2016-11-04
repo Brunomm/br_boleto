@@ -72,9 +72,9 @@ module BrBoleto
 			#    ----------------------------------------------------------------------------------------------------
 			#
 			def codigo_de_barras_do_banco
-				"#{conta.agencia}#{conta.carteira}#{numero_documento}#{conta.conta_corrente}0"
+				conta_corrente = "#{conta.conta_corrente}".adjust_size_to(7, '0', :right)
+				"#{conta.agencia}#{conta.carteira}#{numero_documento}#{conta_corrente}0"
 			end
-
 		end
 	end
 end

@@ -16,6 +16,12 @@ module BrBoleto
 			alias_attribute :codigo_cedente, :numero_conta_sem_dv
 			alias_attribute :numero_conta,   :numero_conta_sem_dv
 			
+			
+			# CÓDIGO DE MOVIMENTO RETORNO
+			# Tamanho    Posição
+			#   2         16-17
+			attr_accessor :codigo_movimento_retorno
+
 			# IDENTIFICAÇÃO DO TÍTULO
 			# Tamanho    Posição
 			#   1         37-37

@@ -3,10 +3,6 @@ module BrBoleto
 	module Conta
 		class Bradesco < BrBoleto::Conta::Base
 
-			# codigo da empresa (informado pelo Bradesco no cadastramento)
-			attr_accessor :codigo_empresa
-
-
 			# MODALIDADE CARTEIRA:
 			#      _______________________________________________
 			#     | Carteira | Descrição                         |

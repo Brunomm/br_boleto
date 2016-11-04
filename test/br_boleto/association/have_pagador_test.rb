@@ -85,6 +85,7 @@ describe BrBoleto::HavePagador do
 		must_be_message_error(:base, "#{BrBoleto::Pagador.human_attribute_name(:uf)} #{get_message(:blank, {})}")
 	end
 
+
 	context "o valor setado nas validações devem obedecer a classe que inclui a pagador. Mesmo que a pagador tenha uma validação diferente" do
 		before do
 			subject.pagador.valid_endereco_required = true
@@ -107,4 +108,27 @@ describe BrBoleto::HavePagador do
 			must_be_message_error(:base, "#{BrBoleto::Pagador.human_attribute_name(:uf)} #{get_message(:blank, {})}")
 		end
 	end
+
+	it 'Validação para avalsita' do
+		subject.stubs(:valid_avalista_required).returns(true)
+		must_be_message_error(:base, "#{BrBoleto::Pagador.human_attribute_name(:nome_avalista)} #{get_message(:blank, {})}")
+		must_be_message_error(:base, "#{BrBoleto::Pagador.human_attribute_name(:documento_avalista)} #{get_message(:blank, {})}")
+	end
+	context "o valor setado nas validações devem obedecer a classe que inclui a pagador. Mesmo que a pagador tenha uma validação diferente" do
+		before do
+			subject.pagador.valid_avalista_required = true
+		end
+
+		it "Se os metodos do objeto que temm a pagador tiverem valor nos seus metodos deve permanecer esses valores" do
+			subject.stubs(:valid_avalista_required).returns(false)
+			wont_be_message_error(:base, "#{BrBoleto::Pagador.human_attribute_name(:nome_avalista)} #{get_message(:blank, {})}")
+			wont_be_message_error(:base, "#{BrBoleto::Pagador.human_attribute_name(:documento_avalista)} #{get_message(:blank, {})}")
+		end
+
+		it "Deve considerar as validações setadas na pagador se não houver os metodos sobrescritos no objeto que tem a pagador" do
+			must_be_message_error(:base, "#{BrBoleto::Pagador.human_attribute_name(:nome_avalista)} #{get_message(:blank, {})}")
+			must_be_message_error(:base, "#{BrBoleto::Pagador.human_attribute_name(:documento_avalista)} #{get_message(:blank, {})}")
+		end
+	end
+	
 end

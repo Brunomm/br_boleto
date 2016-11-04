@@ -100,8 +100,8 @@ describe BrBoleto::Remessa::Cnab240::Bradesco do
 			subject.informacoes_da_conta[18..18].must_equal('8')			
 		end
 
-		it "5 - Quinta parte = Se o conta_corrente_dv não for 2 digitos deve ter 1 zero" do
-			subject.informacoes_da_conta[19].must_equal('0')
+		it "5 - Quinta parte = Se o conta_corrente_dv não for 2 digitos deve ter 1 espaço em branco" do
+			subject.informacoes_da_conta[19].must_equal(' ')
 		end
 	end
 
@@ -134,8 +134,8 @@ describe BrBoleto::Remessa::Cnab240::Bradesco do
 			subject.complemento_p(pagamento)[12..12].must_equal '7'
 		end
 
-		it "3 - Terceira parte = Se o conta_corrente_dv não for 2 digitos deve ter 1 zero" do
-			subject.complemento_p(pagamento)[13..13].must_equal '0'			
+		it "3 - Terceira parte = Se o conta_corrente_dv não for 2 digitos deve ter 1 espaço em branco" do
+			subject.complemento_p(pagamento)[13..13].must_equal ' '			
 		end
 
 		it "4 - Quarta parte = carteira com 3 posicoes ajustados com zeros a esquerda" do
@@ -163,7 +163,17 @@ describe BrBoleto::Remessa::Cnab240::Bradesco do
 			subject.complemento_p(pagamento)[33..33].must_equal '0'
 		end
 
+	end
 
+	describe "#segmento_p_numero_do_documento" do
+		it "deve ter 15 posições" do
+			subject.segmento_p_numero_do_documento(pagamento).size.must_equal 15
+		end
+
+		it "deve conter o numero do documento 15 posicoes - ajustados com zeros a esquerda" do	
+			pagamento.expects(:numero_documento).returns("977897")
+			subject.segmento_p_numero_do_documento(pagamento).must_equal '000000000977897'
+		end
 	end
 
 	describe "#complemento_trailer_lote" do

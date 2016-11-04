@@ -22,7 +22,7 @@ module BrBoleto
 						segmento_r << segmento_r_posicao_009_a_013(sequencial)
 						segmento_r << segmento_r_posicao_014_a_014
 						segmento_r << segmento_r_posicao_015_a_015
-						segmento_r << segmento_r_posicao_016_a_017
+						segmento_r << segmento_r_posicao_016_a_017(pagamento)
 						segmento_r << segmento_r_posicao_018_a_018(pagamento)
 						segmento_r << segmento_r_posicao_019_a_026(pagamento)
 						segmento_r << segmento_r_posicao_027_a_041(pagamento)
@@ -96,8 +96,9 @@ module BrBoleto
 					# Código de Movimento Remessa - 01 = Entrada de Titulos
 					# 2 posições
 					#
-					def segmento_r_posicao_016_a_017
-						'01'
+					def segmento_r_posicao_016_a_017(pagamento)
+						code = "#{pagamento.identificacao_ocorrencia}".rjust(2, '0')
+						"#{conta.get_codigo_movimento_remessa(code, 240)}".adjust_size_to(2, '0')
 					end
 
 					# Código do desconto 2
@@ -147,8 +148,7 @@ module BrBoleto
 					# Padrão FEBRABAN = (1 = Valor fixo e 2 = Percentual, 3 = isento)
 					#
 					def segmento_r_posicao_066_a_066(pagamento)
-						cod = "#{pagamento.codigo_multa}".adjust_size_to(1, '3')
-						cod.in?(['1','2','3']) ? cod : '3'
+						"#{conta.get_codigo_multa(pagamento.codigo_multa)}".adjust_size_to(1, '3')
 					end
 
 					# Data da multa

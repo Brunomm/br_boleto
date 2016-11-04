@@ -22,7 +22,7 @@ module BrBoleto
 						segmento_s << segmento_s_posicao_009_a_013(sequencial)
 						segmento_s << segmento_s_posicao_014_a_014
 						segmento_s << segmento_s_posicao_015_a_015
-						segmento_s << segmento_s_posicao_016_a_017
+						segmento_s << segmento_s_posicao_016_a_017(pagamento)
 						segmento_s << segmento_s_posicao_018_a_018(pagamento)
 						if pagamento.tipo_impressao == '3'
 							segmento_s << segmento_s_tipo_impressao_3(pagamento)
@@ -80,8 +80,9 @@ module BrBoleto
 					# Código de Movimento Remessa - 01 = Entrada de Titulos
 					# 2 posições
 					#
-					def segmento_s_posicao_016_a_017
-						'01'
+					def segmento_s_posicao_016_a_017(pagamento)
+						code = "#{pagamento.identificacao_ocorrencia}".rjust(2, '0')
+						"#{conta.get_codigo_movimento_remessa(code, 240)}".adjust_size_to(2, '0')
 					end
 
 					# Tipo de impressão

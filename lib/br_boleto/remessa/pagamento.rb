@@ -157,25 +157,39 @@ module BrBoleto
 
 			# Espécie do Título:
 			# Default: 01
-			#  01 = Duplicata Mercantil
-			#  02 = Nota Promissória
-			#  03 = Nota de Seguro
-			#  05 = Recibo
-			#  06 = Duplicata Rural
-			#  08 = Letra de Câmbio
-			#  09 = Warrant
-			#  10 = Cheque
-			#  11 = Nota de Débito
-			#  12 = Duplicata de Serviço
-			#  13 = Nota de Débito
-			#  14 = Triplicata Mercantil
-			#  15 = Triplicata de Serviço
-			#  18 = Fatura
-			#  20 = Apólice de Seguro
-			#  21 = Mensalidade Escolar
-			#  22 = Parcela de Consórcio
-			#  30 = Boleto de Proposta
-			#  99 = Outros
+				# 01 =  Cheque
+				# 02 =  Duplicata Mercantil
+				# 03 =  Duplicata Mercantil p/ Indicação
+				# 04 =  Duplicata de Serviço
+				# 05 =  Duplicata de Serviço p/ Indicação
+				# 06 =  Duplicata Rural
+				# 07 =  Letra de Câmbio
+				# 08 =  Nota de Crédito Comercial
+				# 09 =  Nota de Crédito a Exportação
+				# 10 =  Nota de Crédito Industrial
+				# 11 =  Nota de Crédito Rural
+				# 12 =  Nota Promissória
+				# 13 =  Nota Promissória Rural
+				# 14 =  Triplicata Mercantil
+				# 15 =  Triplicata de Serviço
+				# 16 =  Nota de Seguro
+				# 17 =  Recibo
+				# 18 =  Fatura
+				# 19 =  Nota de Débito
+				# 20 =  Apólice de Seguro
+				# 21 =  Mensalidade Escolar
+				# 22 =  Parcela de Consórcio
+				# 23 =  Nota Fiscal
+				# 24 =  Documento de Dívida
+				# 25 =  Cédula de Produto Rural
+				# 26 =  Warrant 
+				# 27 =  Dívida Ativa de Estado
+				# 28 =  Dívida Ativa de Município
+				# 29 =  Dívida Ativa da União
+				# 30 =  Encargos condominiais
+				# 31 =  Cartão de Crédito
+				# 32 =  Boleto de Proposta
+				# 99 =  Outros
 			#  CNAB: 240 e 400
 			attr_accessor :especie_titulo
 

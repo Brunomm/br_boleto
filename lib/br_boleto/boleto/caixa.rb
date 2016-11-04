@@ -129,7 +129,7 @@ module BrBoleto
 				@composicao_codigo_barras =  "#{conta.codigo_cedente}"
 				@composicao_codigo_barras << "#{conta.codigo_cedente_dv}"
 				@composicao_codigo_barras << "#{nosso_numero_de_3_a_5}"
-				@composicao_codigo_barras << "#{conta.get_tipo_cobranca(conta.codigo_carteira)}"
+				@composicao_codigo_barras << "#{conta.get_tipo_cobranca(conta.codigo_carteira, 240)}"
 				@composicao_codigo_barras << "#{nosso_numero_de_6_a_8}"
 				@composicao_codigo_barras << "#{identificador_de_emissao}"
 				@composicao_codigo_barras << "#{nosso_numero_de_9_a_17}"
