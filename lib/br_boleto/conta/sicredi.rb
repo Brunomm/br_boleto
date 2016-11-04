@@ -99,7 +99,12 @@ module BrBoleto
 
 			# Espécie do Título CNAB 240 
 			def equivalent_especie_titulo_240
-				super.merge({ '01' => '03' }) # Duplicata Mercantil por Indicação (DMI)
+				super.merge(
+					#  Padrão    Código para  
+					{# da GEM     o Banco
+						'01'    =>   '03', # Duplicata Mercantil por Indicação (DMI)
+						'02'    =>   '03'  # Duplicata Mercantil por Indicação (DMI)
+					})
 			end
 
 			# Espécie do Título CNAB 400

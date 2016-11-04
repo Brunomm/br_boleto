@@ -131,6 +131,7 @@ describe BrBoleto::Conta::Sicredi do
 	describe "#equivalent_especie_titulo_240" do
 		context "CÓDIGOS para o cnab 240 do Sicredi" do
 			it { subject.get_especie_titulo('01', 240).must_equal '03' }  # Duplicata Mercantil por Indicação (DMI)
+			it { subject.get_especie_titulo('02', 240).must_equal '03' }  # Duplicata Mercantil por Indicação (DMI)
 		end
 	end
 
