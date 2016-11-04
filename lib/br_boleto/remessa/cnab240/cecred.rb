@@ -83,7 +83,7 @@ module BrBoleto
 						complemento = ''
 						complemento << "#{conta.conta_corrente}".adjust_size_to(12, '0', :right)
 						complemento << "#{conta.conta_corrente_dv}".adjust_size_to(2)
-						complemento << "#{pagamento.nosso_numero}".adjust_size_to(20, '0', :right)
+						complemento << "#{pagamento.nosso_numero}".adjust_size_to(20)
 						complemento
 					end
 
