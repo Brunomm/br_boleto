@@ -74,7 +74,7 @@ module BrBoleto
 			end
 
 			def agencia_dv
-				@agencia_dv ||= ''
+				@agencia_dv ||= BrBoleto::Calculos::Modulo11FatorDe2a9RestoZero.new(agencia).to_s
 			end
 
 			# Dígito da conta corrente calculado apartir do Modulo10.
