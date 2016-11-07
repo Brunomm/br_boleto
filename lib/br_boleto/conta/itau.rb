@@ -106,6 +106,61 @@ module BrBoleto
 				%w(126 131 146 150 168)
 			end
 
+
+			# Espécie do Título
+			def equivalent_especie_titulo_240
+				super.merge(
+					#  Padrão    Código para  
+					{# da GEM     o Banco
+						'02'    =>   '01' , # DUPLICATA MERCANTIL
+						'12'    =>   '02' , # NOTA PROMISSÓRIA
+						'16'    =>   '03' , # NOTA DE SEGURO
+						'21'    =>   '04' , # MENSALIDADE ESCOLAR
+						'17'    =>   '05' , # RECIBO
+						'04'    =>   '08' , # DUPLICATA DE SERVIÇO
+						'07'    =>   '09' , # LETRA DE CÂMBIO
+						'19'    =>   '13' , # NOTA DE DÉBITOS
+						'24'    =>   '15' , # DOCUMENTO DE DÍVIDA
+						'30'    =>   '16' , # ENCARGOS CONDOMINIAIS
+						'32'    =>   '18' , # BOLETO DE PROPOSTA
+
+						'66'    =>   '06' , # CONTRATO
+						'77'    =>   '07' , # COSSEGUROS
+						'88'    =>   '17' , # CONTA DE PRESTAÇÃO DE SERVIÇOS
+					})
+			end
+
+			# Códigos de Movimento Remessa / Identificacao Ocorrência específicos do Banco
+			def equivalent_codigo_movimento_remessa_240
+				super.merge(
+					#  Padrão    Código para  
+					{# da GEM     o Banco
+						'10'   =>   '18' , # SUSTAR O PROTESTO
+						'38'   =>   '38' , # BENEFICIÁRIO NÃO CONCORDA COM A ALEGAÇÃO DO PAGADOR CÓDIGO DA ALEGAÇÃO
+						'41'   =>   '41' , # EXCLUSÃO DE SACADOR AVALISTA
+						'66'   =>   '66' , # ENTRADA EM NEGATIVAÇÃO EXPRESSA
+						'67'   =>   '67' , # NÃO NEGATIVAR (INIBE ENTRADA EM NEGATIVAÇÃO EXPRESSA
+						'68'   =>   '68' , # EXCLUIR NEGATIVAÇÃO EXPRESSA (ATÉ 15 DIAS CORRIDOS APÓS A ENTRADA EM NEGATIVAÇÃO EXPRESSA)
+						'69'   =>   '69' , # CANCELAR NEGATIVAÇÃO EXPRESSA (APÓS TÍTULO TER SIDO NEGATIVADO)
+						'93'   =>   '93' , # DESCONTAR TÍTULOS ENCAMINHADOS NO DIA
+					})
+			end
+
+			# Código para Protesto
+			def equivalent_codigo_protesto
+				super.merge(
+					#  Padrão    Código para  
+					{# da GEM     o Banco
+						'0'    =>   '0' ,  # Sem instrução
+						'07'   =>   '07' , # Negativar (Dias Corridos)
+					})
+			end
+
+			# Código para Multa
+			def equivalent_codigo_multa
+				super.merge({ '0' => '0' }) # NÃO REGISTRA A MULTA
+			end
+
 		end
 	end
 end

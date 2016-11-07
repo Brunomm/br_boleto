@@ -90,7 +90,7 @@ describe BrBoleto::Conta::Itau do
 		subject.versao_layout_lote_cnab_240.must_equal '030'
 	end
 
-		describe '#conta_corrente_dv' do
+	describe '#conta_corrente_dv' do
 		it "deve ser personalizavel pelo usuario" do
 			subject.conta_corrente_dv = 88
 			subject.conta_corrente_dv.must_equal 88
@@ -104,5 +104,46 @@ describe BrBoleto::Conta::Itau do
 
 			subject.conta_corrente_dv.must_equal 1
 		end
+	end
+
+	describe "#get_especie_titulo" do
+		context "CÓDIGOS para o cnab 240 do Bradesco" do
+			it { subject.get_especie_titulo('02', 240).must_equal '01' } # DUPLICATA MERCANTIL
+			it { subject.get_especie_titulo('12', 240).must_equal '02' } # NOTA PROMISSÓRIA
+			it { subject.get_especie_titulo('16', 240).must_equal '03' } # NOTA DE SEGURO
+			it { subject.get_especie_titulo('21', 240).must_equal '04' } # MENSALIDADE ESCOLAR
+			it { subject.get_especie_titulo('17', 240).must_equal '05' } # RECIBO
+			it { subject.get_especie_titulo('04', 240).must_equal '08' } # DUPLICATA DE SERVIÇO
+			it { subject.get_especie_titulo('07', 240).must_equal '09' } # LETRA DE CÂMBIO
+			it { subject.get_especie_titulo('19', 240).must_equal '13' } # NOTA DE DÉBITOS
+			it { subject.get_especie_titulo('24', 240).must_equal '15' } # DOCUMENTO DE DÍVIDA
+			it { subject.get_especie_titulo('30', 240).must_equal '16' } # ENCARGOS CONDOMINIAIS
+			it { subject.get_especie_titulo('32', 240).must_equal '18' } # BOLETO DE PROPOSTA
+			it { subject.get_especie_titulo('66', 240).must_equal '06' } # CONTRATO
+			it { subject.get_especie_titulo('77', 240).must_equal '07' } # COSSEGUROS
+			it { subject.get_especie_titulo('88', 240).must_equal '17' } # CONTA DE PRESTAÇÃO DE SERVIÇOS
+		end
+	end
+
+	describe "#get_codigo_movimento_remessa" do
+		context "CÓDIGOS para o cnab 240 do Bradesco" do
+			it { subject.get_codigo_movimento_remessa('10', 240).must_equal '18' } # SUSTAR O PROTESTO
+			it { subject.get_codigo_movimento_remessa('38', 240).must_equal '38' } # BENEFICIÁRIO NÃO CONCORDA COM A ALEGAÇÃO DO PAGADOR CÓDIGO DA ALEGAÇÃO
+			it { subject.get_codigo_movimento_remessa('41', 240).must_equal '41' } # EXCLUSÃO DE SACADOR AVALISTA
+			it { subject.get_codigo_movimento_remessa('66', 240).must_equal '66' } # ENTRADA EM NEGATIVAÇÃO EXPRESSA
+			it { subject.get_codigo_movimento_remessa('67', 240).must_equal '67' } # NÃO NEGATIVAR (INIBE ENTRADA EM NEGATIVAÇÃO EXPRESSA
+			it { subject.get_codigo_movimento_remessa('68', 240).must_equal '68' } # EXCLUIR NEGATIVAÇÃO EXPRESSA (ATÉ 15 DIAS CORRIDOS APÓS A ENTRADA EM NEGATIVAÇÃO EXPRESSA)
+			it { subject.get_codigo_movimento_remessa('69', 240).must_equal '69' } # CANCELAR NEGATIVAÇÃO EXPRESSA (APÓS TÍTULO TER SIDO NEGATIVADO)
+			it { subject.get_codigo_movimento_remessa('93', 240).must_equal '93' } # DESCONTAR TÍTULOS ENCAMINHADOS NO DIA
+		end
+	end
+
+	describe "#get_codigo_protesto" do
+		it { subject.get_codigo_protesto('0').must_equal '0' } # Sem instrução
+		it { subject.get_codigo_protesto('07').must_equal '07' } # Negativar (Dias Corridos)
+	end
+
+	describe "#get_codigo_multa" do
+		it { subject.get_codigo_multa('0').must_equal '0' } # NÃO REGISTRA A MULTA
 	end
 end
