@@ -14,7 +14,8 @@ describe BrBoleto::Retorno::Cnab400::Bradesco do
 			pagamento = subject.pagamentos[0]
 			pagamento.agencia_sem_dv.must_equal            "01467"
 			pagamento.numero_conta_com_dv.must_equal       "0019669"
-			pagamento.numero_conta_sem_dv.must_equal       "001966"
+			pagamento.numero_conta_dv.must_equal           "9"
+			pagamento.numero_conta.must_equal              "001966"
 			pagamento.nosso_numero.must_equal              "000000000303"
 			pagamento.carteira.must_equal                  "09"
 			pagamento.numero_documento.must_equal          "0030"
@@ -54,7 +55,8 @@ describe BrBoleto::Retorno::Cnab400::Bradesco do
 			pagamento = subject.pagamentos[1]
 			pagamento.agencia_sem_dv.must_equal            "01467"
 			pagamento.numero_conta_com_dv.must_equal       "0019669"
-			pagamento.numero_conta_sem_dv.must_equal       "001966"
+			pagamento.numero_conta_dv.must_equal           "9"
+			pagamento.numero_conta.must_equal              "001966"
 			pagamento.nosso_numero.must_equal              "51350000004P"
 			pagamento.carteira.must_equal                  "09"
 			pagamento.numero_documento.must_equal          "1146"
@@ -93,7 +95,8 @@ describe BrBoleto::Retorno::Cnab400::Bradesco do
 			pagamento = subject.pagamentos[2]
 			pagamento.agencia_sem_dv.must_equal            "01467"
 			pagamento.numero_conta_com_dv.must_equal       "0019669"
-			pagamento.numero_conta_sem_dv.must_equal       "001966"
+			pagamento.numero_conta_dv.must_equal           "9"
+			pagamento.numero_conta.must_equal              "001966"
 			pagamento.nosso_numero.must_equal              "513500000074"
 			pagamento.carteira.must_equal                  "09"
 			pagamento.numero_documento.must_equal          "1142"
@@ -132,7 +135,8 @@ describe BrBoleto::Retorno::Cnab400::Bradesco do
 			pagamento = subject.pagamentos[3]
 			pagamento.agencia_sem_dv.must_equal            "01467"
 			pagamento.numero_conta_com_dv.must_equal       "0019669"
-			pagamento.numero_conta_sem_dv.must_equal       "001966"
+			pagamento.numero_conta_dv.must_equal           "9"
+			pagamento.numero_conta.must_equal              "001966"
 			pagamento.nosso_numero.must_equal              "513500000090"
 			pagamento.carteira.must_equal                  "09"
 			pagamento.numero_documento.must_equal          "1145"
@@ -171,7 +175,8 @@ describe BrBoleto::Retorno::Cnab400::Bradesco do
 			pagamento = subject.pagamentos[4]
 			pagamento.agencia_sem_dv.must_equal            "01467"
 			pagamento.numero_conta_com_dv.must_equal       "0019669"
-			pagamento.numero_conta_sem_dv.must_equal       "001966"
+			pagamento.numero_conta_dv.must_equal           "9"
+			pagamento.numero_conta.must_equal              "001966"
 			pagamento.nosso_numero.must_equal              "513500000112"
 			pagamento.carteira.must_equal                  "09"
 			pagamento.numero_documento.must_equal          "1144"
@@ -210,7 +215,8 @@ describe BrBoleto::Retorno::Cnab400::Bradesco do
 			pagamento = subject.pagamentos[5]
 			pagamento.agencia_sem_dv.must_equal            "01467"
 			pagamento.numero_conta_com_dv.must_equal       "0019669"
-			pagamento.numero_conta_sem_dv.must_equal       "001966"
+			pagamento.numero_conta_dv.must_equal           "9"
+			pagamento.numero_conta.must_equal              "001966"
 			pagamento.nosso_numero.must_equal              "509800000028"
 			pagamento.carteira.must_equal                  "09"
 			pagamento.numero_documento.must_equal          "1053"

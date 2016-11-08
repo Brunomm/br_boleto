@@ -9,7 +9,8 @@ module BrBoleto
 
 
 						carteira:                      14..14,
-						numero_conta_sem_dv:           15..19,
+						numero_conta_dv:               '',
+						numero_conta:                  15..19,
 						nosso_numero:                  48..62,
 						data_ocorrencia:               111..116,
 						data_ocorrencia_sacado:        111..116,
