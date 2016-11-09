@@ -166,4 +166,15 @@ describe BrBoleto::Conta::Sicredi do
 		it { subject.get_identificacao_emissao('2', 400).must_equal 'B' }  # Impressão é feita pelo Beneficiário
 	end
 
+	describe "#equivalent_codigo_desconto" do
+		it { subject.get_codigo_desconto('0').must_equal '1' } # Sem Desconto
+		it { subject.get_codigo_desconto('1').must_equal '1' } # Valor Fixo Até a Data Informada
+		it { subject.get_codigo_desconto('2').must_equal '2' } # Percentual Até a Data Informada
+		it { subject.get_codigo_desconto('3').must_equal '3' } # Valor por Antecipação Dia Corrido
+		it { subject.get_codigo_desconto('4').must_equal '3' } # Valor por Antecipação Dia Úti
+		it { subject.get_codigo_desconto('5').must_equal '2' } # Percentual Sobre o Valor Nominal Dia Corrido
+		it { subject.get_codigo_desconto('6').must_equal '2' } # Percentual Sobre o Valor Nominal Dia Útil
+		it { subject.get_codigo_desconto('7').must_equal '7' } # Cancelamento de Desconto
+	end
+
 end

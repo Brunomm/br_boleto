@@ -152,6 +152,20 @@ module BrBoleto
 						'2'    =>   'B',  # Impressão é feita pelo Beneficiário
 					})
 			end
+
+			# Código adotado pelo SICREDI para identificação do tipo de desconto que deverá ser concedido.
+			def equivalent_codigo_desconto
+				{
+					'0' => '1', # Valor Fixo Até a Data Informada
+					'1' => '1', # Valor Fixo Até a Data Informada
+					'2' => '2', # Percentual Até a Data Informada
+					'3' => '3', # Valor por Antecipação Dia Corrido
+					'4' => '3', # Valor por Antecipação Dia Úti
+					'5' => '2', # Percentual Sobre o Valor Nominal Dia Corrido
+					'6' => '2', # Percentual Sobre o Valor Nominal Dia Útil
+					'7' => '7', # Cancelamento de Desconto
+				}
+			end
 		end
 	end
 end

@@ -88,7 +88,7 @@ module BrBoleto
 
 					# Forma de Cadastr. do Título no Banco
 					def segmento_p_posicao_059_a_059(pagamento)
-						'2'
+						'1'
 					end
 
 					# segmento_p_posicao_024_a_057
@@ -129,6 +129,7 @@ module BrBoleto
 					def segmento_p_posicao_119_a_126(pagamento)
 						''.adjust_size_to(8, '0')
 					end
+
 
 					# Código para Baixa/Devolução 
 					# Sicredi utiliza sempre domínio ‘1’ para esse campo ( '1' => Baixar / devolver ).
