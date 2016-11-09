@@ -33,11 +33,15 @@ module BrBoleto
 			# Tamanho    Posição
 			#   20        38-57
 			attr_accessor :nosso_numero
+
+			# DÍGITO VERIFICADOR NOSSO NÚMERO
+			attr_accessor :nosso_numero_dv
 			
 			# CÓDIGO DA CARTEIRA
 			# Tamanho    Posição
 			#   1         58-58
 			attr_accessor :carteira
+			attr_accessor :cod_carteira
 
 			# NÚMERO DO DOCUMENTO
 			# Tamanho    Posição
