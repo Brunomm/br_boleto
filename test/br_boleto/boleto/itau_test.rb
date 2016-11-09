@@ -9,12 +9,12 @@ describe BrBoleto::Boleto::Itau do
 		it { must validate_length_of(:numero_documento).is_at_most(8).with_message(:custom_length_maximum) }
 		
 		context '#conta.carteira' do
-			it { subject.valid_carteira_inclusion.must_equal ['104', '105', '107', '108', '109', '112', '113', '116', '117', '119', '121', '122', '126', '131', '134', '135', '136', '142', '143', '146', '150', '168', '169', '174', '175', '180', '191', '196', '198'] }
+			it { subject.valid_carteira_inclusion.must_equal ['104', '105', '107', '108', '109', '112', '113', '116', '117', '119', '121', '122', '126', '131', '134', '135', '136', '142', '143', '146', '147', '150', '168', '169', '174', '175', '180', '191', '196', '198'] }
 			it "validação da carteira da conta" do
 				subject.conta.carteira = '4'
-				conta_must_be_msg_error(:carteira, :custom_inclusion, {list: '104, 105, 107, 108, 109, 112, 113, 116, 117, 119, 121, 122, 126, 131, 134, 135, 136, 142, 143, 146, 150, 168, 169, 174, 175, 180, 191, 196, 198'})
+				conta_must_be_msg_error(:carteira, :custom_inclusion, {list: '104, 105, 107, 108, 109, 112, 113, 116, 117, 119, 121, 122, 126, 131, 134, 135, 136, 142, 143, 146, 147, 150, 168, 169, 174, 175, 180, 191, 196, 198'})
 				subject.conta.carteira = '109'
-				conta_wont_be_msg_error(:carteira, :custom_inclusion, {list: '104, 105, 107, 108, 109, 112, 113, 116, 117, 119, 121, 122, 126, 131, 134, 135, 136, 142, 143, 146, 150, 168, 169, 174, 175, 180, 191, 196, 198'})
+				conta_wont_be_msg_error(:carteira, :custom_inclusion, {list: '104, 105, 107, 108, 109, 112, 113, 116, 117, 119, 121, 122, 126, 131, 134, 135, 136, 142, 143, 146, 147, 150, 168, 169, 174, 175, 180, 191, 196, 198'})
 			end
 		end
 

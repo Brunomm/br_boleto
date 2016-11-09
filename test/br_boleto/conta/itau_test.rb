@@ -46,7 +46,7 @@ describe BrBoleto::Conta::Itau do
 			end
 			it "valores aceitos" do
 				subject.carteira = '04'
-				must_be_message_error(:carteira, :custom_inclusion, {list: '104, 105, 107, 108, 109, 112, 113, 116, 117, 119, 121, 122, 126, 131, 134, 135, 136, 142, 143, 146, 150, 168, 169, 174, 175, 180, 191, 196, 198'})
+				must_be_message_error(:carteira, :custom_inclusion, {list: '104, 105, 107, 108, 109, 112, 113, 116, 117, 119, 121, 122, 126, 131, 134, 135, 136, 142, 143, 146, 147, 150, 168, 169, 174, 175, 180, 191, 196, 198'})
 			end
 		end
 		context 'Validações padrões da conta_corrente' do
@@ -107,7 +107,7 @@ describe BrBoleto::Conta::Itau do
 	end
 
 	describe "#get_especie_titulo" do
-		context "CÓDIGOS para o cnab 240 do Bradesco" do
+		context "CÓDIGOS para o cnab 240 do Itau" do
 			it { subject.get_especie_titulo('02', 240).must_equal '01' } # DUPLICATA MERCANTIL
 			it { subject.get_especie_titulo('12', 240).must_equal '02' } # NOTA PROMISSÓRIA
 			it { subject.get_especie_titulo('16', 240).must_equal '03' } # NOTA DE SEGURO
@@ -124,9 +124,27 @@ describe BrBoleto::Conta::Itau do
 			it { subject.get_especie_titulo('88', 240).must_equal '17' } # CONTA DE PRESTAÇÃO DE SERVIÇOS
 		end
 	end
+	describe "#get_especie_titulo" do
+		context "CÓDIGOS para o cnab 400 do Itau" do
+			it { subject.get_especie_titulo('02', 400).must_equal '01' } # DUPLICATA MERCANTIL
+			it { subject.get_especie_titulo('12', 400).must_equal '02' } # NOTA PROMISSÓRIA
+			it { subject.get_especie_titulo('16', 400).must_equal '03' } # NOTA DE SEGURO
+			it { subject.get_especie_titulo('21', 400).must_equal '04' } # MENSALIDADE ESCOLAR
+			it { subject.get_especie_titulo('17', 400).must_equal '05' } # RECIBO
+			it { subject.get_especie_titulo('04', 400).must_equal '08' } # DUPLICATA DE SERVIÇO
+			it { subject.get_especie_titulo('07', 400).must_equal '09' } # LETRA DE CÂMBIO
+			it { subject.get_especie_titulo('19', 400).must_equal '13' } # NOTA DE DÉBITOS
+			it { subject.get_especie_titulo('24', 400).must_equal '15' } # DOCUMENTO DE DÍVIDA
+			it { subject.get_especie_titulo('30', 400).must_equal '16' } # ENCARGOS CONDOMINIAIS
+			it { subject.get_especie_titulo('32', 400).must_equal '18' } # BOLETO DE PROPOSTA
+			it { subject.get_especie_titulo('66', 400).must_equal '06' } # CONTRATO
+			it { subject.get_especie_titulo('77', 400).must_equal '07' } # COSSEGUROS
+			it { subject.get_especie_titulo('88', 400).must_equal '17' } # CONTA DE PRESTAÇÃO DE SERVIÇOS
+		end
+	end
 
 	describe "#get_codigo_movimento_remessa" do
-		context "CÓDIGOS para o cnab 240 do Bradesco" do
+		context "CÓDIGOS para o cnab 240 do Itau" do
 			it { subject.get_codigo_movimento_remessa('10', 240).must_equal '18' } # SUSTAR O PROTESTO
 			it { subject.get_codigo_movimento_remessa('38', 240).must_equal '38' } # BENEFICIÁRIO NÃO CONCORDA COM A ALEGAÇÃO DO PAGADOR CÓDIGO DA ALEGAÇÃO
 			it { subject.get_codigo_movimento_remessa('41', 240).must_equal '41' } # EXCLUSÃO DE SACADOR AVALISTA
@@ -145,5 +163,13 @@ describe BrBoleto::Conta::Itau do
 
 	describe "#get_codigo_multa" do
 		it { subject.get_codigo_multa('0').must_equal '0' } # NÃO REGISTRA A MULTA
+	end
+
+	describe "#get_codigo_carteira" do
+		it { subject.get_codigo_carteira('147').must_equal 'E' } # ESCRITURAL ELETRÔNICA – DÓLAR
+		it { subject.get_codigo_carteira('150').must_equal 'U' } # DIRETA ELETRÔNICA SEM EMISSÃO – DÓLAR
+		it { subject.get_codigo_carteira('191').must_equal '1' } # DUPLICATAS - TRANSFERÊNCIA DE DESCONTO
+		it { subject.get_codigo_carteira('109').must_equal 'I' } # DEMAIS CARTEIRAS
+		it { subject.get_codigo_carteira('999').must_equal 'I' } # DEMAIS CARTEIRAS
 	end
 end

@@ -26,6 +26,7 @@ module BrBoleto
 			#		|	142     |  Sem registro - 15 posições                               | 
 			#		|	143     |  Sem registro - 15 posições                               | 
 			#		|	146     |  Direta eletrônica                                        | 
+			#		|	147     |  Escritural eletrônica – Dolar                                        | 
 			#		|	150     |  Direta eletrônica sem emissão - Dolar                    | 
 			#		|	168     |  Direta eletrônica sem emissão - TR                       |
 			#		|	169     |  Sem registro emissão Parcial Seguros C/IOF 7%            |
@@ -91,7 +92,7 @@ module BrBoleto
 
       	# Carteiras suportadas
 			def carteiras_suportadas
-				%w[104 105 107 108 109 112 113 116 117 119 121 122 126 131 134 135 136 142 143 146 150 168 169 174 175 180 191 196 198]
+				%w[104 105 107 108 109 112 113 116 117 119 121 122 126 131 134 135 136 142 143 146 147 150 168 169 174 175 180 191 196 198]
 			end
 
 			# As carteiras de cobrança 107, 122, 142, 143, 196 e 198 são carteiras especiais,
@@ -106,7 +107,6 @@ module BrBoleto
 				%w(126 131 146 150 168)
 			end
 
-
 			# Espécie do Título
 			def equivalent_especie_titulo_240
 				super.merge(
@@ -117,16 +117,35 @@ module BrBoleto
 						'16'    =>   '03' , # NOTA DE SEGURO
 						'21'    =>   '04' , # MENSALIDADE ESCOLAR
 						'17'    =>   '05' , # RECIBO
+						'66'    =>   '06' , # CONTRATO
+						'77'    =>   '07' , # COSSEGUROS
 						'04'    =>   '08' , # DUPLICATA DE SERVIÇO
 						'07'    =>   '09' , # LETRA DE CÂMBIO
 						'19'    =>   '13' , # NOTA DE DÉBITOS
 						'24'    =>   '15' , # DOCUMENTO DE DÍVIDA
 						'30'    =>   '16' , # ENCARGOS CONDOMINIAIS
+						'88'    =>   '17' , # CONTA DE PRESTAÇÃO DE SERVIÇOS
 						'32'    =>   '18' , # BOLETO DE PROPOSTA
-
+					})
+			end
+			def equivalent_especie_titulo_400
+				super.merge(
+					#  Padrão    Código para  
+					{# da GEM     o Banco
+						'02'    =>   '01' , # DUPLICATA MERCANTIL
+						'12'    =>   '02' , # NOTA PROMISSÓRIA
+						'16'    =>   '03' , # NOTA DE SEGURO
+						'21'    =>   '04' , # MENSALIDADE ESCOLAR
+						'17'    =>   '05' , # RECIBO
 						'66'    =>   '06' , # CONTRATO
 						'77'    =>   '07' , # COSSEGUROS
+						'04'    =>   '08' , # DUPLICATA DE SERVIÇO
+						'07'    =>   '09' , # LETRA DE CÂMBIO
+						'19'    =>   '13' , # NOTA DE DÉBITOS
+						'24'    =>   '15' , # DOCUMENTO DE DÍVIDA
+						'30'    =>   '16' , # ENCARGOS CONDOMINIAIS
 						'88'    =>   '17' , # CONTA DE PRESTAÇÃO DE SERVIÇOS
+						'32'    =>   '18' , # BOLETO DE PROPOSTA
 					})
 			end
 
@@ -159,6 +178,21 @@ module BrBoleto
 			# Código para Multa
 			def equivalent_codigo_multa
 				super.merge({ '0' => '0' }) # NÃO REGISTRA A MULTA
+			end
+
+			# Codigo da carteira de acordo com a documentacao o Itau (Pag. 18, Nota 5)
+        	# se a carteira nao forem as testadas (147, 150 e 191 )
+			# retorna 'I' que é o codigo das carteiras restantes na documentacao
+			def get_codigo_carteira(code)
+				"#{code}".adjust_size_to(3, '0', :right)
+				equivalent_codigo_carteira[code] || 'I' 
+			end
+			def equivalent_codigo_carteira
+				{
+					'147' => 'E',  # ESCRITURAL ELETRÔNICA – DÓLAR
+					'150' => 'U',  # DIRETA ELETRÔNICA SEM EMISSÃO – DÓLAR
+					'191' => '1',  # DUPLICATAS - TRANSFERÊNCIA DE DESCONTO
+				}
 			end
 
 		end
