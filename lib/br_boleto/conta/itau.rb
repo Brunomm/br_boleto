@@ -26,7 +26,7 @@ module BrBoleto
 			#		|	142     |  Sem registro - 15 posições                               | 
 			#		|	143     |  Sem registro - 15 posições                               | 
 			#		|	146     |  Direta eletrônica                                        | 
-			#		|	147     |  Escritural eletrônica – Dolar                                        | 
+			#		|	147     |  Escritural eletrônica – Dolar                            | 
 			#		|	150     |  Direta eletrônica sem emissão - Dolar                    | 
 			#		|	168     |  Direta eletrônica sem emissão - TR                       |
 			#		|	169     |  Sem registro emissão Parcial Seguros C/IOF 7%            |
