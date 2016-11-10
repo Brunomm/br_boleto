@@ -166,7 +166,7 @@ describe BrBoleto::Remessa::Cnab400::Itau do
 
 			result[163..166].must_equal '    '                                # Complemento Registro (Brancos)
 			result[167..172].must_equal '000000'                              # Data de mora (Zeros)
-			result[173..174].must_equal '00'                                  # Quantidade de dias (Zeros)
+			result[173..174].must_equal '03'                                  # Quantidade de dias (Zeros)
 			result[175].must_equal      ' '                                   # Complemento Registro (Branco)
 		end
 	end

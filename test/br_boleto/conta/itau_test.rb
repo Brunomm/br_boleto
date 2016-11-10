@@ -166,10 +166,24 @@ describe BrBoleto::Conta::Itau do
 	end
 
 	describe "#get_codigo_carteira" do
-		it { subject.get_codigo_carteira('147').must_equal 'E' } # ESCRITURAL ELETRÔNICA – DÓLAR
-		it { subject.get_codigo_carteira('150').must_equal 'U' } # DIRETA ELETRÔNICA SEM EMISSÃO – DÓLAR
-		it { subject.get_codigo_carteira('191').must_equal '1' } # DUPLICATAS - TRANSFERÊNCIA DE DESCONTO
-		it { subject.get_codigo_carteira('109').must_equal 'I' } # DEMAIS CARTEIRAS
-		it { subject.get_codigo_carteira('999').must_equal 'I' } # DEMAIS CARTEIRAS
+		it "deve retornar E se a carteira for 147" do 
+			subject.carteira = '147'
+			subject.get_codigo_carteira.must_equal 'E'  # ESCRITURAL ELETRÔNICA – DÓLAR
+		end
+		it "deve retornar U se a carteira for 150" do
+			subject.carteira = '150'
+			subject.get_codigo_carteira.must_equal 'U'  # DIRETA ELETRÔNICA SEM EMISSÃO – DÓLAR
+		end
+		it "deve retornar 1 se a carteira for 191" do
+			subject.carteira = '191'
+			subject.get_codigo_carteira.must_equal '1'  # DUPLICATAS - TRANSFERÊNCIA DE DESCONTO
+		end
+		it "deve retornar I para as demais carteiras" do
+			subject.carteira = '109'
+			subject.get_codigo_carteira.must_equal 'I'  # DEMAIS CARTEIRAS
+
+			subject.carteira = '999'
+			subject.get_codigo_carteira.must_equal 'I'  # DEMAIS CARTEIRAS
+		end
 	end
 end

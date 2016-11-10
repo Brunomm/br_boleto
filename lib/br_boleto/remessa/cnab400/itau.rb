@@ -88,7 +88,7 @@ module BrBoleto
 					info << ''.adjust_size_to(13, '0', :right) # Este campo deverá ser preenchido com zeros caso a moeda seja o Real
 					info << "#{conta.carteira}".adjust_size_to(3, '0', :right)
 					info << ''.adjust_size_to(21)
-					info << "#{conta.get_codigo_carteira(conta.carteira)}".adjust_size_to(1, 'I') 
+					info << "#{conta.get_codigo_carteira}".adjust_size_to(1, 'I') 
 					info
 				end
 			
@@ -179,7 +179,7 @@ module BrBoleto
 					info << ''.adjust_size_to(4)                                         # Complemento Registro (Brancos)
 
 					info << ''.adjust_size_to(6, '0')                                    # Data de mora
-					info << ''.adjust_size_to(2, '0')                                    # Quantidade de dias
+					info << '03'                                                         # Quantidade de dias
 					info << ''.adjust_size_to(1)                                         # Complemento Registro (Brancos)
 					info                                                
 				end

@@ -183,9 +183,8 @@ module BrBoleto
 			# Codigo da carteira de acordo com a documentacao o Itau (Pag. 18, Nota 5)
         	# se a carteira nao forem as testadas (147, 150 e 191 )
 			# retorna 'I' que é o codigo das carteiras restantes na documentacao
-			def get_codigo_carteira(code)
-				"#{code}".adjust_size_to(3, '0', :right)
-				equivalent_codigo_carteira[code] || 'I' 
+			def get_codigo_carteira
+				equivalent_codigo_carteira[carteira] || 'I' 
 			end
 			def equivalent_codigo_carteira
 				{
