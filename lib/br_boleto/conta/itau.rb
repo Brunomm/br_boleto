@@ -10,31 +10,31 @@ module BrBoleto
 			#		|	105     |  Escritural Eletrônica - Dólar - Carnê                    |
 			#		|	107     |  Sem registro com emissão integral - 15 posições          |
 			#		|	108     |  Direta eletrônica emissão integral – carnê               |
-			#		|	109     |  Direta eletrônica sem emissão - simples                  | 
-			#		|	112     |  Escritural eletrônica - simples/contratual               | 
-			#		|	113     |  Escritural Eletrônica - TR - Carnê                       | 
-			#		|	116     |  Escritural Carnê com IOF 0,38%                           | 
-			#		|	117     |  Escritural Carnê com IOF 2,38%                           | 
-			#		|	119     |  Escritural Carnê com IOF 7,38%                           | 
-			#		|	121     |  Direta eletrônica emissão parcial - simples/contratual   | 
-			#		|	122     |  Sem registro - 15 posições                               | 
-			#		|	126     |  Direta Eletrônica Sem Emissão - Seguros                  | 
-			#		|	131     |  Direta Eletrônica com Valor em Aberto                    | 
-			#		|	134     |  Escritural com IOF 0,38%                                 | 
-			#		|	135     |  Escritural com IOF 2,38%                                 | 
-			#		|	136     |  Escritural com IOF 7,38%                                 | 
-			#		|	142     |  Sem registro - 15 posições                               | 
-			#		|	143     |  Sem registro - 15 posições                               | 
-			#		|	146     |  Direta eletrônica                                        | 
-			#		|	147     |  Escritural eletrônica – Dolar                            | 
-			#		|	150     |  Direta eletrônica sem emissão - Dolar                    | 
+			#		|	109     |  Direta eletrônica sem emissão - simples                  |
+			#		|	112     |  Escritural eletrônica - simples/contratual               |
+			#		|	113     |  Escritural Eletrônica - TR - Carnê                       |
+			#		|	116     |  Escritural Carnê com IOF 0,38%                           |
+			#		|	117     |  Escritural Carnê com IOF 2,38%                           |
+			#		|	119     |  Escritural Carnê com IOF 7,38%                           |
+			#		|	121     |  Direta eletrônica emissão parcial - simples/contratual   |
+			#		|	122     |  Sem registro - 15 posições                               |
+			#		|	126     |  Direta Eletrônica Sem Emissão - Seguros                  |
+			#		|	131     |  Direta Eletrônica com Valor em Aberto                    |
+			#		|	134     |  Escritural com IOF 0,38%                                 |
+			#		|	135     |  Escritural com IOF 2,38%                                 |
+			#		|	136     |  Escritural com IOF 7,38%                                 |
+			#		|	142     |  Sem registro - 15 posições                               |
+			#		|	143     |  Sem registro - 15 posições                               |
+			#		|	146     |  Direta eletrônica                                        |
+			#		|	147     |  Escritural eletrônica – Dolar                            |
+			#		|	150     |  Direta eletrônica sem emissão - Dolar                    |
 			#		|	168     |  Direta eletrônica sem emissão - TR                       |
 			#		|	169     |  Sem registro emissão Parcial Seguros C/IOF 7%            |
-			#		|	174     |  Sem registro emissão parcial com protesto borderô        | 
-			#		|	175     |  Sem registro sem emissão com protesto eletrônico         | 
-			#		|	180     |  Direta Eletrônica emissão integral - simples/contratual  | 
-			#		|	191     |  Duplicatas - Transferência de Desconto                   | 
-			#		|	196     |  Sem registro com emissão e entrega – 15 posições         | 
+			#		|	174     |  Sem registro emissão parcial com protesto borderô        |
+			#		|	175     |  Sem registro sem emissão com protesto eletrônico         |
+			#		|	180     |  Direta Eletrônica emissão integral - simples/contratual  |
+			#		|	191     |  Duplicatas - Transferência de Desconto                   |
+			#		|	196     |  Sem registro com emissão e entrega – 15 posições         |
 			#		|	198     |  Sem registro sem emissão 15 dígitos                      |
 			#     ------------------------------------------------------------------------
 
