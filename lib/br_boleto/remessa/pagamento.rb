@@ -305,7 +305,7 @@ module BrBoleto
 					forma_cadastramento:      '0',
 					emissao_boleto:           '2', # Cliente Emite
 					distribuicao_boleto:      '2', # Cliente Distribui
-					codigo_protesto:          '1', # Protestar Dias Corridos
+					codigo_protesto:          '3', # Não protestar
 				}
 			end
 

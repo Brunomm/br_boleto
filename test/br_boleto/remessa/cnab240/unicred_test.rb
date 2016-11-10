@@ -188,4 +188,10 @@ describe BrBoleto::Remessa::Cnab240::Unicred do
 			subject.complemento_trailer_lote(lote, 5)[100..216].must_equal (' ' * 117)
 		end
 	end
+
+	describe "usa_segmento_S?" do
+		it "deve retornar false como padrão para o UNICRED" do
+			subject.usa_segmento_S?.must_equal false 
+		end
+	end
 end

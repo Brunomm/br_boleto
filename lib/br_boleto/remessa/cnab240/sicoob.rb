@@ -259,6 +259,14 @@ module BrBoleto
 					cod.in?(['1','2']) ? cod : '0'
 				end
 
+				# Código para Protesto
+				# Padrão do SICOOB  '1' = Protestar Dias Corridos
+				# 1 posição
+				#
+				def segmento_p_posicao_221_a_221(pagamento)
+					'1'
+				end
+
 			end
 		end
 	end

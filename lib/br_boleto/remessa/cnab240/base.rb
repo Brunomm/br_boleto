@@ -60,6 +60,14 @@ module BrBoleto
 					1
 				end
 
+				def usa_segmento_R?
+					true
+				end
+
+				def usa_segmento_S?
+					true
+				end
+
 				validates_each :lotes do |record, attr, value|
 					record.errors.add(attr, :blank) if value.empty?
 					value.each do |lote|
@@ -108,12 +116,18 @@ module BrBoleto
 						itens_lote << monta_segmento_q(pagamento, nro_lote, sequencial_do_lote)
 
 						# Metodo 'monta_segmento_r' implementado no module -> BrBoleto::Remessa::Cnab240::Helper::SegmentoR
-						sequencial_do_lote += 1
-						itens_lote << monta_segmento_r(pagamento, nro_lote, sequencial_do_lote)
+						# Segmento R é opcional e não é utilizados por alguns bancos
+						if usa_segmento_R?
+							sequencial_do_lote += 1
+							itens_lote << monta_segmento_r(pagamento, nro_lote, sequencial_do_lote)
+						end
 
 						# Metodo 'monta_segmento_s' implementado no module -> BrBoleto::Remessa::Cnab240::Helper::SegmentoS
-						sequencial_do_lote += 1
-						itens_lote << monta_segmento_s(pagamento, nro_lote, sequencial_do_lote)
+						# Segmento S é opcional e não é utilizados por alguns bancos
+						if usa_segmento_S?
+							sequencial_do_lote += 1
+							itens_lote << monta_segmento_s(pagamento, nro_lote, sequencial_do_lote)
+						end
 					end
 					
 					# total_de_registros_do_lote é a quantidade de registros(linhas) que constam em um lote

@@ -104,12 +104,6 @@ module BrBoleto
 						segmento = "#{pagamento.numero_documento}".adjust_size_to(15, '0', :right)
 					end
 
-					# Código para Protesto
-					def segmento_p_posicao_221_a_221(pagamento)
-						cod_protesto = '3'
-						"#{conta.get_codigo_protesto(cod_protesto)}".adjust_size_to(1, '3')
-					end
-
 					# Código para Baixa/Devolução ('1' = Baixar / Devolver , '2' = Não Baixar / Não Devolver)
 					def segmento_p_posicao_224_a_224
 						'2'  

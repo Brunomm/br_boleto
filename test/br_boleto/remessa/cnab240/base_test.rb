@@ -382,4 +382,16 @@ describe BrBoleto::Remessa::Cnab240::Base do
 		end
 	end
 
+	describe "usa_segmento_R?" do
+		it "deve retornar como padrão sempre true" do
+			subject.usa_segmento_R?.must_equal true 
+		end
+	end
+
+	describe "usa_segmento_S?" do
+		it "deve retornar como padrão sempre true" do
+			subject.usa_segmento_S?.must_equal true 
+		end
+	end
+
 end
