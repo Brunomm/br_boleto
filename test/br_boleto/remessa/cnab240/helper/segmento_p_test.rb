@@ -34,7 +34,7 @@ module Helper
 			subject.stubs(:segmento_p_posicao_181_a_195).with(pagamento).returns(" 181_a_195")
 			subject.stubs(:segmento_p_posicao_196_a_220).with(pagamento).returns(" 196_a_220")
 			subject.stubs(:segmento_p_posicao_221_a_221).with(pagamento).returns(" 221_a_221")
-			subject.stubs(:segmento_p_posicao_222_a_223).returns(" 222_a_223")
+			subject.stubs(:segmento_p_posicao_222_a_223).with(pagamento).returns(" 222_a_223")
 			subject.stubs(:segmento_p_posicao_224_a_224).returns(" 224_a_224")
 			subject.stubs(:segmento_p_posicao_225_a_227).returns(" 225_a_227")
 			subject.stubs(:segmento_p_posicao_228_a_229).with(pagamento).returns(" 228_a_229")
@@ -367,10 +367,19 @@ module Helper
 
 		# Número de Dias para Protesto 
 		# 2 posições
-		# Por padrão é o valor '00'
+		# Para os códigos '3' = Não Protestar e '8' = Negativação sem Protesto,
+		# setar dias de protesto '00', caso contrário setar o  valor de dias_protesto
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_222_a_223
-			subject.segmento_p_posicao_222_a_223.must_equal '00' 
+		def test_SegmentoPTest_metodo_segmento_p_posicao_222_a_223#(pagamento)
+			pagamento.expects(:codigo_protesto).returns('3')
+			subject.segmento_p_posicao_222_a_223(pagamento).must_equal '00' 
+			pagamento.expects(:codigo_protesto).returns('8')
+			subject.segmento_p_posicao_222_a_223(pagamento).must_equal '00' 
+
+			pagamento.expects(:codigo_protesto).returns('1')
+			subject.segmento_p_posicao_222_a_223(pagamento).must_equal '03' 
+			pagamento.expects(:codigo_protesto).returns('2')
+			subject.segmento_p_posicao_222_a_223(pagamento).must_equal '03' 
 		end
 
 		# Código para Baixa/Devolução 
