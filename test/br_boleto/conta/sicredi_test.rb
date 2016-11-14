@@ -131,6 +131,7 @@ describe BrBoleto::Conta::Sicredi do
 	describe "#equivalent_especie_titulo_240" do
 		context "CÓDIGOS para o cnab 240 do Sicredi" do
 			it { subject.get_especie_titulo('01', 240).must_equal '03' }  # Duplicata Mercantil por Indicação (DMI)
+			it { subject.get_especie_titulo('02', 240).must_equal '03' }  # Duplicata Mercantil por Indicação (DMI)
 		end
 	end
 
@@ -163,6 +164,17 @@ describe BrBoleto::Conta::Sicredi do
 	describe "#equivalent_identificacao_emissao_400" do
 		it { subject.get_identificacao_emissao('1', 400).must_equal 'A' }  # Impressão é feita pelo Sicredi
 		it { subject.get_identificacao_emissao('2', 400).must_equal 'B' }  # Impressão é feita pelo Beneficiário
+	end
+
+	describe "#equivalent_codigo_desconto" do
+		it { subject.get_codigo_desconto('0').must_equal '1' } # Sem Desconto
+		it { subject.get_codigo_desconto('1').must_equal '1' } # Valor Fixo Até a Data Informada
+		it { subject.get_codigo_desconto('2').must_equal '2' } # Percentual Até a Data Informada
+		it { subject.get_codigo_desconto('3').must_equal '3' } # Valor por Antecipação Dia Corrido
+		it { subject.get_codigo_desconto('4').must_equal '3' } # Valor por Antecipação Dia Úti
+		it { subject.get_codigo_desconto('5').must_equal '2' } # Percentual Sobre o Valor Nominal Dia Corrido
+		it { subject.get_codigo_desconto('6').must_equal '2' } # Percentual Sobre o Valor Nominal Dia Útil
+		it { subject.get_codigo_desconto('7').must_equal '7' } # Cancelamento de Desconto
 	end
 
 end

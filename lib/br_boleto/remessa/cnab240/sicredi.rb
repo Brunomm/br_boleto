@@ -88,7 +88,7 @@ module BrBoleto
 
 					# Forma de Cadastr. do Título no Banco
 					def segmento_p_posicao_059_a_059(pagamento)
-						'2'
+						'1'
 					end
 
 					# segmento_p_posicao_024_a_057
@@ -105,7 +105,7 @@ module BrBoleto
 						complemento << "#{conta.conta_corrente}".adjust_size_to(12, '0', :right)
 						complemento << "#{conta.conta_corrente_dv}".adjust_size_to(1, '0', :right)
 						complemento << ''.adjust_size_to(1)
-						complemento << "#{pagamento.nosso_numero}".adjust_size_to(20, '0', :right)
+						complemento << "#{pagamento.nosso_numero}".adjust_size_to(20)
 						complemento.adjust_size_to(34, '0')
 					end
 
@@ -123,6 +123,14 @@ module BrBoleto
 						segmento
 					end
 
+					# Data do Juros de Mora 
+					# Para o SICREDI é um Registro do tipo filler com 'Zeros' obrigatório
+					# 8 posições
+					def segmento_p_posicao_119_a_126(pagamento)
+						''.adjust_size_to(8, '0')
+					end
+
+
 					# Código para Baixa/Devolução 
 					# Sicredi utiliza sempre domínio ‘1’ para esse campo ( '1' => Baixar / devolver ).
 					# 1 posição
@@ -139,11 +147,31 @@ module BrBoleto
 					end
 
 				############################ SEGMENTO R ################################
+				
+					# Código do desconto 2
+					# 1 posição
+					def segmento_r_posicao_018_a_018(pagamento)
+						'2'
+					end
+
+					# Código do desconto 3
+					# 1 posição
+					def segmento_r_posicao_042_a_042(pagamento)
+						'2'
+					end
+
 					# Codigo da multa 
 					# O Sicredi apenas aceita o campo multa preenchido com '2' - Percentual.
 					# 1 posição
 					def segmento_r_posicao_066_a_066(pagamento)
 						"#{conta.get_codigo_multa('2')}".adjust_size_to(1, '2')
+					end
+
+					# Data da multa
+					# Para o SICREDI é um Registro do tipo filler com 'Zeros' obrigatório
+					# 8 posição
+					def segmento_r_posicao_067_a_074(pagamento)
+						"".adjust_size_to(8, '0')
 					end
 
 				########################### TRAILER LOTE ################################

@@ -83,7 +83,7 @@ module BrBoleto
 						complemento = ''
 						complemento << "#{conta.conta_corrente}".adjust_size_to(12, '0', :right)
 						complemento << "#{conta.conta_corrente_dv}".adjust_size_to(2)
-						complemento << "#{pagamento.nosso_numero}".adjust_size_to(20, '0', :right)
+						complemento << "#{pagamento.nosso_numero}".adjust_size_to(20)
 						complemento
 					end
 
@@ -102,12 +102,6 @@ module BrBoleto
 					# TOTAL = 15 posições 
 					def segmento_p_numero_do_documento(pagamento)
 						segmento = "#{pagamento.numero_documento}".adjust_size_to(15, '0', :right)
-					end
-
-					# Código para Protesto
-					def segmento_p_posicao_221_a_221(pagamento)
-						cod_protesto = '3'
-						"#{conta.get_codigo_protesto(cod_protesto)}".adjust_size_to(1, '3')
 					end
 
 					# Código para Baixa/Devolução ('1' = Baixar / Devolver , '2' = Não Baixar / Não Devolver)

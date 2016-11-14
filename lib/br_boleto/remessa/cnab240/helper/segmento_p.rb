@@ -52,7 +52,7 @@ module BrBoleto
 						segmento_p << segmento_p_posicao_181_a_195(pagamento)  # valor abatimento                      15
 						segmento_p << segmento_p_posicao_196_a_220(pagamento)  # identificacao titulo empresa          25  *
 						segmento_p << segmento_p_posicao_221_a_221(pagamento)  # cod. para protesto                    1   *
-						segmento_p << segmento_p_posicao_222_a_223             # dias para protesto                    2   *
+						segmento_p << segmento_p_posicao_222_a_223(pagamento)  # dias para protesto                    2   *
 						segmento_p << segmento_p_posicao_224_a_224             # cod. para baixa                       1   *
 						segmento_p << segmento_p_posicao_225_a_227             # dias para baixa                       2   *
 						segmento_p << segmento_p_posicao_228_a_229(pagamento)  # cod. da moeda                         2
@@ -303,11 +303,17 @@ module BrBoleto
 						"#{conta.get_codigo_protesto(pagamento.codigo_protesto)}".adjust_size_to(1, '1')
 					end
 
-					# Número de Dias para Protesto 
+					# Número de Dias para Protesto
+					# Para os códigos '3' = Não Protestar e '8' = Negativação sem Protesto,
+					# setar dias de protesto '00', caso contrário setar o  valor de dias_protesto
 					# 2 posições
 					#
-					def segmento_p_posicao_222_a_223
-						'00' 
+					def segmento_p_posicao_222_a_223(pagamento)
+						if  pagamento.codigo_protesto.to_i.in?([3, 8])
+							'00' 
+						else
+							"#{pagamento.dias_protesto}".adjust_size_to(2, '0')
+						end
 					end
 
 					# Código para Baixa/Devolução 

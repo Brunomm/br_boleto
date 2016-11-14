@@ -53,7 +53,7 @@ module BrBoleto
 			def agencia_dv
 				# utilizando a agencia com 4 digitos
 				# para calcular o digito
-				@agencia_dv ||= BrBoleto::Calculos::Modulo11FatorDe2a9.new(agencia).to_s
+				@agencia_dv ||= BrBoleto::Calculos::Modulo11FatorDe2a9RestoZero.new(agencia).to_s
 			end
 
 			def conta_corrente_dv

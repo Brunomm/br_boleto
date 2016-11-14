@@ -30,6 +30,10 @@ module BrBoleto
 					complemento.adjust_size_to(34)
 				end
 
+				# Por padrão o UNICRED não utiliza o Segmento S
+				def usa_segmento_S?
+					false
+				end
 			end
 		end
 	end

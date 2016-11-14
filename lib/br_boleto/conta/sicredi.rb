@@ -99,7 +99,12 @@ module BrBoleto
 
 			# Espécie do Título CNAB 240 
 			def equivalent_especie_titulo_240
-				super.merge({ '01' => '03' }) # Duplicata Mercantil por Indicação (DMI)
+				super.merge(
+					#  Padrão    Código para  
+					{# da GEM     o Banco
+						'01'    =>   '03', # Duplicata Mercantil por Indicação (DMI)
+						'02'    =>   '03'  # Duplicata Mercantil por Indicação (DMI)
+					})
 			end
 
 			# Espécie do Título CNAB 400
@@ -146,6 +151,20 @@ module BrBoleto
 						'1'    =>   'A',  # Impressão é feita pelo Sicredi
 						'2'    =>   'B',  # Impressão é feita pelo Beneficiário
 					})
+			end
+
+			# Código adotado pelo SICREDI para identificação do tipo de desconto que deverá ser concedido.
+			def equivalent_codigo_desconto
+				{
+					'0' => '1', # Valor Fixo Até a Data Informada
+					'1' => '1', # Valor Fixo Até a Data Informada
+					'2' => '2', # Percentual Até a Data Informada
+					'3' => '3', # Valor por Antecipação Dia Corrido
+					'4' => '3', # Valor por Antecipação Dia Úti
+					'5' => '2', # Percentual Sobre o Valor Nominal Dia Corrido
+					'6' => '2', # Percentual Sobre o Valor Nominal Dia Útil
+					'7' => '7', # Cancelamento de Desconto
+				}
 			end
 		end
 	end

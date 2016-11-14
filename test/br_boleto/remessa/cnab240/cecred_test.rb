@@ -134,7 +134,7 @@ describe BrBoleto::Remessa::Cnab240::Cecred do
 
 		it "4 - Quarta parte = Identificação do Título na Cooperativa " do
 			pagamento.nosso_numero = '99999998000000001'
-			subject.complemento_p(pagamento)[14..33].must_equal '00099999998000000001'
+			subject.complemento_p(pagamento)[14..33].must_equal '99999998000000001   '
 		end
 
 	end

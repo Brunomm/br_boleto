@@ -139,4 +139,16 @@ describe BrBoleto::Conta::Unicred do
 			it { subject.get_codigo_movimento_remessa('34', 400).must_equal '69' } # Cancelamento do rateio de crédito.
 		end
 	end
+
+	describe "#get_codigo_protesto" do
+		context "CÓDIGOS para o cnab 240 do Unicred" do
+			it { subject.get_codigo_protesto('1').must_equal '1' } # Protestar Dias Corridos
+			it { subject.get_codigo_protesto('2').must_equal '1' } # Protestar Dias Úteis
+			it { subject.get_codigo_protesto('3').must_equal '3' } # Não Protesta
+			it { subject.get_codigo_protesto('4').must_equal '1' } # Protestar Fim Falimentar - Dias Úteis
+			it { subject.get_codigo_protesto('5').must_equal '1' } # Protestar Fim Falimentar - Dias Corridos
+			it { subject.get_codigo_protesto('8').must_equal '3' } # Negativação sem Protesto
+			it { subject.get_codigo_protesto('9').must_equal '3' } # Cancelamento Protesto Automático 
+		end
+	end
 end

@@ -11,10 +11,12 @@ module BrBoleto
 			attr_accessor :agencia_sem_dv # tamanho = 5
 			
 			# NÚMERO DA CONTA CORRENTE/CEDENTE
-			attr_accessor :numero_conta_com_dv # tamanho = 13
-			attr_accessor :numero_conta_sem_dv # tamanho = 12
-			alias_attribute :codigo_cedente, :numero_conta_sem_dv
-			alias_attribute :numero_conta,   :numero_conta_sem_dv
+			attr_accessor :numero_conta            # tamanho = 12
+			attr_accessor :numero_conta_dv         # tamanho = 1
+			alias_attribute :codigo_cedente, :numero_conta
+			def numero_conta_com_dv 
+				"#{numero_conta}#{numero_conta_dv}" # tamanho = 13
+			end
 			
 			
 			# CÓDIGO DE MOVIMENTO RETORNO
@@ -31,11 +33,15 @@ module BrBoleto
 			# Tamanho    Posição
 			#   20        38-57
 			attr_accessor :nosso_numero
+
+			# DÍGITO VERIFICADOR NOSSO NÚMERO
+			attr_accessor :nosso_numero_dv
 			
 			# CÓDIGO DA CARTEIRA
 			# Tamanho    Posição
 			#   1         58-58
 			attr_accessor :carteira
+			attr_accessor :cod_carteira
 
 			# NÚMERO DO DOCUMENTO
 			# Tamanho    Posição
@@ -249,6 +255,8 @@ module BrBoleto
 					self.instance_variable_set("@#{attr_name}", BrBoleto::Helper::FormatValue.string_to_date(value) )
 				end
 			end
+
+
 		end	
 	end
 end

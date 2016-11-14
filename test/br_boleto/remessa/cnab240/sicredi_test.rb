@@ -154,7 +154,7 @@ describe BrBoleto::Remessa::Cnab240::Sicredi do
 
 			it "4 - Quarta parte = Nosso Numero" do
 				pagamento.expects(:nosso_numero).returns("132xxxxxD")
-				subject.complemento_p(pagamento)[14..33].must_equal '00000000000132xxxxxD'			
+				subject.complemento_p(pagamento)[14..33].must_equal '132xxxxxD           '			
 			end
 		end
 

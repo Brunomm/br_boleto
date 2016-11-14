@@ -247,6 +247,9 @@ module BrBoleto
 			# '9' =  Cancelamento Protesto Automático (somente válido p/ Código Movimento Remessa = '31')
 			attr_accessor :codigo_protesto
 
+			# Dias para protestar
+			attr_accessor :dias_protesto
+
 			########################  VALIDAÇÕES PERSONALIZADAS  ########################
 				attr_accessor :valid_tipo_impressao_required
 				validates :tipo_impressao, presence: true, if: :valid_tipo_impressao_required
@@ -303,9 +306,10 @@ module BrBoleto
 					especie_titulo:           '01',
 					codigo_moeda:             '9',
 					forma_cadastramento:      '0',
-					emissao_boleto:           '2', # Cliente Emite
-					distribuicao_boleto:      '2', # Cliente Distribui
-					codigo_protesto:          '1', # Protestar Dias Corridos
+					emissao_boleto:           '2',  # Cliente Emite
+					distribuicao_boleto:      '2',  # Cliente Distribui
+					codigo_protesto:          '3',  # Não protestar
+					dias_protesto:            '03', # Dias para Protesto
 				}
 			end
 

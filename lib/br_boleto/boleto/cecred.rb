@@ -49,7 +49,7 @@ module BrBoleto
 			# 17 Dígitos: 8 primeiros dígitos = Conta corrente + dv, 9 dígitos restantes = Número do boleto (Sequencial)
 			# Exemplo: 99999998000000001
 			def nosso_numero
-				"#{conta.conta_corrente}#{conta.conta_corrente_dv}#{numero_documento}"
+				"#{conta.conta_corrente}#{conta.conta_corrente_dv}#{numero_documento}".adjust_size_to(17, '0', :right)
 			end
 
 			#  === Código de barras do banco

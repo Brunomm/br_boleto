@@ -97,7 +97,7 @@ describe BrBoleto::Conta::Bradesco do
 		end
 		it "se não passar valor deve calcular automatico" do
 			subject.agencia = '1234'
-			BrBoleto::Calculos::Modulo11FatorDe2a9.expects(:new).with('1234').returns(stub(to_s: 5))
+			BrBoleto::Calculos::Modulo11FatorDe2a9RestoZero.expects(:new).with('1234').returns(stub(to_s: 5))
 
 			subject.agencia_dv.must_equal 5
 		end

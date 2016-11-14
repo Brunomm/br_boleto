@@ -76,6 +76,7 @@ module BrBoleto
 		autoload :Unicred
 		autoload :Sicredi
 		autoload :Cecred
+		autoload :Itau
 	end
 	
 	module Boleto
@@ -88,6 +89,7 @@ module BrBoleto
 		autoload :Unicred
 		autoload :Sicredi
 		autoload :Cecred
+		autoload :Itau
 	end
 
 
@@ -106,6 +108,7 @@ module BrBoleto
 			autoload :Unicred
 			autoload :Sicredi
 			autoload :Cecred
+			autoload :Itau
 		end
 		module Cnab400
 			extend ActiveSupport::Autoload
@@ -114,6 +117,7 @@ module BrBoleto
 			autoload :Bradesco
 			autoload :Unicred
 			autoload :Sicredi
+			autoload :Itau
 		end
 	end
 	
@@ -130,6 +134,7 @@ module BrBoleto
 			autoload :Unicred
 			autoload :Sicredi
 			autoload :Cecred
+			autoload :Itau
 		end
 		module Cnab400
 			extend ActiveSupport::Autoload
@@ -138,6 +143,7 @@ module BrBoleto
 			autoload :Bradesco
 			autoload :Unicred
 			autoload :Sicredi
+			autoload :Itau
 		end
 	end
 

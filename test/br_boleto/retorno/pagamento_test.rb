@@ -175,5 +175,12 @@ describe BrBoleto::Retorno::Pagamento do
 				subject.valor_titulo.must_equal 7_745.67
 			end
 		end
+		describe "#numero_conta_com_dv" do
+			it "deve converter o valor numero_conta concatenado com o numero_conta_dv" do
+				subject.numero_conta = '12345'
+				subject.numero_conta_dv = '0'
+				subject.numero_conta_com_dv.must_equal '123450'
+			end
+		end
 	end
 end
