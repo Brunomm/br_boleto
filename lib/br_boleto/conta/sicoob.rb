@@ -71,6 +71,17 @@ module BrBoleto
 					})
 			end
 
+			# Código que representa a isenção de juros e multa deve ser '0'
+			# Diferentemente do padrão da FEBRABAN que é '3'
+			# Ou seja, se passar o código 3 deve considerar '0'
+			#
+			def equivalent_codigo_juros
+				super.merge({'3' => '0', '0'=>'0'})
+			end
+			def equivalent_codigo_multa
+				super.merge({'3' => '0', '0'=>'0'})
+			end
+
 
 		end
 	end
