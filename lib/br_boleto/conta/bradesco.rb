@@ -57,7 +57,7 @@ module BrBoleto
 			end
 
 			def conta_corrente_dv
-				@conta_corrente_dv ||= BrBoleto::Calculos::Modulo11FatorDe2a9.new(conta_corrente).to_s
+				@conta_corrente_dv ||= BrBoleto::Calculos::Modulo11FatorDe2a7.new(conta_corrente).to_s
 			end
 
 			# Campo Agência / Código do Cedente

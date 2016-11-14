@@ -173,8 +173,8 @@ describe BrBoleto::Remessa::Cnab240::Base do
 					subject.expects(:monta_lote).with(lote, 1).returns(["LOTE_lote_1"])
 					subject.expects(:monta_lote).with(lote_2, 2).returns(["LOTE_lote_2"])
 					resultado = subject.dados_do_arquivo
-					resultado[10..21].must_equal "\nLOTE_LOTE_1"
-					resultado[22..33].must_equal "\nLOTE_LOTE_2"
+					resultado[10..22].must_equal "\r\nLOTE_LOTE_1"
+					resultado[23..35].must_equal "\r\nLOTE_LOTE_2"
 				end
 
 				it "com 1 lote" do
@@ -182,7 +182,7 @@ describe BrBoleto::Remessa::Cnab240::Base do
 					subject.stubs(:monta_header_arquivo).returns("1234567890")
 					subject.expects(:monta_lote).with(lote, 1).returns(["LOTE_lote_1"])
 					resultado = subject.dados_do_arquivo
-					resultado[10..21].must_equal "\nLOTE_LOTE_1"
+					resultado[10..22].must_equal "\r\nLOTE_LOTE_1"
 				end
 			end
 
@@ -192,12 +192,12 @@ describe BrBoleto::Remessa::Cnab240::Base do
 				subject.stubs(:monta_lote).with(lote_2, 2).returns(["LOTE_LOTE01234_2", "PARTE 2"])
 				subject.expects(:monta_trailer_arquivo).with(2, 6).returns("TRAILER_DO_LOTE")
 				resultado = subject.dados_do_arquivo
-				resultado[10..26].must_equal "\nLOTE_LOTE01234_1"
-				resultado[27..34].must_equal "\nPARTE 2"
-				resultado[35..51].must_equal "\nLOTE_LOTE01234_2"
-				resultado[52..59].must_equal "\nPARTE 2"
-				resultado[60..75].must_equal "\nTRAILER_DO_LOTE"
-				resultado.size.must_equal 76
+				resultado[10..27].must_equal "\r\nLOTE_LOTE01234_1"
+				resultado[28..36].must_equal "\r\nPARTE 2"
+				resultado[37..54].must_equal "\r\nLOTE_LOTE01234_2"
+				resultado[55..63].must_equal "\r\nPARTE 2"
+				resultado[64..80].must_equal "\r\nTRAILER_DO_LOTE"
+				resultado.size.must_equal 83
 			end
 		end
 		describe "#monta_lote" do
@@ -375,9 +375,9 @@ describe BrBoleto::Remessa::Cnab240::Base do
 			it "para monta_trailer_arquivo deve ter 240 caracteres" do
 				subject.monta_trailer_arquivo(1, 2).size.must_equal 240
 			end
-			it "o total de caracteres do arquivo para 1 pagamento deve ser de 1445 caracteres" do
-				# 1440 são das montagens e 5 caracteres são das quebras de linha (\n)
-				subject.dados_do_arquivo.size.must_equal 1927
+			it "o total de caracteres do arquivo para 1 pagamento deve ser de 1936 caracteres" do
+				# 1926 são das montagens e 5 caracteres são das quebras de linha (\r\n)
+				subject.dados_do_arquivo.size.must_equal 1936
 			end
 		end
 	end

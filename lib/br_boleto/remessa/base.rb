@@ -1,3 +1,5 @@
+require "unidecoder"
+
 module BrBoleto
 	module Remessa
 		class Base < BrBoleto::ActiveModelBase

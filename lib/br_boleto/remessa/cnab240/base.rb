@@ -164,8 +164,9 @@ module BrBoleto
 					# Metodo 'monta_trailer_arquivo' implementado no module -> BrBoleto::Remessa::Cnab240::Helper::TrailerArquivo
 					arquivo << monta_trailer_arquivo(lotes.count, contador)
 
-					retorno = arquivo.join("\n")
-					ActiveSupport::Inflector.transliterate(retorno).upcase
+					retorno = ActiveSupport::Inflector.transliterate(arquivo.join("\n")).to_ascii.upcase
+					retorno << "\n"
+					retorno.encode(retorno.encoding, :universal_newline => true).encode(retorno.encoding, :crlf_newline => true)
 				end
 
 				# Número do Documento de Cobrança 
