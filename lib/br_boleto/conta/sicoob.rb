@@ -82,7 +82,12 @@ module BrBoleto
 				super.merge({'3' => '0', '0'=>'0'})
 			end
 
-
+			def default_codigo_juros
+				'0'
+			end
+			def default_codigo_multa
+				'0'
+			end
 		end
 	end
 end

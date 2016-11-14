@@ -154,6 +154,9 @@ describe BrBoleto::Conta::Sicoob do
 		it "se passar o código '0' para os juros deve retornar 0" do
 			subject.get_codigo_juros('0').must_equal '0'
 		end
+		it "default_codigo_juros deve ser '0" do
+			subject.default_codigo_juros.must_equal '0'
+		end
 	end
 	describe '#get_codigo_multa' do 
 		it { subject.get_codigo_multa('1').must_equal '1' }
@@ -163,6 +166,9 @@ describe BrBoleto::Conta::Sicoob do
 		end
 		it "se passar o código '0' para os multa deve retornar 0" do
 			subject.get_codigo_multa('0').must_equal '0'
+		end
+		it "default_codigo_multa deve ser '0" do
+			subject.default_codigo_multa.must_equal '0'
 		end
 	end
 end

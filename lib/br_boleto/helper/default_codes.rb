@@ -373,7 +373,7 @@ module BrBoleto
 				#
 				def get_codigo_juros(code)
 					"#{code}".adjust_size_to(1, '0', :right)
-					equivalent_codigo_juros[code] || '3'
+					equivalent_codigo_juros[code] || default_codigo_juros
 				end
 				# Código adotado pela FEBRABAN para identificação do tipo de pagamento de juros de mora.
 				def equivalent_codigo_juros
@@ -382,6 +382,9 @@ module BrBoleto
 						'2' => '2', # Taxa Mensal
 						'3' => '3', # Isento
 					}
+				end
+				def default_codigo_juros
+					'3'
 				end
 
 			########################################################################################
@@ -395,7 +398,7 @@ module BrBoleto
 					#
 				def get_codigo_multa(code)
 					"#{code}".adjust_size_to(1, '0', :right)
-					equivalent_codigo_multa[code] || '3'
+					equivalent_codigo_multa[code] || default_codigo_multa
 				end
 				# Código adotado pela FEBRABAN para identificação do tipo de pagamento de multa.
 				def equivalent_codigo_multa
@@ -404,6 +407,9 @@ module BrBoleto
 						'2' => '2', # Percentual
 						'3' => '3', # Isento
 					}
+				end
+				def default_codigo_multa
+					'3'
 				end
 
 			########################################################################################
