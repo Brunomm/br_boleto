@@ -111,7 +111,7 @@ describe BrBoleto::Conta::Unicred do
 		it "se não passar valor deve calcular automatico" do
 			subject.conta_corrente_dv = nil
 			subject.conta_corrente = '6688'
-			BrBoleto::Calculos::Modulo11FatorDe2a9.expects(:new).with('0006688').returns(stub(to_s: 5))
+			BrBoleto::Calculos::Modulo11FatorDe2a7.expects(:new).with('0006688').returns(stub(to_s: 5))
 
 			subject.conta_corrente_dv.must_equal 5
 		end

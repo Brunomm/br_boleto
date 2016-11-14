@@ -233,7 +233,7 @@ describe BrBoleto::Remessa::Cnab240::Sicoob do
 
 	describe "#dados_do_arquivo" do
 		it "deve gerar os dados do arquivo" do
-			subject.dados_do_arquivo.size.must_equal 1927
+			subject.dados_do_arquivo.size.must_equal 1936
 		end
 	end
 

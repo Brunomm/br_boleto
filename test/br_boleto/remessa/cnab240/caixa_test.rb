@@ -233,4 +233,55 @@ describe BrBoleto::Remessa::Cnab240::Caixa do
 			subject.complemento_trailer_lote(lote, 5)[69..216].must_equal (' ' * 148)
 		end
 	end
+
+	describe 'Geração do arquivo' do
+		let(:conta) do 
+			{
+				razao_social:   'EMPRESA EMITENTE',
+				cpf_cnpj:       '33.486.451/0001-30',
+				carteira:       '14',
+				agencia:        '7506',
+				codigo_cedente: '828196',
+				conta_corrente: '1354843'
+			} 
+		end
+		let(:pagador) { 
+			{
+				nome:     'Benjamin Francisco Marcos Vinicius Fernandes',
+				cpf_cnpj: '787.933.211-12',
+				endereco: 'Rua Principal s/n 881',
+				bairro:   'Centro',
+				cep:      '79210-972',
+				cidade:   'Anastácio',
+				uf:       'MS',
+			}
+		}
+		let(:pagamento) { 
+			BrBoleto::Remessa::Pagamento.new({
+				nosso_numero:     '140000000000000029',
+				numero_documento: '00000000002',
+				data_vencimento:  Date.parse('14/11/2016'),
+				valor_documento:  10.00,
+				pagador:          pagador,
+				especie_titulo:   '02',
+				codigo_juros:     '0', 
+				data_juros:       Date.parse('16/11/2016'),
+				valor_juros:      0.00,
+				codigo_multa:     '0', 
+				data_multa:       Date.parse('15/11/2016'),
+				valor_multa:      0.00,
+				data_emissao:     Date.parse('14/11/2016'),
+			})
+		}
+		let(:lote) { BrBoleto::Remessa::Lote.new(pagamentos: pagamento) } 
+		it "deve gerar o arquivo de remessa corretamente com as informações passadas" do
+			remessa = BrBoleto::Remessa::Cnab240::Caixa.new({
+				data_hora_arquivo:  Time.parse('14/11/2016 09:31:47'),
+				sequencial_remessa: 1,
+				conta:              conta,
+				lotes:              [lote],
+			})
+			remessa.dados_do_arquivo.must_equal read_fixture('remessa/cnab240/caixa.rem')
+		end
+	end
 end
