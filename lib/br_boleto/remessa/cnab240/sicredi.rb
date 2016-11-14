@@ -147,7 +147,7 @@ module BrBoleto
 					end
 
 				############################ SEGMENTO R ################################
-
+				
 					# Código do desconto 2
 					# 1 posição
 					def segmento_r_posicao_018_a_018(pagamento)
