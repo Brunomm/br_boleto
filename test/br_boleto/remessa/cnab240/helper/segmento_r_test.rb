@@ -7,7 +7,7 @@ module Helper
 			subject.stubs(:segmento_r_posicao_009_a_013).with(2).returns(        ' 009_a_013')
 			subject.stubs(:segmento_r_posicao_014_a_014).returns(                ' 014_a_014')
 			subject.stubs(:segmento_r_posicao_015_a_015).returns(                ' 015_a_015')
-			subject.stubs(:segmento_r_posicao_016_a_017).returns(                ' 016_a_017')
+			subject.stubs(:segmento_r_posicao_016_a_017).with(pagamento).returns(' 016_a_017')
 			subject.stubs(:segmento_r_posicao_018_a_018).with(pagamento).returns(' 018_a_018')
 			subject.stubs(:segmento_r_posicao_019_a_026).with(pagamento).returns(' 019_a_026')
 			subject.stubs(:segmento_r_posicao_027_a_041).with(pagamento).returns(' 027_a_041')
@@ -89,8 +89,9 @@ module Helper
 		# Código de Movimento Remessa - 01 = Entrada de Titulos
 		# 2 posições
 		#
-		def test_SegmentoRHelper_metodo_segmento_r_posicao_016_a_017
-			subject.segmento_r_posicao_016_a_017.must_equal '01'
+		def test_SegmentoRHelper_metodo_segmento_r_posicao_016_a_017#(pagamento)
+			pagamento.expects(:identificacao_ocorrencia).returns('01')
+			subject.segmento_r_posicao_016_a_017(pagamento).must_equal '01'
 		end
 
 		# Código do desconto 2
@@ -144,24 +145,15 @@ module Helper
 		# Codigo da multa - (0 = isento, 1 = Valor fixo e 2 = Percentual)
 		# 1 posição
 		#
-		def test_SegmentoRHelper_metodo_segmento_r_posicao_066_a_066#(pagamento)
-			pagamento.expects(:codigo_multa).returns('11111111')
-			subject.segmento_r_posicao_066_a_066(pagamento).must_equal '1'
-		end
-		def test_SegmentoRHelper_metodo_segmento_r_posicao_066_a_066_aceita_apenas_1_2_ou_3_com_padrao_3
-			pagamento.codigo_multa = '1'
-			subject.segmento_r_posicao_066_a_066(pagamento).must_equal '1'
-			pagamento.codigo_multa = '2'
-			subject.segmento_r_posicao_066_a_066(pagamento).must_equal '2'
+		def test_SegmentoRHelper_metodo_segmento_r_posicao_066_a_066_deve_pegar_o_codigo_atraves_do_metodo_get_codigo_multa
 			pagamento.codigo_multa = '3'
-			subject.segmento_r_posicao_066_a_066(pagamento).must_equal '3'
+			subject.conta.expects(:get_codigo_multa).with('3').returns('0')
+			subject.segmento_r_posicao_066_a_066(pagamento).must_equal '0'
+		end
 
+		def test_SegmentoRHelper_metodo_segmento_r_posicao_066_a_066_deve_setar_por_padrao_o_valor_3_se_estiver_vazio
 			pagamento.codigo_multa = nil
-			subject.segmento_r_posicao_066_a_066(pagamento).must_equal '3'
-			
-			pagamento.codigo_multa = '4'
-			subject.segmento_r_posicao_066_a_066(pagamento).must_equal '3'
-			pagamento.codigo_multa = '0'
+			subject.conta.expects(:get_codigo_multa).with(nil).returns('')
 			subject.segmento_r_posicao_066_a_066(pagamento).must_equal '3'
 		end
 

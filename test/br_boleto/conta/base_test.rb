@@ -284,7 +284,30 @@ describe BrBoleto::Remessa::Base do
 				end
 			end
 		end
+		context "#codigo_carteira" do
+			it "por padrão não deve validar nada" do
+				subject.codigo_carteira = nil
+				wont_be_message_error(:codigo_carteira)
+			end
 
+			context "#valid_codigo_carteira_required" do
+				it "quando setado deve validar a obrigatoriedade" do
+					wont validate_presence_of(:codigo_carteira)
+					
+					subject.valid_codigo_carteira_required = true
+					must validate_presence_of(:codigo_carteira)
+				end
+			end
+			context "#valid_codigo_carteira_length" do
+				it "quando setado um valor deve validar através do valor setado" do
+					subject.valid_codigo_carteira_length = 7
+					subject.codigo_carteira = '12345678'
+					must_be_message_error(:codigo_carteira, :custom_length_is, {count: 7})
+					subject.codigo_carteira = '1234567'
+					wont_be_message_error(:codigo_carteira, :custom_length_is, {count: 7})
+				end
+			end
+		end
 		context "#convenio" do
 			it "por padrão não deve validar nada" do
 				subject.convenio = nil
@@ -425,8 +448,9 @@ describe BrBoleto::Remessa::Base do
 	describe "#agencia_codigo_cedente" do
 		it "deve trazer a agencia e o dv separados por /" do
 			subject.expects(:agencia).returns(956781)
-			subject.expects(:codigo_cedente).returns(9)
-			subject.agencia_codigo_cedente.must_equal '956781 / 9'
+			subject.expects(:codigo_cedente).returns(999)
+			subject.expects(:codigo_cedente_dv).returns(7)
+			subject.agencia_codigo_cedente.must_equal '956781 / 999-7'
 		end
 	end
 
@@ -486,5 +510,276 @@ describe BrBoleto::Remessa::Base do
 		end
 	end
 
-	
+	describe "#tipo_cobranca" do
+		it "deve retornar o codigo_carteira se existir" do
+			subject.codigo_carteira = '1'
+			subject.tipo_cobranca.must_equal '1'
+			subject.codigo_carteira = '2'
+			subject.tipo_cobranca.must_equal '2'
+		end
+		it "deve pegar o primeiro caracter da carteira se não houver valor no codigo_carteira" do
+			subject.carteira = 'X7'
+			subject.tipo_cobranca.must_equal 'X'
+			subject.carteira = 'A7'
+			subject.tipo_cobranca.must_equal 'A'
+		end
+		it "se carteira for nil não deve dar erro" do
+			subject.carteira = nil
+			subject.tipo_cobranca.must_be_nil
+		end
+	end
+
+	context "defalt_codes" do
+		describe "#get_especie_titulo" do
+			context "CÓDIGOS para o cnab 240" do
+				it { subject.get_especie_titulo('01', 240).must_equal '01' } #  CH   –  Cheque
+				it { subject.get_especie_titulo('02', 240).must_equal '02' } #  DM   –  Duplicata Mercantil
+				it { subject.get_especie_titulo('03', 240).must_equal '03' } #  DMI  –  Duplicata Mercantil p/ Indicação
+				it { subject.get_especie_titulo('04', 240).must_equal '04' } #  DS   –  Duplicata de Serviço
+				it { subject.get_especie_titulo('05', 240).must_equal '05' } #  DSI  –  Duplicata de Serviço p/ Indicação
+				it { subject.get_especie_titulo('06', 240).must_equal '06' } #  DR   –  Duplicata Rural
+				it { subject.get_especie_titulo('07', 240).must_equal '07' } #  LC   –  Letra de Câmbio
+				it { subject.get_especie_titulo('08', 240).must_equal '08' } #  NCC  –  Nota de Crédito Comercial
+				it { subject.get_especie_titulo('09', 240).must_equal '09' } #  NCE  –  Nota de Crédito a Exportação
+				it { subject.get_especie_titulo('10', 240).must_equal '10' } #  NCI  –  Nota de Crédito Industrial
+				it { subject.get_especie_titulo('11', 240).must_equal '11' } #  NCR  –  Nota de Crédito Rural
+				it { subject.get_especie_titulo('12', 240).must_equal '12' } #  NP   –  Nota Promissória
+				it { subject.get_especie_titulo('13', 240).must_equal '13' } #  NPR  –  Nota Promissória Rural
+				it { subject.get_especie_titulo('14', 240).must_equal '14' } #  TM   –  Triplicata Mercantil
+				it { subject.get_especie_titulo('15', 240).must_equal '15' } #  TS   –  Triplicata de Serviço
+				it { subject.get_especie_titulo('16', 240).must_equal '16' } #  NS   –  Nota de Seguro
+				it { subject.get_especie_titulo('17', 240).must_equal '17' } #  RC   –  Recibo
+				it { subject.get_especie_titulo('18', 240).must_equal '18' } #  FAT  –  Fatura
+				it { subject.get_especie_titulo('19', 240).must_equal '19' } #  ND   –  Nota de Débito
+				it { subject.get_especie_titulo('20', 240).must_equal '20' } #  AP   –  Apólice de Seguro
+				it { subject.get_especie_titulo('21', 240).must_equal '21' } #  ME   –  Mensalidade Escolar
+				it { subject.get_especie_titulo('22', 240).must_equal '22' } #  PC   –  Parcela de Consórcio
+				it { subject.get_especie_titulo('23', 240).must_equal '23' } #  NF   –  Nota Fiscal
+				it { subject.get_especie_titulo('24', 240).must_equal '24' } #  DD   –  Documento de Dívida
+				it { subject.get_especie_titulo('25', 240).must_equal '25' } #  Cédula de Produto Rural
+				it { subject.get_especie_titulo('26', 240).must_equal '26' } #  Warrant 
+				it { subject.get_especie_titulo('27', 240).must_equal '27' } #  Dívida Ativa de Estado
+				it { subject.get_especie_titulo('28', 240).must_equal '28' } #  Dívida Ativa de Município
+				it { subject.get_especie_titulo('29', 240).must_equal '29' } #  Dívida Ativa da União
+				it { subject.get_especie_titulo('30', 240).must_equal '30' } #  Encargos condominiais
+				it { subject.get_especie_titulo('31', 240).must_equal '31' } #  CC  –  Cartão de Crédito
+				it { subject.get_especie_titulo('32', 240).must_equal '32' } #  BDP –  Boleto de Proposta
+				it { subject.get_especie_titulo('99', 240).must_equal '99' } #  Outros
+				it { subject.get_especie_titulo('00', 240).must_equal '99' }
+			end
+			context "CÓDIGOS para o cnab 400" do
+				it { subject.get_especie_titulo('01', 400).must_equal '10' } #  Cheque
+				it { subject.get_especie_titulo('02', 400).must_equal '01' } #  Duplicata Mercantil
+				it { subject.get_especie_titulo('04', 400).must_equal '12' } #  Duplicata de Serviço
+				it { subject.get_especie_titulo('06', 400).must_equal '06' } #  Duplicata Rural
+				it { subject.get_especie_titulo('07', 400).must_equal '08' } #  Letra de Câmbio
+				it { subject.get_especie_titulo('12', 400).must_equal '02' } #  Nota Promissória
+				it { subject.get_especie_titulo('14', 400).must_equal '14' } #  Triplicata Mercantil
+				it { subject.get_especie_titulo('15', 400).must_equal '15' } #  Triplicata de Serviço
+				it { subject.get_especie_titulo('16', 400).must_equal '03' } #  Nota de Seguro
+				it { subject.get_especie_titulo('17', 400).must_equal '05' } #  Recibo
+				it { subject.get_especie_titulo('18', 400).must_equal '18' } #  Fatura
+				it { subject.get_especie_titulo('19', 400).must_equal '13' } #  Nota de Débito
+				it { subject.get_especie_titulo('20', 400).must_equal '20' } #  Apólice de Seguro
+				it { subject.get_especie_titulo('21', 400).must_equal '21' } #  Mensalidade Escolar
+				it { subject.get_especie_titulo('22', 400).must_equal '22' } #  Parcela de Consórcio
+				it { subject.get_especie_titulo('26', 400).must_equal '09' } #  Warrant
+				it { subject.get_especie_titulo('99', 400).must_equal '99' } #  Outros"
+				it { subject.get_especie_titulo('00', 400).must_equal '99' } 
+			end
+		end
+		describe "#get_codigo_movimento_remessa" do
+			context "CÓDIGOS para o cnab 240" do
+				it { subject.get_codigo_movimento_remessa('01',240).must_equal '01' } # Entrada de Títulos
+				it { subject.get_codigo_movimento_remessa('02',240).must_equal '02' } # Pedido de Baixa
+				it { subject.get_codigo_movimento_remessa('03',240).must_equal '03' } # Protesto para Fins Falimentares
+				it { subject.get_codigo_movimento_remessa('04',240).must_equal '04' } # Concessão de Abatimento
+				it { subject.get_codigo_movimento_remessa('05',240).must_equal '05' } # Cancelamento de Abatimento
+				it { subject.get_codigo_movimento_remessa('06',240).must_equal '06' } # Alteração de Vencimento
+				it { subject.get_codigo_movimento_remessa('07',240).must_equal '07' } # Concessão de Desconto
+				it { subject.get_codigo_movimento_remessa('08',240).must_equal '08' } # Cancelamento de Desconto
+				it { subject.get_codigo_movimento_remessa('09',240).must_equal '09' } # Pedido de protesto (Protestar)
+				it { subject.get_codigo_movimento_remessa('10',240).must_equal '10' } # Sustar Protesto e Baixar Título
+				it { subject.get_codigo_movimento_remessa('11',240).must_equal '11' } # Sustar Protesto e Manter em Carteira
+				it { subject.get_codigo_movimento_remessa('12',240).must_equal '12' } # Alteração de Juros de Mora
+				it { subject.get_codigo_movimento_remessa('13',240).must_equal '13' } # Dispensar Cobrança de Juros de Mora
+				it { subject.get_codigo_movimento_remessa('14',240).must_equal '14' } # Alteração de Valor/Percentual de Multa
+				it { subject.get_codigo_movimento_remessa('15',240).must_equal '15' } # Dispensar Cobrança de Multa
+				it { subject.get_codigo_movimento_remessa('16',240).must_equal '16' } # Alteração do Valor de Desconto
+				it { subject.get_codigo_movimento_remessa('17',240).must_equal '17' } # Não conceder Desconto
+				it { subject.get_codigo_movimento_remessa('18',240).must_equal '18' } # Alteração do Valor de Abatimento
+				it { subject.get_codigo_movimento_remessa('19',240).must_equal '19' } # Prazo Limite de Recebimento – Alterar
+				it { subject.get_codigo_movimento_remessa('20',240).must_equal '20' } # Prazo Limite de Recebimento – Dispensar
+				it { subject.get_codigo_movimento_remessa('21',240).must_equal '21' } # Alterar número do título dado pelo beneficiario
+				it { subject.get_codigo_movimento_remessa('22',240).must_equal '22' } # Alterar número controle do Participante (seu número)
+				it { subject.get_codigo_movimento_remessa('23',240).must_equal '23' } # Alterar dados do Pagador
+				it { subject.get_codigo_movimento_remessa('24',240).must_equal '24' } # Alterar dados do Sacador/Avalista
+				it { subject.get_codigo_movimento_remessa('30',240).must_equal '30' } # Recusa da Alegação do Pagador
+				it { subject.get_codigo_movimento_remessa('31',240).must_equal '31' } # Alteração de Outros Dados
+				it { subject.get_codigo_movimento_remessa('33',240).must_equal '33' } # Alteração dos Dados do Rateio de Crédito
+				it { subject.get_codigo_movimento_remessa('34',240).must_equal '34' } # Pedido de Cancelamento dos Dados do Rateio de Crédito
+				it { subject.get_codigo_movimento_remessa('35',240).must_equal '35' } # Pedido de Desagendamento do Débito Automático
+				it { subject.get_codigo_movimento_remessa('40',240).must_equal '40' } # Alteração de Carteira
+				it { subject.get_codigo_movimento_remessa('41',240).must_equal '41' } # Cancelar protesto
+				it { subject.get_codigo_movimento_remessa('42',240).must_equal '42' } # Alteração de Espécie de Título
+				it { subject.get_codigo_movimento_remessa('43',240).must_equal '43' } # Transferência de carteira/modalidade de cobrança
+				it { subject.get_codigo_movimento_remessa('44',240).must_equal '44' } # Alteração de contrato de cobrança
+				it { subject.get_codigo_movimento_remessa('45',240).must_equal '45' } # Negativação Sem Protesto
+				it { subject.get_codigo_movimento_remessa('46',240).must_equal '46' } # Solicitação de Baixa de Título Negativado Sem Protesto
+				it { subject.get_codigo_movimento_remessa('47',240).must_equal '47' } # Alteração do Valor Nominal do Título
+				it { subject.get_codigo_movimento_remessa('48',240).must_equal '48' } # Alteração do Valor Mínimo/ Percentual
+				it { subject.get_codigo_movimento_remessa('49',240).must_equal '49' } # Alteração do Valor Máximo/Percentua
+				it { subject.get_codigo_movimento_remessa('00', 240).must_equal '31' }
+			end
+			context "CÓDIGOS para o cnab 400" do
+				it { subject.get_codigo_movimento_remessa('01', 400).must_equal '01' } # Registro de títulos / Remessa
+				it { subject.get_codigo_movimento_remessa('02', 400).must_equal '02' } # Pedido de Baixa
+				it { subject.get_codigo_movimento_remessa('03', 400).must_equal '03' } # Pedido de Protesto Falimentar 
+				it { subject.get_codigo_movimento_remessa('04', 400).must_equal '04' } # Concessão de abatimento
+				it { subject.get_codigo_movimento_remessa('05', 400).must_equal '05' } # Cancelamento de abatimento concedido
+				it { subject.get_codigo_movimento_remessa('06', 400).must_equal '06' } # Alteração de vencimento
+				it { subject.get_codigo_movimento_remessa('09', 400).must_equal '09' } # Pedido de protesto (Protestar)
+				it { subject.get_codigo_movimento_remessa('22', 400).must_equal '08' } # Alterar número controle do Participante (seu número)
+				it { subject.get_codigo_movimento_remessa('31', 400).must_equal '31' } # Alteração de outros dados
+				it { subject.get_codigo_movimento_remessa('00', 400).must_equal '31' } 
+			end
+		end
+		describe "#get_tipo_cobranca_240" do
+			it { subject.get_tipo_cobranca('1', 240).must_equal '1' } # Cobrança Simples
+			it { subject.get_tipo_cobranca('2', 240).must_equal '2' } # Cobrança Vinculada
+			it { subject.get_tipo_cobranca('3', 240).must_equal '3' } # Cobrança Caucionada
+			it { subject.get_tipo_cobranca('4', 240).must_equal '4' } # Cobrança Descontada
+			it { subject.get_tipo_cobranca('5', 240).must_equal '5' } # Cobrança Vendor
+			it { subject.get_tipo_cobranca('00', 240).must_equal '00' } 
+		end
+		describe "#get_tipo_cobranca_400" do
+			it { subject.get_tipo_cobranca('1', 400).must_equal '1' } # Cobrança Simples
+			it { subject.get_tipo_cobranca('2', 400).must_equal '2' } # Cobrança Vinculada
+			it { subject.get_tipo_cobranca('3', 400).must_equal '3' } # Cobrança Caucionada
+			it { subject.get_tipo_cobranca('4', 400).must_equal '4' } # Cobrança Descontada
+			it { subject.get_tipo_cobranca('5', 400).must_equal '5' } # Cobrança Vendor
+			it { subject.get_tipo_cobranca('00', 400).must_equal '00' } 
+		end
+		describe "#get_identificacao_emissao_240" do
+			it { subject.get_identificacao_emissao('1', 240).must_equal '1' } # Banco Emite
+			it { subject.get_identificacao_emissao('2', 240).must_equal '2' } # Cliente Emite
+			it { subject.get_identificacao_emissao('3', 240).must_equal '3' } # Banco Pré-emite e Cliente Complementa
+			it { subject.get_identificacao_emissao('4', 240).must_equal '4' } # Banco Reemite
+			it { subject.get_identificacao_emissao('5', 240).must_equal '5' } # Banco Não Reemite
+			it { subject.get_identificacao_emissao('7', 240).must_equal '7' } # Banco Emitente - Aberta
+			it { subject.get_identificacao_emissao('8', 240).must_equal '8' } # Banco Emitente - Auto-envelopável
+			it { subject.get_identificacao_emissao('99', 240).must_equal '99' } 
+		end
+		describe "#get_identificacao_emissao_400" do
+			it { subject.get_identificacao_emissao('1', 400).must_equal '1' } # Banco Emite
+			it { subject.get_identificacao_emissao('2', 400).must_equal '2' } # Cliente Emite
+			it { subject.get_identificacao_emissao('3', 400).must_equal '3' } # Banco Pré-emite e Cliente Complementa
+			it { subject.get_identificacao_emissao('4', 400).must_equal '4' } # Banco Reemite
+			it { subject.get_identificacao_emissao('5', 400).must_equal '5' } # Banco Não Reemite
+			it { subject.get_identificacao_emissao('7', 400).must_equal '7' } # Banco Emitente - Aberta
+			it { subject.get_identificacao_emissao('8', 400).must_equal '8' } # Banco Emitente - Auto-envelopável
+			it { subject.get_identificacao_emissao('00', 400).must_equal '00' } 
+		end
+		describe "#get_distribuicao_boleto" do
+			it { subject.get_distribuicao_boleto('1').must_equal '1' } # Banco Distribui
+			it { subject.get_distribuicao_boleto('2').must_equal '2' } # Cliente Distribui
+			it { subject.get_distribuicao_boleto('3').must_equal '3' } # Banco envia e-mail
+			it { subject.get_distribuicao_boleto('4').must_equal '4' } # Banco envia SMS
+			it { subject.get_distribuicao_boleto('00').must_equal '00' } 
+		end
+		describe "#get_tipo_impressao_240" do
+			it { subject.get_tipo_impressao('1', 240).must_equal '1' } # Frente do Bloqueto
+			it { subject.get_tipo_impressao('2', 240).must_equal '2' } # Verso do Bloqueto
+			it { subject.get_tipo_impressao('3', 240).must_equal '3' } # Corpo de Instruções da Ficha de Compensação do Bloqueto
+			it { subject.get_tipo_impressao('7', 240).must_equal '7' } # Outros
+			it { subject.get_tipo_impressao('999', 240).must_equal '999' } # Outros
+		end
+		describe "#get_tipo_impressao_400" do
+			it { subject.get_tipo_impressao('1', 400).must_equal '1' } # Frente do Bloqueto
+			it { subject.get_tipo_impressao('2', 400).must_equal '2' } # Verso do Bloqueto
+			it { subject.get_tipo_impressao('3', 400).must_equal '3' } # Corpo de Instruções da Ficha de Compensação do Bloqueto
+			it { subject.get_tipo_impressao('7', 400).must_equal '7' } # Outros
+			it { subject.get_tipo_impressao('999', 400).must_equal '999' } # Outros
+		end
+		describe "#get_codigo_juros" do
+			it { subject.get_codigo_juros('1').must_equal '1' } # Valor por Dia
+			it { subject.get_codigo_juros('2').must_equal '2' } # Taxa Mensal
+			it { subject.get_codigo_juros('3').must_equal '3' } # Isento
+			it 'se passar um valor inexistente deve pegar o valor padrão' do
+				subject.expects(:default_codigo_juros).returns(8)
+				subject.get_codigo_juros('00').must_equal 8
+			end
+			it '#default_codigo_juros deve ter o valor 3 por padrão' do
+				subject.default_codigo_juros.must_equal '3'
+			end
+		end
+		describe "#get_codigo_multa" do
+			it { subject.get_codigo_multa('1').must_equal '1' } # Valor fixo
+			it { subject.get_codigo_multa('2').must_equal '2' } # Percentual
+			it { subject.get_codigo_multa('3').must_equal '3' } # Isento
+			it { subject.get_codigo_multa('9').must_equal '3' } 
+			it 'se passar um valor inexistente deve pegar o valor padrão' do
+				subject.expects(:default_codigo_multa).returns(8)
+				subject.get_codigo_multa('9').must_equal 8
+			end
+			it '#default_codigo_multa deve ter o valor 3 por padrão' do
+				subject.default_codigo_multa.must_equal '3'
+			end
+		end
+		describe "#get_codigo_desconto" do
+			it { subject.get_codigo_desconto('0').must_equal '0' } # Sem Desconto
+			it { subject.get_codigo_desconto('1').must_equal '1' } # Valor Fixo Até a Data Informada
+			it { subject.get_codigo_desconto('2').must_equal '2' } # Percentual Até a Data Informada
+			it { subject.get_codigo_desconto('3').must_equal '3' } # Valor por Antecipação Dia Corrido
+			it { subject.get_codigo_desconto('4').must_equal '4' } # Valor por Antecipação Dia Úti
+			it { subject.get_codigo_desconto('5').must_equal '5' } # Percentual Sobre o Valor Nominal Dia Corrido
+			it { subject.get_codigo_desconto('6').must_equal '6' } # Percentual Sobre o Valor Nominal Dia Útil
+			it { subject.get_codigo_desconto('7').must_equal '7' } # Cancelamento de Desconto
+			it { subject.get_codigo_desconto('55').must_equal '55' } 
+		end
+		describe "#get_codigo_protesto" do
+			it { subject.get_codigo_protesto('1').must_equal '1' } # Protestar Dias Corridos
+			it { subject.get_codigo_protesto('2').must_equal '2' } # Protestar Dias Úteis
+			it { subject.get_codigo_protesto('3').must_equal '3' } # Não Protesta
+			it { subject.get_codigo_protesto('4').must_equal '4' } # Protestar Fim Falimentar - Dias Úteis
+			it { subject.get_codigo_protesto('5').must_equal '5' } # Protestar Fim Falimentar - Dias Corridos
+			it { subject.get_codigo_protesto('8').must_equal '8' } # Negativação sem Protesto
+			it { subject.get_codigo_protesto('9').must_equal '9' } # Cancelamento Protesto Automático 
+			it { subject.get_codigo_protesto('55').must_equal '55' } 
+		end
+		describe "#get_codigo_moeda_240" do
+			it { subject.get_codigo_moeda('01', 240).must_equal '01' } # Reservado para Uso Futuro
+			it { subject.get_codigo_moeda('02', 240).must_equal '02' } # Dólar Americano Comercial (Venda)
+			it { subject.get_codigo_moeda('03', 240).must_equal '03' } # Dólar Americano Turismo (Venda)
+			it { subject.get_codigo_moeda('04', 240).must_equal '04' } # ITRD
+			it { subject.get_codigo_moeda('05', 240).must_equal '05' } # IDTR
+			it { subject.get_codigo_moeda('06', 240).must_equal '06' } # UFIR Diária
+			it { subject.get_codigo_moeda('07', 240).must_equal '07' } # UFIR Mensal
+			it { subject.get_codigo_moeda('08', 240).must_equal '08' } # FAJ - TR
+			it { subject.get_codigo_moeda('09', 240).must_equal '09' } # Real
+			it { subject.get_codigo_moeda('10', 240).must_equal '10' } # TR
+			it { subject.get_codigo_moeda('11', 240).must_equal '11' } # IGPM
+			it { subject.get_codigo_moeda('12', 240).must_equal '12' } # CDI
+			it { subject.get_codigo_moeda('13', 240).must_equal '13' } # Percentual do CDI
+			it { subject.get_codigo_moeda('14', 240).must_equal '14' } # Euro
+			it { subject.get_codigo_moeda('55', 240).must_equal '55' } 
+		end
+		describe "#get_codigo_moeda_400" do
+			it { subject.get_codigo_moeda('01', 400).must_equal '01' } # Reservado para Uso Futuro
+			it { subject.get_codigo_moeda('02', 400).must_equal '02' } # Dólar Americano Comercial (Venda)
+			it { subject.get_codigo_moeda('03', 400).must_equal '03' } # Dólar Americano Turismo (Venda)
+			it { subject.get_codigo_moeda('04', 400).must_equal '04' } # ITRD
+			it { subject.get_codigo_moeda('05', 400).must_equal '05' } # IDTR
+			it { subject.get_codigo_moeda('06', 400).must_equal '06' } # UFIR Diária
+			it { subject.get_codigo_moeda('07', 400).must_equal '07' } # UFIR Mensal
+			it { subject.get_codigo_moeda('08', 400).must_equal '08' } # FAJ - TR
+			it { subject.get_codigo_moeda('09', 400).must_equal '09' } # Real
+			it { subject.get_codigo_moeda('10', 400).must_equal '10' } # TR
+			it { subject.get_codigo_moeda('11', 400).must_equal '11' } # IGPM
+			it { subject.get_codigo_moeda('12', 400).must_equal '12' } # CDI
+			it { subject.get_codigo_moeda('13', 400).must_equal '13' } # Percentual do CDI
+			it { subject.get_codigo_moeda('14', 400).must_equal '14' } # Euro
+			it { subject.get_codigo_moeda('55', 400).must_equal '55' } 
+		end
+	end
 end

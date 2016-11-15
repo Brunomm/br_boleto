@@ -84,7 +84,7 @@ module BrBoleto
 				def complemento_p(pagamento)
 					complemento  = "#{conta.convenio}".adjust_size_to(6, '0', :right)
 					complemento << ''.rjust(11, '0')
-					complemento << "#{conta.carteira}".adjust_size_to(conta.valid_carteira_length, '1', :right)
+					complemento << "#{conta.carteira}".adjust_size_to(conta.valid_carteira_length, '2', :right)
 					complemento << pagamento.nosso_numero.adjust_size_to(15, '0', :right)
 					complemento
 				end
@@ -120,6 +120,13 @@ module BrBoleto
 				#
 				def segmento_p_posicao_196_a_220(pagamento)
 					"#{pagamento.numero_documento}".adjust_size_to(25, '0', :right)
+				end
+
+				# Segmento Q Cód. Bco. Corresp. na Compensação
+				# Deve ser 3 espaços em branco
+				# 3 posições
+				def segmento_q_posicao_210_a_212
+					''.rjust(3, ' ') 
 				end
 				
 				def segmento_s_posicao_019_a_020_tipo_impressao_1_ou_2(pagamento)

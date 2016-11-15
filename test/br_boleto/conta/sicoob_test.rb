@@ -125,7 +125,6 @@ describe BrBoleto::Conta::Sicoob do
 		end
 	end
 
-
 	describe '#conta_corrente_dv' do
 		it "deve ser personalizavel pelo usuario" do
 			subject.conta_corrente_dv = 88
@@ -140,5 +139,36 @@ describe BrBoleto::Conta::Sicoob do
 		end
 	end
 
-	
+	describe "#get_codigo_movimento_remessa" do
+		context "CÓDIGOS para o cnab 400 do SICOOB" do
+			it { subject.get_codigo_movimento_remessa('23', 400).must_equal '12' } # Alteração de Pagador
+			it { subject.get_codigo_movimento_remessa('46', 400).must_equal '34' } # Baixa - Pagamento Direto ao Beneficiário
+		end
+	end
+	describe '#get_codigo_juros' do 
+		it { subject.get_codigo_juros('1').must_equal '1' }
+		it { subject.get_codigo_juros('2').must_equal '2' }
+		it "para o siccob o código que representa sem juros deve ser 0(zero)" do
+			subject.get_codigo_juros('3').must_equal '0'
+		end
+		it "se passar o código '0' para os juros deve retornar 0" do
+			subject.get_codigo_juros('0').must_equal '0'
+		end
+		it "default_codigo_juros deve ser '0" do
+			subject.default_codigo_juros.must_equal '0'
+		end
+	end
+	describe '#get_codigo_multa' do 
+		it { subject.get_codigo_multa('1').must_equal '1' }
+		it { subject.get_codigo_multa('2').must_equal '2' }
+		it "para o siccob o código que representa sem multa deve ser 0(zero)" do
+			subject.get_codigo_multa('3').must_equal '0'
+		end
+		it "se passar o código '0' para os multa deve retornar 0" do
+			subject.get_codigo_multa('0').must_equal '0'
+		end
+		it "default_codigo_multa deve ser '0" do
+			subject.default_codigo_multa.must_equal '0'
+		end
+	end
 end

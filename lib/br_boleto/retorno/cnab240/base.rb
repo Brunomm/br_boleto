@@ -51,10 +51,11 @@ module BrBoleto
 				
 				def segmento_t_fields #:doc:
 					{ #    ATRIBUTO               POSIÇÃO DA LINHA
+						codigo_movimento_retorno:      16..17,
 						agencia_com_dv:                18..23,
 						agencia_sem_dv:                18..22,
-						numero_conta_com_dv:           24..36,
-						numero_conta_sem_dv:           24..35,
+						numero_conta:                  24..35,
+						numero_conta_dv:               36,
 						dv_conta_e_agencia:            37..37,
 						nosso_numero:                  38..57,
 						carteira:                      58..58,
@@ -82,16 +83,16 @@ module BrBoleto
 						valor_iof:                               63..77,
 						valor_pago:                              78..92,
 						valor_liquido:                           93..107,
-						valor_outras_despesas:                 108..122,
-						valor_outros_creditos:                 123..137,
-						data_ocorrencia:                        138..145,
-						data_credito:                           146..153,
-						codigo_ocorrencia_sacado:               154..157,
-						data_ocorrencia_sacado:                 158..165,
-						valor_ocorrencia_sacado:                166..180,
-						complemento_ocorrencia_sacado:          181..210,
-						codigo_ocorrencia_banco_correspondente: 211..213,
-						nosso_numero_banco_correspondente:      214..133,
+						valor_outras_despesas:                   108..122,
+						valor_outros_creditos:                   123..137,
+						data_ocorrencia:                         138..145,
+						data_credito:                            146..153,
+						codigo_ocorrencia_sacado:                154..157,
+						data_ocorrencia_sacado:                  158..165,
+						valor_ocorrencia_sacado:                 166..180,
+						complemento_ocorrencia_sacado:           181..210,
+						codigo_ocorrencia_banco_correspondente:  211..213,
+						nosso_numero_banco_correspondente:       214..233,
 					}				
 				end
 

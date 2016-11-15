@@ -1,13 +1,13 @@
 module Helper
 	module SegmentoPTest
-		def test_SegmentoPTest_metodo_monta_segmento_p_deve_ter_o_conteudo_dos_metodos_na_sequencia
+		def test_SegmentoP_Test_metodo_monta_segmento_p_deve_ter_o_conteudo_dos_metodos_na_sequencia
 			subject.stubs(:segmento_p_posicao_001_a_003).returns(" 001_a_003")
 			subject.stubs(:segmento_p_posicao_004_a_007).with(1).returns(" 004_a_007")
 			subject.stubs(:segmento_p_posicao_008_a_008).returns(" 008_a_008")
 			subject.stubs(:segmento_p_posicao_009_a_013).with(2).returns(" 009_a_013")
 			subject.stubs(:segmento_p_posicao_014_a_014).returns(" 014_a_014")
 			subject.stubs(:segmento_p_posicao_015_a_015).returns(" 015_a_015")
-			subject.stubs(:segmento_p_posicao_016_a_017).returns(" 016_a_017")
+			subject.stubs(:segmento_p_posicao_016_a_017).with(pagamento).returns(" 016_a_017")
 			subject.stubs(:segmento_p_posicao_018_a_022).returns(" 018_a_022")
 			subject.stubs(:segmento_p_posicao_023_a_023).returns(" 023_a_023")
 			subject.stubs(:segmento_p_posicao_024_a_057).with(pagamento).returns(" 024_a_057")
@@ -32,12 +32,12 @@ module Helper
 			subject.stubs(:segmento_p_posicao_151_a_165).with(pagamento).returns(" 151_a_165")
 			subject.stubs(:segmento_p_posicao_166_a_180).with(pagamento).returns(" 166_a_180")
 			subject.stubs(:segmento_p_posicao_181_a_195).with(pagamento).returns(" 181_a_195")
-			subject.stubs(:segmento_p_posicao_196_a_220).returns(" 196_a_220")
-			subject.stubs(:segmento_p_posicao_221_a_221).returns(" 221_a_221")
-			subject.stubs(:segmento_p_posicao_222_a_223).returns(" 222_a_223")
+			subject.stubs(:segmento_p_posicao_196_a_220).with(pagamento).returns(" 196_a_220")
+			subject.stubs(:segmento_p_posicao_221_a_221).with(pagamento).returns(" 221_a_221")
+			subject.stubs(:segmento_p_posicao_222_a_223).with(pagamento).returns(" 222_a_223")
 			subject.stubs(:segmento_p_posicao_224_a_224).returns(" 224_a_224")
 			subject.stubs(:segmento_p_posicao_225_a_227).returns(" 225_a_227")
-			subject.stubs(:segmento_p_posicao_228_a_229).returns(" 228_a_229")
+			subject.stubs(:segmento_p_posicao_228_a_229).with(pagamento).returns(" 228_a_229")
 			subject.stubs(:segmento_p_posicao_230_a_239).returns(" 230_a_239")
 			subject.stubs(:segmento_p_posicao_240_a_240).returns(" 240_a_240")
 			# Deve dar um upcase
@@ -48,7 +48,7 @@ module Helper
 		# 3 posições
 		# Por padrão deve retornar o "codigo_banco"
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_001_a_003
+		def test_SegmentoP_Test_metodo_segmento_p_posicao_001_a_003
 			subject.conta.expects(:codigo_banco).returns("669")
 			subject.segmento_p_posicao_001_a_003.must_equal("669")
 		end
@@ -60,7 +60,7 @@ module Helper
 		# 4 posições
 		# Padrão recebe o nro do lote por parametro e ajusta para 4 caracteres
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_004_a_007
+		def test_SegmentoP_Test_metodo_segmento_p_posicao_004_a_007
 			subject.segmento_p_posicao_004_a_007(5).to_s.rjust(4, '0')
 		end
 
@@ -68,7 +68,7 @@ module Helper
 		# 1 posição
 		# Por padrão retorna '3'
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_008_a_008
+		def test_SegmentoP_Test_metodo_segmento_p_posicao_008_a_008
 			subject.segmento_p_posicao_008_a_008.must_equal '3'
 		end
 
@@ -79,7 +79,7 @@ module Helper
 		# 5 posições
 		# recebe o sequencial por parâmetro e ajusta para 5 posições incluindo 0 na frente
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_009_a_013
+		def test_SegmentoP_Test_metodo_segmento_p_posicao_009_a_013
 			subject.segmento_p_posicao_009_a_013(88).must_equal '00088'
 		end
 
@@ -87,7 +87,7 @@ module Helper
 		# 1 posição
 		# Por padrão é a letra P
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_014_a_014
+		def test_SegmentoP_Test_metodo_segmento_p_posicao_014_a_014
 			subject.segmento_p_posicao_014_a_014.must_equal "P"
 		end
 
@@ -95,7 +95,7 @@ module Helper
 		# 1 posição
 		# Por padrão é valor em branco
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_015_a_015
+		def test_SegmentoP_Test_metodo_segmento_p_posicao_015_a_015
 			subject.segmento_p_posicao_015_a_015.must_equal ' '
 		end
 
@@ -103,15 +103,16 @@ module Helper
 		# 2 posições
 		# Por padrão é o valor '01'
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_016_a_017
-			subject.segmento_p_posicao_016_a_017.must_equal '01'
+		def test_SegmentoP_Test_metodo_segmento_p_posicao_016_a_017#(pagamento)
+			pagamento.expects(:identificacao_ocorrencia).returns('01')
+			subject.segmento_p_posicao_016_a_017(pagamento).must_equal '01'
 		end
 
 		# Agência Mantenedora da Conta 
 		# 5 posições
 		# Deve pegar a "agencia" e ajustar para 5 caracteres incluindo 0 na frente
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_018_a_022
+		def test_SegmentoP_Test_metodo_segmento_p_posicao_018_a_022
 			subject.conta.expects(:agencia).returns(89)
 			subject.segmento_p_posicao_018_a_022.must_equal '00089'
 		end
@@ -120,7 +121,7 @@ module Helper
 		# 1 posição
 		# Deve pegar o "digito_agencia"
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_023_a_023
+		def test_SegmentoP_Test_metodo_segmento_p_posicao_023_a_023
 			subject.conta.expects(:agencia_dv).returns(1)
 			subject.segmento_p_posicao_023_a_023.must_equal '1'
 		end
@@ -134,7 +135,7 @@ module Helper
 		# 34 posições
 		# Deve pegar o "complemento_p" passando o "pagamento" por parametro
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_024_a_057
+		def test_SegmentoP_Test_metodo_segmento_p_posicao_024_a_057
 			subject.expects(:complemento_p).with('pagamento').returns("complemento_p")
 			subject.segmento_p_posicao_024_a_057('pagamento').must_equal 'complemento_p'
 		end
@@ -143,8 +144,8 @@ module Helper
 		# 1 posição
 		# Deve pegar o valor do metodo "codigo_carteira"
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_058_a_058
-			subject.conta.expects(:carteira).returns('3')
+		def test_SegmentoP_Test_metodo_segmento_p_posicao_058_a_058
+			subject.conta.expects(:codigo_carteira).returns('3')
 			subject.segmento_p_posicao_058_a_058.must_equal '3'
 		end
 
@@ -152,7 +153,7 @@ module Helper
 		# 1 posição
 		# Deve pegar o valor da "forma_cadastramento"
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_059_a_059
+		def test_SegmentoP_Test_metodo_segmento_p_posicao_059_a_059
 			pagamento.expects(:forma_cadastramento).returns('56')
 			subject.segmento_p_posicao_059_a_059(pagamento).must_equal '5'
 		end
@@ -161,7 +162,7 @@ module Helper
 		# 1 posição
 		# Retorna o valor '2' por padrão
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_060_a_060
+		def test_SegmentoP_Test_metodo_segmento_p_posicao_060_a_060
 			subject.segmento_p_posicao_060_a_060.must_equal '2'
 		end
 
@@ -169,18 +170,18 @@ module Helper
 		# 1 posição
 		# Deve pegar o valor do metodo "emissao_boleto"
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_061_a_061
-			pagamento.expects(:emissao_boleto).returns('123')
-			subject.segmento_p_posicao_061_a_061(pagamento).must_equal '123'
+		def test_SegmentoP_Test_metodo_segmento_p_posicao_061_a_061
+			pagamento.expects(:emissao_boleto).returns('3')
+			subject.segmento_p_posicao_061_a_061(pagamento).must_equal '3'
 		end
 
 		# Identificação da Distribuição
 		# 1 posição
 		# Deve pegar o valor do metodo "distribuicao_boleto"
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_062_a_062
-			pagamento.expects(:distribuicao_boleto).returns('distribuicao_boleto')
-			subject.segmento_p_posicao_062_a_062(pagamento).must_equal 'distribuicao_boleto'
+		def test_SegmentoP_Test_metodo_segmento_p_posicao_062_a_062
+			pagamento.expects(:distribuicao_boleto).returns('2')
+			subject.segmento_p_posicao_062_a_062(pagamento).must_equal '2'
 		end
 
 		# Número do Documento de Cobrança 
@@ -188,7 +189,7 @@ module Helper
 		# 15 Posições
 		# Deve retornar o valor do metodo "segmento_p_numero_do_documento" com o pagamento
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_063_a_077#(pagamento)
+		def test_SegmentoP_Test_metodo_segmento_p_posicao_063_a_077#(pagamento)
 			subject.expects(:segmento_p_numero_do_documento).with('pagamento').returns('vpagamento')
 			subject.segmento_p_posicao_063_a_077('pagamento').must_equal 'vpagamento'
 		end
@@ -197,7 +198,7 @@ module Helper
 		# 8 posições
 		# Deve retornar a "data_vencimento" formatada do pagamento 
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_078_a_085#(pagamento)
+		def test_SegmentoP_Test_metodo_segmento_p_posicao_078_a_085#(pagamento)
 			pagamento.data_vencimento = Date.today
 			subject.segmento_p_posicao_078_a_085(pagamento).must_equal Date.today.strftime('%d%m%Y')
 		end
@@ -206,7 +207,7 @@ module Helper
 		# 15 posições (13 posições para valor inteiro e 2 posições para valor quebrado)
 		# Deve retornar o "valor_documento_formatado" com 15 posições
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_086_a_100#(pagamento)
+		def test_SegmentoP_Test_metodo_segmento_p_posicao_086_a_100#(pagamento)
 			pagamento.expects(:valor_documento_formatado).with(15).returns("123456789")
 			subject.segmento_p_posicao_086_a_100(pagamento).must_equal '123456789'
 		end
@@ -215,7 +216,7 @@ module Helper
 		# 5 posições
 		# Por padrão é 5 posições em branco
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_101_a_105
+		def test_SegmentoP_Test_metodo_segmento_p_posicao_101_a_105
 			subject.segmento_p_posicao_101_a_105.must_equal ''.rjust(5, '0')
 		end
 
@@ -223,7 +224,7 @@ module Helper
 		# 1 posição
 		# Padrão é valor em branco
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_106_a_106
+		def test_SegmentoP_Test_metodo_segmento_p_posicao_106_a_106
 			subject.segmento_p_posicao_106_a_106.must_equal ' '
 		end
 
@@ -231,16 +232,19 @@ module Helper
 		# 2 posições
 		# Deve retornar o valro do metodo "especie_titulo"
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_107_a_108 
+		def test_SegmentoP_Test_metodo_segmento_p_posicao_107_a_108 
+			pagamento.expects(:especie_titulo).returns('01')
+			subject.segmento_p_posicao_107_a_108(pagamento).must_equal '01'			
+
 			pagamento.expects(:especie_titulo).returns('123')
-			subject.segmento_p_posicao_107_a_108(pagamento).must_equal '12'
+			subject.segmento_p_posicao_107_a_108(pagamento).must_equal '99'
 		end
 
 		# Identific. de Título Aceito/Não Aceito (A ou N)
 		# 1 posição
 		# Deve retornar o valor do "aceite"
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_109_a_109
+		def test_SegmentoP_Test_metodo_segmento_p_posicao_109_a_109
 			pagamento.aceite = true
 			subject.segmento_p_posicao_109_a_109(pagamento).must_equal 'A'
 			pagamento.aceite = false
@@ -251,32 +255,24 @@ module Helper
 		# 8 posições
 		# deve pegar a "data_emissao" do pagamento e formatar
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_110_a_117#(pagamento)
+		def test_SegmentoP_Test_metodo_segmento_p_posicao_110_a_117#(pagamento)
 			pagamento.data_emissao = Date.today
 			subject.segmento_p_posicao_110_a_117(pagamento).must_equal Date.today.strftime('%d%m%Y')
 		end
 
 		# Código do Juros de Mora 
 		# 1 posição
-		# Por padrão é o valor '0'
+		# Por padrão é o valor '3'
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_118_a_118#(pagamento) 
-			subject.segmento_p_posicao_118_a_118(pagamento).must_equal '3'
-		end
-		def test_SegmentoPTest_metodo_segmento_p_posicao_118_a_118_aceita_apenas_1_2_ou_3_com_padrao_3
-			pagamento.codigo_juros = '1'
-			subject.segmento_p_posicao_118_a_118(pagamento).must_equal '1'
-			pagamento.codigo_juros = '2'
-			subject.segmento_p_posicao_118_a_118(pagamento).must_equal '2'
+		def test_SegmentoP_Test_metodo_segmento_p_posicao_118_a_118_deve_pegar_o_codigo_atraves_do_metodo_get_codigo_juros
 			pagamento.codigo_juros = '3'
-			subject.segmento_p_posicao_118_a_118(pagamento).must_equal '3'
+			subject.conta.expects(:get_codigo_juros).with('3').returns('0')
+			subject.segmento_p_posicao_118_a_118(pagamento).must_equal '0'
+		end
 
+		def test_SegmentoP_Test_metodo_segmento_p_posicao_118_a_118_deve_setar_por_padrao_o_valor_3_se_estiver_vazio
 			pagamento.codigo_juros = nil
-			subject.segmento_p_posicao_118_a_118(pagamento).must_equal '3'
-			
-			pagamento.codigo_juros = '4'
-			subject.segmento_p_posicao_118_a_118(pagamento).must_equal '3'
-			pagamento.codigo_juros = '0'
+			subject.conta.expects(:get_codigo_juros).with(nil).returns('')
 			subject.segmento_p_posicao_118_a_118(pagamento).must_equal '3'
 		end
 
@@ -284,7 +280,7 @@ module Helper
 		# 8 posições
 		# Por padrão é 8 posições em branco
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_119_a_126#(pagamento) 
+		def test_SegmentoP_Test_metodo_segmento_p_posicao_119_a_126#(pagamento) 
 			pagamento.expects(:data_juros_formatado).with('%d%m%Y').returns('1234567890')
 			subject.segmento_p_posicao_119_a_126(pagamento).must_equal '12345678'
 		end
@@ -293,7 +289,7 @@ module Helper
 		# 15 posições
 		# Por padrão é 15 posições em branco
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_127_a_141#(pagamento) 
+		def test_SegmentoP_Test_metodo_segmento_p_posicao_127_a_141#(pagamento) 
 			pagamento.expects(:valor_juros_formatado).with(15).returns('123456')
 			subject.segmento_p_posicao_127_a_141(pagamento).must_equal '123456'
 		end
@@ -302,8 +298,8 @@ module Helper
 		# 1 posição
 		# Deve pegar o "cod_desconto" do pagamento
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_142_a_142#(pagamento)
-			pagamento.expects(:cod_desconto).returns('123')
+		def test_SegmentoP_Test_metodo_segmento_p_posicao_142_a_142#(pagamento)
+			pagamento.expects(:cod_desconto).returns('1')
 			subject.segmento_p_posicao_142_a_142(pagamento).must_equal '1'
 		end
 
@@ -311,7 +307,7 @@ module Helper
 		# 8 posições
 		# Deve retornar a "data_desconto_formatado" com formato ddmmyyyy do pagamento
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_143_a_150#(pagamento)
+		def test_SegmentoP_Test_metodo_segmento_p_posicao_143_a_150#(pagamento)
 			pagamento.expects(:data_desconto_formatado).with('%d%m%Y').returns('12345678')
 			subject.segmento_p_posicao_143_a_150(pagamento).must_equal '12345678'
 		end
@@ -320,7 +316,7 @@ module Helper
 		# 15 posições
 		# Deve trazer o 'valor_desconto_formatado' com 15 posições do pagamento
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_151_a_165#(pagamento)
+		def test_SegmentoP_Test_metodo_segmento_p_posicao_151_a_165#(pagamento)
 			pagamento.expects(:valor_desconto_formatado).with(15).returns('132')
 			subject.segmento_p_posicao_151_a_165(pagamento).must_equal '132'
 		end
@@ -329,7 +325,7 @@ module Helper
 		# 15 posições
 		# Deve retornar o "valor_iof_formatado" com 15 posições do pagamento
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_166_a_180#(pagamento)
+		def test_SegmentoP_Test_metodo_segmento_p_posicao_166_a_180#(pagamento)
 			pagamento.expects(:valor_iof_formatado).with(15).returns('123')
 			subject.segmento_p_posicao_166_a_180(pagamento).must_equal '123'
 		end
@@ -338,7 +334,7 @@ module Helper
 		# 15 posições
 		# Deve retornar o "valor_abatimento_formatado" com 15 posições do pagamento
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_181_a_195#(pagamento)
+		def test_SegmentoP_Test_metodo_segmento_p_posicao_181_a_195#(pagamento)
 			pagamento.expects(:valor_abatimento_formatado).with(15).returns('123')
 			subject.segmento_p_posicao_181_a_195(pagamento).must_equal '123'
 		end
@@ -347,7 +343,7 @@ module Helper
 		# 25 posições
 		# Deve retornar 25 posições em branco
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_196_a_220
+		def test_SegmentoP_Test_metodo_segmento_p_posicao_196_a_220
 			subject.segmento_p_posicao_196_a_220(pagamento).must_equal ''.rjust(25, ' ') 
 		end
 
@@ -355,23 +351,33 @@ module Helper
 		# 1 posição
 		# Por padrão é o valor '1'
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_221_a_221 
-			subject.segmento_p_posicao_221_a_221 .must_equal '1'
+		def test_SegmentoP_Test_metodo_segmento_p_posicao_221_a_221#(pagamento)
+			pagamento.expects(:codigo_protesto).returns('1')
+			subject.segmento_p_posicao_221_a_221(pagamento) .must_equal '1'
 		end
 
 		# Número de Dias para Protesto 
 		# 2 posições
-		# Por padrão é o valor '00'
+		# Para os códigos '3' = Não Protestar e '8' = Negativação sem Protesto,
+		# setar dias de protesto '00', caso contrário setar o  valor de dias_protesto
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_222_a_223
-			subject.segmento_p_posicao_222_a_223.must_equal '00' 
+		def test_SegmentoP_Test_metodo_segmento_p_posicao_222_a_223#(pagamento)
+			pagamento.expects(:codigo_protesto).returns('3')
+			subject.segmento_p_posicao_222_a_223(pagamento).must_equal '00' 
+			pagamento.expects(:codigo_protesto).returns('8')
+			subject.segmento_p_posicao_222_a_223(pagamento).must_equal '00' 
+
+			pagamento.expects(:codigo_protesto).returns('1')
+			subject.segmento_p_posicao_222_a_223(pagamento).must_equal '03' 
+			pagamento.expects(:codigo_protesto).returns('2')
+			subject.segmento_p_posicao_222_a_223(pagamento).must_equal '03' 
 		end
 
 		# Código para Baixa/Devolução 
 		# 1 posição
 		# Por padrão é o valor '0'
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_224_a_224
+		def test_SegmentoP_Test_metodo_segmento_p_posicao_224_a_224
 			subject.segmento_p_posicao_224_a_224.must_equal '0'  
 		end
 
@@ -379,7 +385,7 @@ module Helper
 		# 3 posoções
 		# Por padrão é o valor '000'
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_225_a_227
+		def test_SegmentoP_Test_metodo_segmento_p_posicao_225_a_227
 			subject.segmento_p_posicao_225_a_227.must_equal '000'
 		end
 
@@ -387,15 +393,16 @@ module Helper
 		# 2 posições
 		# Por padrão é o valor '09'
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_228_a_229
-			subject.segmento_p_posicao_228_a_229.must_equal '09'
+		def test_SegmentoP_Test_metodo_segmento_p_posicao_228_a_229
+			pagamento.expects(:codigo_moeda).returns('09')
+			subject.segmento_p_posicao_228_a_229(pagamento).must_equal '09'
 		end
 
 		# Nº do Contrato da Operação de Crédito (Uso do banco)
 		# 10 posições
 		# Por padrão é 10 pposições em branco
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_230_a_239
+		def test_SegmentoP_Test_metodo_segmento_p_posicao_230_a_239
 			subject.segmento_p_posicao_230_a_239.must_equal ''.rjust(10, '0')
 		end
 
@@ -403,7 +410,7 @@ module Helper
 		# 1 posição
 		# Por padrão é 1 campo em branco
 		#
-		def test_SegmentoPTest_metodo_segmento_p_posicao_240_a_240
+		def test_SegmentoP_Test_metodo_segmento_p_posicao_240_a_240
 			subject.segmento_p_posicao_240_a_240.must_equal ' '
 		end		
 	end

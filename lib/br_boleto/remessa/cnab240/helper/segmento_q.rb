@@ -23,7 +23,7 @@ module BrBoleto
 						segmento_q << segmento_q_posicao_009_a_013(sequencial) # num. sequencial do registro no lote  5
 						segmento_q << segmento_q_posicao_014_a_014             # cod. segmento                        1
 						segmento_q << segmento_q_posicao_015_a_015             # uso exclusivo                        1
-						segmento_q << segmento_q_posicao_016_a_017             # cod. movimento remessa               2
+						segmento_q << segmento_q_posicao_016_a_017(pagamento)  # cod. movimento remessa               2
 						segmento_q << segmento_q_posicao_018_a_018(pagamento)  # tipo insc. sacado                    1
 						segmento_q << segmento_q_posicao_019_a_033(pagamento)  # documento sacado                     14
 						segmento_q << segmento_q_posicao_034_a_073(pagamento)  # nome cliente                         40
@@ -90,8 +90,9 @@ module BrBoleto
 					# Código de Movimento Remessa 
 					# 2 posições
 					#
-					def segmento_q_posicao_016_a_017
-						'01'
+					def segmento_q_posicao_016_a_017(pagamento)
+						code = "#{pagamento.identificacao_ocorrencia}".rjust(2, '0')
+						"#{conta.get_codigo_movimento_remessa(code, 240)}".adjust_size_to(2, '0')
 					end
 
 					# Tipo de Inscrição (1=CPF 2=CNPJ)

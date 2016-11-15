@@ -25,8 +25,10 @@ module BrBoleto
 		end
 
 		def valid_endereco_required;       end
+		def valid_avalista_required;       end
 		
 		def pagador_validations
+			pagador.valid_avalista_required = valid_avalista_required if "#{valid_avalista_required}".present?
 			pagador.valid_endereco_required = valid_endereco_required if "#{valid_endereco_required}".present?
 			if pagador.invalid?
 				pagador.errors.full_messages.each do |msg|

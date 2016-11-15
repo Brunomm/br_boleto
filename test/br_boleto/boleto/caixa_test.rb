@@ -5,13 +5,13 @@ describe BrBoleto::Boleto::Caixa do
 	subject { FactoryGirl.build(:boleto_caixa) }
 
 		context "on validations" do
-			it { must validate_length_of(:numero_documento).is_at_most(15).with_message(:custom_length_maximum) }
+			it { must validate_length_of(:numero_documento).is_at_most(11).with_message(:custom_length_maximum) }
 			
 			context '#conta.carteira' do
 				it { subject.valid_carteira_inclusion.must_equal ['14','24'] }
 				it 'carteira deve ter 2 digitos' do
 					subject.valid_carteira_length.must_equal 2
-					subject.conta.carteira = '1'
+					subject.conta.carteira = '2'
 					conta_must_be_msg_error(:carteira, :custom_length_is, {count: 2})
 					subject.conta.carteira = '123'
 					conta_must_be_msg_error(:carteira, :custom_length_is, {count: 2})
@@ -98,18 +98,18 @@ describe BrBoleto::Boleto::Caixa do
 		end
 	end
 
-	describe "#tipo_cobranca" do
-		it "deve pegar o primeiro caracter da carteira se houver valor na carteira" do
-			subject.conta.carteira = 'X7'
-			subject.tipo_cobranca.must_equal 'X'
-			subject.conta.carteira = 'A7'
-			subject.tipo_cobranca.must_equal 'A'
-		end
-		it "se carteira for nil não deve dar erro" do
-			subject.conta.carteira = nil
-			subject.tipo_cobranca.must_be_nil
-		end
-	end
+	# describe "#tipo_cobranca" do
+	# 	it "deve pegar o primeiro caracter da carteira se houver valor na carteira" do
+	# 		subject.conta.carteira = 'X7'
+	# 		subject.tipo_cobranca.must_equal 'X'
+	# 		subject.conta.carteira = 'A7'
+	# 		subject.tipo_cobranca.must_equal 'A'
+	# 	end
+	# 	it "se carteira for nil não deve dar erro" do
+	# 		subject.conta.carteira = nil
+	# 		subject.tipo_cobranca.must_be_nil
+	# 	end
+	# end
 
 	describe "#identificador_de_emissao" do
 		it "deve retornar o ultimo caractere da carteira" do
@@ -129,7 +129,7 @@ describe BrBoleto::Boleto::Caixa do
 		end
 
 		it "codigo completo conforme a documentação" do
-			subject.composicao_codigo_barras.must_equal '1234560ABC1DEF4GHIJKLMNO'
+			subject.composicao_codigo_barras.must_equal '123456000010AB4CDEFGHIJK'
 		end
 
 		it "da posição 0 até 5 deve ter o valor de codigo_beneficiario " do
@@ -141,7 +141,7 @@ describe BrBoleto::Boleto::Caixa do
 		end
 
 		it "da posição 7 até 9 deve ter o valor de nosso_numero_de_3_a_5 " do
-			subject.composicao_codigo_barras[7..9].must_equal 'ABC'
+			subject.composicao_codigo_barras[7..9].must_equal '000'
 		end
 
 		it "da posição 10 até 10 deve ter o valor de tipo_cobranca " do
@@ -149,7 +149,7 @@ describe BrBoleto::Boleto::Caixa do
 		end
 
 		it "da posição 11 até 13 deve ter o valor de nosso_numero_de_6_a_8 " do
-			subject.composicao_codigo_barras[11..13].must_equal 'DEF'
+			subject.composicao_codigo_barras[11..13].must_equal '0AB'
 		end
 
 		it "da posição 14 até 14 deve ter o valor de identificador_de_emissao " do
@@ -157,7 +157,7 @@ describe BrBoleto::Boleto::Caixa do
 		end
 
 		it "da posição 15 até 23 deve ter o valor de nosso_numero_de_9_a_17 " do
-			subject.composicao_codigo_barras[15..23].must_equal 'GHIJKLMNO'
+			subject.composicao_codigo_barras[15..23].must_equal 'CDEFGHIJK'
 		end
 
 		it "a posição 24 deve ser nil " do

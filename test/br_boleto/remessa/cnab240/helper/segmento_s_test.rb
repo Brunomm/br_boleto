@@ -8,7 +8,7 @@ module Helper
 			subject.stubs(:segmento_s_posicao_009_a_013).with(2).returns(        " 009_a_013")
 			subject.stubs(:segmento_s_posicao_014_a_014).returns(                " 014_a_014")
 			subject.stubs(:segmento_s_posicao_015_a_015).returns(                " 015_a_015")
-			subject.stubs(:segmento_s_posicao_016_a_017).returns(                " 016_a_017")
+			subject.stubs(:segmento_s_posicao_016_a_017).with(pagamento).returns(" 016_a_017")
 			subject.stubs(:segmento_s_posicao_018_a_018).with(pagamento).returns(" 018_a_018")
 
 			subject.expects(:segmento_s_tipo_impressao_1_ou_2).with(pagamento).returns(" 999")
@@ -24,7 +24,7 @@ module Helper
 			subject.stubs(:segmento_s_posicao_009_a_013).with(2).returns(        " 009_a_013")
 			subject.stubs(:segmento_s_posicao_014_a_014).returns(                " 014_a_014")
 			subject.stubs(:segmento_s_posicao_015_a_015).returns(                " 015_a_015")
-			subject.stubs(:segmento_s_posicao_016_a_017).returns(                " 016_a_017")
+			subject.stubs(:segmento_s_posicao_016_a_017).with(pagamento).returns(" 016_a_017")
 			subject.stubs(:segmento_s_posicao_018_a_018).with(pagamento).returns(" 018_a_018")
 
 			subject.expects(:segmento_s_tipo_impressao_1_ou_2).with(pagamento).returns(" 888")
@@ -40,7 +40,7 @@ module Helper
 			subject.stubs(:segmento_s_posicao_009_a_013).with(2).returns(        " 009_a_013")
 			subject.stubs(:segmento_s_posicao_014_a_014).returns(                " 014_a_014")
 			subject.stubs(:segmento_s_posicao_015_a_015).returns(                " 015_a_015")
-			subject.stubs(:segmento_s_posicao_016_a_017).returns(                " 016_a_017")
+			subject.stubs(:segmento_s_posicao_016_a_017).with(pagamento).returns(" 016_a_017")
 			subject.stubs(:segmento_s_posicao_018_a_018).with(pagamento).returns(" 018_a_018")
 
 			subject.expects(:segmento_s_tipo_impressao_3).with(pagamento).returns(" 777")
@@ -109,8 +109,9 @@ module Helper
 		# Código de Movimento Remessa - 01 = Entrada de Titulos
 		# 2 posições
 		#
-		def test_SegmentoSHelper_metodo_segmento_s_posicao_016_a_017
-			subject.segmento_s_posicao_016_a_017.must_equal '01'
+		def test_SegmentoSHelper_metodo_segmento_s_posicao_016_a_017#(pagamento)
+			pagamento.expects(:identificacao_ocorrencia).returns('01')
+			subject.segmento_s_posicao_016_a_017(pagamento).must_equal '01'
 		end
 
 		# Tipo de impressão
