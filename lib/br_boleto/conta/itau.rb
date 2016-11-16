@@ -87,7 +87,7 @@ module BrBoleto
 			# @return [String] Agência com 4 caracteres  / Conta de Cobrança com 5 caracteres - Digito da Conta
 			# Exemplo: 9999 / 99999-D
 			def agencia_codigo_cedente
-				"#{agencia} / #{conta_corrente}-#{conta_corrente_dv}"
+				"#{agencia}/#{conta_corrente}-#{conta_corrente_dv}"
 			end
 
       	# Carteiras suportadas
