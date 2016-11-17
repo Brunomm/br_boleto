@@ -198,4 +198,8 @@ describe BrBoleto::Remessa::Cnab240::Itau do
 			subject.complemento_trailer_lote(lote, 5)[100..216].must_equal (' ' * 117)
 		end
 	end
+
+	describe "segmento_r_posicao_066_a_066" do
+		it { subject.segmento_r_posicao_066_a_066(pagamento).must_equal '0' }
+	end
 end

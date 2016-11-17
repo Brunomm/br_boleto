@@ -175,9 +175,14 @@ module BrBoleto
 					})
 			end
 
-			# Código para Multa
+			# Código para Multa, que representa a isenção de juros e multa deve ser '0'
+			# Diferentemente do padrão da FEBRABAN que é '3'
+			# Ou seja, se passar o código 3 deve considerar '0'
 			def equivalent_codigo_multa
-				super.merge({ '0' => '0' }) # NÃO REGISTRA A MULTA
+				super.merge({ '3' => '0','0' => '0' }) # NÃO REGISTRA A MULTA
+			end
+			def default_codigo_multa
+				'0'
 			end
 
 			# Codigo da carteira de acordo com a documentacao o Itau (Pag. 18, Nota 5)
