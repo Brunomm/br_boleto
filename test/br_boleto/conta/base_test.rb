@@ -705,13 +705,26 @@ describe BrBoleto::Remessa::Base do
 			it { subject.get_codigo_juros('1').must_equal '1' } # Valor por Dia
 			it { subject.get_codigo_juros('2').must_equal '2' } # Taxa Mensal
 			it { subject.get_codigo_juros('3').must_equal '3' } # Isento
-			it { subject.get_codigo_juros('00').must_equal '3' } 
+			it 'se passar um valor inexistente deve pegar o valor padrão' do
+				subject.expects(:default_codigo_juros).returns(8)
+				subject.get_codigo_juros('00').must_equal 8
+			end
+			it '#default_codigo_juros deve ter o valor 3 por padrão' do
+				subject.default_codigo_juros.must_equal '3'
+			end
 		end
 		describe "#get_codigo_multa" do
 			it { subject.get_codigo_multa('1').must_equal '1' } # Valor fixo
 			it { subject.get_codigo_multa('2').must_equal '2' } # Percentual
 			it { subject.get_codigo_multa('3').must_equal '3' } # Isento
 			it { subject.get_codigo_multa('9').must_equal '3' } 
+			it 'se passar um valor inexistente deve pegar o valor padrão' do
+				subject.expects(:default_codigo_multa).returns(8)
+				subject.get_codigo_multa('9').must_equal 8
+			end
+			it '#default_codigo_multa deve ter o valor 3 por padrão' do
+				subject.default_codigo_multa.must_equal '3'
+			end
 		end
 		describe "#get_codigo_desconto" do
 			it { subject.get_codigo_desconto('0').must_equal '0' } # Sem Desconto

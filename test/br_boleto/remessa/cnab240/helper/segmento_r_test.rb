@@ -145,24 +145,15 @@ module Helper
 		# Codigo da multa - (0 = isento, 1 = Valor fixo e 2 = Percentual)
 		# 1 posição
 		#
-		def test_SegmentoRHelper_metodo_segmento_r_posicao_066_a_066#(pagamento)
-			pagamento.expects(:codigo_multa).returns('1')
-			subject.segmento_r_posicao_066_a_066(pagamento).must_equal '1'
+		def test_SegmentoRHelper_metodo_segmento_r_posicao_066_a_066_deve_pegar_o_codigo_atraves_do_metodo_get_codigo_multa
+			pagamento.codigo_multa = '3'
+			subject.conta.expects(:get_codigo_multa).with('3').returns('0')
+			subject.segmento_r_posicao_066_a_066(pagamento).must_equal '0'
 		end
-		def test_SegmentoRHelper_metodo_segmento_r_posicao_066_a_066_aceita_apenas_1_2_ou_3_com_padrao_3
-			pagamento.expects(:codigo_multa).returns('1')
-			subject.segmento_r_posicao_066_a_066(pagamento).must_equal '1'
-			pagamento.expects(:codigo_multa).returns('2')
-			subject.segmento_r_posicao_066_a_066(pagamento).must_equal '2'
-			pagamento.expects(:codigo_multa).returns('3')
-			subject.segmento_r_posicao_066_a_066(pagamento).must_equal '3'
 
-			pagamento.expects(:codigo_multa).returns(nil)
-			subject.segmento_r_posicao_066_a_066(pagamento).must_equal '3'
-			
-			pagamento.expects(:codigo_multa).returns('4')
-			subject.segmento_r_posicao_066_a_066(pagamento).must_equal '3'
-			pagamento.expects(:codigo_multa).returns('0')
+		def test_SegmentoRHelper_metodo_segmento_r_posicao_066_a_066_deve_setar_por_padrao_o_valor_3_se_estiver_vazio
+			pagamento.codigo_multa = nil
+			subject.conta.expects(:get_codigo_multa).with(nil).returns('')
 			subject.segmento_r_posicao_066_a_066(pagamento).must_equal '3'
 		end
 

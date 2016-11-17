@@ -164,7 +164,7 @@ module BrBoleto
 					# O Sicredi apenas aceita o campo multa preenchido com '2' - Percentual.
 					# 1 posição
 					def segmento_r_posicao_066_a_066(pagamento)
-						"#{conta.get_codigo_multa('2')}".adjust_size_to(1, '2')
+						'2'
 					end
 
 					# Data da multa

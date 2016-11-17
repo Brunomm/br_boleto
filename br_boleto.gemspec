@@ -4,7 +4,7 @@ require File.expand_path('../lib/br_boleto/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.name          = "br_boleto"
   gem.version       = BrBoleto::Version::CURRENT
-  gem.licenses      = ['MIT']
+  gem.licenses      = 'MIT'
   gem.summary       = %q{Emissão de Boletos Bancários em Ruby}
   gem.description   = %q{Emissão de Boletos Bancários em Ruby}
   gem.authors       = ["Bruno M. Mergen"]
@@ -19,12 +19,11 @@ Gem::Specification.new do |gem|
   # gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.require_paths = ["lib"]
 
-  gem.required_ruby_version = '~> 2.1'
+  gem.required_ruby_version = ['~> 2.2', '~> 2.3']
 
 
   gem.add_dependency "rake", '>= 0.8.7'
   gem.add_dependency "activesupport", '~> 4.2'
   gem.add_dependency "activemodel",   '~> 4.2'
   gem.add_dependency 'unidecoder', '~> 1.1'
-  
 end

@@ -349,15 +349,31 @@ module BrBoleto
 			########################################################################################
 			##################################  CÓDIGO JUROS  ######################################
 				# Código dos Juros de Mora :
+				# O cálculo de juros para cada código funciona da seguinte maneira:
+				# Valor  do boleto = R$ 100,00
+				# Vencimento = dia 10
+				# 1 - Valor por Dia
+				#     juros = R$ 1,00
+				#     Valor no dia 10 = R$ 100,00 (Sem juros)
+				#     Valor no dia 11 = R$ 101,00 (Juros de R$ 1,00)
+				#     Valor no dia 12 = R$ 102,00 (Juros de R$ 2,00)
+				# 2 = Taxa Mensal
+				#     juros = 5,00 %
+				#     calculo juros/dia = (R$ 100,00*5%) / 30 dias(1 mês)
+				#     juros ao dia = R$ 5,00
+				#     Valor no dia 10 = R$ 100,00 (Sem juros)
+				#     Valor no dia 11 = R$ 105,00 (Juros de R$ 5,00)
+				#     Valor no dia 12 = R$ 110,00 (Juros de R$ 10,00)
+				# 
 				# Default: 3
 				# Códigos padrões da GEM
-					# 1 = Valor por Dia
-					# 2 = Taxa Mensal
-					# 3 = Isento
-					#
+				#   1 = Valor por Dia (R$/dia)
+				#   2 = Taxa Mensal (%/mês)
+				#   3 = Isento
+				#
 				def get_codigo_juros(code)
 					"#{code}".adjust_size_to(1, '0', :right)
-					equivalent_codigo_juros[code] || '3'
+					equivalent_codigo_juros[code] || default_codigo_juros
 				end
 				# Código adotado pela FEBRABAN para identificação do tipo de pagamento de juros de mora.
 				def equivalent_codigo_juros
@@ -366,6 +382,9 @@ module BrBoleto
 						'2' => '2', # Taxa Mensal
 						'3' => '3', # Isento
 					}
+				end
+				def default_codigo_juros
+					'3'
 				end
 
 			########################################################################################
@@ -379,7 +398,7 @@ module BrBoleto
 					#
 				def get_codigo_multa(code)
 					"#{code}".adjust_size_to(1, '0', :right)
-					equivalent_codigo_multa[code] || '3'
+					equivalent_codigo_multa[code] || default_codigo_multa
 				end
 				# Código adotado pela FEBRABAN para identificação do tipo de pagamento de multa.
 				def equivalent_codigo_multa
@@ -388,6 +407,9 @@ module BrBoleto
 						'2' => '2', # Percentual
 						'3' => '3', # Isento
 					}
+				end
+				def default_codigo_multa
+					'3'
 				end
 
 			########################################################################################
