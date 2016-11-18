@@ -16,15 +16,28 @@ module BrBoleto
 			#     |   51      | Cobrança Descontada - Com Registro                 |
 			#     -----------------------------------------------------------------
 
+			# VARIAÇÃO DA CARTEIRA
+			# O Banco do Brasil utiliza carteiras de cobrança com variações iniciando em 01 até 99 + dígito verificador, exceto aquelas em que o DV seja igual a X.
+			# Normalmente as empresas utilizam uma única variação (019), porém podem ter outras variações, dependendo da necessidade.
+			# Consultar a agência quando necessitar dessa informação para fins de configuração do sistema, pois o cadastramento é a a cargo da agência.
+			attr_accessor :variacao_carteira
+
+			###############################  VALIDAÇÕES DINÂMICAS ###############################
+				# Variação da Carteira
+				attr_accessor :valid_variacao_carteira_required
+
+				validates :variacao_carteira, custom_length: { maximum: 3 }
+				validates :variacao_carteira, presence: true, if: :valid_variacao_carteira_required
+			#####################################################################################
 
 			def default_values
 				super.merge({
 					carteira:                      '18', 			 
+					variacao_carteira:             '019', 			 
 					valid_carteira_required:       true, # <- Validação dinâmica que a modalidade é obrigatória
 					valid_carteira_length:         2,    # <- Validação dinâmica que a modalidade deve ter 2 digitos
 					valid_carteira_inclusion:      carteiras_suportadas, # <- Validação dinâmica de valores aceitos para a modalidade
-					codigo_carteira:               '1',   # Cobrança Simples
-					valid_codigo_carteira_length:   1,    # <- Validação dinâmica que a modalidade deve ter 1 digito
+					valid_codigo_carteira_length:   2,    # <- Validação dinâmica que a modalidade deve ter 1 digito
 					valid_conta_corrente_required: true,  # <- Validação dinâmica que a conta_corrente é obrigatória
 					valid_conta_corrente_maximum:  8,     # <- Validação que a conta_corrente deve ter no máximo 8 digitos
 					valid_convenio_required:       true,  # <- Validação que a convenio deve ter obrigatório
@@ -58,6 +71,10 @@ module BrBoleto
 				%w[11 12 15 16 17 18 31 51]
 			end
 
+			def variacao_carteira
+				"#{@variacao_carteira}".rjust(3, '0') if @variacao_carteira.present?
+			end
+
 			def agencia_dv
 				# utilizando a agencia com 4 digitos
 				# para calcular o digito
@@ -73,6 +90,26 @@ module BrBoleto
 			# Exemplo: 9999-D / 99999999-D
 			def agencia_codigo_cedente
 				"#{agencia}-#{agencia_dv} / #{conta_corrente}-#{conta_corrente_dv}"
+			end
+
+			# Codigo da carteira
+			# O Banco do Brasil não utiliza o código da carteira, é utilizado a própria carteira para as validações
+			def codigo_carteira
+				carteira
+			end
+
+			# Código da Carteira
+			def equivalent_tipo_cobranca_240
+				{
+					'11' => '1', # Cobrança Simples
+					'12' => '1', # Cobrança Simples
+					'15' => '1', # Cobrança Simples
+					'16' => '1', # Cobrança Simples
+					'18' => '1', # Cobrança Simples
+					'31' => '3', # Cobrança Caucionada
+					'51' => '4', # Cobrança Descontada
+					'17' => '7', # Cobrança Direta Especial
+				}
 			end
 
 		end

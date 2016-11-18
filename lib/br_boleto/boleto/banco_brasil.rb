@@ -37,7 +37,6 @@ module BrBoleto
 				end
 			##########################################################
 
-
 			# === Código do Convênio VS. Número do Documento
 			#
 			# No caso do Banco do Brasil, o tamanho do código do cedente ditará o tamanho do número do documento.
@@ -64,7 +63,6 @@ module BrBoleto
 					:local_pagamento   => 'Pagável em qualquer banco até o vencimento. Após, atualize o boleto no site bb.com.br'
 				})
 			end
-
 
 			# Nosso Número descrito na documentação (Pag. 18 a 22):
 			#
@@ -95,7 +93,6 @@ module BrBoleto
 			def digito_verificador_nosso_numero
 				BrBoleto::Calculos::Modulo11FatorDe9a2RestoX.new("#{conta.convenio}#{numero_documento}")
 			end
-
 
 			#  === Código de barras do banco com Convênio de 4 e 6 dígitos
 	      #     ___________________________________________________________________________

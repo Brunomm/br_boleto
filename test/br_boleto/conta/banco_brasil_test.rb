@@ -28,6 +28,9 @@ describe BrBoleto::Conta::BancoBrasil do
 		# it "deve setar a valid_codigo_cedente_maximum com 8 " do
 		# 	subject.class.new.valid_codigo_cedente_maximum.must_equal 8
 		# end
+		it "deve setar a variacao_carteira com '019'" do
+			subject.class.new.variacao_carteira.must_equal '019'
+		end
 	end
 	describe "Validations" do
 		it { must validate_presence_of(:agencia) }
@@ -64,6 +67,12 @@ describe BrBoleto::Conta::BancoBrasil do
 		# 		must_be_message_error(:convenio, :custom_length_maximum, {count: 8})
 		# 	end
 		# end
+		it 'variacao_carteira deve ter no maximo 3 digitos' do
+			subject.variacao_carteira = '12345'
+			must_be_message_error(:variacao_carteira, :custom_length_maximum, {count: 3})
+			subject.variacao_carteira = '123'
+			wont_be_message_error(:variacao_carteira, :custom_length_maximum, {count: 34})
+		end
 	end
 
 	it "codigo do banco" do
@@ -125,6 +134,26 @@ describe BrBoleto::Conta::BancoBrasil do
 			subject.conta_corrente_dv = '9'
 
 			subject.agencia_codigo_cedente.must_equal "1234-5 / 12345678-9"
+		end
+	end
+
+	describe '#variacao_carteira' do
+		it "deve ajustar  valor para 3 digitos" do
+			subject.variacao_carteira = 14
+			subject.variacao_carteira.must_equal '014'
+		end
+	end
+
+	describe "#get_tipo_cobranca" do
+		context "CÓDIGOS para o cnab 240 do Banco do Brasil" do
+			it { subject.get_tipo_cobranca('11', 240).must_equal '1' } # Cobrança Simples
+			it { subject.get_tipo_cobranca('12', 240).must_equal '1' } # Cobrança Simples
+			it { subject.get_tipo_cobranca('15', 240).must_equal '1' } # Cobrança Simples
+			it { subject.get_tipo_cobranca('16', 240).must_equal '1' } # Cobrança Simples
+			it { subject.get_tipo_cobranca('18', 240).must_equal '1' } # Cobrança Simples
+			it { subject.get_tipo_cobranca('31', 240).must_equal '3' } # Cobrança Caucionada
+			it { subject.get_tipo_cobranca('51', 240).must_equal '4' } # Cobrança Descontada
+			it { subject.get_tipo_cobranca('17', 240).must_equal '7' } # Cobrança Direta Especial
 		end
 	end
 
