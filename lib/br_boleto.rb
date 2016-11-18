@@ -77,6 +77,7 @@ module BrBoleto
 		autoload :Sicredi
 		autoload :Cecred
 		autoload :Itau
+		autoload :BancoBrasil
 	end
 	
 	module Boleto
@@ -90,6 +91,7 @@ module BrBoleto
 		autoload :Sicredi
 		autoload :Cecred
 		autoload :Itau
+		autoload :BancoBrasil
 	end
 
 
@@ -109,6 +111,7 @@ module BrBoleto
 			autoload :Sicredi
 			autoload :Cecred
 			autoload :Itau
+			autoload :BancoBrasil
 		end
 		module Cnab400
 			extend ActiveSupport::Autoload
@@ -118,6 +121,7 @@ module BrBoleto
 			autoload :Unicred
 			autoload :Sicredi
 			autoload :Itau
+			autoload :BancoBrasil
 		end
 	end
 	
@@ -135,6 +139,7 @@ module BrBoleto
 			autoload :Sicredi
 			autoload :Cecred
 			autoload :Itau
+			autoload :BancoBrasil
 		end
 		module Cnab400
 			extend ActiveSupport::Autoload
@@ -144,6 +149,7 @@ module BrBoleto
 			autoload :Unicred
 			autoload :Sicredi
 			autoload :Itau
+			autoload :BancoBrasil
 		end
 	end
 
