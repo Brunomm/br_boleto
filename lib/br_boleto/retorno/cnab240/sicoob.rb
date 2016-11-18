@@ -25,9 +25,9 @@ module BrBoleto
 				def segmento_t_fields #:doc:
 					super.merge({ 
 					#    ATRIBUTO               POSIÇÃO DA LINHA
-						nosso_numero:                 38..47,
+						nosso_numero_sem_dv:          38..47,
 						modalidade:                   50..51,
-						numero_documento:             59..72, # Número do documento sem DV
+						numero_documento:             59..73,
 					})
 				end
 			end
