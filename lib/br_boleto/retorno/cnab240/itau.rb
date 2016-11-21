@@ -4,7 +4,6 @@ module BrBoleto
 		module Cnab240
 			class Itau < BrBoleto::Retorno::Cnab240::Base
 
-
 				def segmento_t_fields #:doc:
 					super.merge({ 
 					#    ATRIBUTO                 POSIÇÃO DA LINHA
