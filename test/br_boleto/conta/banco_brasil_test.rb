@@ -145,15 +145,64 @@ describe BrBoleto::Conta::BancoBrasil do
 	end
 
 	describe "#get_tipo_cobranca" do
-		context "CÓDIGOS para o cnab 240 do Banco do Brasil" do
-			it { subject.get_tipo_cobranca('11', 240).must_equal '1' } # Cobrança Simples
-			it { subject.get_tipo_cobranca('12', 240).must_equal '1' } # Cobrança Simples
-			it { subject.get_tipo_cobranca('15', 240).must_equal '1' } # Cobrança Simples
-			it { subject.get_tipo_cobranca('16', 240).must_equal '1' } # Cobrança Simples
-			it { subject.get_tipo_cobranca('18', 240).must_equal '1' } # Cobrança Simples
-			it { subject.get_tipo_cobranca('31', 240).must_equal '3' } # Cobrança Caucionada
-			it { subject.get_tipo_cobranca('51', 240).must_equal '4' } # Cobrança Descontada
-			it { subject.get_tipo_cobranca('17', 240).must_equal '7' } # Cobrança Direta Especial
+		context "CÓDIGOS para o cnab 400 do Banco do Brasil" do
+			# it { subject.get_tipo_cobranca('11', 240).must_equal '1' } # Cobrança Simples
+			# it { subject.get_tipo_cobranca('12', 240).must_equal '1' } # Cobrança Simples
+			# it { subject.get_tipo_cobranca('15', 240).must_equal '1' } # Cobrança Simples
+			# it { subject.get_tipo_cobranca('16', 240).must_equal '1' } # Cobrança Simples
+			# it { subject.get_tipo_cobranca('18', 240).must_equal '1' } # Cobrança Simples
+			# it { subject.get_tipo_cobranca('31', 240).must_equal '3' } # Cobrança Caucionada
+			# it { subject.get_tipo_cobranca('51', 240).must_equal '4' } # Cobrança Descontada
+			# it { subject.get_tipo_cobranca('17', 240).must_equal '7' } # Cobrança Direta Especial
+			it { subject.get_tipo_cobranca('7', 400).must_equal '7' } # Cobrança Direta Especial
+			it { subject.get_tipo_cobranca('5', 400).must_equal '8' }   # Cobrança BBVendor
+		end
+	end
+
+	describe "#get_codigo_movimento_remessa" do
+		context "CÓDIGOS para o cnab 400 do Banco do Brasil" do
+			it { subject.get_codigo_movimento_remessa('01', 400).must_equal '01' } # Registro de títulos
+			it { subject.get_codigo_movimento_remessa('02', 400).must_equal '02' } # Solicitação de baixa
+			it { subject.get_codigo_movimento_remessa('03', 400).must_equal '03' } # Pedido de débito em conta
+			it { subject.get_codigo_movimento_remessa('04', 400).must_equal '04' } # Concessão de abatimento
+			it { subject.get_codigo_movimento_remessa('05', 400).must_equal '05' } # Cancelamento de abatimento
+			it { subject.get_codigo_movimento_remessa('06', 400).must_equal '06' } # Alteração de vencimento de título
+			it { subject.get_codigo_movimento_remessa('22', 400).must_equal '07' } # Alteração do número de controle do participante
+			it { subject.get_codigo_movimento_remessa('21', 400).must_equal '08' } # Alteração do número do titulo dado pelo cedente
+			it { subject.get_codigo_movimento_remessa('09', 400).must_equal '09' } # Instrução para protestar 
+			it { subject.get_codigo_movimento_remessa('10', 400).must_equal '10' } # Instrução para sustar protesto
+			it { subject.get_codigo_movimento_remessa('11', 400).must_equal '11' } # Instrução para dispensar juros
+			it { subject.get_codigo_movimento_remessa('24', 400).must_equal '12' } # Alteração de nome e endereço do Sacado
+			it { subject.get_codigo_movimento_remessa('12', 400).must_equal '16' } # Alterar Juros de Mora
+			it { subject.get_codigo_movimento_remessa('31', 400).must_equal '31' } # Conceder desconto
+			it { subject.get_codigo_movimento_remessa('32', 400).must_equal '32' } # Não conceder desconto
+			it { subject.get_codigo_movimento_remessa('33', 400).must_equal '33' } # Retificar dados da concessão de desconto
+			it { subject.get_codigo_movimento_remessa('34', 400).must_equal '34' } # Alterar data para concessão de desconto
+			it { subject.get_codigo_movimento_remessa('35', 400).must_equal '35' } # Cobrar multa 
+			it { subject.get_codigo_movimento_remessa('36', 400).must_equal '36' } # Dispensar multa 
+			it { subject.get_codigo_movimento_remessa('37', 400).must_equal '37' } # Dispensar indexador
+			it { subject.get_codigo_movimento_remessa('38', 400).must_equal '38' } # Dispensar prazo limite de recebimento
+			it { subject.get_codigo_movimento_remessa('39', 400).must_equal '39' } # Alterar prazo limite de recebimento
+			it { subject.get_codigo_movimento_remessa('40', 400).must_equal '40' } # Alterar carteira/modalidade
+		end
+	end
+
+	describe "#get_especie_titulo" do
+		context "CÓDIGOS para o cnab 400 do Banco do Brasil" do
+			it { subject.get_especie_titulo('01', 400).must_equal '10' } #  Cheque
+			it { subject.get_especie_titulo('02', 400).must_equal '01' } #  Duplicata Mercantil
+			it { subject.get_especie_titulo('04', 400).must_equal '12' } #  Duplicata de Serviço
+			it { subject.get_especie_titulo('07', 400).must_equal '08' } #  Letra de Câmbio
+			it { subject.get_especie_titulo('12', 400).must_equal '02' } #  Nota Promissória
+			it { subject.get_especie_titulo('16', 400).must_equal '03' } #  Nota de Seguro
+			it { subject.get_especie_titulo('17', 400).must_equal '05' } #  Recibo
+			it { subject.get_especie_titulo('19', 400).must_equal '13' } #  Nota de Débito
+			it { subject.get_especie_titulo('20', 400).must_equal '15' } #  Apólice de Seguro
+			it { subject.get_especie_titulo('26', 400).must_equal '09' } #  Warrant
+			it { subject.get_especie_titulo('27', 400).must_equal '26' } #  Dívida Ativa de Estado
+			it { subject.get_especie_titulo('28', 400).must_equal '27' } #  Dívida Ativa de Município
+			it { subject.get_especie_titulo('29', 400).must_equal '25' } #  Dívida Ativa da União
+			it { subject.get_especie_titulo('99', 400).must_equal '99' } #  Outros
 		end
 	end
 

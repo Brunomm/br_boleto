@@ -37,7 +37,8 @@ module BrBoleto
 					valid_carteira_required:       true, # <- Validação dinâmica que a modalidade é obrigatória
 					valid_carteira_length:         2,    # <- Validação dinâmica que a modalidade deve ter 2 digitos
 					valid_carteira_inclusion:      carteiras_suportadas, # <- Validação dinâmica de valores aceitos para a modalidade
-					valid_codigo_carteira_length:   2,    # <- Validação dinâmica que a modalidade deve ter 1 digito
+					codigo_carteira:               '1',   # Cobrança Simples
+					valid_codigo_carteira_length:   1,    # <- Validação dinâmica que a modalidade deve ter 1 digito
 					valid_conta_corrente_required: true,  # <- Validação dinâmica que a conta_corrente é obrigatória
 					valid_conta_corrente_maximum:  8,     # <- Validação que a conta_corrente deve ter no máximo 8 digitos
 					valid_convenio_required:       true,  # <- Validação que a convenio deve ter obrigatório
@@ -92,26 +93,64 @@ module BrBoleto
 				"#{agencia}-#{agencia_dv} / #{conta_corrente}-#{conta_corrente_dv}"
 			end
 
-			# Codigo da carteira
-			# O Banco do Brasil não utiliza o código da carteira, é utilizado a própria carteira para as validações
-			def codigo_carteira
-				carteira
-			end
-
 			# Código da Carteira
-			def equivalent_tipo_cobranca_240
+			def equivalent_tipo_cobranca_400
 				{
-					'11' => '1', # Cobrança Simples
-					'12' => '1', # Cobrança Simples
-					'15' => '1', # Cobrança Simples
-					'16' => '1', # Cobrança Simples
-					'18' => '1', # Cobrança Simples
-					'31' => '3', # Cobrança Caucionada
-					'51' => '4', # Cobrança Descontada
-					'17' => '7', # Cobrança Direta Especial
+					'5' => '8', # Cobrança BBVendor
+					'7' => '7', # Cobrança Direta Especial
 				}
 			end
 
+			# Código Movimento da Remessa CNAB400
+			def equivalent_codigo_movimento_remessa_400
+				#  Padrão    Código para    Descrição 
+				{# da GEM     o Banco
+					'01'   =>   '01' ,     # Registro de títulos
+					'02'   =>   '02' ,     # Solicitação de baixa
+					'03'   =>   '03' ,     # Pedido de débito em conta
+					'04'   =>   '04' ,     # Concessão de abatimento
+					'05'   =>   '05' ,     # Cancelamento de abatimento
+					'06'   =>   '06' ,     # Alteração de vencimento de título
+					'22'   =>   '07' ,     # Alteração do número de controle do participante
+					'21'   =>   '08' ,     # Alteração do número do titulo dado pelo cedente
+					'09'   =>   '09' ,     # Instrução para protestar 
+					'10'   =>   '10' ,     # Instrução para sustar protesto
+					'11'   =>   '11' ,     # Instrução para dispensar juros
+					'24'   =>   '12' ,     # Alteração de nome e endereço do Sacado
+					'12'   =>   '16' ,     # Alterar Juros de Mora
+					'31'   =>   '31' ,     # Conceder desconto
+					'32'   =>   '32' ,     # Não conceder desconto
+					'33'   =>   '33' ,     # Retificar dados da concessão de desconto
+					'34'   =>   '34' ,     # Alterar data para concessão de desconto
+					'35'   =>   '35' ,     # Cobrar multa 
+					'36'   =>   '36' ,     # Dispensar multa 
+					'37'   =>   '37' ,     # Dispensar indexador
+					'38'   =>   '38' ,     # Dispensar prazo limite de recebimento
+					'39'   =>   '39' ,     # Alterar prazo limite de recebimento
+					'40'   =>   '40' ,     # Alterar carteira/modalidade
+				}
+			end
+
+			# Espécie do Título
+			def equivalent_especie_titulo_400
+				#  Padrão    Código para  
+				{# da GEM     o Banco
+					'01'    =>   '10' , #  Cheque
+					'02'    =>   '01' , #  Duplicata Mercantil
+					'04'    =>   '12' , #  Duplicata de Serviço
+					'07'    =>   '08' , #  Letra de Câmbio
+					'12'    =>   '02' , #  Nota Promissória
+					'16'    =>   '03' , #  Nota de Seguro
+					'17'    =>   '05' , #  Recibo
+					'19'    =>   '13' , #  Nota de Débito
+					'20'    =>   '15' , #  Apólice de Seguro
+					'26'    =>   '09' , #  Warrant
+					'27'    =>   '26' , #  Dívida Ativa de Estado
+					'28'    =>   '27' , #  Dívida Ativa de Município
+					'29'    =>   '25' , #  Dívida Ativa da União
+					'99'    =>   '99' , #  Outros
+				}
+			end
 		end
 	end
 end

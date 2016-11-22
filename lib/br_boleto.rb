@@ -154,7 +154,6 @@ module BrBoleto
 	end
 
 	
-
 	# Módulo que possui classes que realizam os cálculos dos campos que serão mostrados nos boletos.
 	#
 	module Calculos
