@@ -42,11 +42,16 @@ module BrBoleto
 				"#{nosso_numero_sem_dv}#{nosso_numero_dv}"
 			end
 			
-			# CÓDIGO DA CARTEIRA
-			# Tamanho    Posição
-			#   1         58-58
+			# CARTEIRA DE COBRANÇA
 			attr_accessor :carteira
+
+			# CÓDIGO DA CARTEIRA (TIPO DE COBRANÇA)
 			attr_accessor :cod_carteira
+			alias_attribute :tipo_cobranca, :cod_carteira
+
+			# VARIAÇÃO DA CARTEIRA 
+			attr_accessor :variacao_carteira
+
 
 			# NÚMERO DO DOCUMENTO
 			# Tamanho    Posição
