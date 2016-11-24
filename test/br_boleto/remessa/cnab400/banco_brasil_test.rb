@@ -225,7 +225,7 @@ describe BrBoleto::Remessa::Cnab400::BancoBrasil do
 			result[154].must_equal ''.adjust_size_to(1)                       # Complemento Registro (Branco)
 			result[155..158].must_equal 'CNPJ'                                # CNPJ
 			result[159..172].must_equal '97448536000106'.adjust_size_to(14)   # Sacador/Avalista (CNPJ)
-			result[173..174].must_equal '00'                                  # Quantidade de dias (Zeros)
+			result[173..174].must_equal ''.adjust_size_to(2)                  # Quantidade de dias para Protesto (Branco)
 			result[175].must_equal      ' '                                   # Complemento Registro (Branco)
 		end
 
@@ -253,7 +253,32 @@ describe BrBoleto::Remessa::Cnab400::BancoBrasil do
 			result[158].must_equal ''.adjust_size_to(1)                       # Complemento Registro (Branco)
 			result[159..161].must_equal 'CPF'                                 # CPF
 			result[162..172].must_equal '84010699043'.adjust_size_to(11)      # Sacador/Avalista (CNPJ)
-			result[173..174].must_equal '00'                                  # Quantidade de dias (Zeros)
+			result[173..174].must_equal ''.adjust_size_to(2)                  # Quantidade de dias para Protesto (Branco)
+			result[175].must_equal      ' '                                   # Complemento Registro (Branco)
+		end
+
+		it "deve conter as informações nas posições corretas (Sacador/Avalista em branco)" do
+			pagador.cpf_cnpj           =  '12345678901'
+			pagador.nome               =  'nome pagador'
+			pagador.endereco           =  'rua do pagador'
+			pagador.bairro             =  'bairro do pagador'
+			pagador.cidade             =  'Chapecó'
+			pagador.uf                 =  'SC'
+			pagador.cep                =  '89885-001'
+			pagador.nome_avalista      =  ''
+			pagador.documento_avalista =  ''
+			result = subject.informacoes_do_sacado(pagamento, 2)
+
+			result[00..01].must_equal "01"                                    # Tipo de Inscrição do Pagador: "01" = CPF / "02" = CNPJ
+			result[02..15].must_equal '00012345678901'                        # Número do CNPJ ou CPF do Pagador
+			result[16..55].must_equal 'nome pagador'.adjust_size_to(40)       # Nome do Pagador
+			result[56..95].must_equal 'rua do pagador'.adjust_size_to(40)     # Endereço do Pagador
+			result[96..107].must_equal 'bairro do pagador'.adjust_size_to(12) # Bairro do Pagador
+			result[108..115].must_equal '89885001'                            # CEP do Pagador
+			result[116..130].must_equal 'Chapecó'.adjust_size_to(15)          # Cidade do Pagador
+			result[131..132].must_equal 'SC'.adjust_size_to(2)                # UF do Pagador
+			result[133..172].must_equal ''.adjust_size_to(40)                 # Observações/Mensagem
+			result[173..174].must_equal ''.adjust_size_to(2)                  # Quantidade de dias para Protesto (Branco)
 			result[175].must_equal      ' '                                   # Complemento Registro (Branco)
 		end
 	end

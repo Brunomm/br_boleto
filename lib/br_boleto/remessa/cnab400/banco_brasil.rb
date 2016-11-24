@@ -222,8 +222,8 @@ module BrBoleto
 					info << "#{pagamento.pagador.cep}".adjust_size_to(8, '0', :right)    # CEP + Sufixo do CEP
 					info << "#{pagamento.pagador.cidade}".adjust_size_to(15)             
 					info << "#{pagamento.pagador.uf}".adjust_size_to(2)                  
-					info << "#{sacador_avalista(pagamento)}".adjust_size_to(40)                     # Observações/Mensagem ou Sacador/Avalista *
-					info << '00'                                                         # Quantidade de dias
+					info << "#{sacador_avalista(pagamento)}".adjust_size_to(40)          # Observações/Mensagem ou Sacador/Avalista *
+					info << ''.adjust_size_to(2)                                         # Quantidade de dias para Protesto
 					info << ''.adjust_size_to(1)                                         # Complemento Registro (Brancos)
 					info                                                
 				end
@@ -249,7 +249,7 @@ module BrBoleto
 						info << ''.adjust_size_to(1)                                         # Complemento Registro (Branco)
 						info << "CNPJ"                                                       # CNPJ
 						info << "#{pagamento.pagador.documento_avalista}".adjust_size_to(14) # Sacador/Avalista (CNPJ)
-					elsif pagamento.pagador.tipo_documento_avalista.present?
+					elsif "#{pagamento.pagador.tipo_documento_avalista}".to_i == 1
 						info << "#{pagamento.pagador.nome_avalista}".adjust_size_to(25)      # Sacador/Avalista (Nome)
 						info << ''.adjust_size_to(1)                                         # Complemento Registro (Branco)
 						info << "CPF"                                                        # CPF
