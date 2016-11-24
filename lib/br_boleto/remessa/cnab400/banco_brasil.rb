@@ -27,7 +27,7 @@ module BrBoleto
 				def complemento_registro
 					info =  "#{sequencial_remessa}".adjust_size_to(7, '0', :right)
 					info << ''.adjust_size_to(22)
-					info << ''.adjust_size_to(7, '0')
+					info << "#{conta.convenio}".adjust_size_to(7, '0', :right)
 					info << ''.adjust_size_to(258)
 					info
 				end
@@ -106,7 +106,7 @@ module BrBoleto
 					detalhe << ''.adjust_size_to(2, "0")
 					detalhe << ''.adjust_size_to(2, "0")
 					detalhe << ''.adjust_size_to(3)
-					detalhe << 'A'  # Deverá ser informado nas posições 352 a 391 o nome e CPF/CNPJ do sacador/avalista
+					detalhe << ''.adjust_size_to(1)
 					detalhe << ''.adjust_size_to(3)
 					detalhe << "#{conta.variacao_carteira}".adjust_size_to(3, '0', :right)
 					detalhe << '0'
@@ -240,6 +240,8 @@ module BrBoleto
 				#      Posição 377 - Preencher com "espaço"
 				#      Posição 378 à 380 - Preencher com o literal "CPF"
 				#      Posição 381 à 391 - Preencher com o número do CPF do Sacador/Avalista
+				#
+				# Tamanho: 40
 				def sacador_avalista(pagamento)
 					info = ''
 					if "#{pagamento.pagador.tipo_documento_avalista}".to_i == 2
@@ -247,7 +249,7 @@ module BrBoleto
 						info << ''.adjust_size_to(1)                                         # Complemento Registro (Branco)
 						info << "CNPJ"                                                       # CNPJ
 						info << "#{pagamento.pagador.documento_avalista}".adjust_size_to(14) # Sacador/Avalista (CNPJ)
-					else
+					elsif pagamento.pagador.tipo_documento_avalista.present?
 						info << "#{pagamento.pagador.nome_avalista}".adjust_size_to(25)      # Sacador/Avalista (Nome)
 						info << ''.adjust_size_to(1)                                         # Complemento Registro (Branco)
 						info << "CPF"                                                        # CPF

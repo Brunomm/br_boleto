@@ -53,10 +53,11 @@ describe BrBoleto::Remessa::Cnab400::BancoBrasil do
 	describe '#complemento_registro' do
 		it "deve retornar o sequencial da remessa com 7 posições e mais zeros e brancos" do
 			subject.sequencial_remessa = 4758
+			conta.convenio             = 4321
 
 			subject.complemento_registro[0..6].must_equal '0004758'
 			subject.complemento_registro[7..28].must_equal ''.rjust(22)
-			subject.complemento_registro[29..35].must_equal '0' * 7
+			subject.complemento_registro[29..35].must_equal '0004321' 
 			subject.complemento_registro[36..293].must_equal ''.rjust(258) 
 
 			subject.complemento_registro.size.must_equal 294
@@ -80,7 +81,7 @@ describe BrBoleto::Remessa::Cnab400::BancoBrasil do
 			result[42..43].must_equal  '00'
 			result[44..45].must_equal  '00'
 			result[46..48].must_equal  ''.rjust(3)
-			result[49].must_equal      'A'
+			result[49].must_equal      ' '
 			result[50..52].must_equal  ''.rjust(3)
 			result[53..55].must_equal  '001'                 # Variação da Carteira
 			result[56].must_equal      '0'
