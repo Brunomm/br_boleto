@@ -33,33 +33,34 @@ module BrBoleto
 
 		#######################  VALIDAÇÔES DA CONTA #######################
 		# Devem ser sobrescrita a cada classe que utilizar, pois pode variar
-		def valid_conta_corrente_length;      end
-		def valid_conta_corrente_minimum;     end
-		def valid_conta_corrente_maximum;     end
-		def valid_conta_corrente_required;    end
-		def valid_modalidade_length;          end
-		def valid_modalidade_minimum;         end
-		def valid_modalidade_maximum;         end
-		def valid_modalidade_required;        end
-		def valid_codigo_cedente_length;      end
-		def valid_codigo_cedente_minimum;     end
-		def valid_codigo_cedente_maximum;     end
-		def valid_codigo_cedente_required;    end
-		def valid_codigo_cedente_inclusion;   end
-		def valid_endereco_required;          end
-		def valid_carteira_length;            end
-		def valid_carteira_minimum;           end
-		def valid_carteira_maximum;           end
-		def valid_carteira_required;          end
-		def valid_convenio_length;            end
-		def valid_convenio_minimum;           end
-		def valid_convenio_maximum;           end
-		def valid_convenio_required;          end
-		def valid_modalidade_inclusion;       end
-		def valid_carteira_inclusion;         end
-		def valid_convenio_inclusion;         end
-		def valid_versao_aplicativo_required; end # Banco da Caixa
-		def valid_variacao_carteira_required; end # Banco do Brasil
+		def valid_conta_corrente_length;       end
+		def valid_conta_corrente_minimum;      end
+		def valid_conta_corrente_maximum;      end
+		def valid_conta_corrente_required;     end
+		def valid_modalidade_length;           end
+		def valid_modalidade_minimum;          end
+		def valid_modalidade_maximum;          end
+		def valid_modalidade_required;         end
+		def valid_codigo_cedente_length;       end
+		def valid_codigo_cedente_minimum;      end
+		def valid_codigo_cedente_maximum;      end
+		def valid_codigo_cedente_required;     end
+		def valid_codigo_cedente_inclusion;    end
+		def valid_endereco_required;           end
+		def valid_carteira_length;             end
+		def valid_carteira_minimum;            end
+		def valid_carteira_maximum;            end
+		def valid_carteira_required;           end
+		def valid_convenio_length;             end
+		def valid_convenio_minimum;            end
+		def valid_convenio_maximum;            end
+		def valid_convenio_required;           end
+		def valid_modalidade_inclusion;        end
+		def valid_carteira_inclusion;          end
+		def valid_convenio_inclusion;          end
+		def valid_versao_aplicativo_required;  end # Banco da Caixa
+		def valid_variacao_carteira_required;  end # Banco do Brasil
+		def valid_codigo_transmissao_required; end # Banco Santander
 
 
 		def set_regras_tamanho_e_validations!
@@ -96,8 +97,9 @@ module BrBoleto
 			@conta.valid_convenio_required       = valid_convenio_required       if "#{valid_convenio_required}".present?
 			@conta.valid_convenio_inclusion      = valid_convenio_inclusion      if "#{valid_convenio_inclusion}".present?
 			
-			@conta.valid_versao_aplicativo_required = valid_versao_aplicativo_required if "#{valid_versao_aplicativo_required}".present?
-			@conta.valid_variacao_carteira_required = valid_variacao_carteira_required if "#{valid_variacao_carteira_required}".present?
+			@conta.valid_versao_aplicativo_required  = valid_versao_aplicativo_required  if "#{valid_versao_aplicativo_required}".present?
+			@conta.valid_variacao_carteira_required  = valid_variacao_carteira_required  if "#{valid_variacao_carteira_required}".present?
+			@conta.valid_codigo_transmissao_required = valid_codigo_transmissao_required if "#{valid_codigo_transmissao_required}".present?
 
 		end
 

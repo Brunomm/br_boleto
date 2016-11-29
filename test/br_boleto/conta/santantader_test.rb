@@ -64,6 +64,12 @@ describe BrBoleto::Conta::Santander do
 				must_be_message_error(:convenio, :custom_length_maximum, {count: 7})
 			end
 		end
+		it 'codigo_transmissao deve ter no maximo 20 digitos' do
+			subject.codigo_transmissao = '123456789012345678901'
+			must_be_message_error(:codigo_transmissao, :custom_length_maximum, {count: 20})
+			subject.codigo_transmissao = '12345678901234567890'
+			wont_be_message_error(:codigo_transmissao, :custom_length_maximum, {count: 20})
+		end
 	end
 
 	it "codigo do banco" do
@@ -117,6 +123,14 @@ describe BrBoleto::Conta::Santander do
 		end
 	end
 
+	describe '#codigo_transmissao' do
+		it "deve ajustar  valor para 20 digitos" do
+			subject.codigo_transmissao = 14
+			subject.codigo_transmissao.must_equal '00000000000000000014'
+		end
+	end
+
+
 	describe "#get_especie_titulo" do
 		context "CÓDIGOS para o cnab 240 do Santander" do
 			it { subject.get_especie_titulo('02', 240).must_equal '02' } # DM  - DUPLICATA MERCANTIL
@@ -128,6 +142,14 @@ describe BrBoleto::Conta::Santander do
 			it { subject.get_especie_titulo('20', 240).must_equal '20' } # AP  - APOLICE DE SEGURO
 			it { subject.get_especie_titulo('01', 240).must_equal '97' } # CH  - CHEQUE
 			it { subject.get_especie_titulo('98', 240).must_equal '98' } # NPD - NOTA PROMISSORIA DIRETA
+		end
+		context "CÓDIGOS para o cnab 400 do Santander" do
+			it { subject.get_especie_titulo('02', 400).must_equal '01' } # DM  - DUPLICATA MERCANTIL
+			it { subject.get_especie_titulo('12', 400).must_equal '02' } # NP  - NOTA PROMISSORIA
+			it { subject.get_especie_titulo('20', 400).must_equal '03' } # AP  - APOLICE DE SEGURO
+			it { subject.get_especie_titulo('17', 400).must_equal '05' } # RC  - RECIBO
+			it { subject.get_especie_titulo('04', 400).must_equal '06' } # DS  - DUPLICATA DE SERVICO
+			it { subject.get_especie_titulo('07', 400).must_equal '07' } # LC  - LETRA DE CÂMBIO
 		end
 	end
 
@@ -147,9 +169,39 @@ describe BrBoleto::Conta::Santander do
 			it { subject.get_codigo_movimento_remessa('31', 240).must_equal '31' } # Alteração de outros dados
 			it { subject.get_codigo_movimento_remessa('41', 240).must_equal '98' } # Não Protestar
 		end
+
+		context "CÓDIGOS para o cnab 400 do Santander" do
+			it { subject.get_codigo_movimento_remessa('01', 400).must_equal '01' } # Entrada de título
+			it { subject.get_codigo_movimento_remessa('02', 400).must_equal '02' } # Pedido de baixa
+			it { subject.get_codigo_movimento_remessa('04', 400).must_equal '04' } # Concessão de abatimento
+			it { subject.get_codigo_movimento_remessa('05', 400).must_equal '05' } # Cancelamento de abatimento
+			it { subject.get_codigo_movimento_remessa('06', 400).must_equal '06' } # Alteração de vencimento
+			it { subject.get_codigo_movimento_remessa('21', 400).must_equal '07' } # Alteração da identificação do título na empresa
+			it { subject.get_codigo_movimento_remessa('22', 400).must_equal '08' } # Alteração seu número
+			it { subject.get_codigo_movimento_remessa('09', 400).must_equal '09' } # Pedido de Protesto
+			it { subject.get_codigo_movimento_remessa('10', 400).must_equal '18' } # Sustar Protesto e Baixar Título
+			it { subject.get_codigo_movimento_remessa('11', 400).must_equal '18' } # Sustar Protesto e Manter em Carteira
+		end
+	end
+
+	describe "#get_codigo_multa" do
+		context "CÓDIGOS para o Santander" do
+			it { subject.get_codigo_multa('1').must_equal '4' } # Com Multa
+			it { subject.get_codigo_multa('2').must_equal '4' } # Com Multa
+			it { subject.get_codigo_multa('3').must_equal '0' } # Sem Multa (Isento)
+		end
 	end
 
 	describe "#get_tipo_cobranca" do
+		context "CÓDIGOS para o cnab 400 do Santander" do
+			it { subject.get_tipo_cobranca('1', 400).must_equal '5' } # RÁPIDA COM REGISTRO
+			it { subject.get_tipo_cobranca('2', 400).must_equal '2' } # ELETRÔNICA COM REGISTRO
+			it { subject.get_tipo_cobranca('3', 400).must_equal '3' } # CAUCIONADA ELETRÔNICA
+			it { subject.get_tipo_cobranca('4', 400).must_equal '7' } # DESCONTADA ELETRÔNICA
+			it { subject.get_tipo_cobranca('5', 400).must_equal '4' } # COBRANÇA SEM REGISTRO
+			it { subject.get_tipo_cobranca('6', 400).must_equal '6' } # CAUCIONADA RAPIDA
+		end
+
 		context "CÓDIGOS para o cnab 240 do Santander" do
 			it { subject.get_tipo_cobranca('06', 240).must_equal '06' } # Cobrança Caucionada (Rápida com Registro)
 		end
