@@ -187,6 +187,28 @@ module BrBoleto
 				def complemento_remessa
 					"#{conta.conta_corrente[-1]}#{conta.conta_corrente_dv}"
 				end
+
+			############################# TRAILER #################################
+				# 
+				# Posição: 002 a 394
+				# POSIÇÂO      TAM.   Descrição
+				# 002 a 007    006    Quantidade total de linhas no arquivo
+				# 008 a 020    013    Valor total dos títulos
+				# 021 a 394    374    Zeros
+				#
+				# Tamanho: 393
+				def trailer_arquivo_posicao_002_a_394(sequencial)
+					trailer = ''
+					trailer << "#{sequencial}".adjust_size_to(6, '0', :right)
+					trailer << "#{valor_documento(13)}".adjust_size_to(13, '0', :right)
+					trailer << ''.adjust_size_to(374, '0')
+					trailer
+				end
+				def valor_documento(tamanho)
+					valor_doc = pagamentos.map(&:valor_documento).sum 
+					BrBoleto::Helper::Number.new(valor_doc).formata_valor_monetario(tamanho) 
+				end
+
 			end
 		end
 	end

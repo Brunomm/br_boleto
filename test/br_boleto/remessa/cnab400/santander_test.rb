@@ -159,4 +159,16 @@ describe BrBoleto::Remessa::Cnab400::Santander do
 			result[175].must_equal      ' '                                   # Complemento Registro (Branco)
 		end
 	end
+
+	describe "#trailer_arquivo_posicao_002_a_394" do
+		it "deve conter as informações nas posições corretas" do
+			result = subject.trailer_arquivo_posicao_002_a_394(2)
+
+			result[00..05].must_equal "000002"                               # Quantidade total de linhas no arquivo
+			result[06..18].must_equal '0000000010012'                        # Valor total dos títulos
+			result[19..392].must_equal ('0' * 374)                           # Zeros
+
+			result.size.must_equal 393
+		end
+	end
 end
