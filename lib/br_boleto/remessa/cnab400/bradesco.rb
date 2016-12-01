@@ -40,7 +40,7 @@ module BrBoleto
 				# Informações Opcionais no Bradesco. 
 				# Somente deverão ser preenchidos, caso o cliente Beneficiário esteja previamente 
 				# cadastrado para operar com a modalidade de cobrança com débito automático
-				def detalhe_posicao_002_003
+				def detalhe_posicao_002_003(pagamento)
 					''.adjust_size_to(2)
 				end
 				def detalhe_posicao_004_017

@@ -57,6 +57,13 @@ describe BrBoleto::Remessa::Cnab400::Bradesco do
 		end
 	end
 
+	it '#detalhe_posicao_002_003 - deve retornar brancos' do
+		subject.detalhe_posicao_002_003(pagamento).must_equal (' ' * 2)
+	end
+
+	it '#detalhe_posicao_004_017 - deve retornar brancos' do
+		subject.detalhe_posicao_004_017.must_equal (' ' * 14)
+	end
 
 	describe '#detalhe_posicao_063_108' do
 		it "deve ter o tamanho de 46 digitos" do
