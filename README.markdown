@@ -9,14 +9,35 @@ Emissão de Boletos Bancários em Ruby.
 **O que essa gem faz?**
 
  1. Boleto bancário (apenas os cálculos para o boleto, sem a interface) para os bancos:
-- Sicoob 
-- Caixa (em andamento)
+- Banco do Brasil
+- Bradesco
+- Caixa
+- Cecred
+- Itaú
+- Santander
+- Sicoob
+- Sicredi
+- Unicred
  2. Arquivo de remessa para os Bancos:
-- Sicoob (CNAB 240 e CNAB400)
-- Caixa  (CNAB 240)
+- Banco do Brasil (CNAB240 e CNAB400)
+- Bradesco (CNAB240 e CNAB400)
+- Caixa (CNAB240)
+- Cecred (CNAB240)
+- Itaú (CNAB240 e CNAB400)
+- Santander (CNAB240 e CNAB400)
+- Sicoob (CNAB240 e CNAB400)
+- Sicredi (CNAB240 e CNAB400)
+- Unicred (CNAB240 e CNAB400)
  3. Arquivo de retorno para os Bancos:
-- Sicoob (CNAB 240 e CNAB400)
-- Caixa  (CNAB 240)
+- Banco do Brasil (CNAB240 e CNAB400)
+- Bradesco (CNAB240 e CNAB400)
+- Caixa (CNAB240)
+- Cecred (CNAB240)
+- Itaú (CNAB240 e CNAB400)
+- Santander (CNAB240 e CNAB400)
+- Sicoob (CNAB240 e CNAB400)
+- Sicredi (CNAB240 e CNAB400)
+- Unicred (CNAB240 e CNAB400)
 
 
 
@@ -33,7 +54,15 @@ Emissão de Boletos Bancários em Ruby.
 
 Seguimos as documentações descritas abaixo:
 
+* [Banco do Brasil](documentacoes_boletos/Banco do Brasil)
+* [Bradesco](documentacoes_boletos/Bradesco)
+* [Caixa](documentacoes_boletos/Caixa)
+* [Cecred](documentacoes_boletos/cecred)
+* [Itaú](documentacoes_boletos/Itaú)
+* [Santander](documentacoes_boletos/Santander)
 * [Sicoob](documentacoes_boletos/Sicoob)
+* [Sicredi](documentacoes_boletos/Sicredi)
+* [Unicred](documentacoes_boletos/Unicred)
 
 
 ## Bancos Suportados
@@ -57,8 +86,50 @@ Para todos os bancos e carteiras implementadas, **seguimos as documentações** 
   <tr>
     <td>Caixa</td>
     <td>1, 2.</td>
+    <td>Homologado dia 11/11/2016</td>
+   <td>Bruno M. Mergen</td>
+  </tr>
+  <tr>
+    <td>Cecred</td>
+    <td>1.</td>
+    <td>Homologado dia 07/11/2016</td>
+   <td>Ricardo Zanuzzo</td>
+  </tr>
+  <tr>
+    <td>Unicred</td>
+    <td>09.</td>
+    <td>Homologado dia 11/11/2016</td>
+   <td>Ricardo Zanuzzo</td>
+  </tr>
+  <tr>
+    <td>Sicredi</td>
+    <td>1, 3.</td>
+    <td>Homologado dia 17/11/2016</td>
+   <td>Ricardo Zanuzzo</td>
+  </tr>
+  <tr>
+    <td>Banco do Brasil</td>
+    <td>11, 12, 15, 16, 17, 18, 31, 51.</td>
     <td>Pendente</td>
-   <td></td>
+   <td>Ricardo Zanuzzo</td>
+  </tr>
+  <tr>
+    <td>Bradesco</td>
+    <td>06, 09, 19, 21, 22.</td>
+    <td>Pendente</td>
+   <td>Ricardo Zanuzzo</td>
+  </tr>
+  <tr>
+    <td>Itaú</td>
+    <td>104, 105, 107, 108, 109, 112, 113, 116, 117, 119, 121, 122, 126, 131, 134, 135, 136, 142, 143, 146, 147, 150, 168, 169, 174, 175, 180, 191, 196, 198.</td>
+    <td>Pendente</td>
+   <td>Ricardo Zanuzzo</td>
+  </tr>
+  <tr>
+    <td>Santander</td>
+    <td>101, 102, 121.</td>
+    <td>Pendente</td>
+   <td>Ricardo Zanuzzo</td>
   </tr>
 </table>
 
@@ -89,8 +160,86 @@ Para todos os bancos e carteiras implementadas, **seguimos as documentações** 
   <tr>
     <td>Caixa</td>
     <td>240</td>
+    <td>Homologado dia 11/11/2016</td>
+    <td>Bruno M. Merge</td>
+  </tr>
+  <tr>
+    <td>Cecred</td>
+    <td>240</td>
+    <td>Homologado dia 07/11/2016</td>
+    <td>Ricardo Zanuzzo</td>
+  </tr>
+  <tr>
+    <td>Unicred</td>
+    <td>240</td>
+    <td>Homologado dia 11/11/2016</td>
+    <td>Ricardo Zanuzzo</td>
+  </tr>
+  <tr>
+    <td>Unicred</td>
+    <td>400</td>
     <td>Pendente</td>
-    <td></td>
+    <td>Ricardo Zanuzzo</td>
+  </tr>
+  <tr>
+    <td>Sicredi</td>
+    <td>240</td>
+    <td>Homologado dia 17/11/2016</td>
+    <td>Ricardo Zanuzzo</td>
+  </tr>
+  <tr>
+    <td>Sicredi</td>
+    <td>400</td>
+    <td>Pendente</td>
+    <td>Ricardo Zanuzzo</td>
+  </tr>
+  <tr>
+    <td>Banco do Brasil</td>
+    <td>240</td>
+    <td>Pendente</td>
+    <td>Ricardo Zanuzzo</td>
+  </tr>
+  <tr>
+    <td>Banco do Brasil</td>
+    <td>400</td>
+    <td>Pendente</td>
+    <td>Ricardo Zanuzzo</td>
+  </tr>
+  <tr>
+    <td>Bradesco</td>
+    <td>240</td>
+    <td>Pendente</td>
+    <td>Ricardo Zanuzzo</td>
+  </tr>
+  <tr>
+    <td>Bradesco</td>
+    <td>400</td>
+    <td>Pendente</td>
+    <td>Ricardo Zanuzzo</td>
+  </tr>
+  <tr>
+    <td>Itaú</td>
+    <td>240</td>
+    <td>Pendente</td>
+    <td>Ricardo Zanuzzo</td>
+  </tr>
+  <tr>
+    <td>Itaú</td>
+    <td>400</td>
+    <td>Pendente</td>
+    <td>Ricardo Zanuzzo</td>
+  </tr>
+  <tr>
+    <td>Santander</td>
+    <td>240</td>
+    <td>Pendente</td>
+    <td>Ricardo Zanuzzo</td>
+  </tr>
+  <tr>
+    <td>Santander</td>
+    <td>400</td>
+    <td>Pendente</td>
+    <td>Ricardo Zanuzzo</td>
   </tr>
 </table>
 
