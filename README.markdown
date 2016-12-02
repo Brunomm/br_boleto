@@ -9,12 +9,12 @@ Emissão de Boletos Bancários em Ruby.
 **O que essa gem faz?**
 
  1. Boleto bancário (apenas os cálculos para o boleto, sem a interface) para os bancos:
-- Banco do Brasil
-- Bradesco
+- Banco do Brasil (em andamento)
+- Bradesco (em andamento)
 - Caixa
 - Cecred
-- Itaú
-- Santander
+- Itaú (em andamento)
+- Santander (em andamento)
 - Sicoob
 - Sicredi
 - Unicred
