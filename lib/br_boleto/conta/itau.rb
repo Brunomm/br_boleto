@@ -87,7 +87,7 @@ module BrBoleto
 			# @return [String] Agência com 4 caracteres  / Conta de Cobrança com 5 caracteres - Digito da Conta
 			# Exemplo: 9999 / 99999-D
 			def agencia_codigo_cedente
-				"#{agencia} / #{conta_corrente}-#{conta_corrente_dv}"
+				"#{agencia}/#{conta_corrente}-#{conta_corrente_dv}"
 			end
 
       	# Carteiras suportadas
@@ -175,9 +175,14 @@ module BrBoleto
 					})
 			end
 
-			# Código para Multa
+			# Código para Multa, que representa a isenção de juros e multa deve ser '0'
+			# Diferentemente do padrão da FEBRABAN que é '3'
+			# Ou seja, se passar o código 3 deve considerar '0'
 			def equivalent_codigo_multa
-				super.merge({ '0' => '0' }) # NÃO REGISTRA A MULTA
+				super.merge({ '3' => '0','0' => '0' }) # NÃO REGISTRA A MULTA
+			end
+			def default_codigo_multa
+				'0'
 			end
 
 			# Codigo da carteira de acordo com a documentacao o Itau (Pag. 18, Nota 5)
