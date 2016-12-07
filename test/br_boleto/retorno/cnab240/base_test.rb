@@ -24,7 +24,9 @@ describe BrBoleto::Retorno::Cnab240::Base do
 			pagamento.numero_conta_sem_dv.must_equal                    "000000077777"
 			pagamento.numero_conta_dv.must_equal                        "8"
 			pagamento.dv_conta_e_agencia.must_equal                     "0"
+			pagamento.nosso_numero.must_equal                           "000000033001014"
 			pagamento.nosso_numero_sem_dv.must_equal                    "000000033001014"
+			pagamento.nosso_numero_dv.must_equal                        ""
 			pagamento.carteira.must_equal                               "1"
 			pagamento.numero_documento.must_equal                       "000000000000330"
 			pagamento.data_vencimento.must_equal                        Date.parse('03/05/2016')
@@ -66,7 +68,9 @@ describe BrBoleto::Retorno::Cnab240::Base do
 			pagamento.numero_conta_sem_dv.must_equal                    "000000077777"
 			pagamento.numero_conta_dv.must_equal                        "8"
 			pagamento.dv_conta_e_agencia.must_equal                     "0"
+			pagamento.nosso_numero.must_equal                           "000000034801024"
 			pagamento.nosso_numero_sem_dv.must_equal                    "000000034801024"
+			pagamento.nosso_numero_dv.must_equal                        ""
 			pagamento.carteira.must_equal                               "1"
 			pagamento.numero_documento.must_equal                       "000000000000348"
 			pagamento.data_vencimento.must_equal                        Date.parse('06/05/2016')
@@ -108,7 +112,9 @@ describe BrBoleto::Retorno::Cnab240::Base do
 			pagamento.numero_conta_sem_dv.must_equal                    "000000077777"
 			pagamento.numero_conta_dv.must_equal                        "8"
 			pagamento.dv_conta_e_agencia.must_equal                     "0"
+			pagamento.nosso_numero.must_equal                           "000000035501014"
 			pagamento.nosso_numero_sem_dv.must_equal                    "000000035501014"
+			pagamento.nosso_numero_dv.must_equal                        ""
 			pagamento.carteira.must_equal                               "1"
 			pagamento.numero_documento.must_equal                       "000000000000355"
 			pagamento.data_vencimento.must_equal                        Date.parse('06/05/2016')
@@ -150,7 +156,9 @@ describe BrBoleto::Retorno::Cnab240::Base do
 			pagamento.numero_conta_sem_dv.must_equal                    "000000077777"
 			pagamento.numero_conta_dv.must_equal                        "8"
 			pagamento.dv_conta_e_agencia.must_equal                     "0"
+			pagamento.nosso_numero.must_equal                           "000000036201014"
 			pagamento.nosso_numero_sem_dv.must_equal                    "000000036201014"
+			pagamento.nosso_numero_dv.must_equal                        ""
 			pagamento.carteira.must_equal                               "1"
 			pagamento.numero_documento.must_equal                       "000000000000362"
 			pagamento.data_vencimento.must_equal                        Date.parse('06/05/2016')
@@ -191,7 +199,9 @@ describe BrBoleto::Retorno::Cnab240::Base do
 			pagamento.numero_conta_sem_dv.must_equal                    "000000077777"
 			pagamento.numero_conta_dv.must_equal                        "8"
 			pagamento.dv_conta_e_agencia.must_equal                     "0"
+			pagamento.nosso_numero.must_equal                           "000000036201014"
 			pagamento.nosso_numero_sem_dv.must_equal                    "000000036201014"
+			pagamento.nosso_numero_dv.must_equal                        ""
 			pagamento.carteira.must_equal                               "1"
 			pagamento.numero_documento.must_equal                       "000000000000362"
 			pagamento.data_vencimento.must_equal                        Date.parse('06/05/2016')

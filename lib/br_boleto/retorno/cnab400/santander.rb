@@ -11,13 +11,14 @@ module BrBoleto
 						agencia_sem_dv:                               18..21,
 						numero_conta_sem_dv:                          22..29,
 						# numero_conta_sem_dv:                          30..37,      # Conta Cobrança
-						nosso_numero_sem_dv:                          63..70,
+						nosso_numero_sem_dv:                          63..69,
+						nosso_numero_dv:                              70,
 						cod_carteira:                                 108,
 						codigo_ocorrencia_banco_correspondente:       109..110,
 						data_ocorrencia:                              111..116,
 						data_ocorrencia_sacado:                       111..116,
 						numero_documento:                             117..126,
-						# nosso_numero_sem_dv:                          127..134,
+						# nosso_numero_sem_dv:                          127..134,    # O nosso_numero esta presente em 2 posições diferentes na documentação
 						data_vencimento:                              147..152,
 						valor_titulo:                                 153..165,
 						banco_recebedor:                              166..168,
