@@ -123,6 +123,17 @@ module BrBoleto
 			#   10       214-223
 			attr_accessor :motivo_ocorrencia
 
+			# BANCO SICREDI (PAG. 44)
+				#  Código do pagador na cooperativa do beneficiário
+				#  Tamanho    Posição
+				#    05       015-019
+				attr_accessor :codigo_pagador_cooperativa
+
+				#  Código do pagador junto ao associado
+				#  Tamanho    Posição
+				#    05       020-024
+				attr_accessor :codigo_pagador_associado
+
 			#############################################################################################
 			############################# VALORES ENCONTRADOS NO SEGMENTO U #############################
 			#############################################################################################
