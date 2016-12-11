@@ -151,12 +151,6 @@ module BrBoleto
 						'00'
 					end
 
-				######################### SEGMENTO R #############################
-					# Codigo da multa 
-					def segmento_r_posicao_066_a_066(pagamento)
-						"#{conta.get_codigo_multa('0')}".adjust_size_to(1, '0')
-					end
-
 				######################### TRAILER LOTE #############################
 					#
 					# trailer_lote_posicao_024_a_240(lote, nr_lote)

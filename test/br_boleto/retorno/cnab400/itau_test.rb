@@ -12,11 +12,12 @@ describe BrBoleto::Retorno::Cnab400::Itau do
 		it "valores para o pagamento 1" do
 			pagamento = subject.pagamentos[0]
 			pagamento.agencia_sem_dv.must_equal            "0730"
-			pagamento.numero_conta.must_equal              "03511"
+			pagamento.numero_conta_sem_dv.must_equal       "03511"
 			pagamento.numero_conta_dv.must_equal           "0"
+			pagamento.numero_conta.must_equal              "035110"
 			pagamento.carteira.must_equal                  "109"
 			pagamento.numero_documento.must_equal          "00000011"
-			pagamento.nosso_numero.must_equal              "00000011"
+			pagamento.nosso_numero_sem_dv.must_equal       "00000011"
 			pagamento.nosso_numero_dv.must_equal           "4"
 			pagamento.cod_carteira.must_equal              "I"
 			pagamento.data_vencimento.must_be_nil
@@ -55,11 +56,12 @@ describe BrBoleto::Retorno::Cnab400::Itau do
 		it "valores para o pagamento 52" do
 			pagamento = subject.pagamentos[51]
 			pagamento.agencia_sem_dv.must_equal            "0730"
-			pagamento.numero_conta.must_equal              "03511"
+			pagamento.numero_conta_sem_dv.must_equal       "03511"
 			pagamento.numero_conta_dv.must_equal           "0"
+			pagamento.numero_conta.must_equal              "035110"
 			pagamento.carteira.must_equal                  "157"
 			pagamento.numero_documento.must_equal          "27714592"
-			pagamento.nosso_numero.must_equal              "27714592"
+			pagamento.nosso_numero_sem_dv.must_equal       "27714592"
 			pagamento.nosso_numero_dv.must_equal           "2"
 			pagamento.cod_carteira.must_equal              "I"
 			pagamento.data_vencimento.must_equal           Date.parse('10/05/2013')

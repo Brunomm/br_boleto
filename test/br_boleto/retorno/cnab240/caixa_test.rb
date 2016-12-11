@@ -18,11 +18,11 @@ describe BrBoleto::Retorno::Cnab240::Caixa do
 			pagamento.modalidade.must_equal                             'M1'
 			pagamento.agencia_com_dv.must_equal                         "030690"
 			pagamento.agencia_sem_dv.must_equal                         "03069"
-			pagamento.numero_conta_com_dv.must_equal                    "CEDEN1"
+			pagamento.numero_conta_sem_dv.must_equal                    "CEDEN1"
 			pagamento.numero_conta_dv.must_equal                        ""
 			pagamento.numero_conta.must_equal                           "CEDEN1"
 			pagamento.dv_conta_e_agencia.must_equal                     nil
-			pagamento.nosso_numero.must_equal                           "NOSSONUMERO0001"
+			pagamento.nosso_numero_sem_dv.must_equal                    "M1NOSSONUMERO0001"
 			pagamento.carteira.must_equal                               "X"
 			pagamento.numero_documento.must_equal                       "NUMEROCOD01"
 			pagamento.data_vencimento.must_equal                        Date.parse('03/05/2016')
@@ -60,11 +60,11 @@ describe BrBoleto::Retorno::Cnab240::Caixa do
 			pagamento.modalidade.must_equal                             'M2'
 			pagamento.agencia_com_dv.must_equal                         "030690"
 			pagamento.agencia_sem_dv.must_equal                         "03069"
-			pagamento.numero_conta_com_dv.must_equal                    "CEDEN2"
+			pagamento.numero_conta_sem_dv.must_equal                    "CEDEN2"
 			pagamento.numero_conta_dv.must_equal                        ""
 			pagamento.numero_conta.must_equal                           "CEDEN2"
 			pagamento.dv_conta_e_agencia.must_equal                     nil
-			pagamento.nosso_numero.must_equal                           "NOSSONUMERO0002"
+			pagamento.nosso_numero_sem_dv.must_equal                    "M2NOSSONUMERO0002"
 			pagamento.carteira.must_equal                               "X"
 			pagamento.numero_documento.must_equal                       "NUMEROCOD02"
 			pagamento.data_vencimento.must_equal                        Date.parse('06/05/2016')
@@ -102,11 +102,11 @@ describe BrBoleto::Retorno::Cnab240::Caixa do
 			pagamento.modalidade.must_equal                             'M3'
 			pagamento.agencia_com_dv.must_equal                         "030690"
 			pagamento.agencia_sem_dv.must_equal                         "03069"
-			pagamento.numero_conta_com_dv.must_equal                    "CEDEN3"
+			pagamento.numero_conta_sem_dv.must_equal                    "CEDEN3"
 			pagamento.numero_conta_dv.must_equal                        ""
 			pagamento.numero_conta.must_equal                           "CEDEN3"
 			pagamento.dv_conta_e_agencia.must_equal                     nil
-			pagamento.nosso_numero.must_equal                           "NOSSONUMERO0003"
+			pagamento.nosso_numero_sem_dv.must_equal                    "M3NOSSONUMERO0003"
 			pagamento.carteira.must_equal                               "X"
 			pagamento.numero_documento.must_equal                       "NUMEROCOD03"
 			pagamento.data_vencimento.must_equal                        Date.parse('06/05/2016')
@@ -144,11 +144,11 @@ describe BrBoleto::Retorno::Cnab240::Caixa do
 			pagamento.modalidade.must_equal                             'M4'
 			pagamento.agencia_com_dv.must_equal                         "030690"
 			pagamento.agencia_sem_dv.must_equal                         "03069"
-			pagamento.numero_conta_com_dv.must_equal                    "CEDEN4"
+			pagamento.numero_conta_sem_dv.must_equal                    "CEDEN4"
 			pagamento.numero_conta_dv.must_equal                        ""
 			pagamento.numero_conta.must_equal                           "CEDEN4"
 			pagamento.dv_conta_e_agencia.must_equal                     nil
-			pagamento.nosso_numero.must_equal                           "NOSSONUMERO0004"
+			pagamento.nosso_numero_sem_dv.must_equal                    "M4NOSSONUMERO0004"
 			pagamento.carteira.must_equal                               "X"
 			pagamento.numero_documento.must_equal                       "NUMEROCOD04"
 			pagamento.data_vencimento.must_equal                        Date.parse('06/05/2016')
@@ -186,11 +186,11 @@ describe BrBoleto::Retorno::Cnab240::Caixa do
 			pagamento.modalidade.must_equal                             'M5'
 			pagamento.agencia_com_dv.must_equal                         "030690"
 			pagamento.agencia_sem_dv.must_equal                         "03069"
-			pagamento.numero_conta_com_dv.must_equal                    "CEDEN5"
+			pagamento.numero_conta_sem_dv.must_equal                    "CEDEN5"
 			pagamento.numero_conta_dv.must_equal                        ""
 			pagamento.numero_conta.must_equal                           "CEDEN5"
 			pagamento.dv_conta_e_agencia.must_equal                     nil
-			pagamento.nosso_numero.must_equal                           "NOSSONUMERO0005"
+			pagamento.nosso_numero_sem_dv.must_equal                    "M5NOSSONUMERO0005"
 			pagamento.carteira.must_equal                               "X"
 			pagamento.numero_documento.must_equal                       "NUMEROCOD05"
 			pagamento.data_vencimento.must_equal                        Date.parse('06/05/2016')
