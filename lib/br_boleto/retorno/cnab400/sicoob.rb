@@ -8,9 +8,10 @@ module BrBoleto
 					{ #    ATRIBUTO               POSIÇÃO DA LINHA
 						agencia_sem_dv:                18..21,
 						agencia_com_dv:                18..22,
+						numero_conta_sem_dv:           23..30,
 						numero_conta_dv:               31,
-						numero_conta:                  23..30,
-						nosso_numero:                  63..74,
+						nosso_numero_sem_dv:           63..73,
+						nosso_numero_dv:               74,
 						parcela:                       75..76,
 						modalidade:                    107..108,
 						carteira:                      108,

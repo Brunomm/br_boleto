@@ -18,10 +18,12 @@ describe BrBoleto::Retorno::Cnab400::Sicoob do
 			pagamento.modalidade.must_equal                '01'
 			pagamento.agencia_com_dv.must_equal            "30690"
 			pagamento.agencia_sem_dv.must_equal            "3069"
-			pagamento.numero_conta_com_dv.must_equal       "000567329"
+			pagamento.numero_conta.must_equal              "000567329"
 			pagamento.numero_conta_dv.must_equal           "9"
-			pagamento.numero_conta.must_equal              "00056732"
+			pagamento.numero_conta_sem_dv.must_equal       "00056732"
 			pagamento.nosso_numero.must_equal              "000000157595"
+			pagamento.nosso_numero_sem_dv.must_equal       "00000015759"
+			pagamento.nosso_numero_dv.must_equal           "5"
 			pagamento.carteira.must_equal                  "1"
 			pagamento.numero_documento.must_equal          "000000000157595"
 			pagamento.data_vencimento.must_equal           Date.parse('16/09/2016')
@@ -61,10 +63,12 @@ describe BrBoleto::Retorno::Cnab400::Sicoob do
 			pagamento.modalidade.must_equal                '02'
 			pagamento.agencia_com_dv.must_equal            "30690"
 			pagamento.agencia_sem_dv.must_equal            "3069"
-			pagamento.numero_conta_com_dv.must_equal       "000567329"
+			pagamento.numero_conta.must_equal              "000567329"
 			pagamento.numero_conta_dv.must_equal           "9"
-			pagamento.numero_conta.must_equal              "00056732"
+			pagamento.numero_conta_sem_dv.must_equal       "00056732"
 			pagamento.nosso_numero.must_equal              "000000152106"
+			pagamento.nosso_numero_sem_dv.must_equal       "00000015210"
+			pagamento.nosso_numero_dv.must_equal           "6"
 			pagamento.carteira.must_equal                  "2"
 			pagamento.numero_documento.must_equal          "000000000152106"
 			pagamento.data_vencimento.must_equal           Date.parse('10/09/2016')
@@ -104,10 +108,12 @@ describe BrBoleto::Retorno::Cnab400::Sicoob do
 			pagamento.modalidade.must_equal                '03'
 			pagamento.agencia_com_dv.must_equal            "30690"
 			pagamento.agencia_sem_dv.must_equal            "3069"
-			pagamento.numero_conta_com_dv.must_equal       "000567329"
+			pagamento.numero_conta.must_equal              "000567329"
 			pagamento.numero_conta_dv.must_equal           "9"
-			pagamento.numero_conta.must_equal              "00056732"
+			pagamento.numero_conta_sem_dv.must_equal       "00056732"
 			pagamento.nosso_numero.must_equal              "000000156601"
+			pagamento.nosso_numero_sem_dv.must_equal       "00000015660"
+			pagamento.nosso_numero_dv.must_equal           "1"
 			pagamento.carteira.must_equal                  "3"
 			pagamento.numero_documento.must_equal          "000000000156601"
 			pagamento.data_vencimento.must_equal           Date.parse('05/09/2016')
@@ -147,10 +153,12 @@ describe BrBoleto::Retorno::Cnab400::Sicoob do
 			pagamento.modalidade.must_equal                '01'
 			pagamento.agencia_com_dv.must_equal            "30690"
 			pagamento.agencia_sem_dv.must_equal            "3069"
-			pagamento.numero_conta_com_dv.must_equal       "000567329"
+			pagamento.numero_conta.must_equal              "000567329"
 			pagamento.numero_conta_dv.must_equal           "9"
-			pagamento.numero_conta.must_equal              "00056732"
+			pagamento.numero_conta_sem_dv.must_equal       "00056732"
 			pagamento.nosso_numero.must_equal              "000000157517"
+			pagamento.nosso_numero_sem_dv.must_equal       "00000015751"
+			pagamento.nosso_numero_dv.must_equal           "7"
 			pagamento.carteira.must_equal                  "1"
 			pagamento.numero_documento.must_equal          "000000000157517"
 			pagamento.data_vencimento.must_equal           Date.parse('10/09/2016')
@@ -190,10 +198,12 @@ describe BrBoleto::Retorno::Cnab400::Sicoob do
 			pagamento.modalidade.must_equal                '01'
 			pagamento.agencia_com_dv.must_equal            "30690"
 			pagamento.agencia_sem_dv.must_equal            "3069"
-			pagamento.numero_conta_com_dv.must_equal       "000567329"
+			pagamento.numero_conta.must_equal              "000567329"
 			pagamento.numero_conta_dv.must_equal           "9"
-			pagamento.numero_conta.must_equal              "00056732"
+			pagamento.numero_conta_sem_dv.must_equal       "00056732"
 			pagamento.nosso_numero.must_equal              "000000157610"
+			pagamento.nosso_numero_sem_dv.must_equal       "00000015761"
+			pagamento.nosso_numero_dv.must_equal           "0"
 			pagamento.carteira.must_equal                  "1"
 			pagamento.numero_documento.must_equal          "000000000157610"
 			pagamento.data_vencimento.must_equal           Date.parse('12/09/2016')

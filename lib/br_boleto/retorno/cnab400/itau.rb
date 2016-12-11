@@ -9,11 +9,11 @@ module BrBoleto
 
 						sacado_documento:                             4..17,
 						agencia_sem_dv:                               18..21,
-						numero_conta:                                 24..28,
+						numero_conta_sem_dv:                          24..28,
 						numero_conta_dv:                              29,
 						numero_documento:                             53..70,
 						carteira:                                     83..85,
-						nosso_numero:                                 86..93,
+						nosso_numero_sem_dv:                          86..93,
 						nosso_numero_dv:                              94,
 						cod_carteira:                                 108,
 						codigo_ocorrencia_banco_correspondente:       109..110,

@@ -11,11 +11,11 @@ module BrBoleto
 			attr_accessor :agencia_sem_dv # tamanho = 5
 			
 			# NÚMERO DA CONTA CORRENTE/CEDENTE
-			attr_accessor :numero_conta            # tamanho = 12
+			attr_accessor :numero_conta_sem_dv     # tamanho = 12
 			attr_accessor :numero_conta_dv         # tamanho = 1
 			alias_attribute :codigo_cedente, :numero_conta
-			def numero_conta_com_dv 
-				"#{numero_conta}#{numero_conta_dv}" # tamanho = 13
+			def numero_conta
+				"#{numero_conta_sem_dv}#{numero_conta_dv}" # tamanho = 13
 			end
 			
 			
@@ -32,16 +32,26 @@ module BrBoleto
 			# IDENTIFICAÇÃO DO TÍTULO
 			# Tamanho    Posição
 			#   20        38-57
-			attr_accessor :nosso_numero
+			attr_accessor :nosso_numero_sem_dv
 
 			# DÍGITO VERIFICADOR NOSSO NÚMERO
 			attr_accessor :nosso_numero_dv
+
+			# IDENTIFICAÇÃO DO TÍTULO (NOSSO NÚMERO)
+			def nosso_numero
+				"#{nosso_numero_sem_dv}#{nosso_numero_dv}"
+			end
 			
-			# CÓDIGO DA CARTEIRA
-			# Tamanho    Posição
-			#   1         58-58
+			# CARTEIRA DE COBRANÇA
 			attr_accessor :carteira
+
+			# CÓDIGO DA CARTEIRA (TIPO DE COBRANÇA)
 			attr_accessor :cod_carteira
+			alias_attribute :tipo_cobranca, :cod_carteira
+
+			# VARIAÇÃO DA CARTEIRA 
+			attr_accessor :variacao_carteira
+
 
 			# NÚMERO DO DOCUMENTO
 			# Tamanho    Posição
@@ -112,6 +122,17 @@ module BrBoleto
 			# Tamanho    Posição
 			#   10       214-223
 			attr_accessor :motivo_ocorrencia
+
+			# BANCO SICREDI (PAG. 44)
+				#  Código do pagador na cooperativa do beneficiário
+				#  Tamanho    Posição
+				#    05       015-019
+				attr_accessor :codigo_pagador_cooperativa
+
+				#  Código do pagador junto ao associado
+				#  Tamanho    Posição
+				#    05       020-024
+				attr_accessor :codigo_pagador_associado
 
 			#############################################################################################
 			############################# VALORES ENCONTRADOS NO SEGMENTO U #############################

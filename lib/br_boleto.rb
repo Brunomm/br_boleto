@@ -77,6 +77,8 @@ module BrBoleto
 		autoload :Sicredi
 		autoload :Cecred
 		autoload :Itau
+		autoload :BancoBrasil
+		autoload :Santander
 	end
 	
 	module Boleto
@@ -90,6 +92,8 @@ module BrBoleto
 		autoload :Sicredi
 		autoload :Cecred
 		autoload :Itau
+		autoload :BancoBrasil
+		autoload :Santander
 	end
 
 
@@ -109,6 +113,8 @@ module BrBoleto
 			autoload :Sicredi
 			autoload :Cecred
 			autoload :Itau
+			autoload :BancoBrasil
+			autoload :Santander
 		end
 		module Cnab400
 			extend ActiveSupport::Autoload
@@ -118,6 +124,8 @@ module BrBoleto
 			autoload :Unicred
 			autoload :Sicredi
 			autoload :Itau
+			autoload :BancoBrasil
+			autoload :Santander
 		end
 	end
 	
@@ -135,6 +143,8 @@ module BrBoleto
 			autoload :Sicredi
 			autoload :Cecred
 			autoload :Itau
+			autoload :BancoBrasil
+			autoload :Santander
 		end
 		module Cnab400
 			extend ActiveSupport::Autoload
@@ -144,11 +154,12 @@ module BrBoleto
 			autoload :Unicred
 			autoload :Sicredi
 			autoload :Itau
+			autoload :BancoBrasil
+			autoload :Santander
 		end
 	end
 
 	
-
 	# Módulo que possui classes que realizam os cálculos dos campos que serão mostrados nos boletos.
 	#
 	module Calculos

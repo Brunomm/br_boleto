@@ -13,10 +13,10 @@ describe BrBoleto::Retorno::Cnab400::Unicred do
 		it "valores para o pagamento 1" do
 			pagamento = subject.pagamentos[0]
 			pagamento.agencia_sem_dv.must_equal            "01467"
-			pagamento.numero_conta_com_dv.must_equal       "0019669"
+			pagamento.numero_conta.must_equal              "0019669"
 			pagamento.numero_conta_dv.must_equal           "9"
-			pagamento.numero_conta.must_equal              "001966"
-			pagamento.nosso_numero.must_equal              "000000000303"
+			pagamento.numero_conta_sem_dv.must_equal       "001966"
+			pagamento.nosso_numero_sem_dv.must_equal       "000000000303"
 			pagamento.carteira.must_equal                  "09"
 			pagamento.numero_documento.must_equal          "0030"
 			pagamento.data_vencimento.must_equal           Date.parse('25/05/2015')
@@ -54,10 +54,10 @@ describe BrBoleto::Retorno::Cnab400::Unicred do
 		it "valores para o pagamento 2" do
 			pagamento = subject.pagamentos[1]
 			pagamento.agencia_sem_dv.must_equal            "01467"
-			pagamento.numero_conta_com_dv.must_equal       "0019669"
+			pagamento.numero_conta.must_equal              "0019669"
 			pagamento.numero_conta_dv.must_equal           "9"
-			pagamento.numero_conta.must_equal              "001966"
-			pagamento.nosso_numero.must_equal              "51350000004P"
+			pagamento.numero_conta_sem_dv.must_equal       "001966"
+			pagamento.nosso_numero_sem_dv.must_equal       "51350000004P"
 			pagamento.carteira.must_equal                  "09"
 			pagamento.numero_documento.must_equal          "1146"
 			pagamento.data_vencimento.must_equal           Date.parse('25/05/2015')
@@ -94,10 +94,10 @@ describe BrBoleto::Retorno::Cnab400::Unicred do
 		it "valores para o pagamento 3" do
 			pagamento = subject.pagamentos[2]
 			pagamento.agencia_sem_dv.must_equal            "01467"
-			pagamento.numero_conta_com_dv.must_equal       "0019669"
+			pagamento.numero_conta.must_equal              "0019669"
 			pagamento.numero_conta_dv.must_equal           "9"
-			pagamento.numero_conta.must_equal              "001966"
-			pagamento.nosso_numero.must_equal              "513500000074"
+			pagamento.numero_conta_sem_dv.must_equal       "001966"
+			pagamento.nosso_numero_sem_dv.must_equal       "513500000074"
 			pagamento.carteira.must_equal                  "09"
 			pagamento.numero_documento.must_equal          "1142"
 			pagamento.data_vencimento.must_equal           Date.parse('25/05/2015')
@@ -134,10 +134,10 @@ describe BrBoleto::Retorno::Cnab400::Unicred do
 		it "valores para o pagamento 4" do
 			pagamento = subject.pagamentos[3]
 			pagamento.agencia_sem_dv.must_equal            "01467"
-			pagamento.numero_conta_com_dv.must_equal       "0019669"
+			pagamento.numero_conta.must_equal              "0019669"
 			pagamento.numero_conta_dv.must_equal           "9"
-			pagamento.numero_conta.must_equal              "001966"
-			pagamento.nosso_numero.must_equal              "513500000090"
+			pagamento.numero_conta_sem_dv.must_equal       "001966"
+			pagamento.nosso_numero_sem_dv.must_equal       "513500000090"
 			pagamento.carteira.must_equal                  "09"
 			pagamento.numero_documento.must_equal          "1145"
 			pagamento.data_vencimento.must_equal           Date.parse('12/06/2015')
@@ -174,10 +174,10 @@ describe BrBoleto::Retorno::Cnab400::Unicred do
 		it "valores para o pagamento 5" do
 			pagamento = subject.pagamentos[4]
 			pagamento.agencia_sem_dv.must_equal            "01467"
-			pagamento.numero_conta_com_dv.must_equal       "0019669"
+			pagamento.numero_conta.must_equal              "0019669"
 			pagamento.numero_conta_dv.must_equal           "9"
-			pagamento.numero_conta.must_equal              "001966"
-			pagamento.nosso_numero.must_equal              "513500000112"
+			pagamento.numero_conta_sem_dv.must_equal       "001966"
+			pagamento.nosso_numero_sem_dv.must_equal       "513500000112"
 			pagamento.carteira.must_equal                  "09"
 			pagamento.numero_documento.must_equal          "1144"
 			pagamento.data_vencimento.must_equal           Date.parse('25/05/2015')
@@ -214,10 +214,10 @@ describe BrBoleto::Retorno::Cnab400::Unicred do
 		it "valores para o pagamento 6" do
 			pagamento = subject.pagamentos[5]
 			pagamento.agencia_sem_dv.must_equal            "01467"
-			pagamento.numero_conta_com_dv.must_equal       "0019669"
+			pagamento.numero_conta.must_equal              "0019669"
 			pagamento.numero_conta_dv.must_equal           "9"
-			pagamento.numero_conta.must_equal              "001966"
-			pagamento.nosso_numero.must_equal              "509800000028"
+			pagamento.numero_conta_sem_dv.must_equal       "001966"
+			pagamento.nosso_numero_sem_dv.must_equal       "509800000028"
 			pagamento.carteira.must_equal                  "09"
 			pagamento.numero_documento.must_equal          "1053"
 			pagamento.data_vencimento.must_equal           Date.parse('06/05/2015')
