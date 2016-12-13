@@ -25,7 +25,7 @@ module BrBoleto
 				# e adiciona o mesmo no Array de pagamentos
 				#
 				def instnce_payment(detalhe) #:doc:
-					payment = BrBoleto::Retorno::Pagamento.new
+					payment = BrBoleto::Retorno::Pagamento.new(conta_class: conta_pagamento_class)
 					detalhe_fields.each do |column, position |
 						payment.send("#{column}=", "_#{detalhe}"[position].try(:strip))
 					end
@@ -42,6 +42,7 @@ module BrBoleto
 					return if lines.blank?
 					self.codigo_banco = "_#{lines[0]}"[77..79]
 				end
+
 			end
 		end
 	end

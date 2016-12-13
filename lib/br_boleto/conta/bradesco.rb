@@ -115,6 +115,10 @@ module BrBoleto
 					})
 			end
 
+			# Código de Movimento Retorno 
+			def equivalent_codigo_movimento_retorno
+				super.merge({'73' => '73'}) # Confirmação recebimento pedido de negativação
+			end
 		end
 	end
 end

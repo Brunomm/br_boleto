@@ -177,4 +177,16 @@ describe BrBoleto::Conta::Sicredi do
 		it { subject.get_codigo_desconto('7').must_equal '7' } # Cancelamento de Desconto
 	end
 
+	describe "#get_codigo_movimento_retorno" do
+		context "CÓDIGOS para o Sicredi" do
+			it { subject.get_codigo_movimento_retorno('36').must_equal '100' }  # Baixa Rejeitada
+		end
+	end
+
+	describe "#get_codigo_motivo_ocorrencia" do
+		context "CÓDIGOS para o Sicredi" do
+			it { subject.get_codigo_motivo_ocorrencia('01', '27').must_equal 'D01' } # Alteração de carteira
+		end
+	end
+
 end

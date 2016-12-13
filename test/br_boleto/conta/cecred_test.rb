@@ -116,4 +116,26 @@ describe BrBoleto::Conta::Cecred do
 			subject.conta_corrente_dv.must_equal 5
 		end
 	end
+
+	describe "#get_codigo_movimento_retorno" do
+		context "CÓDIGOS para o Cecred" do
+			it { subject.get_codigo_movimento_retorno('76').must_equal '76' } # Liquidação de boleto cooperativa emite e expede
+			it { subject.get_codigo_movimento_retorno('77').must_equal '77' } # Liquidação de boleto após baixa ou não registrado cooperativa emite e expede
+			it { subject.get_codigo_movimento_retorno('91').must_equal '91' } # Título em aberto não enviado ao pagador
+			it { subject.get_codigo_movimento_retorno('92').must_equal '92' } # Inconsistência Negativação Serasa
+			it { subject.get_codigo_movimento_retorno('93').must_equal '93' } # Inclusão Negativação via Serasa
+			it { subject.get_codigo_movimento_retorno('94').must_equal '94' } # Exclusão Negativação Serasa
+		end
+	end
+
+	describe "#get_codigo_motivo_ocorrencia" do
+		context "CÓDIGOS para o Cecred" do
+			it { subject.get_codigo_motivo_ocorrencia('P1', '91').must_equal 'A114' } # Enviado Cooperativa Emite e Expede
+			it { subject.get_codigo_motivo_ocorrencia('S1', '93').must_equal 'D02' }  # Sempre que a solicitação (inclusão ou exclusão) for efetuada com sucesso
+			it { subject.get_codigo_motivo_ocorrencia('S2', '94').must_equal 'D03' }  # Sempre que a solicitação for integrada na Serasa com sucesso
+			it { subject.get_codigo_motivo_ocorrencia('S3', '94').must_equal 'D04' }  # Sempre que vier retorno da Serasa por decurso de prazo
+			it { subject.get_codigo_motivo_ocorrencia('S4', '93').must_equal 'D05' }  # Sempre que o documento for integrado na Serasa com sucesso, quando o UF for de São Paulo
+			it { subject.get_codigo_motivo_ocorrencia('S5', '93').must_equal 'D06' }  # Sempre quando houver ação judicial, restringindo a negativação do boleto.
+		end
+	end
 end

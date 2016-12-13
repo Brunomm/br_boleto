@@ -62,6 +62,35 @@ module BrBoleto
 				"#{agencia}-#{agencia_dv} / #{conta_corrente}-#{conta_corrente_dv}"
 			end
 
+			# Código de Movimento Retorno 
+			def equivalent_codigo_movimento_retorno
+				super.merge(
+					{
+						'76' => '76',  # Liquidação de boleto cooperativa emite e expede
+						'77' => '77',  # Liquidação de boleto após baixa ou não registrado cooperativa emite e expede
+						'91' => '91',  # Título em aberto não enviado ao pagador
+						'92' => '92',  # Inconsistência Negativação Serasa
+						'93' => '93',  # Inclusão Negativação via Serasa
+						'94' => '94',  # Exclusão Negativação Serasa
+					})
+			end
+
+			# Código do Motivo da ocorrência :
+			def codigos_movimento_retorno_para_ocorrencia_D 
+				%w[91 93 94]
+			end
+			def equivalent_codigo_motivo_ocorrencia_D codigo_movimento_gem
+				#  Código     Padrão para  
+				{# do Banco     a Gem
+					'P1'    =>   'A114',  # Enviado Cooperativa Emite e Expede
+					'S1'    =>   'D02',   # Sempre que a solicitação (inclusão ou exclusão) for efetuada com sucesso
+					'S2'    =>   'D03',   # Sempre que a solicitação for integrada na Serasa com sucesso
+					'S3'    =>   'D04',   # Sempre que vier retorno da Serasa por decurso de prazo
+					'S4'    =>   'D05',   # Sempre que o documento for integrado na Serasa com sucesso, quando o UF for de São Paulo
+					'S5'    =>   'D06',   # Sempre quando houver ação judicial, restringindo a negativação do boleto.
+				}
+			end
+
 		end
 	end
 end

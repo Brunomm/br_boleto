@@ -38,7 +38,11 @@ describe BrBoleto::Retorno::Cnab240::Unicred do
 			pagamento.sacado_nome.must_equal                            "NOME DO CLIENTE 1 ??O"
 			pagamento.numero_contrato.must_equal                        "0000000000"
 			pagamento.valor_tarifa.must_equal                           2.69
-			pagamento.motivo_ocorrencia.must_equal                      "0000000004"
+			pagamento.motivo_ocorrencia_original_1.must_equal           "00"
+			pagamento.motivo_ocorrencia_original_2.must_equal           "00"
+			pagamento.motivo_ocorrencia_original_3.must_equal           "00"
+			pagamento.motivo_ocorrencia_original_4.must_equal           "00"
+			pagamento.motivo_ocorrencia_original_5.must_equal           "04"
 			pagamento.valor_juros_multa.must_equal                      0.0
 			pagamento.valor_desconto.must_equal                         0.0
 			pagamento.valor_abatimento.must_equal                       0.0
@@ -80,7 +84,11 @@ describe BrBoleto::Retorno::Cnab240::Unicred do
 			pagamento.sacado_nome.must_equal                            "NOME DO CLIENTE 2"
 			pagamento.numero_contrato.must_equal                        "0000000000"
 			pagamento.valor_tarifa.must_equal                           2.69
-			pagamento.motivo_ocorrencia.must_equal                      "0000000004"
+			pagamento.motivo_ocorrencia_original_1.must_equal           "00"
+			pagamento.motivo_ocorrencia_original_2.must_equal           "00"
+			pagamento.motivo_ocorrencia_original_3.must_equal           "00"
+			pagamento.motivo_ocorrencia_original_4.must_equal           "00"
+			pagamento.motivo_ocorrencia_original_5.must_equal           "04"
 			pagamento.valor_juros_multa.must_equal                      0.0
 			pagamento.valor_desconto.must_equal                         0.0
 			pagamento.valor_abatimento.must_equal                       0.0
@@ -122,7 +130,11 @@ describe BrBoleto::Retorno::Cnab240::Unicred do
 			pagamento.sacado_nome.must_equal                            "NOME DO CLIENTE 3"
 			pagamento.numero_contrato.must_equal                        "0000000000"
 			pagamento.valor_tarifa.must_equal                           2.69
-			pagamento.motivo_ocorrencia.must_equal                      "0000000004"
+			pagamento.motivo_ocorrencia_original_1.must_equal           "00"
+			pagamento.motivo_ocorrencia_original_2.must_equal           "00"
+			pagamento.motivo_ocorrencia_original_3.must_equal           "00"
+			pagamento.motivo_ocorrencia_original_4.must_equal           "00"
+			pagamento.motivo_ocorrencia_original_5.must_equal           "04"
 			pagamento.valor_juros_multa.must_equal                      0.0
 			pagamento.valor_desconto.must_equal                         0.0
 			pagamento.valor_abatimento.must_equal                       0.0
@@ -164,7 +176,11 @@ describe BrBoleto::Retorno::Cnab240::Unicred do
 			pagamento.sacado_nome.must_equal                            "NOME DO CLIENTE 4"
 			pagamento.numero_contrato.must_equal                        "0000000000"
 			pagamento.valor_tarifa.must_equal                           2.69
-			pagamento.motivo_ocorrencia.must_equal                      "0000000004"
+			pagamento.motivo_ocorrencia_original_1.must_equal           "00"
+			pagamento.motivo_ocorrencia_original_2.must_equal           "00"
+			pagamento.motivo_ocorrencia_original_3.must_equal           "00"
+			pagamento.motivo_ocorrencia_original_4.must_equal           "00"
+			pagamento.motivo_ocorrencia_original_5.must_equal           "04"
 			pagamento.valor_juros_multa.must_equal                      0.0
 			pagamento.valor_desconto.must_equal                         0.0
 			pagamento.valor_abatimento.must_equal                       0.0
@@ -205,7 +221,11 @@ describe BrBoleto::Retorno::Cnab240::Unicred do
 			pagamento.sacado_nome.must_equal                            "NOME DO CLIENTE 5"
 			pagamento.numero_contrato.must_equal                        "0000000000"
 			pagamento.valor_tarifa.must_equal                           2.69
-			pagamento.motivo_ocorrencia.must_equal                      "0000000004"
+			pagamento.motivo_ocorrencia_original_1.must_equal           "00"
+			pagamento.motivo_ocorrencia_original_2.must_equal           "00"
+			pagamento.motivo_ocorrencia_original_3.must_equal           "00"
+			pagamento.motivo_ocorrencia_original_4.must_equal           "00"
+			pagamento.motivo_ocorrencia_original_5.must_equal           "04"
 			pagamento.valor_juros_multa.must_equal                      0.0
 			pagamento.valor_desconto.must_equal                         0.0
 			pagamento.valor_abatimento.must_equal                       0.0

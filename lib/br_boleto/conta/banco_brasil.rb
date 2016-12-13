@@ -151,6 +151,15 @@ module BrBoleto
 					'99'    =>   '99' , #  Outros
 				}
 			end
+
+			# Código Motivo Ocorrência Retorno
+			def equivalent_codigo_motivo_ocorrencia_A codigo_movimento_gem
+				super.merge(
+					#  Padrão    Código para  
+					{# do Banco    a GEM
+						'52'    =>   'A104' , # Registro Rejeitado – Título já Liquidado
+					})
+			end
 		end
 	end
 end

@@ -199,6 +199,140 @@ module BrBoleto
 				}
 			end
 
+			# Código de Movimento Retorno 
+			def equivalent_codigo_movimento_retorno
+				super.merge(
+					#  Padrão    Código para  
+					{# do Banco    a GEM
+						'08'   =>   '208',  # LIQUIDAÇÃO EM CARTÓRIO
+						'10'   =>   '210',  # BAIXA POR TER SIDO LIQUIDADO
+						'15'   =>   '99',   # BAIXAS REJEITADAS
+						'16'   =>   '26',   # INSTRUÇÕES REJEITADAS
+						'17'   =>   '30',   # ALTERAÇÃO/EXCLUSÃO DE DADOS REJEITADA 
+						'18'   =>   '218',  # COBRANÇA CONTRATUAL – INSTRUÇÕES/ALTERAÇÕES REJEITADAS/PENDENTES
+						'21'   =>   '221',  # CONFIRMAÇÃO RECEBIMENTO DE INSTRUÇÃO DE NÃO PROTESTAR
+						'25'   =>   '225',  # ALEGAÇÕES DO PAGADOR
+						'26'   =>   '226',  # TARIFA DE AVISO DE COBRANÇA
+						'27'   =>   '227',  # TARIFA DE EXTRATO POSIÇÃO (B40X)
+						'28'   =>   '228',  # TARIFA DE RELAÇÃO DAS LIQUIDAÇÕES
+						'29'   =>   '229',  # TARIFA DE MANUTENÇÃO DE TÍTULOS VENCIDOS
+						'30'   =>   '28',   # DÉBITO MENSAL DE TARIFAS (PARA ENTRADAS E BAIXAS)
+						'32'   =>   '25',   # BAIXA POR TER SIDO PROTESTADO
+						'33'   =>   '233',  # CUSTAS DE PROTESTO
+						'34'   =>   '234',  # CUSTAS DE SUSTAÇÃO
+						'35'   =>   '235',  # CUSTAS DE CARTÓRIO DISTRIBUIDOR
+						'36'   =>   '236',  # CUSTAS DE EDITAL
+						'37'   =>   '237',  # TARIFA DE EMISSÃO DE BOLETO/TARIFA DE ENVIO DE DUPLICATA
+						'38'   =>   '238',  # TARIFA DE INSTRUÇÃO
+						'39'   =>   '239',  # TARIFA DE OCORRÊNCIAS
+						'40'   =>   '240',  # TARIFA MENSAL DE EMISSÃO DE BOLETO/TARIFA MENSAL DE ENVIO DE DUPLICATA
+						'41'   =>   '241',  # DÉBITO MENSAL DE TARIFAS – EXTRATO DE POSIÇÃO (B4EP/B4OX)
+						'42'   =>   '242',  # DÉBITO MENSAL DE TARIFAS – OUTRAS INSTRUÇÕES
+						'43'   =>   '243',  # DÉBITO MENSAL DE TARIFAS – MANUTENÇÃO DE TÍTULOS VENCIDOS
+						'44'   =>   '244',  # DÉBITO MENSAL DE TARIFAS – OUTRAS OCORRÊNCIAS
+						'45'   =>   '245',  # DÉBITO MENSAL DE TARIFAS – PROTESTO
+						'46'   =>   '246',  # DÉBITO MENSAL DE TARIFAS – SUSTAÇÃO DE PROTESTO
+						'47'   =>   '247',  # BAIXA COM TRANSFERÊNCIA PARA DESCONTO
+						'48'   =>   '248',  # CUSTAS DE SUSTAÇÃO JUDICIAL
+						'51'   =>   '251',  # TARIFA MENSAL REFERENTE A ENTRADAS BANCOS CORRESPONDENTES NA CARTEIRA
+						'52'   =>   '252',  # TARIFA MENSAL BAIXAS NA CARTEIRA
+						'53'   =>   '253',  # TARIFA MENSAL BAIXAS EM BANCOS CORRESPONDENTES NA CARTEIRA
+						'54'   =>   '254',  # TARIFA MENSAL DE LIQUIDAÇÕES NA CARTEIRA
+						'55'   =>   '255',  # TARIFA MENSAL DE LIQUIDAÇÕES EM BANCOS CORRESPONDENTES NA CARTEIRA
+						'56'   =>   '256',  # CUSTAS DE IRREGULARIDADE
+						'57'   =>   '257',  # INSTRUÇÃO CANCELADA
+						'60'   =>   '260',  # ENTRADA REJEITADA CARNÊ
+						'61'   =>   '261',  # TARIFA EMISSÃO AVISO DE MOVIMENTAÇÃO DE TÍTULOS (2154)
+						'62'   =>   '262',  # DÉBITO MENSAL DE TARIFA – AVISO DE MOVIMENTAÇÃO DE TÍTULOS (2154)
+						'63'   =>   '263',  # TÍTULO SUSTADO JUDICIALMENTE
+						'74'   =>   '274',  # INSTRUÇÃO DE NEGATIVAÇÃO EXPRESSA REJEITADA
+						'75'   =>   '275',  # CONFIRMA O RECEBIMENTO DE INSTRUÇÃO DE ENTRADA EM NEGATIVAÇÃO EXPRESSA
+						'77'   =>   '277',  # CONFIRMA O RECEBIMENTO DE INSTRUÇÃO DE EXCLUSÃO DE ENTRADA EM NEGATIVAÇÃO EXPRESSA
+						'78'   =>   '278',  # CONFIRMA O RECEBIMENTO DE INSTRUÇÃO DE CANCELAMENTO DA NEGATIVAÇÃO EXPRESSA
+						'79'   =>   '279',  # NEGATIVAÇÃO EXPRESSA INFORMACIONAL
+						'80'   =>   '280',  # CONFIRMAÇÃO DE ENTRADA EM NEGATIVAÇÃO EXPRESSA – TARIFA
+						'82'   =>   '282',  # CONFIRMAÇÃO O CANCELAMENTO DE NEGATIVAÇÃO EXPRESSA - TARIFA
+						'83'   =>   '283',  # CONFIRMAÇÃO DA EXCLUSÃO/CANCELAMENTO DA NEGATIVAÇÃO EXPRESSA POR LIQUIDAÇÃO - TARIFA
+						'85'   =>   '285',  # TARIFA POR BOLETO (ATÉ 03 ENVIOS) COBRANÇA ATIVA ELETRÔNICA
+						'86'   =>   '286',  # TARIFA EMAIL COBRANÇA ATIVA ELETRÔNICA
+						'87'   =>   '287',  # TARIFA SMS COBRANÇA ATIVA ELETRÔNICA
+						'88'   =>   '288',  # TARIFA MENSAL POR BOLETO (ATÉ 03 ENVIOS) COBRANÇA ATIVA ELETRÔNICA
+						'89'   =>   '289',  # TARIFA MENSAL EMAIL COBRANÇA ATIVA ELETRÔNICA
+						'90'   =>   '290',  # TARIFA MENSAL SMS COBRANÇA ATIVA ELETRÔNICA
+						'91'   =>   '291',  # TARIFA MENSAL DE EXCLUSÃO DE ENTRADA EM NEGATIVAÇÃO EXPRESSA
+						'92'   =>   '292',  # TARIFA MENSAL DE CANCELAMENTO DE NEGATIVAÇÃO EXPRESSA
+						'93'   =>   '293',  # TARIFA MENSAL DE EXCLUSÃO/CANCELAMENTO DE NEGATIVAÇÃO EXPRESSA POR LIQUIDAÇÃO
+						'94'   =>   '294',  # CONFIRMA RECEBIMENTO DE INSTRUÇÃO DE NÃO NEGATIVAR
+					})
+			end
+
+			# Código do Motivo da Ocorrência Retorno
+			def equivalent_codigo_motivo_ocorrencia_A codigo_movimento_gem
+				case codigo_movimento_gem
+				when '03'
+					super.merge(
+						#  Padrão    Código para  
+						{# do Banco    a GEM
+							'03'   =>   'A49',  # CEP INVÁLIDO OU NÃO FOI POSSÍVEL ATRIBUIR A AGÊNCIA PELO CEP 
+							'04'   =>   'A52',  # SIGLA DO ESTADO INVÁLIDA
+							'08'   =>   'A45',  # NÃO INFORMADO OU DESLOCADO
+							'09'   =>   'A07',  # AGÊNCIA ENCERRADA
+							'10'   =>   'A47',  # NÃO INFORMADO OU DESLOCADO
+							'11'   =>   'A49',  # CEP NÃO NUMÉRICO
+							'12'   =>   'A54',  # NOME NÃO INFORMADO OU DESLOCADO (BANCOS CORRESPONDENTES)
+							'13'   =>   'A51',  # CEP INCOMPATÍVEL COM A SIGLA DO ESTADO
+							'14'   =>   'A08',  # NOSSO NÚMERO JÁ REGISTRADO NO CADASTRO DO BANCO OU FORA DA FAIXA
+							'15'   =>   'A09',  # NOSSO NÚMERO EM DUPLICIDADE NO MESMO MOVIMENTO
+							'35'   =>   'A32',  # IOF MAIOR QUE 5%
+							'42'   =>   'A08',  # NOSSO NÚMERO FORA DE FAIXA
+							'60'   =>   'A33',  # VALOR DO ABATIMENTO INVÁLIDO
+							'62'   =>   'A29',  # VALOR DO DESCONTO MAIOR QUE O VALOR DO TÍTULO
+							'64'   =>   'A24',  # DATA DE EMISSÃO DO TÍTULO INVÁLIDA (VENDOR)
+							'66'   =>   'A74',  # INVALIDA/FORA DE PRAZO DE OPERAÇÃO (MÍNIMO OU MÁXIMO)
+							'67'   =>   'A20',  # VALOR DO TÍTULO/QUANTIDADE DE MOEDA INVÁLIDO
+							'68'   =>   'A10',  # CARTEIRA INVÁLIDA OU NÃO CADASTRADA NO INTERCÂMBIO DA COBRANÇA
+						})
+				when '26'
+					super.merge(
+						#  Padrão    Código para  
+						{# do Banco    a GEM
+							'09'   =>   'A53',  # CNPJ/CPF DO SACADOR/AVALISTA INVÁLIDO
+							'15'   =>   'A54',  # CNPJ/CPF INFORMADO SEM NOME DO SACADOR/AVALISTA
+							'19'   =>   'A34',  # VALOR DO ABATIMENTO MAIOR QUE 90% DO VALOR DO TÍTULO
+							'20'   =>   'A41',  # EXISTE SUSTACAO DE PROTESTO PENDENTE PARA O TITULO
+							'22'   =>   'A106', # TÍTULO BAIXADO OU LIQUIDADO
+							'50'   =>   'A24',  # DATA DE EMISSÃO DO TÍTULO INVÁLIDA
+						})
+				when '30'
+					super.merge(
+						#  Padrão    Código para  
+						{# do Banco    a GEM
+							'11'   =>   'A48',  # CEP INVÁLIDO
+							'12'   =>   'A53',  # NÚMERO INSCRIÇÃO INVÁLIDO DO SACADOR AVALISTA
+							'13'   =>   'A86',  # SEU NÚMERO COM O MESMO CONTEÚDO
+							'67'   =>   'A54',  # NOME INVÁLIDO DO SACADOR AVALISTA
+							'72'   =>   'A54',  # ENDEREÇO INVÁLIDO – SACADOR AVALISTA
+							'73'   =>   'A54',  # BAIRRO INVÁLIDO – SACADOR AVALISTA
+							'74'   =>   'A54',  # CIDADE INVÁLIDA – SACADOR AVALISTA
+							'75'   =>   'A54',  # SIGLA ESTADO INVÁLIDO – SACADOR AVALISTA
+							'76'   =>   'A54',  # CEP INVÁLIDO – SACADOR AVALISTA
+						})
+				end
+			end
+
+			def equivalent_codigo_motivo_ocorrencia_C codigo_movimento_gem
+				super.merge(
+					#  Padrão    Código para  
+					{# do Banco    a GEM
+						'AA'   =>   'C32',   # CAIXA ELETRÔNICO ITAÚ
+						'AC'   =>   'C08',   # PAGAMENTO EM CARTÓRIO AUTOMATIZADO
+						'BC'   =>   'C31',   # BANCOS CORRESPONDENTES
+						'BF'   =>   'C37',   # ITAÚ BANKFONE
+						'BL'   =>   'C33',   # ITAÚ BANKLINE
+						'CC'   =>   'C36',   # AGÊNCIA ITAÚ – COM CHEQUE DE OUTRO BANCO ou (CHEQUE ITAÚ)
+						'EA'   =>   'C03',   # TERMINAL DE CAIXA
+				})
+			end
 		end
 	end
 end

@@ -206,4 +206,10 @@ describe BrBoleto::Conta::BancoBrasil do
 		end
 	end
 
+	describe "#get_codigo_motivo_ocorrencia" do
+		context "CÓDIGOS motivo ocorrencia do Banco do Brasil" do
+			it { subject.get_codigo_motivo_ocorrencia('52', '02').must_equal 'A104' } # Registro Rejeitado – Título já Liquidado
+		end
+	end
+
 end

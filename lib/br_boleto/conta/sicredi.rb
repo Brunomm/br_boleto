@@ -166,6 +166,26 @@ module BrBoleto
 					'7' => '7', # Cancelamento de Desconto
 				}
 			end
+
+			# Código de Movimento Retorno 
+			def equivalent_codigo_movimento_retorno
+				super.merge(
+					#  Padrão    Código para  
+					{# do Banco    a GEM
+						'36'   =>   '100',      # Baixa rejeitada
+					})
+			end
+
+			# Código do Motivo da ocorrência :
+			def codigos_movimento_retorno_para_ocorrencia_D 
+				%w[27]
+			end
+			def equivalent_codigo_motivo_ocorrencia_D codigo_movimento_gem
+				#  Código     Padrão para  
+				{# do Banco     a Gem
+					'01'    =>   'D01',   # Alteração de carteira
+				}
+			end
 		end
 	end
 end

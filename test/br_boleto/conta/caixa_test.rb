@@ -151,5 +151,85 @@ describe BrBoleto::Conta::Caixa do
 		end
 	end
 
-	
+	describe "#get_codigo_movimento_retorno" do
+		context "CÓDIGOS para o Caixa" do
+			it { subject.get_codigo_movimento_retorno('01').must_equal '01' }  # Solicitação de Impressão de Títulos Confirmada
+			it { subject.get_codigo_movimento_retorno('35').must_equal '135' } # Confirmação de Inclusão Banco de Sacado
+			it { subject.get_codigo_movimento_retorno('36').must_equal '136' } # Confirmação de Alteração Banco de Sacado
+			it { subject.get_codigo_movimento_retorno('37').must_equal '137' } # Confirmação de Exclusão Banco de Sacado
+			it { subject.get_codigo_movimento_retorno('38').must_equal '138' } # Emissão de Bloquetos de Banco de Sacado
+			it { subject.get_codigo_movimento_retorno('39').must_equal '139' } # Manutenção de Sacado Rejeitada
+			it { subject.get_codigo_movimento_retorno('40').must_equal '140' } # Entrada de Título via Banco de Sacado Rejeitada
+			it { subject.get_codigo_movimento_retorno('41').must_equal '141' } # Manutenção de Banco de Sacado Rejeitada
+			it { subject.get_codigo_movimento_retorno('44').must_equal '144' } # Estorno de Baixa / Liquidação
+			it { subject.get_codigo_movimento_retorno('45').must_equal '145' } # Alteração de Dados
+		end
+	end
+
+	describe "#get_codigo_motivo_ocorrencia" do
+		context "CÓDIGOS para oa Caixa com Motivo Ocorrência A" do
+			it { subject.get_codigo_motivo_ocorrencia('11', '02').must_equal 'A115' } # Data de Geração Inválida 
+			it { subject.get_codigo_motivo_ocorrencia('64', '03').must_equal 'A116' } # Entrada Inválida para Cobrança Caucionada
+			it { subject.get_codigo_motivo_ocorrencia('65', '26').must_equal 'A117' } # CEP do Pagador não encontrado
+			it { subject.get_codigo_motivo_ocorrencia('66', '30').must_equal 'A118' } # Agencia Cobradora não encontrada
+			it { subject.get_codigo_motivo_ocorrencia('67', '02').must_equal 'A119' } # Agencia Beneficiário não encontrada
+			it { subject.get_codigo_motivo_ocorrencia('68', '03').must_equal 'A120' } # Movimentação inválida para título
+			it { subject.get_codigo_motivo_ocorrencia('69', '26').must_equal 'A121' } # Alteração de dados inválida
+			it { subject.get_codigo_motivo_ocorrencia('70', '02').must_equal 'A122' } # Apelido do cliente não cadastrado
+			it { subject.get_codigo_motivo_ocorrencia('71', '03').must_equal 'A123' } # Erro na composição do arquivo
+			it { subject.get_codigo_motivo_ocorrencia('72', '26').must_equal 'A124' } # Lote de serviço inválido
+			it { subject.get_codigo_motivo_ocorrencia('73', '30').must_equal 'A125' } # Código do Beneficiário inválido
+			it { subject.get_codigo_motivo_ocorrencia('74', '02').must_equal 'A126' } # Beneficiário não pertencente a Cobrança Eletrônica
+			it { subject.get_codigo_motivo_ocorrencia('75', '03').must_equal 'A127' } # Nome da Empresa inválido
+			it { subject.get_codigo_motivo_ocorrencia('76', '26').must_equal 'A128' } # Nome do Banco inválido
+			it { subject.get_codigo_motivo_ocorrencia('77', '30').must_equal 'A129' } # Código da Remessa inválido
+			it { subject.get_codigo_motivo_ocorrencia('78', '02').must_equal 'A130' } # Data/Hora Geração do arquivo inválida
+			it { subject.get_codigo_motivo_ocorrencia('79', '03').must_equal 'A131' } # Número Sequencial do arquivo inválido
+			it { subject.get_codigo_motivo_ocorrencia('80', '26').must_equal 'A132' } # Versão do Lay out do arquivo inválido
+			it { subject.get_codigo_motivo_ocorrencia('81', '30').must_equal 'A133' } # Literal REMESSA-TESTE - Válido só p/ fase testes
+			it { subject.get_codigo_motivo_ocorrencia('82', '02').must_equal 'A134' } # Literal REMESSA-TESTE - Obrigatório p/ fase testes
+			it { subject.get_codigo_motivo_ocorrencia('83', '03').must_equal 'A135' } # Tp Número Inscrição Empresa inválido
+			it { subject.get_codigo_motivo_ocorrencia('84', '26').must_equal 'A136' } # Tipo de Operação inválido
+			it { subject.get_codigo_motivo_ocorrencia('85', '02').must_equal 'A137' } # Tipo de serviço inválido
+			it { subject.get_codigo_motivo_ocorrencia('86', '03').must_equal 'A138' } # Forma de lançamento inválido
+			it { subject.get_codigo_motivo_ocorrencia('87', '26').must_equal 'A139' } # Número da remessa inválido
+			it { subject.get_codigo_motivo_ocorrencia('88', '30').must_equal 'A140' } # Número da remessa menor/igual remessa anterior
+			it { subject.get_codigo_motivo_ocorrencia('89', '02').must_equal 'A141' } # Lote de serviço divergente
+			it { subject.get_codigo_motivo_ocorrencia('90', '03').must_equal 'A142' } # Número sequencial do registro inválido
+			it { subject.get_codigo_motivo_ocorrencia('91', '26').must_equal 'A143' } # Erro seq de segmento do registro detalhe
+			it { subject.get_codigo_motivo_ocorrencia('92', '30').must_equal 'A144' } # Cod movto divergente entre grupo de segm
+			it { subject.get_codigo_motivo_ocorrencia('93', '02').must_equal 'A145' } # Qtde registros no lote inválido
+			it { subject.get_codigo_motivo_ocorrencia('94', '03').must_equal 'A146' } # Qtde registros no lote divergente
+			it { subject.get_codigo_motivo_ocorrencia('95', '26').must_equal 'A147' } # Qtde lotes no arquivo inválido
+			it { subject.get_codigo_motivo_ocorrencia('96', '30').must_equal 'A148' } # Qtde lotes no arquivo divergente
+			it { subject.get_codigo_motivo_ocorrencia('97', '02').must_equal 'A149' } # Qtde registros no arquivo inválido
+			it { subject.get_codigo_motivo_ocorrencia('98', '03').must_equal 'A150' } # Qtde registros no arquivo divergente
+			it { subject.get_codigo_motivo_ocorrencia('99', '26').must_equal 'A151' } # Código de DDD inválido
+		end
+
+		context "CÓDIGOS para oa Caixa com Motivo Ocorrência B" do
+			it { subject.get_codigo_motivo_ocorrencia('12', '28').must_equal 'B21' }   # Redisponibilização de Arquivo Retorno Eletrônico
+			it { subject.get_codigo_motivo_ocorrencia('15', '28').must_equal 'B22' }   # Banco de Pagadores
+			it { subject.get_codigo_motivo_ocorrencia('17', '28').must_equal 'B23' }   # Entrega Aviso Disp Boleto via e-amail ao pagador (s/ emissão Boleto)
+			it { subject.get_codigo_motivo_ocorrencia('18', '28').must_equal 'B24' }   # Emissão de Boleto Pré-impresso CAIXA matricial
+			it { subject.get_codigo_motivo_ocorrencia('19', '28').must_equal 'B25' }   # Emissão de Boleto Pré-impresso CAIXA A4
+			it { subject.get_codigo_motivo_ocorrencia('20', '28').must_equal 'B26' }   # Emissão de Boleto Padrão CAIXA
+			it { subject.get_codigo_motivo_ocorrencia('21', '28').must_equal 'B27' }   # Emissão de Boleto/Carnê
+			it { subject.get_codigo_motivo_ocorrencia('31', '28').must_equal 'B28' }   # Emissão de Aviso de Vencido
+			it { subject.get_codigo_motivo_ocorrencia('42', '28').must_equal 'B29' }   # Alteração cadastral de dados do título - sem emissão de aviso
+			it { subject.get_codigo_motivo_ocorrencia('45', '28').must_equal 'B30' }   # Emissão de 2a via de Boleto Cobrança Registrada
+		end
+
+		context "CÓDIGOS para oa Caixa com Motivo Ocorrência C" do
+			it { subject.get_codigo_motivo_ocorrencia('02', '06').must_equal 'C100' }   # Casa Lotérica
+			it { subject.get_codigo_motivo_ocorrencia('03', '09').must_equal 'C101' }   # Agências CAIXA
+			it { subject.get_codigo_motivo_ocorrencia('07', '17').must_equal 'C102' }   # Correspondente Bancário
+		end
+
+		context "CÓDIGOS para oa Caixa com Motivo Ocorrência D" do
+			it { subject.get_codigo_motivo_ocorrencia('01', '08').must_equal 'D07' }   # Liquidação em Dinheiro
+			it { subject.get_codigo_motivo_ocorrencia('02', '08').must_equal 'D08' }   # Liquidação em Cheque
+		end
+	end
+
 end

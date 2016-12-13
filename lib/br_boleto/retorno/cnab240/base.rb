@@ -25,7 +25,7 @@ module BrBoleto
 				# Segmentos T e U do arquivo de retorno
 				#
 				def instnce_payment(lines) #:doc:
-					payment = BrBoleto::Retorno::Pagamento.new
+					payment = BrBoleto::Retorno::Pagamento.new(conta_class: conta_pagamento_class)
 					lines.each do |line|
 						self.codigo_banco ||= line[0..2]
 						if line[13] == 'T'
@@ -72,7 +72,11 @@ module BrBoleto
 						sacado_nome:                  149..188,
 						numero_contrato:              189..198,
 						valor_tarifa:                 199..213,
-						motivo_ocorrencia:            214..223
+						motivo_ocorrencia_original_1: 214..215,
+						motivo_ocorrencia_original_2: 216..217,
+						motivo_ocorrencia_original_3: 218..219,
+						motivo_ocorrencia_original_4: 220..221,
+						motivo_ocorrencia_original_5: 222..223,
 					}
 				end
 
