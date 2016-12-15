@@ -1198,6 +1198,129 @@ module BrBoleto
 				def equivalent_codigo_motivo_ocorrencia_D codigo_movimento_gem
 					 # Exclusivo por banco
 				end
+
+			########################################################################################	
+			########################## CÓDIGO DE OCORRÊNCIA DO PAGADOR #############################
+				# Código de Ocorrência do Pagador :
+				# Códigos padrões da GEM
+					# 0101 = Pagador/Sacado alega que não recebeu a mercadoria 
+					# 0102 = Pagador/Sacado alega que a mercadoria chegou atrasada 
+					# 0103 = Pagador/Sacado alega que a mercadoria chegou avariada 
+					# 0104 = Pagador/Sacado alega que a mercadoria não confere com o pedido 
+					# 0105 = Pagador/Sacado alega que a mercadoria chegou incompleta 
+					# 0106 = Pagador/Sacado alega que a mercadoria está à disposição do cedente 
+					# 0107 = Pagador/Sacado alega que devolveu a mercadoria 
+					# 0108 = Pagador/Sacado alega que a mercadoria está em desacordo com a Nota Fiscal    
+					# 0109 = Pagador/Sacado alega que nada deve ou comprou
+					# 0201 = Pagador/Sacado alega que não recebeu a fatura 
+					# 0202 = Pagador/Sacado alega que o pedido de compra foi cancelado 
+					# 0203 = Pagador/Sacado alega que a duplicata foi cancelada 
+					# 0204 = Pagador/Sacado alega não ter recebido a mercadoria, nota fiscal, fatura 
+					# 0205 = Pagador/Sacado alega que a duplicata/fatura está incorreta 
+					# 0206 = Pagador/Sacado alega que o valor está incorreto 
+					# 0207 = Pagador/Sacado alega que o faturamento é indevido 
+					# 0208 = Pagador/Sacado alega que não localizou o pedido de compra 
+					# 0301 = Pagador/Sacado alega que o vencimento correto é: 
+					# 0302 = Pagador/Sacado solicita a prorrogação do vencimento para: 
+					# 0303 = Pagador/Sacado aceita se o vencimento prorrogado para: 
+					# 0304 = Pagador/Sacado alega que pagará o título em: 
+					# 0305 = Pagador/Sacado pagou o título diretamente ao cedente em: 
+					# 0306 = Pagador/Sacado pagará o título diretamente ao cedente em: 
+					# 0401 = Pagador/Sacado não foi localizado, confirmar endereço 
+					# 0402 = Pagador/Sacado mudou-se, transferiu de domicílio 
+					# 0403 = Pagador/Sacado não recebe no endereço indicado 
+					# 0404 = Pagador/Sacado desconhecido no local 
+					# 0405 = Pagador/Sacado reside fora do perímetro 
+					# 0406 = Pagador/Sacado com endereço incompleto 
+					# 0407 = Não foi localizado o número constante no endereço do título 
+					# 0408 = Endereço não localizado/não consta nos guias da cidade 
+					# 0409 = Endereço do Pagador/Sacado alterado para: 
+					# 0501 = Pagador/Sacado alega que tem desconto ou abatimento de: 
+					# 0502 = pagador/Sacado solicita desconto ou abatimento de:
+					# 0503 = Pagador/Sacado solicita dispensa dos juros de mora 
+					# 0504 = Pagador/Sacado se recusa a pagar juros 
+					# 0505 = Pagador/Sacado se recusa a pagar comissão de permanência 
+					# 0601 = Pagador/Sacado está em regime de concordata 
+					# 0602 = Pagador/Sacado está em regime de falência 
+					# 0603 = Pagador/Sacado alega que mantém entendimentos com Pagador/Sacado
+					# 0604 = Pagador/Sacado está em entendimentos com o cedente 
+					# 0605 = Pagador/Sacado está viajando 
+					# 0606 = Pagador/Sacado recusou-se a aceitar o título 
+					# 0607 = Pagador/Sacado sustou protesto judicialmente 
+					# 0608 = Empregado recusou-se a receber título 
+					# 0609 = Título reapresentado ao Pagador/Sacado 
+					# 0610 = Estamos nos dirigindo ao nosso correspondente 
+					# 0611 = Correspondente não se interessa pelo protesto 
+					# 0612 = Pagador/Sacado não atende aos avisos de nossos correspondentes 
+					# 0613 = Título está sendo encaminhado ao correspondente 
+					# 0614 = Entrega franco de pagamento ao Pagador/Sacado 
+					# 0615 = Entrega franco de pagamento ao representante 
+					# 0616 = A entrega franco de pagamento é difícil 
+					# 0617 = Título recusado pelo cartório 
+					#
+				def get_codigo_ocorrencia_pagador(code)
+					equivalent_codigo_ocorrencia_pagador[code] || code
+				end
+				# Código adotado pela FEBRABAN para identificar o tipo de prazo a ser considerado para o protesto.
+				# O código '9' só sera aceito para código de movimento para remessa '31'
+				def equivalent_codigo_ocorrencia_pagador
+					{
+						'0101' => '0101', # Pagador alega que não recebeu a mercadoria 
+						'0102' => '0102', # Pagador alega que a mercadoria chegou atrasada 
+						'0103' => '0103', # Pagador alega que a mercadoria chegou avariada 
+						'0104' => '0104', # Pagador alega que a mercadoria não confere com o pedido 
+						'0105' => '0105', # Pagador alega que a mercadoria chegou incompleta 
+						'0106' => '0106', # Pagador alega que a mercadoria está à disposição do cedente 
+						'0107' => '0107', # Pagador alega que devolveu a mercadoria 
+						'0108' => '0108', # Pagador alega que a mercadoria está em desacordo com a Nota Fiscal    
+						'0109' => '0109', # Pagador alega que nada deve ou comprou
+						'0201' => '0201', # Pagador alega que não recebeu a fatura 
+						'0202' => '0202', # Pagador alega que o pedido de compra foi cancelado 
+						'0203' => '0203', # Pagador alega que a duplicata foi cancelada 
+						'0204' => '0204', # Pagador alega não ter recebido a mercadoria, nota fiscal, fatura 
+						'0205' => '0205', # Pagador alega que a duplicata/fatura está incorreta 
+						'0206' => '0206', # Pagador alega que o valor está incorreto 
+						'0207' => '0207', # Pagador alega que o faturamento é indevido 
+						'0208' => '0208', # Pagador alega que não localizou o pedido de compra 
+						'0301' => '0301', # Pagador alega que o vencimento correto é: 
+						'0302' => '0302', # Pagador solicita a prorrogação do vencimento para: 
+						'0303' => '0303', # Pagador aceita se o vencimento prorrogado para: 
+						'0304' => '0304', # Pagador alega que pagará o título em: 
+						'0305' => '0305', # Pagador pagou o título diretamente ao cedente em: 
+						'0306' => '0306', # Pagador pagará o título diretamente ao cedente em: 
+						'0401' => '0401', # Pagador não foi localizado, confirmar endereço 
+						'0402' => '0402', # Pagador mudou-se, transferiu de domicílio 
+						'0403' => '0403', # Pagador não recebe no endereço indicado 
+						'0404' => '0404', # Pagador desconhecido no local 
+						'0405' => '0405', # Pagador reside fora do perímetro 
+						'0406' => '0406', # Pagador com endereço incompleto 
+						'0407' => '0407', # Não foi localizado o número constante no endereço do título 
+						'0408' => '0408', # Endereço não localizado/não consta nos guias da cidade 
+						'0409' => '0409', # Endereço do Pagador alterado para: 
+						'0501' => '0501', # Pagador alega que tem desconto ou abatimento de: 
+						'0502' => '0502', # Pagador solicita desconto ou abatimento de:
+						'0503' => '0503', # Pagador solicita dispensa dos juros de mora 
+						'0504' => '0504', # Pagador se recusa a pagar juros 
+						'0505' => '0505', # Pagador se recusa a pagar comissão de permanência 
+						'0601' => '0601', # Pagador está em regime de concordata 
+						'0602' => '0602', # Pagador está em regime de falência 
+						'0603' => '0603', # Pagador alega que mantém entendimentos com Pagadorr 
+						'0604' => '0604', # Pagador está em entendimentos com o cedente 
+						'0605' => '0605', # Pagador está viajando 
+						'0606' => '0606', # Pagador recusou-se a aceitar o título 
+						'0607' => '0607', # Pagador sustou protesto judicialmente 
+						'0608' => '0608', # Empregado recusou-se a receber título 
+						'0609' => '0609', # Título reapresentado ao Pagador 
+						'0610' => '0610', # Estamos nos dirigindo ao nosso correspondente 
+						'0611' => '0611', # Correspondente não se interessa pelo protesto 
+						'0612' => '0612', # Pagador não atende aos avisos de nossos correspondentes 
+						'0613' => '0613', # Título está sendo encaminhado ao correspondente 
+						'0614' => '0614', # Entrega franco de pagamento ao Pagador 
+						'0615' => '0615', # Entrega franco de pagamento ao representante 
+						'0616' => '0616', # A entrega franco de pagamento é difícil 
+						'0617' => '0617', # Título recusado pelo cartório 
+					}
+				end
 		end
 	end
 end

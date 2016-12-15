@@ -304,4 +304,40 @@ describe BrBoleto::Conta::Itau do
 			it { subject.get_codigo_motivo_ocorrencia('EA', '06').must_equal 'C03' }   # TERMINAL DE CAIXA
 		end
 	end
+
+	describe "#get_codigo_ocorrencia_pagador" do
+		context "CÓDIGOS para oa Caixa com Motivo Ocorrência A com codigo de movimento 03" do
+			it { subject.get_codigo_ocorrencia_pagador('1313').must_equal '0302' } # SOLICITA A PRORROGAÇÃO DO VENCIMENTO PARA:
+			it { subject.get_codigo_ocorrencia_pagador('1321').must_equal '0503' } # SOLICITA A DISPENSA DOS JUROS DE MORA
+			it { subject.get_codigo_ocorrencia_pagador('1339').must_equal '0101' } # NÃO RECEBEU A MERCADORIA
+			it { subject.get_codigo_ocorrencia_pagador('1347').must_equal '0102' } # A MERCADORIA CHEGOU ATRASADA
+			it { subject.get_codigo_ocorrencia_pagador('1354').must_equal '0103' } # A MERCADORIA CHEGOU AVARIADA
+			it { subject.get_codigo_ocorrencia_pagador('1362').must_equal '0105' } # A MERCADORIA CHEGOU INCOMPLETA
+			it { subject.get_codigo_ocorrencia_pagador('1370').must_equal '0104' } # A MERCADORIA NÃO CONFERE COM O PEDIDO
+			it { subject.get_codigo_ocorrencia_pagador('1388').must_equal '0106' } # A MERCADORIA ESTÁ À DISPOSIÇÃO
+			it { subject.get_codigo_ocorrencia_pagador('1396').must_equal '0107' } # DEVOLVEU A MERCADORIA
+			it { subject.get_codigo_ocorrencia_pagador('1404').must_equal '0201' } # NÃO RECEBEU A FATURA
+			it { subject.get_codigo_ocorrencia_pagador('1412').must_equal '0108' } # A FATURA ESTÁ EM DESACORDO COM A NOTA FISCAL
+			it { subject.get_codigo_ocorrencia_pagador('1420').must_equal '0202' } # O PEDIDO DE COMPRA FOI CANCELADO
+			it { subject.get_codigo_ocorrencia_pagador('1438').must_equal '0203' } # A DUPLICATA FOI CANCELADA
+			it { subject.get_codigo_ocorrencia_pagador('1446').must_equal '0109' } # QUE NADA DEVE OU COMPROU
+			it { subject.get_codigo_ocorrencia_pagador('1453').must_equal '0603' } # QUE MANTÉM ENTENDIMENTOS COM O SACADOR
+			it { subject.get_codigo_ocorrencia_pagador('1461').must_equal '0304' } # QUE PAGARÁ O TÍTULO EM:
+			it { subject.get_codigo_ocorrencia_pagador('1479').must_equal '0305' } # QUE PAGOU O TÍTULO DIRETAMENTE AO BENEFICIÁRIO EM:
+			it { subject.get_codigo_ocorrencia_pagador('1487').must_equal '0306' } # QUE PAGARÁ O TÍTULO DIRETAMENTE AO BENEFICIÁRIO EM:
+			it { subject.get_codigo_ocorrencia_pagador('1495').must_equal '0301' } # QUE O VENCIMENTO CORRETO É:
+			it { subject.get_codigo_ocorrencia_pagador('1503').must_equal '0501' } # QUE TEM DESCONTO OU ABATIMENTO DE:
+			it { subject.get_codigo_ocorrencia_pagador('1719').must_equal '0401' } # PAGADOR NÃO FOI LOCALIZADO; CONFIRMAR ENDEREÇO
+			it { subject.get_codigo_ocorrencia_pagador('1727').must_equal '0601' } # PAGADOR ESTÁ EM REGIME DE CONCORDATA
+			it { subject.get_codigo_ocorrencia_pagador('1735').must_equal '0602' } # PAGADOR ESTÁ EM REGIME DE FALÊNCIA
+			it { subject.get_codigo_ocorrencia_pagador('1750').must_equal '0504' } # PAGADOR SE RECUSA A PAGAR JUROS BANCÁRIOS
+			it { subject.get_codigo_ocorrencia_pagador('1768').must_equal '0505' } # PAGADOR SE RECUSA A PAGAR COMISSÃO DE PERMANÊNCIA
+			it { subject.get_codigo_ocorrencia_pagador('1776').must_equal '1776' } # NÃO FOI POSSÍVEL A ENTREGA DO BOLETO AO PAGADOR
+			it { subject.get_codigo_ocorrencia_pagador('1784').must_equal '1784' } # BOLETO NÃO ENTREGUE, MUDOU-SE/DESCONHECIDO
+			it { subject.get_codigo_ocorrencia_pagador('1792').must_equal '1792' } # BOLETO NÃO ENTREGUE, CEP ERRADO/INCOMPLETO
+			it { subject.get_codigo_ocorrencia_pagador('1800').must_equal '1800' } # BOLETO NÃO ENTREGUE, NÚMERO NÃO EXISTE/ENDEREÇO INCOMPLETO
+			it { subject.get_codigo_ocorrencia_pagador('1834').must_equal '1834' } # BOLETO DDA, DIVIDA RECONHECIDA PELO PAGADOR
+			it { subject.get_codigo_ocorrencia_pagador('1842').must_equal '1842' } # BOLETO DDA, DIVIDA NÃO RECONHECIDA PELO PAGADOR
+		end
+	end
 end

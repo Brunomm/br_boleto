@@ -319,7 +319,6 @@ module BrBoleto
 						})
 				end
 			end
-
 			def equivalent_codigo_motivo_ocorrencia_C codigo_movimento_gem
 				super.merge(
 					#  Padrão    Código para  
@@ -331,6 +330,45 @@ module BrBoleto
 						'BL'   =>   'C33',   # ITAÚ BANKLINE
 						'CC'   =>   'C36',   # AGÊNCIA ITAÚ – COM CHEQUE DE OUTRO BANCO ou (CHEQUE ITAÚ)
 						'EA'   =>   'C03',   # TERMINAL DE CAIXA
+				})
+			end
+
+			def equivalent_codigo_ocorrencia_pagador
+				super.merge(
+					#  Padrão    Código para  
+					{# do Banco    a GEM
+						'1313' => '0302',  # SOLICITA A PRORROGAÇÃO DO VENCIMENTO PARA:
+						'1321' => '0503',  # SOLICITA A DISPENSA DOS JUROS DE MORA
+						'1339' => '0101',  # NÃO RECEBEU A MERCADORIA
+						'1347' => '0102',  # A MERCADORIA CHEGOU ATRASADA
+						'1354' => '0103',  # A MERCADORIA CHEGOU AVARIADA
+						'1362' => '0105',  # A MERCADORIA CHEGOU INCOMPLETA
+						'1370' => '0104',  # A MERCADORIA NÃO CONFERE COM O PEDIDO
+						'1388' => '0106',  # A MERCADORIA ESTÁ À DISPOSIÇÃO
+						'1396' => '0107',  # DEVOLVEU A MERCADORIA
+						'1404' => '0201',  # NÃO RECEBEU A FATURA
+						'1412' => '0108',  # A FATURA ESTÁ EM DESACORDO COM A NOTA FISCAL
+						'1420' => '0202',  # O PEDIDO DE COMPRA FOI CANCELADO
+						'1438' => '0203',  # A DUPLICATA FOI CANCELADA
+						'1446' => '0109',  # QUE NADA DEVE OU COMPROU
+						'1453' => '0603',  # QUE MANTÉM ENTENDIMENTOS COM O SACADOR
+						'1461' => '0304',  # QUE PAGARÁ O TÍTULO EM:
+						'1479' => '0305',  # QUE PAGOU O TÍTULO DIRETAMENTE AO BENEFICIÁRIO EM:
+						'1487' => '0306',  # QUE PAGARÁ O TÍTULO DIRETAMENTE AO BENEFICIÁRIO EM:
+						'1495' => '0301',  # QUE O VENCIMENTO CORRETO É:
+						'1503' => '0501',  # QUE TEM DESCONTO OU ABATIMENTO DE:
+						'1719' => '0401',  # PAGADOR NÃO FOI LOCALIZADO; CONFIRMAR ENDEREÇO
+						'1727' => '0601',  # PAGADOR ESTÁ EM REGIME DE CONCORDATA
+						'1735' => '0602',  # PAGADOR ESTÁ EM REGIME DE FALÊNCIA
+						'1750' => '0504',  # PAGADOR SE RECUSA A PAGAR JUROS BANCÁRIOS
+						'1768' => '0505',  # PAGADOR SE RECUSA A PAGAR COMISSÃO DE PERMANÊNCIA
+
+						'1776' => '1776',  # NÃO FOI POSSÍVEL A ENTREGA DO BOLETO AO PAGADOR
+						'1784' => '1784',  # BOLETO NÃO ENTREGUE, MUDOU-SE/DESCONHECIDO
+						'1792' => '1792',  # BOLETO NÃO ENTREGUE, CEP ERRADO/INCOMPLETO
+						'1800' => '1800',  # BOLETO NÃO ENTREGUE, NÚMERO NÃO EXISTE/ENDEREÇO INCOMPLETO
+						'1834' => '1834',  # BOLETO DDA, DIVIDA RECONHECIDA PELO PAGADOR
+						'1842' => '1842',  # BOLETO DDA, DIVIDA NÃO RECONHECIDA PELO PAGADOR
 				})
 			end
 		end
