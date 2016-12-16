@@ -18,6 +18,7 @@ module BrBoleto
 						tipo_cobranca:                 81..81,
 						variacao_carteira:             92..94,
 						carteira:                      107..108,
+						codigo_ocorrencia_retorno:     109..110,
 						data_ocorrencia:               111..116,
 						data_ocorrencia_sacado:        111..116,
 						numero_documento:              117..126,

@@ -179,7 +179,7 @@ describe BrBoleto::Conta::Sicredi do
 
 	describe "#get_codigo_movimento_retorno" do
 		context "CÓDIGOS para o Sicredi" do
-			it { subject.get_codigo_movimento_retorno('36').must_equal '100' }  # Baixa Rejeitada
+			it { subject.get_codigo_movimento_retorno('36', 240).must_equal '100' }  # Baixa Rejeitada
 		end
 	end
 
@@ -189,4 +189,15 @@ describe BrBoleto::Conta::Sicredi do
 		end
 	end
 
+	describe "#get_codigo_movimento_retorno" do
+		context "CÓDIGOS para o cnab 400 do Sicredi" do
+			it { subject.get_codigo_movimento_retorno('15', 400).must_equal '101' } # Liquidação em cartório
+			it { subject.get_codigo_movimento_retorno('24', 400).must_equal '106' } # Entrada rejeitada por CEP irregular
+			it { subject.get_codigo_movimento_retorno('27', 400).must_equal '100' } # Baixa rejeitada
+			it { subject.get_codigo_movimento_retorno('32', 400).must_equal '26' }  # Instrução rejeitada
+			it { subject.get_codigo_movimento_retorno('33', 400).must_equal '27' }  # Confirmação de pedido de alteração de outros dados
+			it { subject.get_codigo_movimento_retorno('34', 400).must_equal '24' }  # Retirado de cartório e manutenção em carteira
+			it { subject.get_codigo_movimento_retorno('35', 400).must_equal '105' } # Aceite do pagador
+		end
+	end
 end

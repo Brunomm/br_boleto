@@ -190,65 +190,65 @@ describe BrBoleto::Conta::Itau do
 
 	describe "#get_codigo_movimento_retorno" do
 		context "CÓDIGOS para o Itau" do
-			it { subject.get_codigo_movimento_retorno('08').must_equal '208' }   # LIQUIDAÇÃO EM CARTÓRIO 
-			it { subject.get_codigo_movimento_retorno('10').must_equal '210' }   # BAIXA POR TER SIDO LIQUIDADO 
-			it { subject.get_codigo_movimento_retorno('15').must_equal '99' }    # BAIXAS REJEITADAS 
-			it { subject.get_codigo_movimento_retorno('16').must_equal '26' }    # INSTRUÇÕES REJEITADAS 
-			it { subject.get_codigo_movimento_retorno('17').must_equal '30' }   # ALTERAÇÃO/EXCLUSÃO DE DADOS REJEITADA  
-			it { subject.get_codigo_movimento_retorno('18').must_equal '218' }   # COBRANÇA CONTRATUAL – INSTRUÇÕES/ALTERAÇÕES REJEITADAS/PENDENTES 
-			it { subject.get_codigo_movimento_retorno('21').must_equal '221' }   # CONFIRMAÇÃO RECEBIMENTO DE INSTRUÇÃO DE NÃO PROTESTAR 
-			it { subject.get_codigo_movimento_retorno('25').must_equal '225' }   # ALEGAÇÕES DO PAGADOR 
-			it { subject.get_codigo_movimento_retorno('26').must_equal '226' }   # TARIFA DE AVISO DE COBRANÇA 
-			it { subject.get_codigo_movimento_retorno('27').must_equal '227' }   # TARIFA DE EXTRATO POSIÇÃO (B40X) 
-			it { subject.get_codigo_movimento_retorno('28').must_equal '228' }   # TARIFA DE RELAÇÃO DAS LIQUIDAÇÕES 
-			it { subject.get_codigo_movimento_retorno('29').must_equal '229' }   # TARIFA DE MANUTENÇÃO DE TÍTULOS VENCIDOS 
-			it { subject.get_codigo_movimento_retorno('30').must_equal '28' }    # DÉBITO MENSAL DE TARIFAS (PARA ENTRADAS E BAIXAS) 
-			it { subject.get_codigo_movimento_retorno('32').must_equal '25' }    # BAIXA POR TER SIDO PROTESTADO 
-			it { subject.get_codigo_movimento_retorno('33').must_equal '233' }   # CUSTAS DE PROTESTO 
-			it { subject.get_codigo_movimento_retorno('34').must_equal '234' }   # CUSTAS DE SUSTAÇÃO 
-			it { subject.get_codigo_movimento_retorno('35').must_equal '235' }   # CUSTAS DE CARTÓRIO DISTRIBUIDOR 
-			it { subject.get_codigo_movimento_retorno('36').must_equal '236' }   # CUSTAS DE EDITAL 
-			it { subject.get_codigo_movimento_retorno('37').must_equal '237' }   # TARIFA DE EMISSÃO DE BOLETO/TARIFA DE ENVIO DE DUPLICATA 
-			it { subject.get_codigo_movimento_retorno('38').must_equal '238' }   # TARIFA DE INSTRUÇÃO 
-			it { subject.get_codigo_movimento_retorno('39').must_equal '239' }   # TARIFA DE OCORRÊNCIAS 
-			it { subject.get_codigo_movimento_retorno('40').must_equal '240' }   # TARIFA MENSAL DE EMISSÃO DE BOLETO/TARIFA MENSAL DE ENVIO DE DUPLICATA 
-			it { subject.get_codigo_movimento_retorno('41').must_equal '241' }   # DÉBITO MENSAL DE TARIFAS – EXTRATO DE POSIÇÃO (B4EP/B4OX) 
-			it { subject.get_codigo_movimento_retorno('42').must_equal '242' }   # DÉBITO MENSAL DE TARIFAS – OUTRAS INSTRUÇÕES 
-			it { subject.get_codigo_movimento_retorno('43').must_equal '243' }   # DÉBITO MENSAL DE TARIFAS – MANUTENÇÃO DE TÍTULOS VENCIDOS 
-			it { subject.get_codigo_movimento_retorno('44').must_equal '244' }   # DÉBITO MENSAL DE TARIFAS – OUTRAS OCORRÊNCIAS 
-			it { subject.get_codigo_movimento_retorno('45').must_equal '245' }   # DÉBITO MENSAL DE TARIFAS – PROTESTO 
-			it { subject.get_codigo_movimento_retorno('46').must_equal '246' }   # DÉBITO MENSAL DE TARIFAS – SUSTAÇÃO DE PROTESTO 
-			it { subject.get_codigo_movimento_retorno('47').must_equal '247' }   # BAIXA COM TRANSFERÊNCIA PARA DESCONTO 
-			it { subject.get_codigo_movimento_retorno('48').must_equal '248' }   # CUSTAS DE SUSTAÇÃO JUDICIAL 
-			it { subject.get_codigo_movimento_retorno('51').must_equal '251' }   # TARIFA MENSAL REFERENTE A ENTRADAS BANCOS CORRESPONDENTES NA CARTEIRA 
-			it { subject.get_codigo_movimento_retorno('52').must_equal '252' }   # TARIFA MENSAL BAIXAS NA CARTEIRA 
-			it { subject.get_codigo_movimento_retorno('53').must_equal '253' }   # TARIFA MENSAL BAIXAS EM BANCOS CORRESPONDENTES NA CARTEIRA 
-			it { subject.get_codigo_movimento_retorno('54').must_equal '254' }   # TARIFA MENSAL DE LIQUIDAÇÕES NA CARTEIRA 
-			it { subject.get_codigo_movimento_retorno('55').must_equal '255' }   # TARIFA MENSAL DE LIQUIDAÇÕES EM BANCOS CORRESPONDENTES NA CARTEIRA 
-			it { subject.get_codigo_movimento_retorno('56').must_equal '256' }   # CUSTAS DE IRREGULARIDADE 
-			it { subject.get_codigo_movimento_retorno('57').must_equal '257' }   # INSTRUÇÃO CANCELADA 
-			it { subject.get_codigo_movimento_retorno('60').must_equal '260' }   # ENTRADA REJEITADA CARNÊ 
-			it { subject.get_codigo_movimento_retorno('61').must_equal '261' }   # TARIFA EMISSÃO AVISO DE MOVIMENTAÇÃO DE TÍTULOS (2154) 
-			it { subject.get_codigo_movimento_retorno('62').must_equal '262' }   # DÉBITO MENSAL DE TARIFA – AVISO DE MOVIMENTAÇÃO DE TÍTULOS (2154) 
-			it { subject.get_codigo_movimento_retorno('63').must_equal '263' }   # TÍTULO SUSTADO JUDICIALMENTE 
-			it { subject.get_codigo_movimento_retorno('74').must_equal '274' }   # INSTRUÇÃO DE NEGATIVAÇÃO EXPRESSA REJEITADA 
-			it { subject.get_codigo_movimento_retorno('75').must_equal '275' }   # CONFIRMA O RECEBIMENTO DE INSTRUÇÃO DE ENTRADA EM NEGATIVAÇÃO EXPRESSA 
-			it { subject.get_codigo_movimento_retorno('77').must_equal '277' }   # CONFIRMA O RECEBIMENTO DE INSTRUÇÃO DE EXCLUSÃO DE ENTRADA EM NEGATIVAÇÃO EXPRESSA 
-			it { subject.get_codigo_movimento_retorno('78').must_equal '278' }   # CONFIRMA O RECEBIMENTO DE INSTRUÇÃO DE CANCELAMENTO DA NEGATIVAÇÃO EXPRESSA 
-			it { subject.get_codigo_movimento_retorno('79').must_equal '279' }   # NEGATIVAÇÃO EXPRESSA INFORMACIONAL 
-			it { subject.get_codigo_movimento_retorno('80').must_equal '280' }   # CONFIRMAÇÃO DE ENTRADA EM NEGATIVAÇÃO EXPRESSA – TARIFA 
-			it { subject.get_codigo_movimento_retorno('82').must_equal '282' }   # CONFIRMAÇÃO O CANCELAMENTO DE NEGATIVAÇÃO EXPRESSA - TARIFA 
-			it { subject.get_codigo_movimento_retorno('83').must_equal '283' }   # CONFIRMAÇÃO DA EXCLUSÃO/CANCELAMENTO DA NEGATIVAÇÃO EXPRESSA POR LIQUIDAÇÃO - TARIFA 
-			it { subject.get_codigo_movimento_retorno('85').must_equal '285' }   # TARIFA POR BOLETO (ATÉ 03 ENVIOS) COBRANÇA ATIVA ELETRÔNICA 
-			it { subject.get_codigo_movimento_retorno('86').must_equal '286' }   # TARIFA EMAIL COBRANÇA ATIVA ELETRÔNICA 
-			it { subject.get_codigo_movimento_retorno('87').must_equal '287' }   # TARIFA SMS COBRANÇA ATIVA ELETRÔNICA 
-			it { subject.get_codigo_movimento_retorno('88').must_equal '288' }   # TARIFA MENSAL POR BOLETO (ATÉ 03 ENVIOS) COBRANÇA ATIVA ELETRÔNICA 
-			it { subject.get_codigo_movimento_retorno('89').must_equal '289' }   # TARIFA MENSAL EMAIL COBRANÇA ATIVA ELETRÔNICA 
-			it { subject.get_codigo_movimento_retorno('90').must_equal '290' }   # TARIFA MENSAL SMS COBRANÇA ATIVA ELETRÔNICA 
-			it { subject.get_codigo_movimento_retorno('91').must_equal '291' }   # TARIFA MENSAL DE EXCLUSÃO DE ENTRADA EM NEGATIVAÇÃO EXPRESSA 
-			it { subject.get_codigo_movimento_retorno('92').must_equal '292' }   # TARIFA MENSAL DE CANCELAMENTO DE NEGATIVAÇÃO EXPRESSA 
-			it { subject.get_codigo_movimento_retorno('93').must_equal '293' }   # TARIFA MENSAL DE EXCLUSÃO/CANCELAMENTO DE NEGATIVAÇÃO EXPRESSA POR LIQUIDAÇÃO 
-			it { subject.get_codigo_movimento_retorno('94').must_equal '294' }   # CONFIRMA RECEBIMENTO DE INSTRUÇÃO DE NÃO NEGATIVAR 
+			it { subject.get_codigo_movimento_retorno('08', 240).must_equal '101' }   # LIQUIDAÇÃO EM CARTÓRIO 
+			it { subject.get_codigo_movimento_retorno('10', 240).must_equal '210' }   # BAIXA POR TER SIDO LIQUIDADO 
+			it { subject.get_codigo_movimento_retorno('15', 240).must_equal '100' }    # BAIXAS REJEITADAS 
+			it { subject.get_codigo_movimento_retorno('16', 240).must_equal '26' }    # INSTRUÇÕES REJEITADAS 
+			it { subject.get_codigo_movimento_retorno('17', 240).must_equal '30' }   # ALTERAÇÃO/EXCLUSÃO DE DADOS REJEITADA  
+			it { subject.get_codigo_movimento_retorno('18', 240).must_equal '218' }   # COBRANÇA CONTRATUAL – INSTRUÇÕES/ALTERAÇÕES REJEITADAS/PENDENTES 
+			it { subject.get_codigo_movimento_retorno('21', 240).must_equal '221' }   # CONFIRMAÇÃO RECEBIMENTO DE INSTRUÇÃO DE NÃO PROTESTAR 
+			it { subject.get_codigo_movimento_retorno('25', 240).must_equal '225' }   # ALEGAÇÕES DO PAGADOR 
+			it { subject.get_codigo_movimento_retorno('26', 240).must_equal '226' }   # TARIFA DE AVISO DE COBRANÇA 
+			it { subject.get_codigo_movimento_retorno('27', 240).must_equal '227' }   # TARIFA DE EXTRATO POSIÇÃO (B40X) 
+			it { subject.get_codigo_movimento_retorno('28', 240).must_equal '228' }   # TARIFA DE RELAÇÃO DAS LIQUIDAÇÕES 
+			it { subject.get_codigo_movimento_retorno('29', 240).must_equal '107' }   # TARIFA DE MANUTENÇÃO DE TÍTULOS VENCIDOS 
+			it { subject.get_codigo_movimento_retorno('30', 240).must_equal '28' }    # DÉBITO MENSAL DE TARIFAS (PARA ENTRADAS E BAIXAS) 
+			it { subject.get_codigo_movimento_retorno('32', 240).must_equal '25' }    # BAIXA POR TER SIDO PROTESTADO 
+			it { subject.get_codigo_movimento_retorno('33', 240).must_equal '233' }   # CUSTAS DE PROTESTO 
+			it { subject.get_codigo_movimento_retorno('34', 240).must_equal '234' }   # CUSTAS DE SUSTAÇÃO 
+			it { subject.get_codigo_movimento_retorno('35', 240).must_equal '235' }   # CUSTAS DE CARTÓRIO DISTRIBUIDOR 
+			it { subject.get_codigo_movimento_retorno('36', 240).must_equal '236' }   # CUSTAS DE EDITAL 
+			it { subject.get_codigo_movimento_retorno('37', 240).must_equal '237' }   # TARIFA DE EMISSÃO DE BOLETO/TARIFA DE ENVIO DE DUPLICATA 
+			it { subject.get_codigo_movimento_retorno('38', 240).must_equal '238' }   # TARIFA DE INSTRUÇÃO 
+			it { subject.get_codigo_movimento_retorno('39', 240).must_equal '239' }   # TARIFA DE OCORRÊNCIAS 
+			it { subject.get_codigo_movimento_retorno('40', 240).must_equal '240' }   # TARIFA MENSAL DE EMISSÃO DE BOLETO/TARIFA MENSAL DE ENVIO DE DUPLICATA 
+			it { subject.get_codigo_movimento_retorno('41', 240).must_equal '241' }   # DÉBITO MENSAL DE TARIFAS – EXTRATO DE POSIÇÃO (B4EP/B4OX) 
+			it { subject.get_codigo_movimento_retorno('42', 240).must_equal '242' }   # DÉBITO MENSAL DE TARIFAS – OUTRAS INSTRUÇÕES 
+			it { subject.get_codigo_movimento_retorno('43', 240).must_equal '243' }   # DÉBITO MENSAL DE TARIFAS – MANUTENÇÃO DE TÍTULOS VENCIDOS 
+			it { subject.get_codigo_movimento_retorno('44', 240).must_equal '244' }   # DÉBITO MENSAL DE TARIFAS – OUTRAS OCORRÊNCIAS 
+			it { subject.get_codigo_movimento_retorno('45', 240).must_equal '245' }   # DÉBITO MENSAL DE TARIFAS – PROTESTO 
+			it { subject.get_codigo_movimento_retorno('46', 240).must_equal '246' }   # DÉBITO MENSAL DE TARIFAS – SUSTAÇÃO DE PROTESTO 
+			it { subject.get_codigo_movimento_retorno('47', 240).must_equal '247' }   # BAIXA COM TRANSFERÊNCIA PARA DESCONTO 
+			it { subject.get_codigo_movimento_retorno('48', 240).must_equal '248' }   # CUSTAS DE SUSTAÇÃO JUDICIAL 
+			it { subject.get_codigo_movimento_retorno('51', 240).must_equal '251' }   # TARIFA MENSAL REFERENTE A ENTRADAS BANCOS CORRESPONDENTES NA CARTEIRA 
+			it { subject.get_codigo_movimento_retorno('52', 240).must_equal '252' }   # TARIFA MENSAL BAIXAS NA CARTEIRA 
+			it { subject.get_codigo_movimento_retorno('53', 240).must_equal '253' }   # TARIFA MENSAL BAIXAS EM BANCOS CORRESPONDENTES NA CARTEIRA 
+			it { subject.get_codigo_movimento_retorno('54', 240).must_equal '254' }   # TARIFA MENSAL DE LIQUIDAÇÕES NA CARTEIRA 
+			it { subject.get_codigo_movimento_retorno('55', 240).must_equal '255' }   # TARIFA MENSAL DE LIQUIDAÇÕES EM BANCOS CORRESPONDENTES NA CARTEIRA 
+			it { subject.get_codigo_movimento_retorno('56', 240).must_equal '256' }   # CUSTAS DE IRREGULARIDADE 
+			it { subject.get_codigo_movimento_retorno('57', 240).must_equal '257' }   # INSTRUÇÃO CANCELADA 
+			it { subject.get_codigo_movimento_retorno('60', 240).must_equal '260' }   # ENTRADA REJEITADA CARNÊ 
+			it { subject.get_codigo_movimento_retorno('61', 240).must_equal '261' }   # TARIFA EMISSÃO AVISO DE MOVIMENTAÇÃO DE TÍTULOS (2154) 
+			it { subject.get_codigo_movimento_retorno('62', 240).must_equal '262' }   # DÉBITO MENSAL DE TARIFA – AVISO DE MOVIMENTAÇÃO DE TÍTULOS (2154) 
+			it { subject.get_codigo_movimento_retorno('63', 240).must_equal '63' }    # TÍTULO SUSTADO JUDICIALMENTE 
+			it { subject.get_codigo_movimento_retorno('74', 240).must_equal '274' }   # INSTRUÇÃO DE NEGATIVAÇÃO EXPRESSA REJEITADA 
+			it { subject.get_codigo_movimento_retorno('75', 240).must_equal '275' }   # CONFIRMA O RECEBIMENTO DE INSTRUÇÃO DE ENTRADA EM NEGATIVAÇÃO EXPRESSA 
+			it { subject.get_codigo_movimento_retorno('77', 240).must_equal '277' }   # CONFIRMA O RECEBIMENTO DE INSTRUÇÃO DE EXCLUSÃO DE ENTRADA EM NEGATIVAÇÃO EXPRESSA 
+			it { subject.get_codigo_movimento_retorno('78', 240).must_equal '278' }   # CONFIRMA O RECEBIMENTO DE INSTRUÇÃO DE CANCELAMENTO DA NEGATIVAÇÃO EXPRESSA 
+			it { subject.get_codigo_movimento_retorno('79', 240).must_equal '279' }   # NEGATIVAÇÃO EXPRESSA INFORMACIONAL 
+			it { subject.get_codigo_movimento_retorno('80', 240).must_equal '280' }   # CONFIRMAÇÃO DE ENTRADA EM NEGATIVAÇÃO EXPRESSA – TARIFA 
+			it { subject.get_codigo_movimento_retorno('82', 240).must_equal '282' }   # CONFIRMAÇÃO O CANCELAMENTO DE NEGATIVAÇÃO EXPRESSA - TARIFA 
+			it { subject.get_codigo_movimento_retorno('83', 240).must_equal '283' }   # CONFIRMAÇÃO DA EXCLUSÃO/CANCELAMENTO DA NEGATIVAÇÃO EXPRESSA POR LIQUIDAÇÃO - TARIFA 
+			it { subject.get_codigo_movimento_retorno('85', 240).must_equal '285' }   # TARIFA POR BOLETO (ATÉ 03 ENVIOS) COBRANÇA ATIVA ELETRÔNICA 
+			it { subject.get_codigo_movimento_retorno('86', 240).must_equal '286' }   # TARIFA EMAIL COBRANÇA ATIVA ELETRÔNICA 
+			it { subject.get_codigo_movimento_retorno('87', 240).must_equal '287' }   # TARIFA SMS COBRANÇA ATIVA ELETRÔNICA 
+			it { subject.get_codigo_movimento_retorno('88', 240).must_equal '288' }   # TARIFA MENSAL POR BOLETO (ATÉ 03 ENVIOS) COBRANÇA ATIVA ELETRÔNICA 
+			it { subject.get_codigo_movimento_retorno('89', 240).must_equal '289' }   # TARIFA MENSAL EMAIL COBRANÇA ATIVA ELETRÔNICA 
+			it { subject.get_codigo_movimento_retorno('90', 240).must_equal '290' }   # TARIFA MENSAL SMS COBRANÇA ATIVA ELETRÔNICA 
+			it { subject.get_codigo_movimento_retorno('91', 240).must_equal '291' }   # TARIFA MENSAL DE EXCLUSÃO DE ENTRADA EM NEGATIVAÇÃO EXPRESSA 
+			it { subject.get_codigo_movimento_retorno('92', 240).must_equal '292' }   # TARIFA MENSAL DE CANCELAMENTO DE NEGATIVAÇÃO EXPRESSA 
+			it { subject.get_codigo_movimento_retorno('93', 240).must_equal '293' }   # TARIFA MENSAL DE EXCLUSÃO/CANCELAMENTO DE NEGATIVAÇÃO EXPRESSA POR LIQUIDAÇÃO 
+			it { subject.get_codigo_movimento_retorno('94', 240).must_equal '294' }   # CONFIRMA RECEBIMENTO DE INSTRUÇÃO DE NÃO NEGATIVAR 
 		end
 	end
 
@@ -338,6 +338,22 @@ describe BrBoleto::Conta::Itau do
 			it { subject.get_codigo_ocorrencia_pagador('1800').must_equal '1800' } # BOLETO NÃO ENTREGUE, NÚMERO NÃO EXISTE/ENDEREÇO INCOMPLETO
 			it { subject.get_codigo_ocorrencia_pagador('1834').must_equal '1834' } # BOLETO DDA, DIVIDA RECONHECIDA PELO PAGADOR
 			it { subject.get_codigo_ocorrencia_pagador('1842').must_equal '1842' } # BOLETO DDA, DIVIDA NÃO RECONHECIDA PELO PAGADOR
+		end
+	end
+
+	describe "#get_codigo_movimento_retorno" do
+		context "CÓDIGOS para o cnab 400 do SICOOB" do
+			it { subject.get_codigo_movimento_retorno('07', 400).must_equal '102' }  # LIQUIDAÇÃO PARCIAL – COBRANÇA INTELIGENTE (B2B)
+			it { subject.get_codigo_movimento_retorno('24', 400).must_equal '20' }   # INSTRUÇÃO DE PROTESTO REJEITADA / SUSTADA / PENDENTE (NOTA 20 – TABELA 7)
+			it { subject.get_codigo_movimento_retorno('25', 400).must_equal '29' }   # ALEGAÇÕES DO PAGADOR (NOTA 20 – TABELA 6)
+			it { subject.get_codigo_movimento_retorno('59', 400).must_equal '259' }  # BAIXA POR CRÉDITO EM C/C ATRAVÉS DO SISPAG
+			it { subject.get_codigo_movimento_retorno('64', 400).must_equal '264' }  # ENTRADA CONFIRMADA COM RATEIO DE CRÉDITO
+			it { subject.get_codigo_movimento_retorno('65', 400).must_equal '265' }  # PAGAMENTO COM CHEQUE – AGUARDANDO COMPENSAÇÃO
+			it { subject.get_codigo_movimento_retorno('69', 400).must_equal '44' }   # CHEQUE DEVOLVIDO (NOTA 20 – TABELA 9)
+			it { subject.get_codigo_movimento_retorno('71', 400).must_equal '271' }  # ENTRADA REGISTRADA, AGUARDANDO AVALIAÇÃO
+			it { subject.get_codigo_movimento_retorno('72', 400).must_equal '272' }  # BAIXA POR CRÉDITO EM C/C ATRAVÉS DO SISPAG SEM TÍTULO CORRESPONDENTE
+			it { subject.get_codigo_movimento_retorno('73', 400).must_equal '273' }  # CONFIRMAÇÃO DE ENTRADA NA COBRANÇA SIMPLES – ENTRADA NÃO ACEITA NA COBRANÇA CONTRATUAL
+			it { subject.get_codigo_movimento_retorno('76', 400).must_equal '45' }   # CHEQUE COMPENSADO
 		end
 	end
 end

@@ -200,13 +200,13 @@ module BrBoleto
 			end
 
 			# Código de Movimento Retorno 
-			def equivalent_codigo_movimento_retorno
+			def equivalent_codigo_movimento_retorno_240
 				super.merge(
 					#  Padrão    Código para  
 					{# do Banco    a GEM
-						'08'   =>   '208',  # LIQUIDAÇÃO EM CARTÓRIO
+						'08'   =>   '101',  # LIQUIDAÇÃO EM CARTÓRIO
 						'10'   =>   '210',  # BAIXA POR TER SIDO LIQUIDADO
-						'15'   =>   '99',   # BAIXAS REJEITADAS
+						'15'   =>   '100',  # BAIXAS REJEITADAS
 						'16'   =>   '26',   # INSTRUÇÕES REJEITADAS
 						'17'   =>   '30',   # ALTERAÇÃO/EXCLUSÃO DE DADOS REJEITADA 
 						'18'   =>   '218',  # COBRANÇA CONTRATUAL – INSTRUÇÕES/ALTERAÇÕES REJEITADAS/PENDENTES
@@ -215,7 +215,7 @@ module BrBoleto
 						'26'   =>   '226',  # TARIFA DE AVISO DE COBRANÇA
 						'27'   =>   '227',  # TARIFA DE EXTRATO POSIÇÃO (B40X)
 						'28'   =>   '228',  # TARIFA DE RELAÇÃO DAS LIQUIDAÇÕES
-						'29'   =>   '229',  # TARIFA DE MANUTENÇÃO DE TÍTULOS VENCIDOS
+						'29'   =>   '107',  # TARIFA DE MANUTENÇÃO DE TÍTULOS VENCIDOS
 						'30'   =>   '28',   # DÉBITO MENSAL DE TARIFAS (PARA ENTRADAS E BAIXAS)
 						'32'   =>   '25',   # BAIXA POR TER SIDO PROTESTADO
 						'33'   =>   '233',  # CUSTAS DE PROTESTO
@@ -244,7 +244,6 @@ module BrBoleto
 						'60'   =>   '260',  # ENTRADA REJEITADA CARNÊ
 						'61'   =>   '261',  # TARIFA EMISSÃO AVISO DE MOVIMENTAÇÃO DE TÍTULOS (2154)
 						'62'   =>   '262',  # DÉBITO MENSAL DE TARIFA – AVISO DE MOVIMENTAÇÃO DE TÍTULOS (2154)
-						'63'   =>   '263',  # TÍTULO SUSTADO JUDICIALMENTE
 						'74'   =>   '274',  # INSTRUÇÃO DE NEGATIVAÇÃO EXPRESSA REJEITADA
 						'75'   =>   '275',  # CONFIRMA O RECEBIMENTO DE INSTRUÇÃO DE ENTRADA EM NEGATIVAÇÃO EXPRESSA
 						'77'   =>   '277',  # CONFIRMA O RECEBIMENTO DE INSTRUÇÃO DE EXCLUSÃO DE ENTRADA EM NEGATIVAÇÃO EXPRESSA
@@ -263,6 +262,25 @@ module BrBoleto
 						'92'   =>   '292',  # TARIFA MENSAL DE CANCELAMENTO DE NEGATIVAÇÃO EXPRESSA
 						'93'   =>   '293',  # TARIFA MENSAL DE EXCLUSÃO/CANCELAMENTO DE NEGATIVAÇÃO EXPRESSA POR LIQUIDAÇÃO
 						'94'   =>   '294',  # CONFIRMA RECEBIMENTO DE INSTRUÇÃO DE NÃO NEGATIVAR
+					})
+			end
+
+			# Identificações de Ocorrência / Código de ocorrência:
+			def equivalent_codigo_movimento_retorno_400
+				super.merge(
+					#  Padrão    Código para  
+					{# do Banco    a GEM
+						'07'   =>   '102',  # LIQUIDAÇÃO PARCIAL – COBRANÇA INTELIGENTE (B2B)
+						'24'   =>   '20',   # INSTRUÇÃO DE PROTESTO REJEITADA / SUSTADA / PENDENTE (NOTA 20 – TABELA 7)
+						'25'   =>   '29',   # ALEGAÇÕES DO PAGADOR (NOTA 20 – TABELA 6)
+						'59'   =>   '259',  # BAIXA POR CRÉDITO EM C/C ATRAVÉS DO SISPAG
+						'64'   =>   '264',  # ENTRADA CONFIRMADA COM RATEIO DE CRÉDITO
+						'65'   =>   '265',  # PAGAMENTO COM CHEQUE – AGUARDANDO COMPENSAÇÃO
+						'69'   =>   '44',   # CHEQUE DEVOLVIDO (NOTA 20 – TABELA 9)
+						'71'   =>   '271',  # ENTRADA REGISTRADA, AGUARDANDO AVALIAÇÃO
+						'72'   =>   '272',  # BAIXA POR CRÉDITO EM C/C ATRAVÉS DO SISPAG SEM TÍTULO CORRESPONDENTE
+						'73'   =>   '273',  # CONFIRMAÇÃO DE ENTRADA NA COBRANÇA SIMPLES – ENTRADA NÃO ACEITA NA COBRANÇA CONTRATUAL
+						'76'   =>   '45',   # CHEQUE COMPENSADO
 					})
 			end
 

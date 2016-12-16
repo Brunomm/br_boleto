@@ -51,8 +51,9 @@ describe BrBoleto::Retorno::Cnab400::Itau do
 			pagamento.motivo_ocorrencia_original_4.must_be_nil
 			pagamento.motivo_ocorrencia_original_5.must_be_nil
 			pagamento.complemento_ocorrencia_sacado.must_be_nil
-			pagamento.codigo_ocorrencia_banco_correspondente.must_equal '06'
+			pagamento.codigo_ocorrencia_banco_correspondente.must_be_nil
 			pagamento.nosso_numero_banco_correspondente.must_be_nil
+			pagamento.codigo_ocorrencia_retorno.must_equal '06'
 		end
 	end
 
@@ -99,8 +100,9 @@ describe BrBoleto::Retorno::Cnab400::Itau do
 			pagamento.motivo_ocorrencia_original_4.must_be_nil
 			pagamento.motivo_ocorrencia_original_5.must_be_nil
 			pagamento.complemento_ocorrencia_sacado.must_be_nil
-			pagamento.codigo_ocorrencia_banco_correspondente.must_equal '09'
+			pagamento.codigo_ocorrencia_banco_correspondente.must_be_nil
 			pagamento.nosso_numero_banco_correspondente.must_be_nil
+			pagamento.codigo_ocorrencia_retorno.must_equal '09'
 		end
 	end
 end

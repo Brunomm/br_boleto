@@ -88,6 +88,17 @@ module BrBoleto
 			def default_codigo_multa
 				'0'
 			end
+
+			# Identificações de Ocorrência / Código de ocorrência:
+			def equivalent_codigo_movimento_retorno_400
+				super.merge(
+					#  Padrão    Código para  
+					{# do Banco    a GEM
+						'05'    =>  '17' , # Liquidação Sem Registro: Identifica a liquidação de título da modalidade "SEM REGISTRO";
+						'15'    =>  '101', # Liquidação em Cartório: Identifica as liquidações dos títulos ocorridas em cartórios de protesto;
+						'23'    =>  '19' , # Encaminhado a Protesto: Identifica o recebimento da instrução de protesto
+					})
+			end
 		end
 	end
 end

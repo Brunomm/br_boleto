@@ -168,7 +168,7 @@ module BrBoleto
 			end
 
 			# Código de Movimento Retorno 
-			def equivalent_codigo_movimento_retorno
+			def equivalent_codigo_movimento_retorno_240
 				super.merge(
 					#  Padrão    Código para  
 					{# do Banco    a GEM
@@ -185,6 +185,21 @@ module BrBoleto
 				{# do Banco     a Gem
 					'01'    =>   'D01',   # Alteração de carteira
 				}
+			end
+
+			# Identificações de Ocorrência / Código de ocorrência:
+			def equivalent_codigo_movimento_retorno_400
+				super.merge(
+					#  Padrão    Código para  
+					{# do Banco    a GEM
+						'15'   =>   '101', # Liquidação em cartório
+						'24'   =>   '106', # Entrada rejeitada por CEP irregular
+						'27'   =>   '100', # Baixa rejeitada
+						'32'   =>   '26',  # Instrução rejeitada
+						'33'   =>   '27',  # Confirmação de pedido de alteração de outros dados
+						'34'   =>   '24',  # Retirado de cartório e manutenção em carteira
+						'35'   =>   '105', # Aceite do pagador
+					})
 			end
 		end
 	end

@@ -19,12 +19,16 @@ module BrBoleto
 				"#{numero_conta_sem_dv}#{numero_conta_dv}" # tamanho = 13
 			end
 			
+			# Codigo identificação CNAB
+			attr_accessor :cnab
+
 			# CÓDIGO DE MOVIMENTO RETORNO
 			# Tamanho    Posição
 			#   2         16-17
 			attr_accessor :codigo_movimento_retorno
+			alias_attribute :codigo_ocorrencia_retorno, :codigo_movimento_retorno
 			def codigo_movimento_retorno
-				conta.get_codigo_movimento_retorno(@codigo_movimento_retorno)
+				conta.get_codigo_movimento_retorno(@codigo_movimento_retorno, cnab)
 			end
 
 			# IDENTIFICAÇÃO DO TÍTULO

@@ -63,7 +63,7 @@ module BrBoleto
 			end
 
 			# Código de Movimento Retorno 
-			def equivalent_codigo_movimento_retorno
+			def equivalent_codigo_movimento_retorno_240
 				super.merge(
 					{
 						'76' => '76',  # Liquidação de boleto cooperativa emite e expede

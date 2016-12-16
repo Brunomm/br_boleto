@@ -25,7 +25,7 @@ module BrBoleto
 				# e adiciona o mesmo no Array de pagamentos
 				#
 				def instnce_payment(detalhe) #:doc:
-					payment = BrBoleto::Retorno::Pagamento.new(conta_class: conta_pagamento_class)
+					payment = BrBoleto::Retorno::Pagamento.new(conta_class: conta_pagamento_class, cnab: 400)
 					detalhe_fields.each do |column, position |
 						payment.send("#{column}=", "_#{detalhe}"[position].try(:strip))
 					end

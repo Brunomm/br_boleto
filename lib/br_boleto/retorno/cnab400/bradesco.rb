@@ -15,6 +15,7 @@ module BrBoleto
 						numero_conta_dv:               36,
 						nosso_numero_sem_dv:           71..81,
 						nosso_numero_dv:               82,
+						codigo_ocorrencia_retorno:     109..110,
 						data_ocorrencia:               111..116,
 						data_ocorrencia_sacado:        111..116,
 						numero_documento:              117..126,

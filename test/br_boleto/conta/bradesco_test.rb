@@ -139,11 +139,25 @@ describe BrBoleto::Conta::Bradesco do
 			it { subject.get_codigo_movimento_remessa('34', 400).must_equal '69' } # Cancelamento do rateio de crédito.
 		end
 	end
-
 	
 	describe "#get_codigo_movimento_retorno" do
 		context "CÓDIGOS para o Bradesco" do
-			it { subject.get_codigo_movimento_retorno('73').must_equal '73' } # Confirmação recebimento pedido de negativação
+			it { subject.get_codigo_movimento_retorno('73', 240).must_equal '73' } # Confirmação recebimento pedido de negativação
+		end
+	end
+
+	describe "#get_codigo_movimento_retorno" do
+		context "CÓDIGOS para o cnab 400 do Bradesco" do
+			it { subject.get_codigo_movimento_retorno('15', 400).must_equal '101' }  # Liquidação em Cartório (sem motivo)
+			it { subject.get_codigo_movimento_retorno('24', 400).must_equal '107' }  # Entrada rejeitada por CEP Irregular
+			it { subject.get_codigo_movimento_retorno('25', 400).must_equal '170' }  # Confirmação Receb.Inst.de Protesto Falimentar
+			it { subject.get_codigo_movimento_retorno('27', 400).must_equal '100' }  # Baixa Rejeitada
+			it { subject.get_codigo_movimento_retorno('32', 400).must_equal '26' }   # Instrução Rejeitada
+			it { subject.get_codigo_movimento_retorno('33', 400).must_equal '27' }   # Confirmação Pedido Alteração Outros Dados (sem motivo)
+			it { subject.get_codigo_movimento_retorno('40', 400).must_equal '171' }  # Estorno de pagamento
+			it { subject.get_codigo_movimento_retorno('55', 400).must_equal '63' }   # Sustado judicial
+			it { subject.get_codigo_movimento_retorno('68', 400).must_equal '33' }   # Acerto dos dados do rateio de Crédito
+			it { subject.get_codigo_movimento_retorno('69', 400).must_equal '34' }   # Cancelamento dos dados do rateio
 		end
 	end
 end

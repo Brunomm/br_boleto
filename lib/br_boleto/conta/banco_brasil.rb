@@ -160,6 +160,37 @@ module BrBoleto
 						'52'    =>   'A104' , # Registro Rejeitado – Título já Liquidado
 					})
 			end
+
+			# Identificações de Ocorrência / Código de ocorrência:
+			def equivalent_codigo_movimento_retorno_400
+				super.merge(
+					#  Padrão    Código para  
+					{# do Banco    a GEM
+						'05'   =>   '17',   # Liquidado sem registro (carteira 17=tipo4)
+						'07'   =>   '102',  # Liquidação por Conta/Parcial
+						'08'   =>   '103',  # Liquidação por Saldo
+						'15'   =>   '101',  # Liquidação em Cartório
+						'16'   =>   '57',   # Confirmação de alteração de juros de mora
+						'20'   =>   '120',  # Débito em Conta
+						'21'   =>   '43',   # Alteração do Nome do Sacado
+						'22'   =>   '43',   # Alteração do Endereço do Sacado
+						'24'   =>   '20',   # Sustar Protesto
+						'25'   =>   '60',   # Dispensar Juros de mora
+						'26'   =>   '40',   # Alteração do número do título dado pelo Cedente (Seu número) – 10 e 15posições
+						'28'   =>   '108',  # Manutenção de titulo vencido
+						'31'   =>   '07',   # Conceder desconto
+						'32'   =>   '08',   # Não conceder desconto
+						'33'   =>   '58',   # Retificar desconto
+						'34'   =>   '58',   # Alterar data para desconto
+						'35'   =>   '56',   # Cobrar Multa
+						'36'   =>   '55',   # Dispensar Multa
+						'37'   =>   '121',  # Dispensar Indexador
+						'38'   =>   '39',   # Dispensar prazo limite para recebimento
+						'39'   =>   '38',   # Alterar prazo limite para recebimento
+						'46'   =>   '45',   # Título pago com cheque, aguardando compensação
+						'73'   =>   '123',  # Confirmação de Instrução de Parâmetro de Pagamento Parcial
+					})
+			end
 		end
 	end
 end

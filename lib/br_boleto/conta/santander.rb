@@ -203,6 +203,25 @@ module BrBoleto
 				super.merge({'09' => '00' }) # 00 = Real
 			end
 
+			# Identificações de Ocorrência / Código de ocorrência:
+			def equivalent_codigo_movimento_retorno_400
+				super.merge(
+					#  Padrão    Código para  
+					{# do Banco    a GEM
+						'01'   =>  '104',  # título não existe
+						'07'   =>  '102',  # liquidação por conta
+						'08'   =>  '103',  # liquidação por saldo
+						'15'   =>  '23',   # Enviado para Cartório
+						'16'   =>  '25' ,  # tít. já baixado/liquidado
+						'17'   =>  '101',  # liquidado em cartório
+						'21'   =>  '23' ,  # Entrada em Cartório
+						'22'   =>  '24' ,  # Retirado de cartório
+						'24'   =>  '235',  # Custas de Cartório
+						'25'   =>  '19' ,  # Protestar Título
+						'26'   =>  '20' ,  # Sustar Protestonhado a Protesto: Identifica o recebimento da instrução de protesto
+					})
+			end
+
 		end
 	end
 end

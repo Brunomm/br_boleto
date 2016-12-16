@@ -153,16 +153,16 @@ describe BrBoleto::Conta::Caixa do
 
 	describe "#get_codigo_movimento_retorno" do
 		context "CÓDIGOS para o Caixa" do
-			it { subject.get_codigo_movimento_retorno('01').must_equal '01' }  # Solicitação de Impressão de Títulos Confirmada
-			it { subject.get_codigo_movimento_retorno('35').must_equal '135' } # Confirmação de Inclusão Banco de Sacado
-			it { subject.get_codigo_movimento_retorno('36').must_equal '136' } # Confirmação de Alteração Banco de Sacado
-			it { subject.get_codigo_movimento_retorno('37').must_equal '137' } # Confirmação de Exclusão Banco de Sacado
-			it { subject.get_codigo_movimento_retorno('38').must_equal '138' } # Emissão de Bloquetos de Banco de Sacado
-			it { subject.get_codigo_movimento_retorno('39').must_equal '139' } # Manutenção de Sacado Rejeitada
-			it { subject.get_codigo_movimento_retorno('40').must_equal '140' } # Entrada de Título via Banco de Sacado Rejeitada
-			it { subject.get_codigo_movimento_retorno('41').must_equal '141' } # Manutenção de Banco de Sacado Rejeitada
-			it { subject.get_codigo_movimento_retorno('44').must_equal '144' } # Estorno de Baixa / Liquidação
-			it { subject.get_codigo_movimento_retorno('45').must_equal '145' } # Alteração de Dados
+			it { subject.get_codigo_movimento_retorno('01', 240).must_equal '01' }  # Solicitação de Impressão de Títulos Confirmada
+			it { subject.get_codigo_movimento_retorno('35', 240).must_equal '135' } # Confirmação de Inclusão Banco de Sacado
+			it { subject.get_codigo_movimento_retorno('36', 240).must_equal '136' } # Confirmação de Alteração Banco de Sacado
+			it { subject.get_codigo_movimento_retorno('37', 240).must_equal '137' } # Confirmação de Exclusão Banco de Sacado
+			it { subject.get_codigo_movimento_retorno('38', 240).must_equal '138' } # Emissão de Bloquetos de Banco de Sacado
+			it { subject.get_codigo_movimento_retorno('39', 240).must_equal '139' } # Manutenção de Sacado Rejeitada
+			it { subject.get_codigo_movimento_retorno('40', 240).must_equal '140' } # Entrada de Título via Banco de Sacado Rejeitada
+			it { subject.get_codigo_movimento_retorno('41', 240).must_equal '141' } # Manutenção de Banco de Sacado Rejeitada
+			it { subject.get_codigo_movimento_retorno('44', 240).must_equal '144' } # Estorno de Baixa / Liquidação
+			it { subject.get_codigo_movimento_retorno('45', 240).must_equal '145' } # Alteração de Dados
 		end
 	end
 
@@ -232,4 +232,33 @@ describe BrBoleto::Conta::Caixa do
 		end
 	end
 
+	describe "#get_codigo_movimento_retorno" do
+		context "CÓDIGOS para o cnab 400 da Caixa" do
+			it { subject.get_codigo_movimento_retorno('01', 400).must_equal '02' }   # Entrada Confirmada
+			it { subject.get_codigo_movimento_retorno('02', 400).must_equal '09' }   # Baixa Manual Confirmada
+			it { subject.get_codigo_movimento_retorno('03', 400).must_equal '12' }   # Abatimento Concedido
+			it { subject.get_codigo_movimento_retorno('04', 400).must_equal '13' }   # Abatimento Cancelado
+			it { subject.get_codigo_movimento_retorno('05', 400).must_equal '14' }   # Vencimento Alterado
+			it { subject.get_codigo_movimento_retorno('06', 400).must_equal '146' }  # Uso da Empresa Alterado
+			it { subject.get_codigo_movimento_retorno('08', 400).must_equal '147' }  # Prazo de Devolução Alterado
+			it { subject.get_codigo_movimento_retorno('09', 400).must_equal '27' }   # Alteração Confirmada
+			it { subject.get_codigo_movimento_retorno('10', 400).must_equal '148' }  # Alteração com reemissão de Boleto Confirmada
+			it { subject.get_codigo_movimento_retorno('11', 400).must_equal '149' }  # Alteração da opção de Protesto para Devolução Confirmada
+			it { subject.get_codigo_movimento_retorno('12', 400).must_equal '150' }  # Alteração da opção de Devolução para Protesto Confirmada
+			it { subject.get_codigo_movimento_retorno('20', 400).must_equal '11' }   # Em Ser
+			it { subject.get_codigo_movimento_retorno('21', 400).must_equal '06' }   # Liquidação 
+			it { subject.get_codigo_movimento_retorno('22', 400).must_equal '101' }  # Liquidação em Cartório 
+			it { subject.get_codigo_movimento_retorno('23', 400).must_equal '151' }  # Baixa por Devolução 
+			it { subject.get_codigo_movimento_retorno('25', 400).must_equal '152' }  # Baixa por Protesto 
+			it { subject.get_codigo_movimento_retorno('26', 400).must_equal '23' }  # Título enviado para Cartório 
+			it { subject.get_codigo_movimento_retorno('27', 400).must_equal '20' }   # Sustação de Protesto 
+			it { subject.get_codigo_movimento_retorno('28', 400).must_equal '153' }  # Estorno de Protesto 
+			it { subject.get_codigo_movimento_retorno('29', 400).must_equal '154' }  # Estorno de Sustação de Protesto 
+			it { subject.get_codigo_movimento_retorno('30', 400).must_equal '61' }   # Alteração de Título 
+			it { subject.get_codigo_movimento_retorno('31', 400).must_equal '108' }  # Tarifa sobre Título Vencido 
+			it { subject.get_codigo_movimento_retorno('32', 400).must_equal '155' }  # Outras Tarifas de Alteração 
+			it { subject.get_codigo_movimento_retorno('33', 400).must_equal '144' }  # Estorno de Baixa / Liquidação 
+			it { subject.get_codigo_movimento_retorno('34', 400).must_equal '156' }  # Tarifas Diversas 
+		end
+	end
 end

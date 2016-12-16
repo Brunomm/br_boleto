@@ -25,7 +25,7 @@ module BrBoleto
 				# Segmentos T e U do arquivo de retorno
 				#
 				def instnce_payment(lines) #:doc:
-					payment = BrBoleto::Retorno::Pagamento.new(conta_class: conta_pagamento_class)
+					payment = BrBoleto::Retorno::Pagamento.new(conta_class: conta_pagamento_class, cnab: 240)
 					lines.each do |line|
 						self.codigo_banco ||= line[0..2]
 						if line[13] == 'T'

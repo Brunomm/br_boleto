@@ -247,8 +247,8 @@ module BrBoleto
 					}
 				end	
 
-			#######################################################################################
-			#####################  CÓDIGO DO TIPO DE IMPRESSÃO DO BLOQUETO  ######################
+			########################################################################################
+			#####################  CÓDIGO DO TIPO DE IMPRESSÃO DO BLOQUETO  ########################
 				# Identificação do Tipo de Impressão :
 				# Default: 2
 				# Códigos padrões da GEM
@@ -276,8 +276,8 @@ module BrBoleto
 					}
 				end
 
-			#######################################################################################
-			#####################  CÓDIGO DA IDENTIFICAÇÃO EMISSÃO DO BOLETO  #####################
+			########################################################################################
+			#####################  CÓDIGO DA IDENTIFICAÇÃO EMISSÃO DO BOLETO  ######################
 				# Identificação da Emissão do Boleto de Pagamento :
 				# Default: 2
 				# Códigos padrões da GEM
@@ -539,6 +539,7 @@ module BrBoleto
 					# 07 = Confirmação do Recebimento da Instrução de Desconto
 					# 08 = Confirmação do Recebimento do Cancelamento do Desconto
 					# 09 = Baixa
+					# 10 = Baixa Solicitada
 					# 11 = Títulos em Carteira (Em Ser)
 					# 12 = Confirmação Recebimento Instrução de Abatimento
 					# 13 = Confirmação Recebimento Instrução de Cancelamento Abatimento
@@ -547,7 +548,7 @@ module BrBoleto
 					# 17 = Liquidação Após Baixa ou Liquidação Título Não Registrado
 					# 19 = Confirmação Recebimento Instrução de Protesto
 					# 20 = Confirmação Recebimento Instrução de Sustação/Cancelamento de Protesto
-					# 23 = Remessa a Cartório (Aponte em Cartório)
+					# 23 = Remessa a Cartório (Aponte em Cartório) / Entrada do Título em Cartório 
 					# 24 = Retirada de Cartório e Manutenção em Carteira
 					# 25 = Protestado e Baixado (Baixa por Ter Sido Protestado)
 					# 26 = Instrução Rejeitada
@@ -585,9 +586,34 @@ module BrBoleto
 					# 60 = Confirmação do Pedido de Dispensa de Juros de Mora
 					# 61 = Confirmação de Alteração do Valor Nominal do Título
 					# 63 = Título Sustado Judicialmente
+					# 99  = Rejeição do Título – Código rejeição informado nas pos. 80 a 82
+					# 100 = Baixa Rejeitada
+					# 101 = Liquidação Em Cartório
+					# 102 = Liquidação por Conta/Parcial
+					# 103 = Liquidação por Saldo
+					# 104 = Título não existe
+					# 105 = Aceite do pagador
+					# 106 = Entrada rejeitada por CEP irregular
+					# 107 = Tarifa De Manutenção De Títulos Vencidos
+					#
+					# BANCO DO BRASIL:
+					# 72 = Alteração de tipo de cobrança (específico para títulos das carteiras 11 e 17)
+					# 96 = Despesas de Protesto
+					# 97 = Despesas de Sustação de Protesto
+					# 98 = Débito de Custas Antecipadas
+					# 120 = Débito em Conta
+					# 121 = Dispensar Indexador
+					# 122 = Confirmação de Instrução de Parâmetro de Pagamento Parcial
 					#
 					# BRADESCO:
+					# 16 = Título Pago em Cheque – Vinculado
+					# 18 = Acerto de Depositária (sem motivo)
+					# 21 = Acerto do Controle do Participante (sem motivo)
+					# 22 = Título Com Pagamento Cancelado
 					# 73 = Confirmação recebimento pedido de negativação
+					# 74 = Confirmação Pedido de Exclusão de Negativação (com ou sem baixa)
+					# 170 = Confirmação Receb.Inst.de Protesto Falimentar
+					# 171 = Estorno de pagamento
 					#
 					# CAIXA:
 					# 01 = Solicitação de Impressão de Títulos Confirmada
@@ -600,6 +626,17 @@ module BrBoleto
 					# 141 = Manutenção de Banco de Sacado Rejeitada
 					# 144 = Estorno de Baixa / Liquidação
 					# 145 = Alteração de Dados
+					# 146 = Uso da Empresa Alterado
+					# 147 = Prazo de Devolução Alterado
+					# 148 = Alteração com reemissão de Boleto Confirmada
+					# 149 = Alteração da opção de Protesto para Devolução Confirmada
+					# 150 = Alteração da opção de Devolução para Protesto Confirmada
+					# 151 = Baixa por Devolução 
+					# 152 = Baixa por Protesto 
+					# 153 = Estorno de Protesto 
+					# 154 = Estorno de Sustação de Protesto 
+					# 155 = Outras Tarifas de Alteração 
+					# 156 = Tarifas Diversas 
 					#
 					# CECRED:
 					# 76 = Liquidação de boleto cooperativa emite e expede
@@ -610,16 +647,14 @@ module BrBoleto
 					# 94 = Exclusão Negativação Serasa
 					#
 					# ITAÚ:
-					# 208 = Liquidação Em Cartório
 					# 210 = Baixa Por Ter Sido Liquidado
-					# 230 = Alteração/Exclusão De Dados Rejeitada 
 					# 218 = Cobrança Contratual – Instruções/Alterações Rejeitadas/Pendentes
 					# 221 = Confirmação Recebimento De Instrução De Não Protestar
 					# 225 = Alegações Do Pagador
 					# 226 = Tarifa De Aviso De Cobrança
 					# 227 = Tarifa De Extrato Posição (B40X)
 					# 228 = Tarifa De Relação Das Liquidações
-					# 229 = Tarifa De Manutenção De Títulos Vencidos
+					# 230 = Débito mensal de tarifas (para entradas e baixas)
 					# 233 = Custas De Protesto
 					# 234 = Custas De Sustação
 					# 235 = Custas De Cartório Distribuidor
@@ -642,11 +677,17 @@ module BrBoleto
 					# 254 = Tarifa Mensal De Liquidações Na Carteira
 					# 255 = Tarifa Mensal De Liquidações Em Bancos Correspondentes Na Carteira
 					# 256 = Custas De Irregularidade
-					# 257 = Instrução Cancelada
+					# 257 = Instrução Cancelada (Nota 20 - Tabela 8)
+					# 259 = Baixa por crédito em C/C através do SISPAG
 					# 260 = Entrada Rejeitada Carnê
 					# 261 = Tarifa Emissão Aviso De Movimentação De Títulos (2154)
 					# 262 = Débito Mensal De Tarifa – Aviso De Movimentação De Títulos (2154)
 					# 263 = Título Sustado Judicialmente
+					# 264 = Entrada Confirmada com Rateio de Crédito
+					# 265 = Pagamento com cheque – aguardando compensação
+					# 271 = Entrada registrada, aguardando avaliação
+					# 272 = Baixa por crédito em c/c através do sispag sem título correspondente
+					# 273 = Confirmação de entrada na cobrança simples – entrada não aceita na cobrança contratual
 					# 274 = Instrução De Negativação Expressa Rejeitada
 					# 275 = Confirma O Recebimento De Instrução De Entrada Em Negativação Expressa
 					# 277 = Confirma O Recebimento De Instrução De Exclusão De Entrada Em Negativação Expressa
@@ -666,16 +707,18 @@ module BrBoleto
 					# 293 = Tarifa Mensal De Exclusão/Cancelamento De Negativação Expressa Por Liquidação
 					# 294 = Confirma Recebimento De Instrução De Não Negativar
 					#
-					# SICREDI:
-					# 100 = Baixa Rejeitada
 					#
-				def get_codigo_movimento_retorno(code)
-					equivalent_codigo_movimento_retorno[code] || code
+				def get_codigo_movimento_retorno(code, cnab)
+					send("equivalent_codigo_movimento_retorno_#{cnab}")[code] || code
 				end
 				# Código adotado pela FEBRABAN, para identificar o tipo de movimentação enviado nos
 				# registros do arquivo de retorno.
-				def equivalent_codigo_movimento_retorno
+				def equivalent_codigo_movimento_retorno_400
+					equivalent_codigo_movimento_retorno_240
+				end
+				def equivalent_codigo_movimento_retorno_240
 					{
+						'01'  => '01',  # Solicitação de Impressão de Títulos Confirmada
 						'02'  => '02',  # Entrada Confirmada
 						'03'  => '03',  # Entrada Rejeitada
 						'04'  => '04',  # Transferência de Carteira/Entrada
@@ -684,14 +727,19 @@ module BrBoleto
 						'07'  => '07',  # Confirmação do Recebimento da Instrução de Desconto
 						'08'  => '08',  # Confirmação do Recebimento do Cancelamento do Desconto
 						'09'  => '09',  # Baixa
+						'10'  => '10',  # Baixa Solicitada
 						'11'  => '11',  # Títulos em Carteira (Em Ser)
 						'12'  => '12',  # Confirmação Recebimento Instrução de Abatimento
 						'13'  => '13',  # Confirmação Recebimento Instrução de Cancelamento Abatimento
 						'14'  => '14',  # Confirmação Recebimento Instrução Alteração de Vencimento
 						'15'  => '15',  # Franco de Pagamento
+						'16'  => '16',  # Título Pago em Cheque – Vinculado
 						'17'  => '17',  # Liquidação Após Baixa ou Liquidação Título Não Registrado
+						'18'  => '18',  # Acerto de Depositária (sem motivo)
 						'19'  => '19',  # Confirmação Recebimento Instrução de Protesto
 						'20'  => '20',  # Confirmação Recebimento Instrução de Sustação/Cancelamento de Protesto
+						'21'  => '21',  # Acerto do Controle do Participante (sem motivo)
+						'22'  => '22',  # Título Com Pagamento Cancelado
 						'23'  => '23',  # Remessa a Cartório (Aponte em Cartório)
 						'24'  => '24',  # Retirada de Cartório e Manutenção em Carteira
 						'25'  => '25',  # Protestado e Baixado (Baixa por Ter Sido Protestado)
@@ -730,16 +778,30 @@ module BrBoleto
 						'60'  => '60',  # Confirmação do Pedido de Dispensa de Juros de Mora
 						'61'  => '61',  # Confirmação de Alteração do Valor Nominal do Título
 						'63'  => '63',  # Título Sustado Judicialmente
-
-						'01'  => '01',  # Solicitação de Impressão de Títulos Confirmada
+						'72'  => '72',  # Alteração de tipo de cobrança
 						'73'  => '73',  # Confirmação recebimento pedido de negativação
+						'74'  => '74',  # Confirmação Pedido de Exclusão de Negativação (com ou sem baixa)
 						'76'  => '76',  # Liquidação de boleto cooperativa emite e expede
 						'77'  => '77',  # Liquidação de boleto após baixa ou não registrado cooperativa emite e expede
 						'91'  => '91',  # Título em aberto não enviado ao pagador
 						'92'  => '92',  # Inconsistência Negativação Serasa
 						'93'  => '93',  # Inclusão Negativação via Serasa
 						'94'  => '94',  # Exclusão Negativação Serasa
+						'96'  => '96',  # Despesas de Protesto
+						'97'  => '97',  # Despesas de Sustação de Protesto
+						'98'  => '98',  # Débito de Custas Antecipadas
+						'99'  => '99',  # Rejeição do Título
 						'100' => '100', # Baixa Rejeitada
+						'101' => '101', # Liquidação Em Cartório
+						'102' => '102', # Liquidação por Conta/Parcial
+						'103' => '103', # Liquidação por Saldo
+						'104' => '104', # Título não existe
+						'105' => '105', # Aceite do pagador
+						'106' => '106', # Entrada rejeitada por CEP irregular
+						'107' => '107', # Tarifa De Manutenção De Títulos Vencidos
+						'120' => '120', # Débito em Conta
+						'121' => '121', # Dispensar Indexador
+						'122' => '122', # Confirmação de Instrução de Parâmetro de Pagamento Parcial
 						'135' => '135', # Confirmação de Inclusão Banco de Sacado
 						'136' => '136', # Confirmação de Alteração Banco de Sacado
 						'137' => '137', # Confirmação de Exclusão Banco de Sacado
@@ -749,7 +811,19 @@ module BrBoleto
 						'141' => '141', # Manutenção de Banco de Sacado Rejeitada
 						'144' => '144', # Estorno de Baixa / Liquidação
 						'145' => '145', # Alteração de Dados
-						'208' => '208', # Liquidação Em Cartório
+						'146' => '146', # Uso da Empresa Alterado
+						'147' => '147', # Prazo de Devolução Alterado
+						'148' => '148', # Alteração com reemissão de Boleto Confirmada
+						'149' => '149', # Alteração da opção de Protesto para Devolução Confirmada
+						'150' => '150', # Alteração da opção de Devolução para Protesto Confirmada
+						'151' => '151', # Baixa por Devolução 
+						'152' => '152', # Baixa por Protesto 
+						'153' => '153', # Estorno de Protesto 
+						'154' => '154', # Estorno de Sustação de Protesto 
+						'155' => '155', # Outras Tarifas de Alteração 
+						'156' => '156', # Tarifas Diversas 
+						'170' => '170', # Confirmação Receb.Inst.de Protesto Falimentar
+						'171' => '171', # Estorno de pagamento
 						'210' => '210', # Baixa Por Ter Sido Liquidado
 						'230' => '230', # Alteração/Exclusão De Dados Rejeitada 
 						'218' => '218', # Cobrança Contratual – Instruções/Alterações Rejeitadas/Pendentes
@@ -758,10 +832,9 @@ module BrBoleto
 						'226' => '226', # Tarifa De Aviso De Cobrança
 						'227' => '227', # Tarifa De Extrato Posição (B40X)
 						'228' => '228', # Tarifa De Relação Das Liquidações
-						'229' => '229', # Tarifa De Manutenção De Títulos Vencidos
+						'230' => '230', # Débito mensal de tarifas (para entradas e baixas)
 						'233' => '233', # Custas De Protesto
 						'234' => '234', # Custas De Sustação
-						'235' => '235', # Custas De Cartório Distribuidor
 						'236' => '236', # Custas De Edital
 						'237' => '237', # Tarifa De Emissão De Boleto/Tarifa De Envio De Duplicata
 						'238' => '238', # Tarifa De Instrução
@@ -782,10 +855,15 @@ module BrBoleto
 						'255' => '255', # Tarifa Mensal De Liquidações Em Bancos Correspondentes Na Carteira
 						'256' => '256', # Custas De Irregularidade
 						'257' => '257', # Instrução Cancelada
+						'259' => '259', # Baixa por crédito em C/C através do SISPAG
 						'260' => '260', # Entrada Rejeitada Carnê
 						'261' => '261', # Tarifa Emissão Aviso De Movimentação De Títulos (2154)
 						'262' => '262', # Débito Mensal De Tarifa – Aviso De Movimentação De Títulos (2154)
-						'263' => '263', # Título Sustado Judicialmente
+						'264' => '264', # Entrada Confirmada com Rateio de Crédito
+						'265' => '265', # Pagamento com cheque – aguardando compensação
+						'271' => '271', # Entrada registrada, aguardando avaliação
+						'272' => '272', # Baixa por crédito em c/c através do sispag sem título correspondente
+						'273' => '273', # Confirmação de entrada na cobrança simples – entrada não aceita na cobrança contratual
 						'274' => '274', # Instrução De Negativação Expressa Rejeitada
 						'275' => '275', # Confirma O Recebimento De Instrução De Entrada Em Negativação Expressa
 						'277' => '277', # Confirma O Recebimento De Instrução De Exclusão De Entrada Em Negativação Expressa
@@ -1203,57 +1281,57 @@ module BrBoleto
 			########################## CÓDIGO DE OCORRÊNCIA DO PAGADOR #############################
 				# Código de Ocorrência do Pagador :
 				# Códigos padrões da GEM
-					# 0101 = Pagador/Sacado alega que não recebeu a mercadoria 
-					# 0102 = Pagador/Sacado alega que a mercadoria chegou atrasada 
-					# 0103 = Pagador/Sacado alega que a mercadoria chegou avariada 
-					# 0104 = Pagador/Sacado alega que a mercadoria não confere com o pedido 
-					# 0105 = Pagador/Sacado alega que a mercadoria chegou incompleta 
-					# 0106 = Pagador/Sacado alega que a mercadoria está à disposição do cedente 
-					# 0107 = Pagador/Sacado alega que devolveu a mercadoria 
-					# 0108 = Pagador/Sacado alega que a mercadoria está em desacordo com a Nota Fiscal    
-					# 0109 = Pagador/Sacado alega que nada deve ou comprou
-					# 0201 = Pagador/Sacado alega que não recebeu a fatura 
-					# 0202 = Pagador/Sacado alega que o pedido de compra foi cancelado 
-					# 0203 = Pagador/Sacado alega que a duplicata foi cancelada 
-					# 0204 = Pagador/Sacado alega não ter recebido a mercadoria, nota fiscal, fatura 
-					# 0205 = Pagador/Sacado alega que a duplicata/fatura está incorreta 
-					# 0206 = Pagador/Sacado alega que o valor está incorreto 
-					# 0207 = Pagador/Sacado alega que o faturamento é indevido 
-					# 0208 = Pagador/Sacado alega que não localizou o pedido de compra 
-					# 0301 = Pagador/Sacado alega que o vencimento correto é: 
-					# 0302 = Pagador/Sacado solicita a prorrogação do vencimento para: 
-					# 0303 = Pagador/Sacado aceita se o vencimento prorrogado para: 
-					# 0304 = Pagador/Sacado alega que pagará o título em: 
-					# 0305 = Pagador/Sacado pagou o título diretamente ao cedente em: 
-					# 0306 = Pagador/Sacado pagará o título diretamente ao cedente em: 
-					# 0401 = Pagador/Sacado não foi localizado, confirmar endereço 
-					# 0402 = Pagador/Sacado mudou-se, transferiu de domicílio 
-					# 0403 = Pagador/Sacado não recebe no endereço indicado 
-					# 0404 = Pagador/Sacado desconhecido no local 
-					# 0405 = Pagador/Sacado reside fora do perímetro 
-					# 0406 = Pagador/Sacado com endereço incompleto 
+					# 0101 = Pagador alega que não recebeu a mercadoria 
+					# 0102 = Pagador alega que a mercadoria chegou atrasada 
+					# 0103 = Pagador alega que a mercadoria chegou avariada 
+					# 0104 = Pagador alega que a mercadoria não confere com o pedido 
+					# 0105 = Pagador alega que a mercadoria chegou incompleta 
+					# 0106 = Pagador alega que a mercadoria está à disposição do cedente 
+					# 0107 = Pagador alega que devolveu a mercadoria 
+					# 0108 = Pagador alega que a mercadoria está em desacordo com a Nota Fiscal    
+					# 0109 = Pagador alega que nada deve ou comprou
+					# 0201 = Pagador alega que não recebeu a fatura 
+					# 0202 = Pagador alega que o pedido de compra foi cancelado 
+					# 0203 = Pagador alega que a duplicata foi cancelada 
+					# 0204 = Pagador alega não ter recebido a mercadoria, nota fiscal, fatura 
+					# 0205 = Pagador alega que a duplicata/fatura está incorreta 
+					# 0206 = Pagador alega que o valor está incorreto 
+					# 0207 = Pagador alega que o faturamento é indevido 
+					# 0208 = Pagador alega que não localizou o pedido de compra 
+					# 0301 = Pagador alega que o vencimento correto é: 
+					# 0302 = Pagador solicita a prorrogação do vencimento para: 
+					# 0303 = Pagador aceita se o vencimento prorrogado para: 
+					# 0304 = Pagador alega que pagará o título em: 
+					# 0305 = Pagador pagou o título diretamente ao cedente em: 
+					# 0306 = Pagador pagará o título diretamente ao cedente em: 
+					# 0401 = Pagador não foi localizado, confirmar endereço 
+					# 0402 = Pagador mudou-se, transferiu de domicílio 
+					# 0403 = Pagador não recebe no endereço indicado 
+					# 0404 = Pagador desconhecido no local 
+					# 0405 = Pagador reside fora do perímetro 
+					# 0406 = Pagador com endereço incompleto 
 					# 0407 = Não foi localizado o número constante no endereço do título 
 					# 0408 = Endereço não localizado/não consta nos guias da cidade 
-					# 0409 = Endereço do Pagador/Sacado alterado para: 
-					# 0501 = Pagador/Sacado alega que tem desconto ou abatimento de: 
-					# 0502 = pagador/Sacado solicita desconto ou abatimento de:
-					# 0503 = Pagador/Sacado solicita dispensa dos juros de mora 
-					# 0504 = Pagador/Sacado se recusa a pagar juros 
-					# 0505 = Pagador/Sacado se recusa a pagar comissão de permanência 
-					# 0601 = Pagador/Sacado está em regime de concordata 
-					# 0602 = Pagador/Sacado está em regime de falência 
-					# 0603 = Pagador/Sacado alega que mantém entendimentos com Pagador/Sacado
-					# 0604 = Pagador/Sacado está em entendimentos com o cedente 
-					# 0605 = Pagador/Sacado está viajando 
-					# 0606 = Pagador/Sacado recusou-se a aceitar o título 
-					# 0607 = Pagador/Sacado sustou protesto judicialmente 
+					# 0409 = Endereço do Pagador alterado para: 
+					# 0501 = Pagador alega que tem desconto ou abatimento de: 
+					# 0502 = pagador solicita desconto ou abatimento de:
+					# 0503 = Pagador solicita dispensa dos juros de mora 
+					# 0504 = Pagador se recusa a pagar juros 
+					# 0505 = Pagador se recusa a pagar comissão de permanência 
+					# 0601 = Pagador está em regime de concordata 
+					# 0602 = Pagador está em regime de falência 
+					# 0603 = Pagador alega que mantém entendimentos com Pagador
+					# 0604 = Pagador está em entendimentos com o cedente 
+					# 0605 = Pagador está viajando 
+					# 0606 = Pagador recusou-se a aceitar o título 
+					# 0607 = Pagador sustou protesto judicialmente 
 					# 0608 = Empregado recusou-se a receber título 
-					# 0609 = Título reapresentado ao Pagador/Sacado 
+					# 0609 = Título reapresentado ao Pagador 
 					# 0610 = Estamos nos dirigindo ao nosso correspondente 
 					# 0611 = Correspondente não se interessa pelo protesto 
-					# 0612 = Pagador/Sacado não atende aos avisos de nossos correspondentes 
+					# 0612 = Pagador não atende aos avisos de nossos correspondentes 
 					# 0613 = Título está sendo encaminhado ao correspondente 
-					# 0614 = Entrega franco de pagamento ao Pagador/Sacado 
+					# 0614 = Entrega franco de pagamento ao Pagador 
 					# 0615 = Entrega franco de pagamento ao representante 
 					# 0616 = A entrega franco de pagamento é difícil 
 					# 0617 = Título recusado pelo cartório 
@@ -1261,8 +1339,7 @@ module BrBoleto
 				def get_codigo_ocorrencia_pagador(code)
 					equivalent_codigo_ocorrencia_pagador[code] || code
 				end
-				# Código adotado pela FEBRABAN para identificar o tipo de prazo a ser considerado para o protesto.
-				# O código '9' só sera aceito para código de movimento para remessa '31'
+				# Código adotado pela FEBRABAN para identificar o tipo de ocorrência do Pagador.
 				def equivalent_codigo_ocorrencia_pagador
 					{
 						'0101' => '0101', # Pagador alega que não recebeu a mercadoria 
@@ -1321,6 +1398,7 @@ module BrBoleto
 						'0617' => '0617', # Título recusado pelo cartório 
 					}
 				end
+
 		end
 	end
 end

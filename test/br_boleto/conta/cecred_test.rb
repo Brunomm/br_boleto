@@ -119,12 +119,12 @@ describe BrBoleto::Conta::Cecred do
 
 	describe "#get_codigo_movimento_retorno" do
 		context "CÓDIGOS para o Cecred" do
-			it { subject.get_codigo_movimento_retorno('76').must_equal '76' } # Liquidação de boleto cooperativa emite e expede
-			it { subject.get_codigo_movimento_retorno('77').must_equal '77' } # Liquidação de boleto após baixa ou não registrado cooperativa emite e expede
-			it { subject.get_codigo_movimento_retorno('91').must_equal '91' } # Título em aberto não enviado ao pagador
-			it { subject.get_codigo_movimento_retorno('92').must_equal '92' } # Inconsistência Negativação Serasa
-			it { subject.get_codigo_movimento_retorno('93').must_equal '93' } # Inclusão Negativação via Serasa
-			it { subject.get_codigo_movimento_retorno('94').must_equal '94' } # Exclusão Negativação Serasa
+			it { subject.get_codigo_movimento_retorno('76', 240).must_equal '76' } # Liquidação de boleto cooperativa emite e expede
+			it { subject.get_codigo_movimento_retorno('77', 240).must_equal '77' } # Liquidação de boleto após baixa ou não registrado cooperativa emite e expede
+			it { subject.get_codigo_movimento_retorno('91', 240).must_equal '91' } # Título em aberto não enviado ao pagador
+			it { subject.get_codigo_movimento_retorno('92', 240).must_equal '92' } # Inconsistência Negativação Serasa
+			it { subject.get_codigo_movimento_retorno('93', 240).must_equal '93' } # Inclusão Negativação via Serasa
+			it { subject.get_codigo_movimento_retorno('94', 240).must_equal '94' } # Exclusão Negativação Serasa
 		end
 	end
 

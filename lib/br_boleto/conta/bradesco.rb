@@ -116,8 +116,26 @@ module BrBoleto
 			end
 
 			# Código de Movimento Retorno 
-			def equivalent_codigo_movimento_retorno
+			def equivalent_codigo_movimento_retorno_240
 				super.merge({'73' => '73'}) # Confirmação recebimento pedido de negativação
+			end
+
+			# Identificações de Ocorrência / Código de ocorrência:
+			def equivalent_codigo_movimento_retorno_400
+				super.merge(
+					#  Padrão    Código para  
+					{# do Banco    a GEM
+						'15'   =>   '101',  # Liquidação em Cartório (sem motivo)
+						'24'   =>   '107',  # Entrada rejeitada por CEP Irregular
+						'25'   =>   '170',  # Confirmação Receb.Inst.de Protesto Falimentar
+						'27'   =>   '100',  # Baixa Rejeitada
+						'32'   =>   '26',   # Instrução Rejeitada
+						'33'   =>   '27',   # Confirmação Pedido Alteração Outros Dados (sem motivo)
+						'40'   =>   '171',  # Estorno de pagamento
+						'55'   =>   '63',   # Sustado judicial
+						'68'   =>   '33',   # Acerto dos dados do rateio de Crédito
+						'69'   =>   '34',   # Cancelamento dos dados do rateio
+					})
 			end
 		end
 	end

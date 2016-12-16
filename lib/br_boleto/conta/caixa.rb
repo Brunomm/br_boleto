@@ -115,11 +115,10 @@ module BrBoleto
 			end
 
 			# Código de Movimento Retorno 
-			def equivalent_codigo_movimento_retorno
+			def equivalent_codigo_movimento_retorno_240
 				super.merge(
 					#  Padrão    Código para  
 					{# do Banco    a GEM
-						'01'   =>   '01',      # Solicitação de Impressão de Títulos Confirmada
 						'35'   =>   '135',     # Confirmação de Inclusão Banco de Sacado
 						'36'   =>   '136',     # Confirmação de Alteração Banco de Sacado
 						'37'   =>   '137',     # Confirmação de Exclusão Banco de Sacado
@@ -205,6 +204,39 @@ module BrBoleto
 					'01'    =>   'D07',  # Liquidação em Dinheiro
 					'02'    =>   'D08',  # Liquidação em Cheque
 				}
+			end
+
+			# Identificações de Ocorrência / Código de ocorrência:
+			def equivalent_codigo_movimento_retorno_400
+				super.merge(
+					#  Padrão    Código para  
+					{# do Banco    a GEM
+						'01'   =>   '02',	  # Entrada Confirmada
+						'02'   =>   '09',	  # Baixa Manual Confirmada
+						'03'   =>   '12',	  # Abatimento Concedido
+						'04'   =>   '13',	  # Abatimento Cancelado
+						'05'   =>   '14',	  # Vencimento Alterado
+						'06'   =>   '146',  # Uso da Empresa Alterado
+						'08'   =>   '147',  # Prazo de Devolução Alterado
+						'09'   =>   '27',	  # Alteração Confirmada
+						'10'   =>   '148',  # Alteração com reemissão de Boleto Confirmada
+						'11'   =>   '149',  # Alteração da opção de Protesto para Devolução Confirmada
+						'12'   =>   '150',  # Alteração da opção de Devolução para Protesto Confirmada
+						'20'   =>   '11',	  # Em Ser
+						'21'   =>   '06',	  # Liquidação 
+						'22'   =>   '101',  # Liquidação em Cartório 
+						'23'   =>   '151',  # Baixa por Devolução 
+						'25'   =>   '152',  # Baixa por Protesto 
+						'26'   =>   '23',   # Título enviado para Cartório 
+						'27'   =>   '20',	  # Sustação de Protesto 
+						'28'   =>   '153',  # Estorno de Protesto 
+						'29'   =>   '154',  # Estorno de Sustação de Protesto 
+						'30'   =>   '61',	  # Alteração de Título 
+						'31'   =>   '108',  # Tarifa sobre Título Vencido 
+						'32'   =>   '155',  # Outras Tarifas de Alteração 
+						'33'   =>   '144',  # Estorno de Baixa / Liquidação 
+						'34'   =>   '156',  # Tarifas Diversas 
+					})
 			end
 		end
 	end

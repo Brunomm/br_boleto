@@ -212,4 +212,31 @@ describe BrBoleto::Conta::BancoBrasil do
 		end
 	end
 
+	describe "#get_codigo_movimento_retorno" do
+		context "CÓDIGOS para o cnab 400 do Banco do Brasil" do
+			it { subject.get_codigo_movimento_retorno('05', 400).must_equal '17' }   # Liquidado sem registro (carteira 17=tipo4)
+			it { subject.get_codigo_movimento_retorno('07', 400).must_equal '102' }  # Liquidação por Conta/Parcial
+			it { subject.get_codigo_movimento_retorno('08', 400).must_equal '103' }  # Liquidação por Saldo
+			it { subject.get_codigo_movimento_retorno('15', 400).must_equal '101' }  # Liquidação em Cartório
+			it { subject.get_codigo_movimento_retorno('16', 400).must_equal '57' }   # Confirmação de alteração de juros de mora
+			it { subject.get_codigo_movimento_retorno('20', 400).must_equal '120' }  # Débito em Conta
+			it { subject.get_codigo_movimento_retorno('21', 400).must_equal '43' }   # Alteração do Nome do Sacado
+			it { subject.get_codigo_movimento_retorno('22', 400).must_equal '43' }   # Alteração do Endereço do Sacado
+			it { subject.get_codigo_movimento_retorno('24', 400).must_equal '20' }   # Sustar Protesto
+			it { subject.get_codigo_movimento_retorno('25', 400).must_equal '60' }   # Dispensar Juros de mora
+			it { subject.get_codigo_movimento_retorno('26', 400).must_equal '40' }   # Alteração do número do título dado pelo Cedente (Seu número) – 10 e 15posições
+			it { subject.get_codigo_movimento_retorno('28', 400).must_equal '108' }  # Manutenção de titulo vencido
+			it { subject.get_codigo_movimento_retorno('31', 400).must_equal '07' }   # Conceder desconto
+			it { subject.get_codigo_movimento_retorno('32', 400).must_equal '08' }   # Não conceder desconto
+			it { subject.get_codigo_movimento_retorno('33', 400).must_equal '58' }   # Retificar desconto
+			it { subject.get_codigo_movimento_retorno('34', 400).must_equal '58' }   # Alterar data para desconto
+			it { subject.get_codigo_movimento_retorno('35', 400).must_equal '56' }   # Cobrar Multa
+			it { subject.get_codigo_movimento_retorno('36', 400).must_equal '55' }   # Dispensar Multa
+			it { subject.get_codigo_movimento_retorno('37', 400).must_equal '121' }  # Dispensar Indexador
+			it { subject.get_codigo_movimento_retorno('38', 400).must_equal '39' }   # Dispensar prazo limite para recebimento
+			it { subject.get_codigo_movimento_retorno('39', 400).must_equal '38' }   # Alterar prazo limite para recebimento
+			it { subject.get_codigo_movimento_retorno('46', 400).must_equal '45' }   # Título pago com cheque, aguardando compensação
+			it { subject.get_codigo_movimento_retorno('73', 400).must_equal '123' }  # Confirmação de Instrução de Parâmetro de Pagamento Parcial
+		end
+	end
 end

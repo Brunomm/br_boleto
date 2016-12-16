@@ -15,6 +15,7 @@ module BrBoleto
 						parcela:                       75..76,
 						modalidade:                    107..108,
 						carteira:                      108,
+						codigo_ocorrencia_retorno:     109..110,
 						data_ocorrencia:               111..116,
 						data_ocorrencia_sacado:        111..116,
 						numero_documento:              117..131,

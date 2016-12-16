@@ -219,4 +219,19 @@ describe BrBoleto::Conta::Santander do
 		end
 	end
 
+	describe "#get_codigo_movimento_retorno" do
+		context "CÓDIGOS para o Santander CNAB 400" do
+			it { subject.get_codigo_movimento_retorno('01', 400).must_equal '104' } # título não existe
+			it { subject.get_codigo_movimento_retorno('07', 400).must_equal '102' } # liquidação por conta
+			it { subject.get_codigo_movimento_retorno('08', 400).must_equal '103' } # liquidação por saldo
+			it { subject.get_codigo_movimento_retorno('15', 400).must_equal '23' } # Enviado para Cartório
+			it { subject.get_codigo_movimento_retorno('16', 400).must_equal '25' }  # tít. já baixado/liquidado
+			it { subject.get_codigo_movimento_retorno('17', 400).must_equal '101' } # liquidado em cartório
+			it { subject.get_codigo_movimento_retorno('21', 400).must_equal '23' }  # Entrada em Cartório
+			it { subject.get_codigo_movimento_retorno('22', 400).must_equal '24' }  # Retirado de cartório
+			it { subject.get_codigo_movimento_retorno('24', 400).must_equal '235' } # Custas de Cartório
+			it { subject.get_codigo_movimento_retorno('25', 400).must_equal '19' }  # Protestar Título
+			it { subject.get_codigo_movimento_retorno('26', 400).must_equal '20' }  # Sustar Protestonhado a Protesto: Identifica o recebimento da instrução de protesto
+		end
+	end
 end
