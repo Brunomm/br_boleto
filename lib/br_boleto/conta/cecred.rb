@@ -76,10 +76,10 @@ module BrBoleto
 			end
 
 			# Código do Motivo da ocorrência :
-			def codigos_movimento_retorno_para_ocorrencia_D 
+			def codigos_movimento_retorno_para_ocorrencia_D_240
 				%w[91 93 94]
 			end
-			def equivalent_codigo_motivo_ocorrencia_D codigo_movimento_gem
+			def equivalent_codigo_motivo_ocorrencia_D_240 codigo_movimento_gem
 				#  Código     Padrão para  
 				{# do Banco     a Gem
 					'P1'    =>   'A114',  # Enviado Cooperativa Emite e Expede

@@ -45,9 +45,9 @@ describe BrBoleto::Retorno::Cnab400::Itau do
 			pagamento.sacado_tipo_documento.must_be_nil
 			pagamento.sacado_nome.must_equal               '' 
 			pagamento.numero_contrato.must_be_nil
-			pagamento.motivo_ocorrencia_original_1.must_be_nil
-			pagamento.motivo_ocorrencia_original_2.must_be_nil
-			pagamento.motivo_ocorrencia_original_3.must_be_nil
+			pagamento.motivo_ocorrencia_original_1.must_equal 'B5'
+			pagamento.motivo_ocorrencia_original_2.must_equal '0000'
+			pagamento.motivo_ocorrencia_original_3.must_equal ''
 			pagamento.motivo_ocorrencia_original_4.must_be_nil
 			pagamento.motivo_ocorrencia_original_5.must_be_nil
 			pagamento.complemento_ocorrencia_sacado.must_be_nil
@@ -94,9 +94,9 @@ describe BrBoleto::Retorno::Cnab400::Itau do
 			pagamento.sacado_tipo_documento.must_be_nil
 			pagamento.sacado_nome.must_equal               'MIRCALO TIADORO' 
 			pagamento.numero_contrato.must_be_nil
-			pagamento.motivo_ocorrencia_original_1.must_be_nil
-			pagamento.motivo_ocorrencia_original_2.must_be_nil
-			pagamento.motivo_ocorrencia_original_3.must_be_nil
+			pagamento.motivo_ocorrencia_original_1.must_equal ''
+			pagamento.motivo_ocorrencia_original_2.must_equal '0000'
+			pagamento.motivo_ocorrencia_original_3.must_equal ''
 			pagamento.motivo_ocorrencia_original_4.must_be_nil
 			pagamento.motivo_ocorrencia_original_5.must_be_nil
 			pagamento.complemento_ocorrencia_sacado.must_be_nil

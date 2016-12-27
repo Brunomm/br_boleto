@@ -36,6 +36,10 @@ module BrBoleto
 						valor_outros_creditos:                        280..292,
 						data_credito:                                 296..301,
 						sacado_nome:                                  302..337,
+
+						motivo_ocorrencia_original_1:                 137..139,
+						motivo_ocorrencia_original_2:                 140..142,
+						motivo_ocorrencia_original_3:                 143..145,
 					}
 				end
 			end

@@ -184,8 +184,64 @@ describe BrBoleto::Conta::Sicredi do
 	end
 
 	describe "#get_codigo_motivo_ocorrencia" do
-		context "CÓDIGOS para o Sicredi" do
-			it { subject.get_codigo_motivo_ocorrencia('01', '27').must_equal 'D01' } # Alteração de carteira
+		context "CÓDIGOS motivo ocorrência D para o Sicredi CNAB 240" do
+			it { subject.get_codigo_motivo_ocorrencia('01', '27', 240).must_equal 'D01' }  # Alteração de carteira
+		end
+		context "CÓDIGOS motivo ocorrência A para o Sicredi CNAB 400" do
+			it { subject.get_codigo_motivo_ocorrencia('01', '02', 400).must_equal 'A01' }  # Código do banco inválido
+			it { subject.get_codigo_motivo_ocorrencia('02', '03', 400).must_equal 'A02' }  # Código do registro detalhe inválido
+			it { subject.get_codigo_motivo_ocorrencia('03', '26', 400).must_equal 'A05' }  # Código da ocorrência inválido
+			it { subject.get_codigo_motivo_ocorrencia('04', '30', 400).must_equal 'A04' }  # Código de ocorrência não permitida para a carteira
+			it { subject.get_codigo_motivo_ocorrencia('05', '02', 400).must_equal 'A05' }  # Código de ocorrência não numérico
+			it { subject.get_codigo_motivo_ocorrencia('07', '03', 400).must_equal 'A07' }  # Cooperativa/agência/conta/dígito inválidos
+			it { subject.get_codigo_motivo_ocorrencia('08', '26', 400).must_equal 'A08' }  # Nosso número inválido
+			it { subject.get_codigo_motivo_ocorrencia('09', '30', 400).must_equal 'A09' }  # Nosso número duplicado
+			it { subject.get_codigo_motivo_ocorrencia('10', '02', 400).must_equal 'A10' }  # Carteira inválida
+			it { subject.get_codigo_motivo_ocorrencia('15', '03', 400).must_equal 'A07' }  # Cooperativa/carteira/agência/conta/nosso número inválidos
+			it { subject.get_codigo_motivo_ocorrencia('16', '26', 400).must_equal 'A16' }  # Data de vencimento inválida
+			it { subject.get_codigo_motivo_ocorrencia('17', '30', 400).must_equal 'A17' }  # Data de vencimento anterior à data de emissão
+			it { subject.get_codigo_motivo_ocorrencia('18', '02', 400).must_equal 'A18' }  # Vencimento fora do prazo de operação
+			it { subject.get_codigo_motivo_ocorrencia('20', '03', 400).must_equal 'A20' }  # Valor do título inválido
+			it { subject.get_codigo_motivo_ocorrencia('21', '26', 400).must_equal 'A21' }  # Espécie do título inválida
+			it { subject.get_codigo_motivo_ocorrencia('22', '30', 400).must_equal 'A22' }  # Espécie não permitida para a carteira
+			it { subject.get_codigo_motivo_ocorrencia('24', '02', 400).must_equal 'A24' }  # Data de emissão inválida
+			it { subject.get_codigo_motivo_ocorrencia('29', '03', 400).must_equal 'A29' }  # Valor do desconto maior/igual ao valor do título
+			it { subject.get_codigo_motivo_ocorrencia('31', '26', 400).must_equal 'A31' }  # Concessão de desconto - existe desconto anterior
+			it { subject.get_codigo_motivo_ocorrencia('33', '30', 400).must_equal 'A33' }  # Valor do abatimento inválido
+			it { subject.get_codigo_motivo_ocorrencia('34', '02', 400).must_equal 'A34' }  # Valor do abatimento maior/igual ao valor do título
+			it { subject.get_codigo_motivo_ocorrencia('36', '03', 400).must_equal 'A36' }  # Concessão de abatimento - existe abatimento anterior
+			it { subject.get_codigo_motivo_ocorrencia('38', '26', 400).must_equal 'A38' }  # Prazo para protesto inválido
+			it { subject.get_codigo_motivo_ocorrencia('39', '30', 400).must_equal 'A39' }  # Pedido para protesto não permitido para o título
+			it { subject.get_codigo_motivo_ocorrencia('40', '02', 400).must_equal 'A40' }  # Título com ordem de protesto emitida
+			it { subject.get_codigo_motivo_ocorrencia('41', '03', 400).must_equal 'A41' }  # Pedido cancelamento/sustação sem instrução de protesto
+			it { subject.get_codigo_motivo_ocorrencia('44', '26', 400).must_equal 'A209' } # Cooperativa de crédito/agência beneficiária não prevista
+			it { subject.get_codigo_motivo_ocorrencia('45', '30', 400).must_equal 'A45' }  # Nome do pagador inválido
+			it { subject.get_codigo_motivo_ocorrencia('46', '02', 400).must_equal 'A46' }  # Tipo/número de inscrição do pagador inválidos
+			it { subject.get_codigo_motivo_ocorrencia('47', '03', 400).must_equal 'A47' }  # Endereço do pagador não informado
+			it { subject.get_codigo_motivo_ocorrencia('48', '26', 400).must_equal 'A48' }  # CEP irregular
+			it { subject.get_codigo_motivo_ocorrencia('49', '30', 400).must_equal 'A46' }  # Número de Inscrição do pagador/avalista inválido
+			it { subject.get_codigo_motivo_ocorrencia('50', '02', 400).must_equal 'A54' }  # Pagador/avalista não informado
+			it { subject.get_codigo_motivo_ocorrencia('60', '03', 400).must_equal 'A60' }  # Movimento para título não cadastrado
+			it { subject.get_codigo_motivo_ocorrencia('63', '26', 400).must_equal 'A63' }  # Entrada para título já cadastrado
+			it { subject.get_codigo_motivo_ocorrencia('A6', '30', 400).must_equal 'A244' } # Data da instrução/ocorrência inválida
+			it { subject.get_codigo_motivo_ocorrencia('B4', '02', 400).must_equal 'A44' }  # Tipo de moeda inválido
+			it { subject.get_codigo_motivo_ocorrencia('B5', '03', 400).must_equal 'A28' }  # Tipo de desconto/juros inválido
+			it { subject.get_codigo_motivo_ocorrencia('B7', '26', 400).must_equal 'A86' }  # Seu número inválido
+			it { subject.get_codigo_motivo_ocorrencia('B8', '30', 400).must_equal 'A59' }  # Percentual de multa inválido
+			it { subject.get_codigo_motivo_ocorrencia('B9', '02', 400).must_equal 'A27' }  # Valor ou percentual de juros inválido
+			it { subject.get_codigo_motivo_ocorrencia('C2', '03', 400).must_equal 'A23' }  # Aceite do título inválido
+			it { subject.get_codigo_motivo_ocorrencia('C6', '26', 400).must_equal 'A325' } # Título já liquidado
+			it { subject.get_codigo_motivo_ocorrencia('C7', '30', 400).must_equal 'A325' } # Título já baixado
+			it { subject.get_codigo_motivo_ocorrencia('H4', '02', 400).must_equal 'D01' }  # Alteração de carteira
+		end
+		context "CÓDIGOS motivo ocorrência B para o Sicredi CNAB 400" do
+			it { subject.get_codigo_motivo_ocorrencia('03', '28', 400).must_equal 'B03'}   # Tarifa de sustação
+			it { subject.get_codigo_motivo_ocorrencia('04', '28', 400).must_equal 'B04'}   # Tarifa de protesto
+			it { subject.get_codigo_motivo_ocorrencia('08', '28', 400).must_equal 'B08'}   # Tarifa de custas de protesto
+			it { subject.get_codigo_motivo_ocorrencia('A9', '28', 400).must_equal 'B02'}   # Tarifa de manutenção de título vencido
+			it { subject.get_codigo_motivo_ocorrencia('B1', '28', 400).must_equal 'B122'}  # Tarifa de baixa da carteira
+			it { subject.get_codigo_motivo_ocorrencia('B3', '28', 400).must_equal 'B123'}  # Tarifa de registro de entrada do título
+			it { subject.get_codigo_motivo_ocorrencia('F5', '28', 400).must_equal 'B124'}  # Tarifa de entrada na rede Sicredi
 		end
 	end
 

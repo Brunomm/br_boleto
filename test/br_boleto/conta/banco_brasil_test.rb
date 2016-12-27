@@ -207,8 +207,127 @@ describe BrBoleto::Conta::BancoBrasil do
 	end
 
 	describe "#get_codigo_motivo_ocorrencia" do
-		context "CÓDIGOS motivo ocorrencia do Banco do Brasil" do
-			it { subject.get_codigo_motivo_ocorrencia('52', '02').must_equal 'A104' } # Registro Rejeitado – Título já Liquidado
+		context "CÓDIGOS motivo ocorrencia do Banco do Brasil para CNAB 240" do
+			it { subject.get_codigo_motivo_ocorrencia('52', '02', 240).must_equal 'A104' } # Registro Rejeitado – Título já Liquidado
+		end
+
+		context "CÓDIGOS motivo ocorrencia do Banco do Brasil para CNAB 400 com Código de Movimento 02" do
+			it { subject.get_codigo_motivo_ocorrencia('00', '02', 400).must_equal 'A207' } # Entrada Por meio magnético
+			it { subject.get_codigo_motivo_ocorrencia('11', '02', 400).must_equal 'A151' } # Entrada Por via convencional
+			it { subject.get_codigo_motivo_ocorrencia('16', '02', 400).must_equal 'A152' } # Entrada Por alteração do código do cedente
+			it { subject.get_codigo_motivo_ocorrencia('17', '02', 400).must_equal 'A153' } # Entrada Por alteração da variação
+			it { subject.get_codigo_motivo_ocorrencia('18', '02', 400).must_equal 'A154' } # Entrada Por alteração da carteira
+		end
+
+		context "CÓDIGOS motivo ocorrencia do Banco do Brasil para CNAB 400 com Código de Movimento 03" do
+			it { subject.get_codigo_motivo_ocorrencia('03', '03', 400).must_equal 'A27'  } # valor dos juros por um dia inválido
+			it { subject.get_codigo_motivo_ocorrencia('04', '03', 400).must_equal 'A29'  } # valor do desconto inválido
+			it { subject.get_codigo_motivo_ocorrencia('05', '03', 400).must_equal 'A22'  } # espécie de título inválida para carteira/variação
+			it { subject.get_codigo_motivo_ocorrencia('07', '03', 400).must_equal 'A07'  } # Prefixo da agência usuária inválido
+			it { subject.get_codigo_motivo_ocorrencia('08', '03', 400).must_equal 'A20'  } # valor do título/apólice inválido
+			it { subject.get_codigo_motivo_ocorrencia('09', '03', 400).must_equal 'A16'  } # data de vencimento inválida
+			it { subject.get_codigo_motivo_ocorrencia('16', '03', 400).must_equal 'A11'  } # Título preenchido de forma irregular
+			it { subject.get_codigo_motivo_ocorrencia('19', '03', 400).must_equal 'A105' } # Código do cedente inválido
+			it { subject.get_codigo_motivo_ocorrencia('20', '03', 400).must_equal 'A45'  } # Nome/endereço do cliente não informado (ECT)
+			it { subject.get_codigo_motivo_ocorrencia('21', '03', 400).must_equal 'A10'  } # Carteira inválida
+			it { subject.get_codigo_motivo_ocorrencia('24', '03', 400).must_equal 'A33'  } # Valor do abatimento inválido
+			it { subject.get_codigo_motivo_ocorrencia('25', '03', 400).must_equal 'A86'  } # Novo número do título dado pelo cedente inválido (Seu número)
+			it { subject.get_codigo_motivo_ocorrencia('26', '03', 400).must_equal 'A32'  } # Valor do IOF de seguro inválido
+			it { subject.get_codigo_motivo_ocorrencia('29', '03', 400).must_equal 'A47'  } # Endereço não informado
+			it { subject.get_codigo_motivo_ocorrencia('30', '03', 400).must_equal 'A104' } # Registro de título já liquidado (carteira 17-tipo 4)
+			it { subject.get_codigo_motivo_ocorrencia('33', '03', 400).must_equal 'A09'  } # Nosso número já existente
+			it { subject.get_codigo_motivo_ocorrencia('37', '03', 400).must_equal 'A24'  } # Data de emissão do título inválida
+			it { subject.get_codigo_motivo_ocorrencia('38', '03', 400).must_equal 'A25'  } # Data do vencimento anterior à data da emissão do título
+			it { subject.get_codigo_motivo_ocorrencia('39', '03', 400).must_equal 'A04'  } # Comando de alteração indevido para a carteira
+			it { subject.get_codigo_motivo_ocorrencia('41', '03', 400).must_equal 'A36'  } # Abatimento não permitido
+			it { subject.get_codigo_motivo_ocorrencia('42', '03', 400).must_equal 'A51'  } # CEP/UF inválido/não compatíveis (ECT)
+			it { subject.get_codigo_motivo_ocorrencia('46', '03', 400).must_equal 'A105' } # Convenio encerrado
+			it { subject.get_codigo_motivo_ocorrencia('49', '03', 400).must_equal 'A107' } # Abatimento a cancelar não consta do título
+			it { subject.get_codigo_motivo_ocorrencia('52', '03', 400).must_equal 'A34'  } # Abatimento igual ou maior que o valor do Título
+			it { subject.get_codigo_motivo_ocorrencia('66', '03', 400).must_equal 'A53'  } # Número do documento do sacado (CNPJ/CPF) inválido
+			it { subject.get_codigo_motivo_ocorrencia('69', '03', 400).must_equal 'A59'  } # Valor/Percentual de Juros Inválido
+			it { subject.get_codigo_motivo_ocorrencia('75', '03', 400).must_equal 'A97'  } # Qtde. de dias do prazo limite p/ recebimento de título vencido inválido
+			it { subject.get_codigo_motivo_ocorrencia('80', '03', 400).must_equal 'A08'  } # Nosso numero inválido
+			it { subject.get_codigo_motivo_ocorrencia('81', '03', 400).must_equal 'A80'  } # Data para concessão do desconto inválida.
+			it { subject.get_codigo_motivo_ocorrencia('82', '03', 400).must_equal 'A48'  } # CEP do sacado inválido
+			it { subject.get_codigo_motivo_ocorrencia('01', '03', 400).must_equal 'A155'  } # identificação inválida
+			it { subject.get_codigo_motivo_ocorrencia('02', '03', 400).must_equal 'A156'  } # variação da carteira inválida
+			it { subject.get_codigo_motivo_ocorrencia('06', '03', 400).must_equal 'A157'  } # espécie de valor invariável inválido
+			it { subject.get_codigo_motivo_ocorrencia('10', '03', 400).must_equal 'A158'  } # fora do prazo/só admissível na carteira
+			it { subject.get_codigo_motivo_ocorrencia('11', '03', 400).must_equal 'A159'  } # inexistência de margem para desconto
+			it { subject.get_codigo_motivo_ocorrencia('12', '03', 400).must_equal 'A160'  } # o banco não tem agência na praça do sacado
+			it { subject.get_codigo_motivo_ocorrencia('13', '03', 400).must_equal 'A161'  } # razões cadastrais
+			it { subject.get_codigo_motivo_ocorrencia('14', '03', 400).must_equal 'A162'  } # sacado interligado com o sacador (só admissível em cobrança simples- cart. 11 e 17)
+			it { subject.get_codigo_motivo_ocorrencia('15', '03', 400).must_equal 'A163'  } # Título sacado contra órgão do Poder Público (só admissível na carteira 11 e sem ordem de protesto)
+			it { subject.get_codigo_motivo_ocorrencia('17', '03', 400).must_equal 'A164'  } # Título rasurado
+			it { subject.get_codigo_motivo_ocorrencia('18', '03', 400).must_equal 'A165'  } # Endereço do sacado não localizado ou incompleto
+			it { subject.get_codigo_motivo_ocorrencia('22', '03', 400).must_equal 'A166'  } # Quantidade de valor variável inválida
+			it { subject.get_codigo_motivo_ocorrencia('23', '03', 400).must_equal 'A167'  } # Faixa nosso-numero excedida
+			it { subject.get_codigo_motivo_ocorrencia('27', '03', 400).must_equal 'A168'  } # Nome do sacado/cedente inválido
+			it { subject.get_codigo_motivo_ocorrencia('28', '03', 400).must_equal 'A169'  } # Data do novo vencimento inválida
+			it { subject.get_codigo_motivo_ocorrencia('31', '03', 400).must_equal 'A170'  } # Numero do borderô inválido
+			it { subject.get_codigo_motivo_ocorrencia('32', '03', 400).must_equal 'A171'  } # Nome da pessoa autorizada inválido
+			it { subject.get_codigo_motivo_ocorrencia('34', '03', 400).must_equal 'A172'  } # Numero da prestação do contrato inválido
+			it { subject.get_codigo_motivo_ocorrencia('35', '03', 400).must_equal 'A173'  } # percentual de desconto inválido
+			it { subject.get_codigo_motivo_ocorrencia('36', '03', 400).must_equal 'A174'  } # Dias para fichamento de protesto inválido
+			it { subject.get_codigo_motivo_ocorrencia('40', '03', 400).must_equal 'A175'  } # Tipo de moeda inválido
+			it { subject.get_codigo_motivo_ocorrencia('43', '03', 400).must_equal 'A176'  } # Código de unidade variável incompatível com a data de emissão do título
+			it { subject.get_codigo_motivo_ocorrencia('44', '03', 400).must_equal 'A177'  } # Dados para débito ao sacado inválidos
+			it { subject.get_codigo_motivo_ocorrencia('45', '03', 400).must_equal 'A178'  } # Carteira/variação encerrada
+			it { subject.get_codigo_motivo_ocorrencia('47', '03', 400).must_equal 'A179'  } # Título tem valor diverso do informado
+			it { subject.get_codigo_motivo_ocorrencia('48', '03', 400).must_equal 'A180'  } # Motivo de baixa invalido para a carteira
+			it { subject.get_codigo_motivo_ocorrencia('50', '03', 400).must_equal 'A181'  } # Comando incompatível com a carteira
+			it { subject.get_codigo_motivo_ocorrencia('51', '03', 400).must_equal 'A182'  } # Código do convenente invalido
+			it { subject.get_codigo_motivo_ocorrencia('53', '03', 400).must_equal 'A183'  } # Título já se encontra na situação pretendida
+			it { subject.get_codigo_motivo_ocorrencia('54', '03', 400).must_equal 'A184'  } # Título fora do prazo admitido para a conta 1
+			it { subject.get_codigo_motivo_ocorrencia('55', '03', 400).must_equal 'A185'  } # Novo vencimento fora dos limites da carteira
+			it { subject.get_codigo_motivo_ocorrencia('56', '03', 400).must_equal 'A186'  } # Título não pertence ao convenente
+			it { subject.get_codigo_motivo_ocorrencia('57', '03', 400).must_equal 'A187'  } # Variação incompatível com a carteira
+			it { subject.get_codigo_motivo_ocorrencia('58', '03', 400).must_equal 'A188'  } # Impossível a variação única para a carteira indicada
+			it { subject.get_codigo_motivo_ocorrencia('59', '03', 400).must_equal 'A189'  } # Título vencido em transferência para a carteira 51
+			it { subject.get_codigo_motivo_ocorrencia('60', '03', 400).must_equal 'A190'  } # Título com prazo superior a 179 dias em variação única para carteira 51
+			it { subject.get_codigo_motivo_ocorrencia('61', '03', 400).must_equal 'A191'  } # Título já foi fichado para protesto
+			it { subject.get_codigo_motivo_ocorrencia('62', '03', 400).must_equal 'A192'  } # Alteração da situação de débito inválida para o código de responsabilidade
+			it { subject.get_codigo_motivo_ocorrencia('63', '03', 400).must_equal 'A193'  } # DV do nosso número inválido
+			it { subject.get_codigo_motivo_ocorrencia('64', '03', 400).must_equal 'A194'  } # Título não passível de débito/baixa – situação anormal
+			it { subject.get_codigo_motivo_ocorrencia('65', '03', 400).must_equal 'A195'  } # Título com ordem de não protestar – não pode ser encaminhado a cartório
+			it { subject.get_codigo_motivo_ocorrencia('67', '03', 400).must_equal 'A196'  } # Título/carne rejeitado
+			it { subject.get_codigo_motivo_ocorrencia('70', '03', 400).must_equal 'A197'  } # Título já se encontra isento de juros
+			it { subject.get_codigo_motivo_ocorrencia('71', '03', 400).must_equal 'A198'  } # Código de Juros Inválido
+			it { subject.get_codigo_motivo_ocorrencia('72', '03', 400).must_equal 'A199'  } # Prefixo da Ag. cobradora inválido
+			it { subject.get_codigo_motivo_ocorrencia('73', '03', 400).must_equal 'A200'  } # Numero do controle do participante inválido
+			it { subject.get_codigo_motivo_ocorrencia('74', '03', 400).must_equal 'A201'  } # Cliente não cadastrado no CIOPE (Desconto/Vendor)
+			it { subject.get_codigo_motivo_ocorrencia('76', '03', 400).must_equal 'A202'  } # Título excluído automaticamente por decurso de prazo CIOPE (Desconto/Vendor)
+			it { subject.get_codigo_motivo_ocorrencia('77', '03', 400).must_equal 'A203'  } # Título vencido transferido para a conta 1 – Carteira vinculada
+			it { subject.get_codigo_motivo_ocorrencia('83', '03', 400).must_equal 'A204'  } # Carteira/variação não localizada no cedente
+			it { subject.get_codigo_motivo_ocorrencia('84', '03', 400).must_equal 'A205'  } # Título não localizado na existência/Baixado por protesto
+			it { subject.get_codigo_motivo_ocorrencia('85', '03', 400).must_equal 'A206'  } # Recusa do Comando “41” – Parâmetro de Liquidação Parcial.
+			it { subject.get_codigo_motivo_ocorrencia('99', '03', 400).must_equal 'A999'  } # Outros motivos
+		end
+
+		context "CÓDIGOS motivo ocorrencia C do Banco do Brasil para CNAB 400" do
+			it { subject.get_codigo_motivo_ocorrencia('01', '06', 400).must_equal 'C103' }   # Liquidação normal
+			it { subject.get_codigo_motivo_ocorrencia('02', '09', 400).must_equal 'C104' }   # Liquidação parcial
+			it { subject.get_codigo_motivo_ocorrencia('03', '10', 400).must_equal 'C01' }    # Liquidação por saldo
+			it { subject.get_codigo_motivo_ocorrencia('04', '17', 400).must_equal 'C105' }   # Liquidação com cheque a compensar
+			it { subject.get_codigo_motivo_ocorrencia('05', '45', 400).must_equal 'C106' }   # Liquidação de título sem registro (carteira 7 tipo 4)
+			it { subject.get_codigo_motivo_ocorrencia('07', '102', 400).must_equal 'C107' }   # Liquidação na apresentação
+			it { subject.get_codigo_motivo_ocorrencia('09', '103', 400).must_equal 'C08' }    # Liquidação em cartório
+			it { subject.get_codigo_motivo_ocorrencia('10', '101', 400).must_equal 'C110' }   # Liquidação Parcial com Cheque a Compensar
+			it { subject.get_codigo_motivo_ocorrencia('11', '120', 400).must_equal 'C111' }   # Liquidação por Saldo com Cheque a Compensar
+			it { subject.get_codigo_motivo_ocorrencia('00', '06', 400).must_equal 'C10' }   # Solicitada pelo cliente
+			it { subject.get_codigo_motivo_ocorrencia('15', '09', 400).must_equal 'C14' }   # Protestado
+			it { subject.get_codigo_motivo_ocorrencia('18', '10', 400).must_equal 'C118' }  # Por alteração da carteira
+			it { subject.get_codigo_motivo_ocorrencia('19', '17', 400).must_equal 'C119' }  # Débito automático
+			it { subject.get_codigo_motivo_ocorrencia('31', '101', 400).must_equal 'C131' }  # Liquidado anteriormente
+			it { subject.get_codigo_motivo_ocorrencia('32', '102', 400).must_equal 'C132' }  # Habilitado em processo
+			it { subject.get_codigo_motivo_ocorrencia('33', '103', 400).must_equal 'C133' }  # Incobrável por nosso intermédio
+			it { subject.get_codigo_motivo_ocorrencia('34', '45', 400).must_equal 'C134' }  # Transferido para créditos em liquidação
+			it { subject.get_codigo_motivo_ocorrencia('46', '17', 400).must_equal 'C46' }   # Por alteração da variação
+			it { subject.get_codigo_motivo_ocorrencia('47', '09', 400).must_equal 'C47' }   # Por alteração da variação
+			it { subject.get_codigo_motivo_ocorrencia('51', '06', 400).must_equal 'C51' }   # Acerto
+			it { subject.get_codigo_motivo_ocorrencia('90', '10', 400).must_equal 'C90' }   # Baixa automática
+
 		end
 	end
 
@@ -239,4 +358,9 @@ describe BrBoleto::Conta::BancoBrasil do
 			it { subject.get_codigo_movimento_retorno('73', 400).must_equal '123' }  # Confirmação de Instrução de Parâmetro de Pagamento Parcial
 		end
 	end
+
+		context "CÓDIGOS motivo ocorrencia do Banco do Brasil para CNAB 400 com Código de Movimento 72" do
+			it { subject.get_codigo_motivo_ocorrencia('00', '72', 400).must_equal 'D00'  } # Transferência de título de cobrança simples para descontada ou vice-versa
+			it { subject.get_codigo_motivo_ocorrencia('52', '72', 400).must_equal 'D52' }  # Reembolso de título vendor ou descontado, quando ocorrerem reembolsos de títulos por falta de liquidação. Não há migração de carteira descontada para simples.
+		end
 end

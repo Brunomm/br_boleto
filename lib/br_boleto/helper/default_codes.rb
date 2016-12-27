@@ -825,7 +825,6 @@ module BrBoleto
 						'170' => '170', # Confirmação Receb.Inst.de Protesto Falimentar
 						'171' => '171', # Estorno de pagamento
 						'210' => '210', # Baixa Por Ter Sido Liquidado
-						'230' => '230', # Alteração/Exclusão De Dados Rejeitada 
 						'218' => '218', # Cobrança Contratual – Instruções/Alterações Rejeitadas/Pendentes
 						'221' => '221', # Confirmação Recebimento De Instrução De Não Protestar
 						'225' => '225', # Alegações Do Pagador
@@ -934,7 +933,7 @@ module BrBoleto
 						# A42 = Código para Baixa/Devolução Inválido
 						# A43 = Prazo para Baixa/Devolução Inválido
 						# A44 = Código da Moeda Inválido
-						# A45 = Nome do Pagador Não Informado
+						# A45 = Nome do Pagador  Inválido / Não Informado
 						# A46 = Tipo/Número de Inscrição do Pagador Inválidos
 						# A47 = Endereço do Pagador Não Informado
 						# A48 = CEP Inválido
@@ -1004,7 +1003,450 @@ module BrBoleto
 						# A112 = Valor Máximo/Percentual Inválido
 						# A113 = Valor Mínimo/Percentual Inválido
 						# A114 - Enviado Cooperativa Emite e Expede (BANCO CECRED)
-						# A115 a 151 (EXCLUSIVO CAIXA)
+						#
+						# CAIXA:
+						# A115 = Data de Geração Inválida 
+						# A116 = Entrada Inválida para Cobrança Caucionada
+						# A117 = CEP do Pagador não encontrado
+						# A118 = Agencia Cobradora não encontrada
+						# A119 = Agencia Beneficiário não encontrada
+						# A120 = Movimentação inválida para título
+						# A121 = Alteração de dados inválida
+						# A122 = Apelido do cliente não cadastrado
+						# A123 = Erro na composição do arquivo
+						# A124 = Lote de serviço inválido
+						# A125 = Beneficiário não pertencente a Cobrança Eletrônica
+						# A126 = Nome da Empresa inválido
+						# A127 = Nome do Banco inválido
+						# A128 = Código da Remessa inválido
+						# A129 = Data/Hora Geração do arquivo inválida
+						# A130 = Número Sequencial do arquivo inválido
+						# A131 = Versão do Lay out do arquivo inválido
+						# A132 = Literal REMESSA-TESTE - Válido só p/ fase testes
+						# A133 = Literal REMESSA-TESTE - Obrigatório p/ fase testes
+						# A134 = Tp Número Inscrição Empresa inválido
+						# A135 = Tipo de Operação inválido
+						# A136 = Tipo de serviço inválido
+						# A137 = Forma de lançamento inválido
+						# A138 = Número da remessa inválido
+						# A139 = Número da remessa menor/igual remessa anterior
+						# A140 = Lote de serviço divergente
+						# A141 = Número sequencial do registro inválido
+						# A142 = Erro seq de segmento do registro detalhe
+						# A143 = Cod movto divergente entre grupo de segm
+						# A144 = Qtd registros no lote inválido
+						# A145 = Qtd registros no lote divergente
+						# A146 = Qtd lotes no arquivo inválido
+						# A147 = Qtd lotes no arquivo divergente
+						# A148 = Qtd registros no arquivo inválido
+						# A149 = Qtd registros no arquivo divergente
+						# A150 = Código de DDD inválido
+						# A220 = Movimento sem Beneficiário Correspondente
+						# A221 = Movimento sem Título Correspondente
+						# A222 = Movimento para título já com movimentação no dia
+						# A223 = Nosso Número não pertence ao Beneficiário
+						# A224 = Inclusão de título já existente na base
+						# A225 = Movimento duplicado
+						# A226 = Data de Vencimento com prazo superior ao limite
+						# A227 = Movimento inválido para título Baixado/Liquidado
+						# A228 = Movimento inválido para título enviado a Cartório
+						# A229 = Faixa de CEP da Agência Cobradora não abrange CEP do Pagador
+						# A230 = Título já com opção de Devolução
+						# A231 = Processo de Protesto em andamento
+						# A232 = Título já com opção de Protesto
+						# A233 = Processo de devolução em andamento
+						# A234 = Novo prazo p/ Protesto/Devolução inválido
+						# A235 = Alteração do prazo de protesto inválida
+						# A236 = Alteração do prazo de devolução inválida
+						# A237 = CEP do Pagador inválido
+						# A238 = CNPJ/CPF do Pagador inválido (dígito não confere)
+						# A239 = Protesto inválido para título sem Número do documento (seu número)
+						#
+						# Banco do Brasil:
+						# A151 = Entrada Por via convencional
+						# A152 = Entrada Por alteração do código do cedente
+						# A153 = Entrada Por alteração da variação
+						# A154 = Entrada Por alteração da carteira
+						# A155 = Identificação inválida
+						# A156 = Variação da carteira inválida
+						# A157 = Espécie de valor invariável inválido
+						# A158 = Fora do prazo/só admissível na carteira
+						# A159 = Inexistência de margem para desconto
+						# A160 = O banco não tem agência na praça do sacado
+						# A161 = Razões cadastrais
+						# A162 = Sacado interligado com o sacador (só admissível em cobrança simples- cart. 11 e 17)
+						# A163 = Título sacado contra órgão do Poder Público (só admissível na carteira 11 e sem ordem de protesto)
+						# A164 = Título rasurado
+						# A165 = Endereço do sacado não localizado ou incompleto
+						# A166 = Qtd de valor variável inválida
+						# A167 = Faixa nosso-Número excedida
+						# A168 = Nome do sacado/cedente inválido
+						# A169 = Data do novo vencimento inválida
+						# A170 = Número do borderô inválido
+						# A171 = Nome da pessoa autorizada inválido
+						# A172 = Número da prestação do contrato inválido
+						# A173 = percentual de desconto inválido
+						# A174 = Dias para fichamento de protesto inválido
+						# A175 = Tipo de moeda inválido
+						# A176 = Código de unidade variável incompatível com a data de emissão do título
+						# A177 = Dados para débito ao sacado inválidos
+						# A178 = Carteira/variação encerrada
+						# A179 = Título tem valor diverso do informado
+						# A180 = Motivo de baixa inválido para a carteira
+						# A181 = Comando incompatível com a carteira
+						# A182 = Código do convenente inválido
+						# A183 = Título já se encontra na situação pretendida
+						# A184 = Título fora do prazo admitido para a conta 1
+						# A185 = Novo vencimento fora dos limites da carteira
+						# A186 = Título não pertence ao convenente
+						# A187 = Variação incompatível com a carteira
+						# A188 = Impossível a variação única para a carteira indicada
+						# A189 = Título vencido em transferência para a carteira 51
+						# A190 = Título com prazo superior a 179 dias em variação única para carteira 51
+						# A191 = Título já foi fichado para protesto
+						# A192 = Alteração da situação de débito inválida para o código de responsabilidade
+						# A193 = DV do nosso número inválido
+						# A194 = Título não passível de débito/baixa – situação anormal
+						# A195 = Título com ordem de não protestar – não pode ser encaminhado a cartório
+						# A196 = Título/carne rejeitado
+						# A197 = Título já se encontra isento de juros
+						# A198 = Código de Juros Inválido
+						# A199 = Prefixo da Ag. cobradora inválido
+						# A200 = Número do controle do participante inválido
+						# A201 = Cliente não cadastrado no CIOPE (Desconto/Vendor)
+						# A202 = Título excluído automaticamente por decurso de prazo CIOPE (Desconto/Vendor)
+						# A203 = Título vencido transferido para a conta 1 – Carteira vinculada
+						# A204 = Carteira/variação não localizada no cedente
+						# A205 = Título não localizado na existência/Baixado por protesto
+						# A206 = Recusa do Comando “41” – Parâmetro de Liquidação Parcial.
+						# A207 = Por meio magnético
+						# A999 = Outros motivos
+						#
+						# Bradesco:
+						# A00 = Ocorrência aceita
+						# A208 = Código de ocorrência não numérico
+						# A209 = Agência Beneficiário não prevista
+						# A210 = E-mail Pagador não lido no prazo 5 dias
+						# A211 = Email Pagador não enviado – título com débito automático
+						# A212 = Email pagador não enviado – título de cobrança sem registro
+						# A213 = E-mail pagador não recebido
+						# A214 = Título Penhorado – Instrução Não Liberada pela Agência
+						# A215 = Instrução não permitida título negativado
+						# A216 = Inclusão Bloqueada face a determinação Judicial
+						# A217 = Telefone beneficiário não informado / inconsistente
+						# A218 = Cancelado pelo Pagador e Mantido Pendente, conforme negociação
+						# A219 = Cancelado pelo pagador e baixado, conforme negociação
+						#
+						# Itaú:
+						# A240 = CEP sem atendimento de protesto no momento
+						# A241 = Estado com determinação legal que impede a inscrição de inadimplentes
+						# A242 = Valor do título maior que 10.000.000,00
+						# A243 = Data de entrada inválida para operar com esta carteira
+						# A244 = Ocorrência inválida
+						# A245 = Carteira não aceita depositária correspondente estado da agência diferente do estado do pagador ag. cobradora não consta no cadastro ou encerrando
+						# A246 = Carteira não permitida (necessário cadastrar faixa livre)
+						# A247 = Agência/conta não liberada para operar com cobrança
+						# A248 = CNPJ do beneficiário inapto devolução de título em garantia
+						# A249 = Categoria da conta inválida
+						# A250 = Entradas bloqueadas, conta suspensa em cobrança
+						# A251 = Conta não tem permissão para protestar (contate seu gerente)
+						# A252 = Qtd de moeda incompatível com valor do título
+						# A253 = CNPJ/CPF do Pagador não numérico ou igual a zeros
+						# A254 = Empresa não aceita banco correspondente
+						# A255 = Empresa não aceita banco correspondente - cobrança mensagem
+						# A256 = Banco correspondente - título com vencimento inferior a 15 dias
+						# A257 = CEP não pertence à depositária informada
+						# A258 = Corresp vencimento superior a 180 dias da data de entrada
+						# A259 = CEP só depositária banco do brasil com vencimento inferior a 8 dias
+						# A260 = Juros de mora maior que o permitido
+						# A261 = Desconto de antecipação, valor da importância por dia de desconto (idd) não permitido
+						# A262 = Taxa inválida (vendor)
+						# A263 = Carteira inválida para títulos com rateio de crédito
+						# A264 = Beneficiário não cadastrado para fazer rateio de crédito
+						# A265 = Duplicidade de agência/conta beneficiária do rateio de crédito
+						# A266 = Qtd de contas beneficiárias do rateio maior do que o permitido (máximo de 30 contas por título)
+						# A267 = Conta para rateio de crédito inválida / não pertence ao itaú
+						# A268 = Desconto/abatimento não permitido para títulos com rateio de crédito
+						# A269 = Valor do título menor que a soma dos valores estipulados para rateio
+						# A270 = Agência/conta beneficiária do rateio é a centralizadora de crédito do beneficiário
+						# A271 = Agência/conta do beneficiário é contratual / rateio de crédito não permitido
+						# A272 = Código do tipo de valor inválido / não previsto para títulos com rateio de crédito
+						# A273 = Registro tipo 4 sem informação de agências/contas beneficiárias do rateio
+						# A274 = Cobrança mensagem - número da linha da mensagem inválido ou quantidade de linhas excedidas
+						# A275 = Cobrança mensagem sem mensagem (só de campos fixos), porém com registro do tipo 7 ou 8
+						# A276 = Registro mensagem sem flash cadastrado ou flash informado diferente do cadastrado
+						# A277 = Conta de cobrança com flash cadastrado e sem registro de mensagem correspondente
+						# A278 = Instrução/ocorrência não existente
+						# A279 = Nosso número igual a zeros
+						# A280 = Segunda instrução/ocorrência não existente
+						# A281 = Registro em duplicidade
+						# A282 = Título não registrado no sistema
+						# A283 = Instrução não aceita
+						# A284 = Instrução incompatível – existe instrução de protesto para o título
+						# A285 = Instrução incompatível – não existe instrução de protesto para o título
+						# A286 = Instrução não aceita por já ter sido emitida a ordem de protesto ao cartório
+						# A287 = Instrução não aceita por não ter sido emitida a ordem de protesto ao cartório
+						# A288 = Já existe uma mesma instrução cadastrada anteriormente para o título
+						# A289 = Valor líquido + valor do abatimento diferente do valor do título registrado
+						# A290 = Existe uma instrução de não protestar ativa para o título
+						# A291 = Existe uma ocorrência do pagador que bloqueia a instrução
+						# A292 = Depositária do título = 9999 ou carteira não aceita protesto
+						# A293 = Alteração de vencimento igual à registrada no sistema ou que torna o título vencido
+						# A294 = Instrução de emissão de aviso de cobrança para título vencido antes do vencimento
+						# A295 = Solicitação de cancelamento de instrução inexistente
+						# A296 = Título sofrendo alteração de controle (agência/conta/carteira/nosso número)
+						# A297 = Instrução não permitida para a carteira
+						# A298 = Instrução não permitida para título com rateio de crédito
+						# A299 = Instrução incompatível – não existe instrução de negativação expressa para o título
+						# A300 = Título com entrada em negativação expressa
+						# A301 = Título com negativação expressa concluída
+						# A302 = Prazo inválido para negativação expressa – mínimo: 02 dias corridos após o vencimento
+						# A303 = Instrução incompatível para o mesmo título nesta data
+						# A304 = Confirma recebimento de instrução – pendente de análise
+						# A305 = Título com negativação expressa agendada
+						# A306 = Valor do título com outra alteração simultânea
+						# A307 = Abatimento/alteração do valor do título ou solicitação de baixa bloqueada
+						# A308 = Agência cobradora não consta no cadastro de depositária ou em encerramento
+						# A309 = Alteração inválida para título vencido
+						# A310 = Alteração bloqueada – vencimento já alterado
+						# A311 = Instrução com o mesmo conteúdo
+						# A312 = Data vencimento para bancos correspondentes inferior ao aceito pelo banco
+						# A313 = Alterações iguais para o mesmo controle (agência/conta/carteira/nosso número)
+						# A314 = Prazo de vencimento inferior a 15 dias
+						# A315 = Valor de iof – alteração não permitida para carteiras de n.s. – moeda variável
+						# A316 = Alteração não permitida para carteiras de notas de seguros – moeda variável
+						# A317 = Nome inválido do sacador avalista
+						# A318 = Endereço inválido – sacador avalista
+						# A319 = Bairro inválido – sacador avalista
+						# A320 = Cidade inválida – sacador avalista
+						# A321 = Sigla estado inválido – sacador avalista
+						# A322 = CEP inválido – sacador avalista
+						# A323 = Alteração bloqueada – título com negativação expressa / protesto
+						# A324 = Alteração bloqueada – título com rateio de crédito
+						# A325 = Solicitação de baixa para título já baixado ou liquidado
+						# A326 = Solicitação de baixa para título não registrado no sistema
+						# A327 = Cobrança prazo curto – solicitação de baixa p/ título não registrado no sistema
+						# A328 = Solicitação de baixa para título em floating
+						# A329 = Valor do titulo faz parte de garantia de emprestimo
+						# A330 = Pago através do SISPAG por crédito em c/c e não baixado
+						# A331 = Não aprovada devido ao impacto na elegibilidade de garantias
+						# A332 = Automaticamente rejeitada
+						#
+						# Sicredi:
+						# A333 = Título protestado
+						# A334 = Aceito
+						# A335 = Desprezado
+						# A336 = Praça do pagador não cadastrada.
+						# A337 = Tipo de cobrança do título divergente com a praça do pagador.
+						# A338 = Cooperativa/agência depositária divergente: atualiza o cadastro de praças da Coop./agência beneficiária
+						# A339 = Beneficiário não cadastrado ou possui CGC/CIC inválido
+						# A340 = Pagador não cadastrado
+						# A341 = Ocorrência não pode ser comandada
+						# A342 = Recebimento da liquidação fora da rede Sicredi - via compensação eletrônica
+						# A343 = Mensagem padrão não cadastrada
+						# A344 = Data limite para concessão de desconto inválida
+						# A345 = Campo alterado na instrução “31 – alteração de outros dados” inválido
+						# A346 = Título ainda não foi confirmado pela centralizadora
+						# A347 = Título rejeitado pela centralizadora
+						# A348 = Existe mesma instrução pendente de confirmação para este título
+						# A349 = Instrução prévia de concessão de abatimento não existe ou não confirmada
+						# A350 = Título dentro do prazo de vencimento (em dia)
+						# A351 = Espécie de documento não permite protesto de título
+						# A352 = Título possui instrução de baixa pendente de confirmação
+						# A353 = Qtd de mensagens padrão excede o limite permitido
+						# A354 = Qtd inválida no pedido de boletos pré-impressos da cobrança sem registro
+						# A355 = Tipo de impressão inválida para cobrança sem registro
+						# A356 = Cidade ou Estado do pagador não informado
+						# A357 = Seqüência para composição do nosso número do ano atual esgotada
+						# A358 = Registro mensagem para título não cadastrado
+						# A359 = Registro complementar ao cadastro do título da cobrança com e sem registro não cadastrado
+						# A360 = Tipo de postagem inválido, diferente de S, N e branco
+						# A361 = Pedido de boletos pré-impressos
+						# A362 = Confirmação/rejeição para pedidos de boletos não cadastrado
+						# A363 = Pagador/avalista não cadastrado
+						# A364 = Informação para atualização do valor do título para protesto inválido
+						# A365 = Tipo de impressão inválido, diferente de A, B e branco
+						# A366 = Código do pagador do título divergente com o código da cooperativa de crédito
+						# A367 = Liquidado no sistema do cliente
+						# A368 = Baixado no sistema do cliente
+						# A369 = Instrução inválida, este título está caucionado/descontado
+						# A370 = Instrução fixa com caracteres inválidos
+						# A371 = Nosso número / número da parcela fora de seqüência – total de parcelas inválido
+						# A372 = Falta de comprovante de prestação de serviço
+						# A373 = Nome do beneficiário incompleto / incorreto.
+						# A374 = CNPJ / CPF incompatível com o nome do pagador / Sacador Avalista
+						# A375 = CNPJ / CPF do pagador Incompatível com a espécie
+						# A376 = Título aceito: sem a assinatura do pagador
+						# A377 = Título aceito: rasurado ou rasgado
+						# A378 = Título aceito: falta título (cooperativa/ag. beneficiária deverá enviá-lo)
+						# A379 = Praça de pagamento incompatível com o endereço
+						# A380 = Título aceito: sem endosso ou beneficiário irregular
+						# A381 = Título aceito: valor por extenso diferente do valor numérico
+						# A382 = Saldo maior que o valor do título
+						# A383 = Tipo de endosso inválido
+						# A384 = Nome do pagador incompleto / Incorreto
+						# A385 = Sustação judicial
+						# A386 = Pagador não encontrado
+						# A387 = Recebimento de liquidação fora da rede Sicredi – VLB Inferior – Via Compensação
+						# A388 = Recebimento de liquidação fora da rede Sicredi – VLB Superior – Via Compensação
+						# A389 = Espécie de documento necessita beneficiário ou avalista PJ
+						# A390 = Recebimento de liquidação fora da rede Sicredi – Contingência Via Compe
+						# A391 = Dados do título não conferem com disquete
+						# A392 = Pagador e Sacador Avalista são a mesma pessoa
+						# A393 = Aguardar um dia útil após o vencimento para protestar
+						# A394 = Data do vencimento rasurada
+						# A395 = Vencimento – extenso não confere com número
+						# A396 = Falta data de vencimento no título
+						# A397 = DM/DMI sem comprovante autenticado ou declaração
+						# A398 = Comprovante ilegível para conferência e microfilmagem
+						# A399 = Nome solicitado não confere com emitente ou pagador
+						# A400 = Confirmar se são 2 emitentes. Se sim, indicar os dados dos 2
+						# A401 = Endereço do pagador igual ao do pagador ou do portador
+						# A402 = Endereço do apresentante incompleto ou não informado
+						# A403 = Rua/número inexistente no endereço
+						# A404 = Falta endosso do favorecido para o apresentante
+						# A405 = Data da emissão rasurada
+						# A406 = Falta assinatura do pagador no título
+						# A407 = Nome do apresentante não informado/incompleto/incorreto
+						# A408 = Erro de preenchimento do titulo
+						# A409 = Titulo com direito de regresso vencido
+						# A410 = Titulo apresentado em duplicidade
+						# A411 = Titulo já protestado
+						# A412 = Letra de cambio vencida – falta aceite do pagador
+						# A413 = Falta declaração de saldo assinada no título
+						# A414 = Contrato de cambio – Falta conta gráfica
+						# A415 = Ausência do documento físico
+						# A416 = Pagador falecido
+						# A417 = Pagador apresentou quitação do título
+						# A418 = Título de outra jurisdição territorial
+						# A419 = Título com emissão anterior a concordata do pagador
+						# A420 = Pagador consta na lista de falência
+						# A421 = Apresentante não aceita publicação de edital
+						# A422 = Dados do Pagador em Branco ou inválido
+						# A423 = Código do Pagador na agência beneficiária está duplicado
+						# A424 = Reconhecimento da dívida pelo pagador
+						# A425 = Não reconhecimento da dívida pelo pagador
+						# A426 = Regularização centralizadora – Rede Sicredi
+						# A427 = Regularização centralizadora – Compensação
+						# A428 = Regularização centralizadora – Banco correspondente
+						# A429 = Regularização centralizadora - VLB Inferior - via compensação
+						# A430 = Regularização centralizadora - VLB Superior - via compensação
+						# A431 = Pago com cheque
+						# A432 = Pago com cheque – bloqueado 24 horas
+						# A433 = Pago com cheque – bloqueado 48 horas
+						# A434 = Pago com cheque – bloqueado 72 horas
+						# A435 = Pago com cheque – bloqueado 96 horas
+						# A436 = Pago com cheque – bloqueado 120 horas
+						# A437 = Pago com cheque – bloqueado 144 horas
+						#
+						# Santander:
+						# A438 = Conta cobranca não numérica
+						# A439 = Unidade de valor inválida
+						# A440 = Valor do titulo em outra unidade
+						# A441 = Valor do IOC não numérico
+						# A442 = Total parcela não numérico
+						# A443 = Codigo banco cobrador inválido
+						# A444 = Número parcelas carne não numérico
+						# A445 = Número parcelas carne zerado
+						# A446 = Movimento excluido por solicitacao
+						# A447 = Agência cobradora não encontrada
+						# A448 = Não baixar, compl. informado inválido
+						# A449 = Não protestar, compl. informado inválido
+						# A450 = Qtd de dias de baixa não preenchido
+						# A451 = Qtd de dias protesto não preenchido
+						# A452 = Tot parc. inf. não bate cl otd parc ger
+						# A453 = Carne com parcelas com erro
+						# A454 = Número do titulo igual a zero
+						# A455 = Titulo não encontrado
+						# A456 = Titulo com ordem de protesto já emitida
+						# A457 = Ocorrência não acatada, titulo já protestado
+						# A458 = Ocorrência não acatada, titulo não vencido
+						# A459 = Instrucao aceita so p/ cobranca simples
+						# A460 = Especie documento não protestavel
+						# A461 = Cedente sem carta de protesto
+						# A462 = Sacado não protestavel
+						# A463 = Tipo de cobranca não permite protesto
+						# A464 = Pedido sustacao já solicitado
+						# A465 = Sustacao protesto fora de prazo
+						# A466 = Cliente não transmite reg. de ocorrencia
+						# A467 = Tipo de vencimento inválido
+						# A468 = Produto diferente de cobranca simples
+						# A469 = Data prorrogação menor oue data vencimento
+						# A470 = Data antecipação maior oue data vencimento
+						# A471 = Data documento superior a data instrucao
+						# A472 = Desc. por antec. maior/igual vlr titulo
+						# A473 = Não existe abatimento p/ cancelar
+						# A474 = Não existe prim. desconto p/ cancelar
+						# A475 = Não existe seg. desconto p/ cancelar
+						# A476 = Não existe terc. desconto p/ cancelar
+						# A477 = Não existe desc. por antec. p/ cancelar
+						# A478 = Não existe multa por atraso p/ cancelar
+						# A479 = Já existe segundo desconto
+						# A480 = Já existe terceiro desconto
+						# A481 = Data instrucao inválida
+						# A482 = Data multa menor/igual oue vencimento
+						# A483 = Já existe desconto por dia antecipacao
+						# A484 = Valor titulo em outra moeda não informado
+						# A485 = Perfil não aceita valor titulo zerado
+						# A486 = Especie docto não permite protesto
+						# A487 = Especie docto não permite IOC zerado
+						# A488 = Registro duplicado no movimento diario
+						# A489 = Nome do sacado não informado
+						# A490 = Endereço do sacado não informado
+						# A491 = Municipio do sacado não informado
+						# A492 = Tipo inscrição não existe
+						# A493 = Valor mora tem oue ser zero (titulo = zero)
+						# A494 = Data multa maior oue data de vencimento
+						# A495 = Complemento da instrucao não numérico
+						# A496 = Codigo p. baixa/ devol. inválido
+						# A497 = Codigo banco na compensação não numérico
+						# A498 = Codigo banco na compensação inválido
+						# A499 = Num. lote remessa(detalhe) não numérico
+						# A500 = Num. seo. reg. do lote não numérico
+						# A501 = Codigo p. protesto não numérico
+						# A502 = Qtd de dias p. protesto inválido
+						# A503 = Qtd dias baixa/dev. inválido p. cod. 1
+						# A504 = Qtd dias baixa/dev. inválido p.cod. 2
+						# A505 = Qtd dias baixa/dev.inválido p.cod. 3
+						# A506 = Indicador de carne não numérico
+						# A507 = Num. total de parc.carne não numérico
+						# A508 = Número do plano não numérico
+						# A509 = Indicador de parcelas carne inválido
+						# A510 = N.seo. parcela inv.p.indic. maior 0
+						# A511 = N. seo.parcela inv.p.indic.dif.zeros
+						# A512 = N.tot.parc.inv.p.indic. maior zeros
+						# A513 = Num.tot.parc.inv.p.indic.difer.zeros
+						# A514 = Alt.do contr.participanteinválido
+						# A515 = Alt. do seu Número inválida
+						# A516 = Banco compensação inválido (d30)
+						# A517 = Num. do lote remessa não numérico(d30)
+						# A518 = Num.seo.reg.no lote(d30)
+						# A519 = Tipo insc.sacado inválido (d30)
+						# A520 = Num.insc.sac.inv.p.tipo insc.o e 9(d30)
+						# A521 = Num.banco compensação inválido (d3r)
+						# A522 = Num. lote remessa não numérico (d3r)
+						# A523 = Num. seo. reg. lote não numérico (d3r)
+						# A524 = Data desc3 não numérica (d3r)
+						# A525 = Cod.banco compensação não numérico (d3s)
+						# A526 = Cod. banco compensação inválido (d3s)
+						# A527 = Num.lote remessa não numérico (d3s)
+						# A528 = Num.seo.do reg.lote não numérico (d3s)
+						# A529 = Num.ident.de impressao inválido (d3s)
+						# A530 = Num.linha impressa não numérico(d3s)
+						# A531 = Cod.msg.p.rec.sacado inválido(d3s)
+						# A532 = Cad.txperm.sk.inv.p.cod.mora=4(d3p)
+						# A533 = Vl.tit(real).inv.p.cod.mora= 1(dep)
+						# A534 = Vl.outros inv.p.cod.mora = 1(d3p)
+						# A535 = Cad.tx.perm.sk.inv.p.cod.mora=3(d3p)
+						# A536 = Titulo com mais de 3 instrucoes financeiras
+						# A537 = Código de cedente não cadastrado
+						# A538 = Titulo sem ordem de protesto automatica
+						# A539 = Data de juros de tolerancia inválido
+						# A540 = Data de tolerancia menor data vencimento
+						# A541 = Perc. de juros de tolerancia inválido
+						# A542 = Titulo rejeitado - operação de desconto
+						# A543 = Titulo rejeitado - horário limite op desconto
+
 					# B - Códigos de tarifas / custas de '01' a '20' associados ao código de movimento '28'
 						# B01 = Tarifa de Extrato de Posição
 						# B02 = Tarifa de Manutenção de Título Vencido
@@ -1026,7 +1468,117 @@ module BrBoleto
 						# B18 = Tarifa Sobre Alteração de Abatimento/Desconto
 						# B19 = Tarifa Sobre Arquivo mensal (Em Ser)
 						# B20 = Tarifa Sobre Emissão de Boleto de Pagamento Pré-Emitido pelo Banco
-						# B21 a B30 (EXCLUSIVO CAIXA)
+						#
+						# CAIXA:
+						# B21 = Redisponibilização de Arquivo Retorno Eletrônico
+						# B22 = Banco de Pagadores
+						# B23 = Entrega Aviso Disp Boleto via e-amail ao pagador (s/ emissão Boleto)
+						# B24 = Emissão de Boleto Pré-impresso CAIXA matricial
+						# B25 = Emissão de Boleto Pré-impresso CAIXA A4
+						# B26 = Emissão de Boleto Padrão CAIXA
+						# B27 = Emissão de Boleto/Carnê
+						# B28 = Emissão de Aviso de Vencido
+						# B29 = Alteração cadastral de dados do título - sem emissão de aviso
+						# B30 = Emissão de 2a via de Boleto Cobrança Registrada
+						#
+						# Bradesco:
+						# B31 = Tarifa de permanência título cadastrado
+						# B32 = Tarifa de registro
+						# B33 = Tarifa título pago no Bradesco
+						# B34 = Tarifa título pago compensação
+						# B35 = Tarifa título baixado não pago
+						# B36 = Tarifa alteração de vencimento
+						# B37 = Tarifa concessão abatimento
+						# B38 = Tarifa cancelamento de abatimento
+						# B39 = Tarifa concessão desconto
+						# B40 = Tarifa cancelamento desconto
+						# B41 = Tarifa título pago cics
+						# B42 = Tarifa título pago Internet
+						# B43 = Tarifa título pago term. gerencial serviços
+						# B44 = Tarifa título pago Pág-Contas
+						# B45 = Tarifa título pago Fone Fácil
+						# B46 = Tarifa título Déb. Postagem
+						# B47 = Tarifa impressão de títulos pendentes
+						# B48 = Tarifa título pago BDN
+						# B49 = Tarifa título pago Term. Multi Função
+						# B50 = Impressão de títulos baixados
+						# B51 = Impressão de títulos pagos
+						# B52 = Tarifa título pago Pagfor
+						# B53 = Tarifa reg/pgto – guichê caixa
+						# B54 = Tarifa título pago retaguarda
+						# B55 = Tarifa título pago Subcentro
+						# B56 = Tarifa título pago Cartão de Crédito
+						# B57 = Tarifa título pago Comp Eletrônica
+						# B58 = Tarifa título Baix. Pg. Cartório
+						# B59 = Tarifa título baixado acerto banco
+						# B60 = Baixa registro em duplicidade
+						# B61 = Tarifa título baixado decurso prazo
+						# B62 = Tarifa título baixado Judicialmente
+						# B63 = Tarifa título baixado via remessa
+						# B64 = Tarifa título baixado rastreamento
+						# B65 = Tarifa título baixado conf. Pedido
+						# B66 = Tarifa título baixado protestado
+						# B67 = Tarifa título baixado p/ devolução
+						# B68 = Tarifa título baixado franco pagto
+						# B69 = Tarifa título baixado SUST/RET/CARTÓRIO
+						# B70 = Tarifa título baixado SUS/SEM/REM/CARTÓRIO
+						# B71 = Tarifa título transferido desconto
+						# B72 = Cobrado baixa manual
+						# B73 = Baixa por acerto cliente
+						# B74 = Tarifa baixa por contabilidade
+						# B75 = Tr. tentativa cons deb aut
+						# B76 = Tr. credito online
+						# B77 = Tarifa reg/pagto Bradesco Expresso
+						# B78 = Tarifa emissão Papeleta
+						# B79 = Tarifa fornec papeleta semi preenchida
+						# B80 = Acondicionador de papeletas (RPB)S
+						# B81 = Acond. De papelatas (RPB)s PERSONAL
+						# B82 = Papeleta formulário branco
+						# B83 = Formulário A4 serrilhado
+						# B84 = Fornecimento de softwares transmiss
+						# B85 = Fornecimento de softwares consulta
+						# B86 = Fornecimento Micro Completo
+						# B87 = Fornecimento MODEN
+						# B88 = Fornecimento de máquinas óticas
+						# B89 = Fornecimento de Impressoras
+						# B90 = Reativação de título
+						# B91 = Alteração de produto negociado
+						# B92 = Tarifa emissão de contra recibo
+						# B93 = Tarifa emissão 2a via papeleta
+						# B94 = Tarifa regravação arquivo retorno
+						# B95 = Arq. Títulos a vencer mensal
+						# B96 = Listagem auxiliar de crédito
+						# B97 = Tarifa cadastro cartela instrução permanente
+						# B98 = Canalização de Crédito
+						# B99 = Cadastro de Mensagem Fixa
+						# B100 = Tarifa registro título déb. Automático
+						# B101 = Emissão papeleta sem valor
+						# B102 = Sem uso
+						# B103 = Cadastro de reembolso de diferença
+						# B104 = Relatório fluxo de pagto
+						# B105 = Emissão Extrato mov. Carteira
+						# B106 = Mensagem campo local de pagto
+						# B107 = Cadastro Concessionária serv. Publ.
+						# B108 = Classif. Extrato Conta Corrente
+						# B109 = Contabilidade especial
+						# B110 = Realimentação pagto
+						# B111 = Repasse de Créditos
+						# B112 = Tarifa reg. Pagto outras mídias
+						# B113 = Tarifa Reg/Pagto – Net Empresa
+						# B114 = Tarifa título pago vencido
+						# B115 = TR Tít. Baixado por decurso prazo
+						# B116 = Arquivo Retorno Antecipado
+						# B117 = Arq retorno Hora/Hora
+						# B118 = TR. Agendamento Déb Aut
+						# B119 = TR. Agendamento rat. Crédito
+						# B120 = TR Emissão aviso rateio
+						# B121 = Extrato de protesto
+						#
+						# Sicredi:
+						# B122 = Tarifa de baixa da carteira
+						# B123 = Tarifa de registro de entrada do título
+						# B124 = Tarifa de entrada na rede Sicredi
+
 					# C - Códigos de liquidação / baixa de '01' a '15' associados aos códigos de movimento '06', '09' e '17'
 						# Liquidação:
 							# C01 = Por Saldo
@@ -1045,6 +1597,42 @@ module BrBoleto
 							# C35 = Liquidado Correspondente em Dinheiro
 							# C36 = Liquidado Correspondente em Cheque
 							# C37 = Liquidado por meio de Central de Atendimento (Telefone)
+							#
+							# CAIXA:
+							# C100 = Casa Lotérica
+							# C101 = Agências CAIXA
+							# C102 = Correspondente Bancário
+							#
+							# Banco do Brasil:
+							# C103 = Liquidação normal
+							# C104 = Liquidação parcial
+							# C105 = Liquidação com cheque a compensar
+							# C106 = Liquidação de título sem registro (carteira 7 tipo 4)
+							# C107 = Liquidação na apresentação
+							# C110 = Liquidação Parcial com Cheque a Compensar
+							# C111 = Liquidação por Saldo com Cheque a Compensar
+							#
+							# Bradesco:
+							# C42 = Rateio não efetuado, cód. Calculo 2 (VLR. Registro) 
+							#
+							# Itaú:
+							# C135  = Acerto online
+							# C136  = Outros bancos – recebimento off-line
+							# C137  = Outros bancos – pelo código de barras
+							# C138  = Outros bancos – pela linha digitável
+							# C139  = Outros bancos – pelo auto atendimento
+							# C140  = Outros bancos – recebimento em casa lotérica
+							# C141  = Outros bancos – correspondente
+							# C142  = Outros bancos – telefone
+							# C143  = Outros bancos – arquivo eletrônico (pagamento efetuado por meio de troca de arquivos)
+							# C144  = Correspondente Itaú
+							# C145  = SISPAG – sistema de contas a pagar itaú
+							# C146  = Agência itaú – por débito em conta corrente, cheque itaú* ou dinheiro
+							# C147  = Agência itaú – capturado em off-line
+							# C148  = Pagamento em cartório de protesto com cheque
+							# C149  = Agendamento – pagamento agendado via bankline ou outro canal eletrônico e liquidado na data indicada
+							# C150  = Digitação – realimentação automática
+							# C151  = Pagamento via seltec
 						# Baixa:
 							# C09 = Comandada Banco
 							# C10 = Comandada Cliente Arquivo
@@ -1053,58 +1641,89 @@ module BrBoleto
 							# C13 = Decurso Prazo - Banco
 							# C14 = Protestado
 							# C15 = Título Excluído
-						# Outros:
-							# C100 a C102 (EXCLUSIVO CAIXA)
+							#
+							# Banco do Brasil:
+							# C46  = Por alteração da variação
+							# C47  = Por alteração da variação
+							# C51  = Acerto
+							# C90  = Baixa automática
+							# C118 = Por alteração da carteira
+							# C119 = Débito automático
+							# C131 = Liquidado anteriormente
+							# C132 = Habilitado em processo
+							# C133 = Incobrável por nosso intermédio
+							# C134 = Transferido para créditos em liquidação
+							#
+							# Bradesco:
+							# C00 = Baixado Conforme Instruções da Agência
+							# C16 = Título Baixado pelo Banco por decurso Prazo
+							# C17 = Titulo Baixado Transferido Carteira
+							# C20 = Titulo Baixado e Transferido para Desconto
 
 					# D - Códigos de confirmação associado ao código de movimento (Exclusivo por banco)
 						# SICREDI (código de movimento '27'): 
-							# D01 = Alteração de carteira
+						# D01 = Alteração de carteira
+						#
 						# CECRED (código de movimento '93' e '94'):
-							# D02 = Sempre que a solicitação (inclusão ou exclusão) for efetuada com sucesso
-							# D03 = Sempre que a solicitação for integrada na Serasa com sucesso
-							# D04 = Sempre que vier retorno da Serasa por decurso de prazo
-							# D05 = Sempre que o documento for integrado na Serasa com sucesso, quando o UF for de São Paulo
-							# D06 = Sempre quando houver ação judicial, restringindo a negativação do boleto.
-						# CAIXA (código de movimento '08'):
-							# D07 = Liquidação em Dinheiro
-							# D08 = Liquidação em Cheque
+						# D02 = Sempre que a solicitação (inclusão ou exclusão) for efetuada com sucesso
+						# D03 = Sempre que a solicitação for integrada na Serasa com sucesso
+						# D04 = Sempre que vier retorno da Serasa por decurso de prazo
+						# D05 = Sempre que o documento for integrado na Serasa com sucesso, quando o UF for de São Paulo
+						# D06 = Sempre quando houver ação judicial, restringindo a negativação do boleto.
+						#
+						# Bradesco (código de movimento '29'): 
+						# D78 = Pagador alega que faturamento e indevido
+						# D95 = Pagador aceita/reconhece o faturamento
 
-				def get_codigo_motivo_ocorrencia(code, codigo_movimento_gem)
+
+				def get_codigo_motivo_ocorrencia(code, codigo_movimento_gem, cnab)
 					return if code.blank? || codigo_movimento_gem.blank?
-					if codigo_movimento_gem.in? codigos_movimento_retorno_para_ocorrencia_A
-						equivalent_codigo_motivo_ocorrencia_A(codigo_movimento_gem)[code] || 'OUTRO_A'
-					elsif codigo_movimento_gem.in? codigos_movimento_retorno_para_ocorrencia_B
-						equivalent_codigo_motivo_ocorrencia_B(codigo_movimento_gem)[code] || 'OUTRO_B'
-					elsif codigo_movimento_gem.in? codigos_movimento_retorno_para_ocorrencia_C
-						equivalent_codigo_motivo_ocorrencia_C(codigo_movimento_gem)[code] || 'OUTRO_C'
-					elsif codigo_movimento_gem.in? codigos_movimento_retorno_para_ocorrencia_D
-						equivalent_codigo_motivo_ocorrencia_D(codigo_movimento_gem)[code] || 'OUTRO_D'
+
+					if codigo_movimento_gem.in? send("codigos_movimento_retorno_para_ocorrencia_A_#{cnab}")
+						send("equivalent_codigo_motivo_ocorrencia_A_#{cnab}", codigo_movimento_gem) [code] || 'OUTRO_A'
+					elsif codigo_movimento_gem.in? send("codigos_movimento_retorno_para_ocorrencia_B_#{cnab}")
+						send("equivalent_codigo_motivo_ocorrencia_B_#{cnab}", codigo_movimento_gem)[code] || 'OUTRO_B'
+					elsif codigo_movimento_gem.in? send("codigos_movimento_retorno_para_ocorrencia_C_#{cnab}")
+						send("equivalent_codigo_motivo_ocorrencia_C_#{cnab}", codigo_movimento_gem)[code] || 'OUTRO_C'
+					elsif codigo_movimento_gem.in? send("codigos_movimento_retorno_para_ocorrencia_D_#{cnab}")
+						send("equivalent_codigo_motivo_ocorrencia_D_#{cnab}", codigo_movimento_gem)[code] || 'OUTRO_D'
 					else
 						'OUTRO_X'
 					end
 				end
 
-				def codigos_movimento_retorno_para_ocorrencia_A
+				def codigos_movimento_retorno_para_ocorrencia_A_240
 					%w[02 03 26 30]
 				end
-
-				def codigos_movimento_retorno_para_ocorrencia_B
+				def codigos_movimento_retorno_para_ocorrencia_B_240
 					%w[28]
 				end
-
-				def codigos_movimento_retorno_para_ocorrencia_C
+				def codigos_movimento_retorno_para_ocorrencia_C_240
 					%w[06 09 17]
 				end
-
-				def codigos_movimento_retorno_para_ocorrencia_D 
+				def codigos_movimento_retorno_para_ocorrencia_D_240
 					# Exclusivo por banco
+				end
+
+				def codigos_movimento_retorno_para_ocorrencia_A_400
+					codigos_movimento_retorno_para_ocorrencia_A_240
+				end
+				def codigos_movimento_retorno_para_ocorrencia_B_400
+					codigos_movimento_retorno_para_ocorrencia_B_240
+				end
+				def codigos_movimento_retorno_para_ocorrencia_C_400
+					codigos_movimento_retorno_para_ocorrencia_C_240
+				end
+				def codigos_movimento_retorno_para_ocorrencia_D_400
+					codigos_movimento_retorno_para_ocorrencia_D_240
 				end
 
 				# Códigos adotados pela FEBRABAN para identificar as ocorrências (rejeições, tarifas,
 				# custas, liquidação e baixas) em registros detalhe de títulos de cobrança.
-				def equivalent_codigo_motivo_ocorrencia_A codigo_movimento_gem
+				def equivalent_codigo_motivo_ocorrencia_A_240 codigo_movimento_gem
 					#  Código     Padrão para  
 					{# do Banco     a Gem
+						'A00'   =>   'A00',   # Ocorrência aceita
 						'01'    =>   'A01' ,  # Código do Banco Inválido
 						'02'    =>   'A02' ,  # Código do Registro Detalhe Inválido
 						'03'    =>   'A03' ,  # Código do Segmento Inválido
@@ -1149,7 +1768,7 @@ module BrBoleto
 						'42'    =>   'A42' ,  # Código para Baixa/Devolução Inválido
 						'43'    =>   'A43' ,  # Prazo para Baixa/Devolução Inválido
 						'44'    =>   'A44' ,  # Código da Moeda Inválido
-						'45'    =>   'A45' ,  # Nome do Pagador Não Informado
+						'45'    =>   'A45' ,  # Nome do Pagador Inválido / Não Informado
 						'46'    =>   'A46' ,  # Tipo/Número de Inscrição do Pagador Inválidos
 						'47'    =>   'A47' ,  # Endereço do Pagador Não Informado
 						'48'    =>   'A48' ,  # CEP Inválido
@@ -1218,63 +1837,657 @@ module BrBoleto
 						'B3'    =>   'A111',  # Tipo de Pagamento Inválido
 						'B4'    =>   'A112',  # Valor Máximo/Percentual Inválido
 						'B5'    =>   'A113',  # Valor Mínimo/Percentual Inválido
+
+						'A114'  =>   'A114',  # Enviado Cooperativa Emite e Expede (BANCO CECRED)
+						'A115'  =>   'A115',  # Data de Geração Inválida 
+						'A116'  =>   'A116',  # Entrada Inválida para Cobrança Caucionada
+						'A117'  =>   'A117',  # CEP do Pagador não encontrado
+						'A118'  =>   'A118',  # Agencia Cobradora não encontrada
+						'A119'  =>   'A119',  # Agencia Beneficiário não encontrada
+						'A120'  =>   'A120',  # Movimentação inválida para título
+						'A121'  =>   'A121',  # Alteração de dados inválida
+						'A122'  =>   'A122',  # Apelido do cliente não cadastrado
+						'A123'  =>   'A123',  # Erro na composição do arquivo
+						'A124'  =>   'A124',  # Lote de serviço inválido
+						'A125'  =>   'A125',  # Beneficiário não pertencente a Cobrança Eletrônica
+						'A126'  =>   'A126',  # Nome da Empresa inválido
+						'A127'  =>   'A127',  # Nome do Banco inválido
+						'A128'  =>   'A128',  # Código da Remessa inválido
+						'A129'  =>   'A129',  # Data/Hora Geração do arquivo inválida
+						'A130'  =>   'A130',  # Número Sequencial do arquivo inválido
+						'A131'  =>   'A131',  # Versão do Lay out do arquivo inválido
+						'A132'  =>   'A132',  # Literal REMESSA-TESTE - Válido só p/ fase testes
+						'A133'  =>   'A133',  # Literal REMESSA-TESTE - Obrigatório p/ fase testes
+						'A134'  =>   'A134',  # Tp Número Inscrição Empresa inválido
+						'A135'  =>   'A135',  # Tipo de Operação inválido
+						'A136'  =>   'A136',  # Tipo de serviço inválido
+						'A137'  =>   'A137',  # Forma de lançamento inválido
+						'A138'  =>   'A138',  # Número da remessa inválido
+						'A139'  =>   'A139',  # Número da remessa menor/igual remessa anterior
+						'A140'  =>   'A140',  # Lote de serviço divergente
+						'A141'  =>   'A141',  # Número sequencial do registro inválido
+						'A142'  =>   'A142',  # Erro seq de segmento do registro detalhe
+						'A143'  =>   'A143',  # Cod movto divergente entre grupo de segm
+						'A144'  =>   'A144',  # Qtd registros no lote inválido
+						'A145'  =>   'A145',  # Qtd registros no lote divergente
+						'A146'  =>   'A146',  # Qtd lotes no arquivo inválido
+						'A147'  =>   'A147',  # Qtd lotes no arquivo divergente
+						'A148'  =>   'A148',  # Qtd registros no arquivo inválido
+						'A149'  =>   'A149',  # Qtd registros no arquivo divergente
+						'A150'  =>   'A150',  # Código de DDD inválido
+						'A151'  =>   'A151',  # Entrada Por via convencional
+						'A152'  =>   'A152',  # Entrada Por alteração do código do cedente
+						'A153'  =>   'A153',  # Entrada Por alteração da variação
+						'A154'  =>   'A154',  # Entrada Por alteração da carteira
+						'A155'  =>   'A155',  # identificação inválida
+						'A156'  =>   'A156',  # variação da carteira inválida
+						'A157'  =>   'A157',  # espécie de valor invariável inválido
+						'A158'  =>   'A158',  # fora do prazo/só admissível na carteira
+						'A159'  =>   'A159',  # inexistência de margem para desconto
+						'A160'  =>   'A160',  # o banco não tem agência na praça do sacado
+						'A161'  =>   'A161',  # razões cadastrais
+						'A162'  =>   'A162',  # sacado interligado com o sacador (só admissível em cobrança simples- cart. 11 e 17)
+						'A163'  =>   'A163',  # Título sacado contra órgão do Poder Público (só admissível na carteira 11 e sem ordem de protesto)
+						'A164'  =>   'A164',  # Título rasurado
+						'A165'  =>   'A165',  # Endereço do sacado não localizado ou incompleto
+						'A166'  =>   'A166',  # Qtd de valor variável inválida
+						'A167'  =>   'A167',  # Faixa nosso-Número excedida
+						'A168'  =>   'A168',  # Nome do sacado/cedente inválido
+						'A169'  =>   'A169',  # Data do novo vencimento inválida
+						'A170'  =>   'A170',  # Número do borderô inválido
+						'A171'  =>   'A171',  # Nome da pessoa autorizada inválido
+						'A172'  =>   'A172',  # Número da prestação do contrato inválido
+						'A173'  =>   'A173',  # percentual de desconto inválido
+						'A174'  =>   'A174',  # Dias para fichamento de protesto inválido
+						'A175'  =>   'A175',  # Tipo de moeda inválido
+						'A176'  =>   'A176',  # Código de unidade variável incompatível com a data de emissão do título
+						'A177'  =>   'A177',  # Dados para débito ao sacado inválidos
+						'A178'  =>   'A178',  # Carteira/variação encerrada
+						'A179'  =>   'A179',  # Título tem valor diverso do informado
+						'A180'  =>   'A180',  # Motivo de baixa inválido para a carteira
+						'A181'  =>   'A181',  # Comando incompatível com a carteira
+						'A182'  =>   'A182',  # Código do convenente inválido
+						'A183'  =>   'A183',  # Título já se encontra na situação pretendida
+						'A184'  =>   'A184',  # Título fora do prazo admitido para a conta 1
+						'A185'  =>   'A185',  # Novo vencimento fora dos limites da carteira
+						'A186'  =>   'A186',  # Título não pertence ao convenente
+						'A187'  =>   'A187',  # Variação incompatível com a carteira
+						'A188'  =>   'A188',  # Impossível a variação única para a carteira indicada
+						'A189'  =>   'A189',  # Título vencido em transferência para a carteira 51
+						'A190'  =>   'A190',  # Título com prazo superior a 179 dias em variação única para carteira 51
+						'A191'  =>   'A191',  # Título já foi fichado para protesto
+						'A192'  =>   'A192',  # Alteração da situação de débito inválida para o código de responsabilidade
+						'A193'  =>   'A193',  # DV do nosso número inválido
+						'A194'  =>   'A194',  # Título não passível de débito/baixa – situação anormal
+						'A195'  =>   'A195',  # Título com ordem de não protestar – não pode ser encaminhado a cartório
+						'A196'  =>   'A196',  # Título/carne rejeitado
+						'A197'  =>   'A197',  # Título já se encontra isento de juros
+						'A198'  =>   'A198',  # Código de Juros Inválido
+						'A199'  =>   'A199',  # Prefixo da Ag. cobradora inválido
+						'A200'  =>   'A200',  # Número do controle do participante inválido
+						'A201'  =>   'A201',  # Cliente não cadastrado no CIOPE (Desconto/Vendor)
+						'A202'  =>   'A202',  # Título excluído automaticamente por decurso de prazo CIOPE (Desconto/Vendor)
+						'A203'  =>   'A203',  # Título vencido transferido para a conta 1 – Carteira vinculada
+						'A204'  =>   'A204',  # Carteira/variação não localizada no cedente
+						'A205'  =>   'A205',  # Título não localizado na existência/Baixado por protesto
+						'A206'  =>   'A206',  # Recusa do Comando “41” – Parâmetro de Liquidação Parcial.
+						'A207'  =>   'A207',  # Entrada Por meio magnético
+						'A208'  =>   'A208',  # Código de ocorrência não numérico
+						'A209'  =>   'A209',  # Agência Beneficiário não prevista
+						'A210'  =>   'A210',  # E-mail Pagador não lido no prazo 5 dias
+						'A211'  =>   'A211',  # Email Pagador não enviado – título com débito automático
+						'A212'  =>   'A212',  # Email pagador não enviado – título de cobrança sem registro
+						'A213'  =>   'A213',  # E-mail pagador não recebido
+						'A214'  =>   'A214',  # Título Penhorado – Instrução Não Liberada pela Agência
+						'A215'  =>   'A215',  # Instrução não permitida título negativado
+						'A216'  =>   'A216',  # Inclusão Bloqueada face a determinação Judicial
+						'A217'  =>   'A217',  # Telefone beneficiário não informado / inconsistente
+						'A218'  =>   'A218',  # Cancelado pelo Pagador e Mantido Pendente, conforme negociação
+						'A219'  =>   'A219',  # Cancelado pelo pagador e baixado, conforme negociação
+						'A220'  =>   'A220',  # Movimento sem Beneficiário Correspondente
+						'A221'  =>   'A221',  # Movimento sem Título Correspondente
+						'A222'  =>   'A222',  # Movimento para título já com movimentação no dia
+						'A223'  =>   'A223',  # Nosso Número não pertence ao Beneficiário
+						'A224'  =>   'A224',  # Inclusão de título já existente na base
+						'A225'  =>   'A225',  # Movimento duplicado
+						'A226'  =>   'A226',  # Data de Vencimento com prazo superior ao limite
+						'A227'  =>   'A227',  # Movimento inválido para título Baixado/Liquidado
+						'A228'  =>   'A228',  # Movimento inválido para título enviado a Cartório
+						'A229'  =>   'A229',  # Faixa de CEP da Agência Cobradora não abrange CEP do Pagador
+						'A230'  =>   'A230',  # Título já com opção de Devolução
+						'A231'  =>   'A231',  # Processo de Protesto em andamento
+						'A232'  =>   'A232',  # Título já com opção de Protesto
+						'A233'  =>   'A233',  # Processo de devolução em andamento
+						'A234'  =>   'A234',  # Novo prazo p/ Protesto/Devolução inválido
+						'A235'  =>   'A235',  # Alteração do prazo de protesto inválida
+						'A236'  =>   'A236',  # Alteração do prazo de devolução inválida
+						'A237'  =>   'A237',  # CEP do Pagador inválido
+						'A238'  =>   'A238',  # CNPJ/CPF do Pagador inválido (dígito não confere)
+						'A239'  =>   'A239',  # Protesto inválido para título sem Número do documento (seu número)
+						'A240'  =>   'A240', # CEP sem atendimento de protesto no momento
+						'A241'  =>   'A241', # Estado com determinação legal que impede a inscrição de inadimplentes
+						'A242'  =>   'A242', # Valor do título maior que 10.000.000,00
+						'A243'  =>   'A243', # Data de entrada inválida para operar com esta carteira
+						'A244'  =>   'A244', # Ocorrência inválida
+						'A245'  =>   'A245', # Carteira não aceita depositária correspondente estado da agência diferente do estado do pagador ag. cobradora não consta no cadastro ou encerrando
+						'A246'  =>   'A246', # Carteira não permitida (necessário cadastrar faixa livre)
+						'A247'  =>   'A247', # Agência/conta não liberada para operar com cobrança
+						'A248'  =>   'A248', # CNPJ do beneficiário inapto devolução de título em garantia
+						'A249'  =>   'A249', # Categoria da conta inválida
+						'A250'  =>   'A250', # Entradas bloqueadas, conta suspensa em cobrança
+						'A251'  =>   'A251', # Conta não tem permissão para protestar (contate seu gerente)
+						'A252'  =>   'A252', # Qtd de moeda incompatível com valor do título
+						'A253'  =>   'A253', # CNPJ/CPF do Pagador não numérico ou igual a zeros
+						'A254'  =>   'A254', # Empresa não aceita banco correspondente
+						'A255'  =>   'A255', # Empresa não aceita banco correspondente - cobrança mensagem
+						'A256'  =>   'A256', # Banco correspondente - título com vencimento inferior a 15 dias
+						'A257'  =>   'A257', # CEP não pertence à depositária informada
+						'A258'  =>   'A258', # Corresp vencimento superior a 180 dias da data de entrada
+						'A259'  =>   'A259', # CEP só depositária banco do brasil com vencimento inferior a 8 dias
+						'A260'  =>   'A260', # Juros de mora maior que o permitido
+						'A261'  =>   'A261', # Desconto de antecipação, valor da importância por dia de desconto (idd) não permitido
+						'A262'  =>   'A262', # Taxa inválida (vendor)
+						'A263'  =>   'A263', # Carteira inválida para títulos com rateio de crédito
+						'A264'  =>   'A264', # Beneficiário não cadastrado para fazer rateio de crédito
+						'A265'  =>   'A265', # Duplicidade de agência/conta beneficiária do rateio de crédito
+						'A266'  =>   'A266', # Qtd de contas beneficiárias do rateio maior do que o permitido (máximo de 30 contas por título)
+						'A267'  =>   'A267', # Conta para rateio de crédito inválida / não pertence ao itaú
+						'A268'  =>   'A268', # Desconto/abatimento não permitido para títulos com rateio de crédito
+						'A269'  =>   'A269', # Valor do título menor que a soma dos valores estipulados para rateio
+						'A270'  =>   'A270', # Agência/conta beneficiária do rateio é a centralizadora de crédito do beneficiário
+						'A271'  =>   'A271', # Agência/conta do beneficiário é contratual / rateio de crédito não permitido
+						'A272'  =>   'A272', # Código do tipo de valor inválido / não previsto para títulos com rateio de crédito
+						'A273'  =>   'A273', # Registro tipo 4 sem informação de agências/contas beneficiárias do rateio
+						'A274'  =>   'A274', # Cobrança mensagem - número da linha da mensagem inválido ou quantidade de linhas excedidas
+						'A275'  =>   'A275', # Cobrança mensagem sem mensagem (só de campos fixos), porém com registro do tipo 7 ou 8
+						'A276'  =>   'A276', # Registro mensagem sem flash cadastrado ou flash informado diferente do cadastrado
+						'A277'  =>   'A277', # Conta de cobrança com flash cadastrado e sem registro de mensagem correspondente
+						'A278'  =>   'A278', # Instrução/ocorrência não existente
+						'A279'  =>   'A279', # Nosso número igual a zeros
+						'A280'  =>   'A280', # Segunda instrução/ocorrência não existente
+						'A281'  =>   'A281', # Registro em duplicidade
+						'A282'  =>   'A282', # Título não registrado no sistema
+						'A283'  =>   'A283', # Instrução não aceita
+						'A284'  =>   'A284', # Instrução incompatível – existe instrução de protesto para o título
+						'A285'  =>   'A285', # Instrução incompatível – não existe instrução de protesto para o título
+						'A286'  =>   'A286', # Instrução não aceita por já ter sido emitida a ordem de protesto ao cartório
+						'A287'  =>   'A287', # Instrução não aceita por não ter sido emitida a ordem de protesto ao cartório
+						'A288'  =>   'A288', # Já existe uma mesma instrução cadastrada anteriormente para o título
+						'A289'  =>   'A289', # Valor líquido + valor do abatimento diferente do valor do título registrado
+						'A290'  =>   'A290', # Existe uma instrução de não protestar ativa para o título
+						'A291'  =>   'A291', # Existe uma ocorrência do pagador que bloqueia a instrução
+						'A292'  =>   'A292', # Depositária do título = 9999 ou carteira não aceita protesto
+						'A293'  =>   'A293', # Alteração de vencimento igual à registrada no sistema ou que torna o título vencido
+						'A294'  =>   'A294', # Instrução de emissão de aviso de cobrança para título vencido antes do vencimento
+						'A295'  =>   'A295', # Solicitação de cancelamento de instrução inexistente
+						'A296'  =>   'A296', # Título sofrendo alteração de controle (agência/conta/carteira/nosso número)
+						'A297'  =>   'A297', # Instrução não permitida para a carteira
+						'A298'  =>   'A298', # Instrução não permitida para título com rateio de crédito
+						'A299'  =>   'A299', # Instrução incompatível – não existe instrução de negativação expressa para o título
+						'A300'  =>   'A300', # Título com entrada em negativação expressa
+						'A301'  =>   'A301', # Título com negativação expressa concluída
+						'A302'  =>   'A302', # Prazo inválido para negativação expressa – mínimo: 02 dias corridos após o vencimento
+						'A303'  =>   'A303', # Instrução incompatível para o mesmo título nesta data
+						'A305'  =>   'A305', # Título com negativação expressa agendada
+						'A306'  =>   'A306', # Valor do título com outra alteração simultânea
+						'A307'  =>   'A307', # Abatimento/alteração do valor do título ou solicitação de baixa bloqueada
+						'A308'  =>   'A308', # Agência cobradora não consta no cadastro de depositária ou em encerramento
+						'A309'  =>   'A309', # Alteração inválida para título vencido
+						'A310'  =>   'A310', # Alteração bloqueada – vencimento já alterado
+						'A311'  =>   'A311', # Instrução com o mesmo conteúdo
+						'A312'  =>   'A312', # Data vencimento para bancos correspondentes inferior ao aceito pelo banco
+						'A313'  =>   'A313', # Alterações iguais para o mesmo controle (agência/conta/carteira/nosso número)
+						'A314'  =>   'A314', # Prazo de vencimento inferior a 15 dias
+						'A315'  =>   'A315', # Valor de IOF – alteração não permitida para carteiras de n.s. – moeda variável
+						'A316'  =>   'A316', # Alteração não permitida para carteiras de notas de seguros – moeda variável
+						'A317'  =>   'A317', # Nome inválido do sacador avalista
+						'A318'  =>   'A318', # Endereço inválido – sacador avalista
+						'A319'  =>   'A319', # Nairro inválido – sacador avalista
+						'A320'  =>   'A320', # Cidade inválida – sacador avalista
+						'A321'  =>   'A321', # Sigla estado inválido – sacador avalista
+						'A322'  =>   'A322', # CEP inválido – sacador avalista
+						'A323'  =>   'A323', # Alteração bloqueada – título com negativação expressa / protesto
+						'A324'  =>   'A324', # Alteração bloqueada – título com rateio de crédito
+						'A325'  =>   'A325', # Solicitação de baixa para título já baixado ou liquidado
+						'A326'  =>   'A326', # Solicitação de baixa para título não registrado no sistema
+						'A327'  =>   'A327', # Cobrança prazo curto – solicitação de baixa p/ título não registrado no sistema
+						'A328'  =>   'A328', # Solicitação de baixa para título em floating
+						'A329'  =>   'A329', # Valor do titulo faz parte de garantia de emprestimo
+						'A330'  =>   'A330', # Pago através do SISPAG por crédito em c/c e não baixado
+						'A331'  =>   'A331', # Não aprovada devido ao impacto na elegibilidade de garantias
+						'A332'  =>   'A332', # Automaticamente rejeitada
+						'A333'  =>   'A333', # Título protestado
+						'A334'  =>   'A334', # Aceito
+						'A335'  =>   'A335', # Desprezado
+						'A336'  =>   'A336', # Praça do pagador não cadastrada.
+						'A337'  =>   'A337', # Tipo de cobrança do título divergente com a praça do pagador.
+						'A338'  =>   'A338', # Cooperativa/agência depositária divergente: atualiza o cadastro de praças da Coop./agência beneficiária
+						'A339'  =>   'A339', # Beneficiário não cadastrado ou possui CGC/CIC inválido
+						'A340'  =>   'A340', # Pagador não cadastrado
+						'A341'  =>   'A341', # Ocorrência não pode ser comandada
+						'A342'  =>   'A342', # Recebimento da liquidação fora da rede Sicredi - via compensação eletrônica
+						'A343'  =>   'A343', # Mensagem padrão não cadastrada
+						'A344'  =>   'A344', # Data limite para concessão de desconto inválida
+						'A345'  =>   'A345', # Campo alterado na instrução “31 – alteração de outros dados” inválido
+						'A346'  =>   'A346', # Título ainda não foi confirmado pela centralizadora
+						'A347'  =>   'A347', # Título rejeitado pela centralizadora
+						'A348'  =>   'A348', # Existe mesma instrução pendente de confirmação para este título
+						'A349'  =>   'A349', # Instrução prévia de concessão de abatimento não existe ou não confirmada
+						'A350'  =>   'A350', # Título dentro do prazo de vencimento (em dia)
+						'A351'  =>   'A351', # Espécie de documento não permite protesto de título
+						'A352'  =>   'A352', # Título possui instrução de baixa pendente de confirmação
+						'A353'  =>   'A353', # Qtd de mensagens padrão excede o limite permitido
+						'A354'  =>   'A354', # Qtd inválida no pedido de boletos pré-impressos da cobrança sem registro
+						'A355'  =>   'A355', # Tipo de impressão inválida para cobrança sem registro
+						'A356'  =>   'A356', # Cidade ou Estado do pagador não informado
+						'A357'  =>   'A357', # Seqüência para composição do nosso número do ano atual esgotada
+						'A358'  =>   'A358', # Registro mensagem para título não cadastrado
+						'A359'  =>   'A359', # Registro complementar ao cadastro do título da cobrança com e sem registro não cadastrado
+						'A360'  =>   'A360', # Tipo de postagem inválido, diferente de S, N e branco
+						'A361'  =>   'A361', # Pedido de boletos pré-impressos
+						'A362'  =>   'A362', # Confirmação/rejeição para pedidos de boletos não cadastrado
+						'A363'  =>   'A363', # Pagador/avalista não cadastrado
+						'A364'  =>   'A364', # Informação para atualização do valor do título para protesto inválido
+						'A365'  =>   'A365', # Tipo de impressão inválido, diferente de A, B e branco
+						'A366'  =>   'A366', # Código do pagador do título divergente com o código da cooperativa de crédito
+						'A367'  =>   'A367', # Liquidado no sistema do cliente
+						'A368'  =>   'A368', # Baixado no sistema do cliente
+						'A369'  =>   'A369', # Instrução inválida, este título está caucionado/descontado
+						'A370'  =>   'A370', # Instrução fixa com caracteres inválidos
+						'A371'  =>   'A371', # Nosso número / número da parcela fora de seqüência – total de parcelas inválido
+						'A372'  =>   'A372', # Falta de comprovante de prestação de serviço
+						'A373'  =>   'A373', # Nome do beneficiário incompleto / incorreto.
+						'A374'  =>   'A374', # CNPJ / CPF incompatível com o nome do pagador / Sacador Avalista
+						'A375'  =>   'A375', # CNPJ / CPF do pagador Incompatível com a espécie
+						'A376'  =>   'A376', # Título aceito: sem a assinatura do pagador
+						'A377'  =>   'A377', # Título aceito: rasurado ou rasgado
+						'A378'  =>   'A378', # Título aceito: falta título (cooperativa/ag. beneficiária deverá enviá-lo)
+						'A379'  =>   'A379', # Praça de pagamento incompatível com o endereço
+						'A380'  =>   'A380', # Título aceito: sem endosso ou beneficiário irregular
+						'A381'  =>   'A381', # Título aceito: valor por extenso diferente do valor numérico
+						'A382'  =>   'A382', # Saldo maior que o valor do título
+						'A383'  =>   'A383', # Tipo de endosso inválido
+						'A384'  =>   'A384', # Nome do pagador incompleto / Incorreto
+						'A385'  =>   'A385', # Sustação judicial
+						'A386'  =>   'A386', # Pagador não encontrado
+						'A387'  =>   'A387', # Recebimento de liquidação fora da rede Sicredi – VLB Inferior – Via Compensação
+						'A388'  =>   'A388', # Recebimento de liquidação fora da rede Sicredi – VLB Superior – Via Compensação
+						'A389'  =>   'A389', # Espécie de documento necessita beneficiário ou avalista PJ
+						'A390'  =>   'A390', # Recebimento de liquidação fora da rede Sicredi – Contingência Via Compe
+						'A391'  =>   'A391', # Dados do título não conferem com disquete
+						'A392'  =>   'A392', # Pagador e Sacador Avalista são a mesma pessoa
+						'A393'  =>   'A393', # Aguardar um dia útil após o vencimento para protestar
+						'A394'  =>   'A394', # Data do vencimento rasurada
+						'A395'  =>   'A395', # Vencimento – extenso não confere com número
+						'A396'  =>   'A396', # Falta data de vencimento no título
+						'A397'  =>   'A397', # DM/DMI sem comprovante autenticado ou declaração
+						'A398'  =>   'A398', # Comprovante ilegível para conferência e microfilmagem
+						'A399'  =>   'A399', # Nome solicitado não confere com emitente ou pagador
+						'A400'  =>   'A400', # Confirmar se são 2 emitentes. Se sim, indicar os dados dos 2
+						'A401'  =>   'A401', # Endereço do pagador igual ao do pagador ou do portador
+						'A402'  =>   'A402', # Endereço do apresentante incompleto ou não informado
+						'A403'  =>   'A403', # Rua/número inexistente no endereço
+						'A404'  =>   'A404', # Falta endosso do favorecido para o apresentante
+						'A405'  =>   'A405', # Data da emissão rasurada
+						'A406'  =>   'A406', # Falta assinatura do pagador no título
+						'A407'  =>   'A407', # Nome do apresentante não informado/incompleto/incorreto
+						'A408'  =>   'A408', # Erro de preenchimento do titulo
+						'A409'  =>   'A409', # Titulo com direito de regresso vencido
+						'A410'  =>   'A410', # Titulo apresentado em duplicidade
+						'A411'  =>   'A411', # Titulo já protestado
+						'A412'  =>   'A412', # Letra de cambio vencida – falta aceite do pagador
+						'A413'  =>   'A413', # Falta declaração de saldo assinada no título
+						'A414'  =>   'A414', # Contrato de cambio – Falta conta gráfica
+						'A415'  =>   'A415', # Ausência do documento físico
+						'A416'  =>   'A416', # Pagador falecido
+						'A417'  =>   'A417', # Pagador apresentou quitação do título
+						'A418'  =>   'A418', # Título de outra jurisdição territorial
+						'A419'  =>   'A419', # Título com emissão anterior a concordata do pagador
+						'A420'  =>   'A420', # Pagador consta na lista de falência
+						'A421'  =>   'A421', # Apresentante não aceita publicação de edital
+						'A422'  =>   'A422', # Dados do Pagador em Branco ou inválido
+						'A423'  =>   'A423', # Código do Pagador na agência beneficiária está duplicado
+						'A424'  =>   'A424', # Reconhecimento da dívida pelo pagador
+						'A425'  =>   'A425', # Não reconhecimento da dívida pelo pagador
+						'A426'  =>   'A426', # Regularização centralizadora – Rede Sicredi
+						'A427'  =>   'A427', # Regularização centralizadora – Compensação
+						'A428'  =>   'A428', # Regularização centralizadora – Banco correspondente
+						'A429'  =>   'A429', # Regularização centralizadora - VLB Inferior - via compensação
+						'A430'  =>   'A430', # Regularização centralizadora - VLB Superior - via compensação
+						'A431'  =>   'A431', # Pago com cheque
+						'A432'  =>   'A432', # Pago com cheque – bloqueado 24 horas
+						'A433'  =>   'A433', # Pago com cheque – bloqueado 48 horas
+						'A434'  =>   'A434', # Pago com cheque – bloqueado 72 horas
+						'A435'  =>   'A435', # Pago com cheque – bloqueado 96 horas
+						'A436'  =>   'A436', # Pago com cheque – bloqueado 120 horas
+						'A437'  =>   'A437', # Pago com cheque – bloqueado 144 horas
+
+						'A438'  =>   'A438', # Conta cobranca não numérica
+						'A439'  =>   'A439', # Unidade de valor inválida
+						'A440'  =>   'A440', # Valor do titulo em outra unidade
+						'A441'  =>   'A441', # Valor do IOC não numérico
+						'A442'  =>   'A442', # Total parcela não numérico
+						'A443'  =>   'A443', # Codigo banco cobrador inválido
+						'A444'  =>   'A444', # Número parcelas carne não numérico
+						'A445'  =>   'A445', # Número parcelas carne zerado
+						'A446'  =>   'A446', # Movimento excluido por solicitacao
+						'A447'  =>   'A447', # Agência cobradora não encontrada
+						'A448'  =>   'A448', # Não baixar, compl. informado inválido
+						'A449'  =>   'A449', # Não protestar, compl. informado inválido
+						'A450'  =>   'A450', # Qtd de dias de baixa não preenchido
+						'A451'  =>   'A451', # Qtd de dias protesto não preenchido
+						'A452'  =>   'A452', # Tot parc. inf. não bate cl otd parc ger
+						'A453'  =>   'A453', # Carne com parcelas com erro
+						'A454'  =>   'A454', # Número do titulo igual a zero
+						'A455'  =>   'A455', # Titulo não encontrado
+						'A456'  =>   'A456', # Titulo com ordem de protesto já emitida
+						'A457'  =>   'A457', # Ocorrência não acatada, titulo já protestado
+						'A458'  =>   'A458', # Ocorrência não acatada, titulo não vencido
+						'A459'  =>   'A459', # Instrucao aceita so p/ cobranca simples
+						'A460'  =>   'A460', # Especie documento não protestavel
+						'A461'  =>   'A461', # Cedente sem carta de protesto
+						'A462'  =>   'A462', # Sacado não protestavel
+						'A463'  =>   'A463', # Tipo de cobranca não permite protesto
+						'A464'  =>   'A464', # Pedido sustacao já solicitado
+						'A465'  =>   'A465', # Sustacao protesto fora de prazo
+						'A466'  =>   'A466', # Cliente não transmite reg. de ocorrencia
+						'A467'  =>   'A467', # Tipo de vencimento inválido
+						'A468'  =>   'A468', # Produto diferente de cobranca simples
+						'A469'  =>   'A469', # Data prorrogação menor oue data vencimento
+						'A470'  =>   'A470', # Data antecipação maior oue data vencimento
+						'A471'  =>   'A471', # Data documento superior a data instrucao
+						'A472'  =>   'A472', # Desc. por antec. maior/igual vlr titulo
+						'A473'  =>   'A473', # Não existe abatimento p/ cancelar
+						'A474'  =>   'A474', # Não existe prim. desconto p/ cancelar
+						'A475'  =>   'A475', # Não existe seg. desconto p/ cancelar
+						'A476'  =>   'A476', # Não existe terc. desconto p/ cancelar
+						'A477'  =>   'A477', # Não existe desc. por antec. p/ cancelar
+						'A478'  =>   'A478', # Não existe multa por atraso p/ cancelar
+						'A479'  =>   'A479', # Já existe segundo desconto
+						'A480'  =>   'A480', # Já existe terceiro desconto
+						'A481'  =>   'A481', # Data instrucao inválida
+						'A482'  =>   'A482', # Data multa menor/igual oue vencimento
+						'A483'  =>   'A483', # Já existe desconto por dia antecipacao
+						'A484'  =>   'A484', # Valor titulo em outra moeda não informado
+						'A485'  =>   'A485', # Perfil não aceita valor titulo zerado
+						'A486'  =>   'A486', # Especie docto não permite protesto
+						'A487'  =>   'A487', # Especie docto não permite IOC zerado
+						'A488'  =>   'A488', # Registro duplicado no movimento diario
+						'A489'  =>   'A489', # Nome do sacado não informado
+						'A490'  =>   'A490', # Endereço do sacado não informado
+						'A491'  =>   'A491', # Municipio do sacado não informado
+						'A492'  =>   'A492', # Tipo inscrição não existe
+						'A493'  =>   'A493', # Valor mora tem oue ser zero (titulo = zero)
+						'A494'  =>   'A494', # Data multa maior oue data de vencimento
+						'A495'  =>   'A495', # Complemento da instrucao não numérico
+						'A496'  =>   'A496', # Codigo p. baixa/ devol. inválido
+						'A497'  =>   'A497', # Codigo banco na compensação não numérico
+						'A498'  =>   'A498', # Codigo banco na compensação inválido
+						'A499'  =>   'A499', # Num. lote remessa(detalhe) não numérico
+						'A500'  =>   'A500', # Num. seo. reg. do lote não numérico
+						'A501'  =>   'A501', # Codigo p. protesto não numérico
+						'A502'  =>   'A502', # Qtd de dias p. protesto inválido
+						'A503'  =>   'A503', # Qtd dias baixa/dev. inválido p. cod. 1
+						'A504'  =>   'A504', # Qtd dias baixa/dev. inválido p.cod. 2
+						'A505'  =>   'A505', # Qtd dias baixa/dev.inválido p.cod. 3
+						'A506'  =>   'A506', # Indicador de carne não numérico
+						'A507'  =>   'A507', # Num. total de parc.carne não numérico
+						'A508'  =>   'A508', # Número do plano não numérico
+						'A509'  =>   'A509', # Indicador de parcelas carne inválido
+						'A510'  =>   'A510', # N.seo. parcela inv.p.indic. maior 0
+						'A511'  =>   'A511', # N. seo.parcela inv.p.indic.dif.zeros
+						'A512'  =>   'A512', # N.tot.parc.inv.p.indic. maior zeros
+						'A513'  =>   'A513', # Num.tot.parc.inv.p.indic.difer.zeros
+						'A514'  =>   'A514', # Alt.do contr.participanteinválido
+						'A515'  =>   'A515', # Alt. do seu Número inválida
+						'A516'  =>   'A516', # Banco compensação inválido (d30)
+						'A517'  =>   'A517', # Num. do lote remessa não numérico(d30)
+						'A518'  =>   'A518', # Num.seo.reg.no lote(d30)
+						'A519'  =>   'A519', # Tipo insc.sacado inválido (d30)
+						'A520'  =>   'A520', # Num.insc.sac.inv.p.tipo insc.o e 9(d30)
+						'A521'  =>   'A521', # Num.banco compensação inválido (d3r)
+						'A522'  =>   'A522', # Num. lote remessa não numérico (d3r)
+						'A523'  =>   'A523', # Num. seo. reg. lote não numérico (d3r)
+						'A524'  =>   'A524', # Data desc3 não numérica (d3r)
+						'A525'  =>   'A525', # Cod.banco compensação não numérico (d3s)
+						'A526'  =>   'A526', # Cod. banco compensação inválido (d3s)
+						'A527'  =>   'A527', # Num.lote remessa não numérico (d3s)
+						'A528'  =>   'A528', # Num.seo.do reg.lote não numérico (d3s)
+						'A529'  =>   'A529', # Num.ident.de impressao inválido (d3s)
+						'A530'  =>   'A530', # Num.linha impressa não numérico(d3s)
+						'A531'  =>   'A531', # Cod.msg.p.rec.sacado inválido(d3s)
+						'A532'  =>   'A532', # Cad.txperm.sk.inv.p.cod.mora=4(d3p)
+						'A533'  =>   'A533', # Vl.tit(real).inv.p.cod.mora= 1(dep)
+						'A534'  =>   'A534', # Vl.outros inv.p.cod.mora = 1(d3p)
+						'A535'  =>   'A535', # Cad.tx.perm.sk.inv.p.cod.mora=3(d3p)
+						'A536'  =>   'A536', # Titulo com mais de 3 instrucoes financeiras
+						'A537'  =>   'A537', # Código de cedente não cadastrado
+						'A538'  =>   'A538', # Titulo sem ordem de protesto automatica
+						'A539'  =>   'A539', # Data de juros de tolerancia inválido
+						'A540'  =>   'A540', # Data de tolerancia menor data vencimento
+						'A541'  =>   'A541', # Perc. de juros de tolerancia inválido
+						'A542'  =>   'A542', # Titulo rejeitado - operação de desconto
+						'A543'  =>   'A543', # Titulo rejeitado - horário limite op desconto
+
+						'A999'  =>   'A999',  # Outros motivos
 					}
 				end
-				def equivalent_codigo_motivo_ocorrencia_B codigo_movimento_gem
+				def equivalent_codigo_motivo_ocorrencia_B_240 codigo_movimento_gem
 					#  Código     Padrão para  
 					{# do Banco     a Gem
-						'01'  => 'B01',  # Tarifa de Extrato de Posição
-						'02'  => 'B02',  # Tarifa de Manutenção de Título Vencido
-						'03'  => 'B03',  # Tarifa de Sustação
-						'04'  => 'B04',  # Tarifa de Protesto
-						'05'  => 'B05',  # Tarifa de Outras Instruções
-						'06'  => 'B06',  # Tarifa de Outras Ocorrências
-						'07'  => 'B07',  # Tarifa de Envio de Duplicata ao Pagador
-						'08'  => 'B08',  # Custas de Protesto
-						'09'  => 'B09',  # Custas de Sustação de Protesto
-						'10'  => 'B10',  # Custas de Cartório Distribuidor
-						'11'  => 'B11',  # Custas de Edital
-						'12'  => 'B12',  # Tarifa Sobre Devolução de Título Vencido
-						'13'  => 'B13',  # Tarifa Sobre Registro Cobrada na Baixa/Liquidação
-						'14'  => 'B14',  # Tarifa Sobre Reapresentação Automática
-						'15'  => 'B15',  # Tarifa Sobre Rateio de Crédito
-						'16'  => 'B16',  # Tarifa Sobre Informações Via Fax
-						'17'  => 'B17',  # Tarifa Sobre Prorrogação de Vencimento
-						'18'  => 'B18',  # Tarifa Sobre Alteração de Abatimento/Desconto
-						'19'  => 'B19',  # Tarifa Sobre Arquivo mensal (Em Ser)
-						'20'  => 'B20',  # Tarifa Sobre Emissão de Boleto de Pagamento Pré-Emitido pelo Banco
+						'01'    =>   'B01',  # Tarifa de Extrato de Posição
+						'02'    =>   'B02',  # Tarifa de Manutenção de Título Vencido
+						'03'    =>   'B03',  # Tarifa de Sustação
+						'04'    =>   'B04',  # Tarifa de Protesto
+						'05'    =>   'B05',  # Tarifa de Outras Instruções
+						'06'    =>   'B06',  # Tarifa de Outras Ocorrências
+						'07'    =>   'B07',  # Tarifa de Envio de Duplicata ao Pagador
+						'08'    =>   'B08',  # Custas de Protesto
+						'09'    =>   'B09',  # Custas de Sustação de Protesto
+						'10'    =>   'B10',  # Custas de Cartório Distribuidor
+						'11'    =>   'B11',  # Custas de Edital
+						'12'    =>   'B12',  # Tarifa Sobre Devolução de Título Vencido
+						'13'    =>   'B13',  # Tarifa Sobre Registro Cobrada na Baixa/Liquidação
+						'14'    =>   'B14',  # Tarifa Sobre Reapresentação Automática
+						'15'    =>   'B15',  # Tarifa Sobre Rateio de Crédito
+						'16'    =>   'B16',  # Tarifa Sobre Informações Via Fax
+						'17'    =>   'B17',  # Tarifa Sobre Prorrogação de Vencimento
+						'18'    =>   'B18',  # Tarifa Sobre Alteração de Abatimento/Desconto
+						'19'    =>   'B19',  # Tarifa Sobre Arquivo mensal (Em Ser)
+						'20'    =>   'B20',  # Tarifa Sobre Emissão de Boleto de Pagamento Pré-Emitido pelo Banco
+
+						'B21'   =>   'B21',  # Redisponibilização de Arquivo Retorno Eletrônico
+						'B22'   =>   'B22',  # Banco de Pagadores
+						'B23'   =>   'B23',  # Entrega Aviso Disp Boleto via e-amail ao pagador (s/ emissão Boleto)
+						'B24'   =>   'B24',  # Emissão de Boleto Pré-impresso CAIXA matricial
+						'B25'   =>   'B25',  # Emissão de Boleto Pré-impresso CAIXA A4
+						'B26'   =>   'B26',  # Emissão de Boleto Padrão CAIXA
+						'B27'   =>   'B27',  # Emissão de Boleto/Carnê
+						'B28'   =>   'B28',  # Emissão de Aviso de Vencido
+						'B29'   =>   'B29',  # Alteração cadastral de dados do título - sem emissão de aviso
+						'B30'   =>   'B30',  # Emissão de 2a via de Boleto Cobrança Registrada
+						'B31'   =>   'B31',  # Tarifa de permanência título cadastrado
+						'B32'   =>   'B32',  # Tarifa de registro
+						'B33'   =>   'B33',  # Tarifa título pago no Bradesco
+						'B34'   =>   'B34',  # Tarifa título pago compensação
+						'B35'   =>   'B35',  # Tarifa título baixado não pago
+						'B36'   =>   'B36',  # Tarifa alteração de vencimento
+						'B37'   =>   'B37',  # Tarifa concessão abatimento
+						'B38'   =>   'B38',  # Tarifa cancelamento de abatimento
+						'B39'   =>   'B39',  # Tarifa concessão desconto
+						'B40'   =>   'B40',  # Tarifa cancelamento desconto
+						'B41'   =>   'B41',  # Tarifa título pago cics
+						'B42'   =>   'B42',  # Tarifa título pago Internet
+						'B43'   =>   'B43',  # Tarifa título pago term. gerencial serviços
+						'B44'   =>   'B44',  # Tarifa título pago Pág-Contas
+						'B45'   =>   'B45',  # Tarifa título pago Fone Fácil
+						'B46'   =>   'B46',  # Tarifa título Déb. Postagem
+						'B47'   =>   'B47',  # Tarifa impressão de títulos pendentes
+						'B48'   =>   'B48',  # Tarifa título pago BDN
+						'B49'   =>   'B49',  # Tarifa título pago Term. Multi Função
+						'B50'   =>   'B50',  # Impressão de títulos baixados
+						'B51'   =>   'B51',  # Impressão de títulos pagos
+						'B52'   =>   'B52',  # Tarifa título pago Pagfor
+						'B53'   =>   'B53',  # Tarifa reg/pgto – guichê caixa
+						'B54'   =>   'B54',  # Tarifa título pago retaguarda
+						'B55'   =>   'B55',  # Tarifa título pago Subcentro
+						'B56'   =>   'B56',  # Tarifa título pago Cartão de Crédito
+						'B57'   =>   'B57',  # Tarifa título pago Comp Eletrônica
+						'B58'   =>   'B58',  # Tarifa título Baix. Pg. Cartório
+						'B59'   =>   'B59',  # Tarifa título baixado acerto banco
+						'B60'   =>   'B60',  # Baixa registro em duplicidade
+						'B61'   =>   'B61',  # Tarifa título baixado decurso prazo
+						'B62'   =>   'B62',  # Tarifa título baixado Judicialmente
+						'B63'   =>   'B63',  # Tarifa título baixado via remessa
+						'B64'   =>   'B64',  # Tarifa título baixado rastreamento
+						'B65'   =>   'B65',  # Tarifa título baixado conf. Pedido
+						'B66'   =>   'B66',  # Tarifa título baixado protestado
+						'B67'   =>   'B67',  # Tarifa título baixado p/ devolução
+						'B68'   =>   'B68',  # Tarifa título baixado franco pagto
+						'B69'   =>   'B69',  # Tarifa título baixado SUST/RET/CARTÓRIO
+						'B70'   =>   'B70',  # Tarifa título baixado SUS/SEM/REM/CARTÓRIO
+						'B71'   =>   'B71',  # Tarifa título transferido desconto
+						'B72'   =>   'B72',  # Cobrado baixa manual
+						'B73'   =>   'B73',  # Baixa por acerto cliente
+						'B74'   =>   'B74',  # Tarifa baixa por contabilidade
+						'B75'   =>   'B75',  # Tr. tentativa cons deb aut
+						'B76'   =>   'B76',  # Tr. credito online
+						'B77'   =>   'B77',  # Tarifa reg/pagto Bradesco Expresso
+						'B78'   =>   'B78',  # Tarifa emissão Papeleta
+						'B79'   =>   'B79',  # Tarifa fornec papeleta semi preenchida
+						'B80'   =>   'B80',  # Acondicionador de papeletas (RPB)S
+						'B81'   =>   'B81',  # Acond. De papelatas (RPB)s PERSONAL
+						'B82'   =>   'B82',  # Papeleta formulário branco
+						'B83'   =>   'B83',  # Formulário A4 serrilhado
+						'B84'   =>   'B84',  # Fornecimento de softwares transmiss
+						'B85'   =>   'B85',  # Fornecimento de softwares consulta
+						'B86'   =>   'B86',  # Fornecimento Micro Completo
+						'B87'   =>   'B87',  # Fornecimento MODEN
+						'B88'   =>   'B88',  # Fornecimento de máquinas óticas
+						'B89'   =>   'B89',  # Fornecimento de Impressoras
+						'B90'   =>   'B90',  # Reativação de título
+						'B91'   =>   'B91',  # Alteração de produto negociado
+						'B92'   =>   'B92',  # Tarifa emissão de contra recibo
+						'B93'   =>   'B93',  # Tarifa emissão 2a via papeleta
+						'B94'   =>   'B94',  # Tarifa regravação arquivo retorno
+						'B95'   =>   'B95',  # Arq. Títulos a vencer mensal
+						'B96'   =>   'B96',  # Listagem auxiliar de crédito
+						'B97'   =>   'B97',  # Tarifa cadastro cartela instrução permanente
+						'B98'   =>   'B98',  # Canalização de Crédito
+						'B99'   =>   'B99',  # Cadastro de Mensagem Fixa
+						'B100'  =>   'B100', # Tarifa registro título déb. Automático
+						'B101'  =>   'B101', # Emissão papeleta sem valor
+						'B102'  =>   'B102', # Sem uso
+						'B103'  =>   'B103', # Cadastro de reembolso de diferença
+						'B104'  =>   'B104', # Relatório fluxo de pagto
+						'B105'  =>   'B105', # Emissão Extrato mov. Carteira
+						'B106'  =>   'B106', # Mensagem campo local de pagto
+						'B107'  =>   'B107', # Cadastro Concessionária serv. Publ.
+						'B108'  =>   'B108', # Classif. Extrato Conta Corrente
+						'B109'  =>   'B109', # Contabilidade especial
+						'B110'  =>   'B110', # Realimentação pagto
+						'B111'  =>   'B111', # Repasse de Créditos
+						'B112'  =>   'B112', # Tarifa reg. Pagto outras mídias
+						'B113'  =>   'B113', # Tarifa Reg/Pagto – Net Empresa
+						'B114'  =>   'B114', # Tarifa título pago vencido
+						'B115'  =>   'B115', # TR Tít. Baixado por decurso prazo
+						'B116'  =>   'B116', # Arquivo Retorno Antecipado
+						'B117'  =>   'B117', # Arq retorno Hora/Hora
+						'B118'  =>   'B118', # TR. Agendamento Déb Aut
+						'B119'  =>   'B119', # TR. Agendamento rat. Crédito
+						'B120'  =>   'B120', # TR Emissão aviso rateio
+						'B121'  =>   'B121', # Extrato de protesto
+						'B122'  =>   'B122', # Tarifa de baixa da carteira
+						'B123'  =>   'B123', # Tarifa de registro de entrada do título
+						'B124'  =>   'B124', # Tarifa de entrada na rede Sicredi
 					}
 				end
-				def equivalent_codigo_motivo_ocorrencia_C codigo_movimento_gem
+				def equivalent_codigo_motivo_ocorrencia_C_240 codigo_movimento_gem
 					#  Código     Padrão para  
 					{# do Banco     a Gem
-						'01'  => 'C01',  # Por Saldo
-						'02'  => 'C02',  # Por Conta
-						'03'  => 'C03',  # Liquidação no Guichê de Caixa em Dinheiro
-						'04'  => 'C04',  # Compensação Eletrônica
-						'05'  => 'C05',  # Compensação Convencional
-						'06'  => 'C06',  # Por Meio Eletrônico
-						'07'  => 'C07',  # Após Feriado Local
-						'08'  => 'C08',  # Em Cartório
-						'30'  => 'C30',  # Liquidação no Guichê de Caixa em Cheque
-						'31'  => 'C31',  # Liquidação em banco correspondente
-						'32'  => 'C32',  # Liquidação Terminal de Auto-Atendimento
-						'33'  => 'C33',  # Liquidação na Internet (Home banking)
-						'34'  => 'C34',  # Liquidado Office Banking
-						'35'  => 'C35',  # Liquidado Correspondente em Dinheiro
-						'36'  => 'C36',  # Liquidado Correspondente em Cheque
-						'37'  => 'C37',  # Liquidado por meio de Central de Atendimento (Telefone)
-						'09'  => 'C09',  # Comandada Banco
-						'10'  => 'C10',  # Comandada Cliente Arquivo
-						'11'  => 'C11',  # Comandada Cliente On-line
-						'12'  => 'C12',  # Decurso Prazo - Cliente
-						'13'  => 'C13',  # Decurso Prazo - Banco
-						'14'  => 'C14',  # Protestado
-						'15'  => 'C15',  # Título Excluído
+						'01'    =>   'C01',  # Por Saldo
+						'02'    =>   'C02',  # Por Conta
+						'03'    =>   'C03',  # Liquidação no Guichê de Caixa em Dinheiro
+						'04'    =>   'C04',  # Compensação Eletrônica
+						'05'    =>   'C05',  # Compensação Convencional
+						'06'    =>   'C06',  # Por Meio Eletrônico
+						'07'    =>   'C07',  # Após Feriado Local
+						'08'    =>   'C08',  # Em Cartório
+						'30'    =>   'C30',  # Liquidação no Guichê de Caixa em Cheque
+						'31'    =>   'C31',  # Liquidação em banco correspondente
+						'32'    =>   'C32',  # Liquidação Terminal de Auto-Atendimento
+						'33'    =>   'C33',  # Liquidação na Internet (Home banking)
+						'34'    =>   'C34',  # Liquidado Office Banking
+						'35'    =>   'C35',  # Liquidado Correspondente em Dinheiro
+						'36'    =>   'C36',  # Liquidado Correspondente em Cheque
+						'37'    =>   'C37',  # Liquidado por meio de Central de Atendimento (Telefone)
+						'09'    =>   'C09',  # Comandada Banco
+						'10'    =>   'C10',  # Comandada Cliente Arquivo
+						'11'    =>   'C11',  # Comandada Cliente On-line
+						'12'    =>   'C12',  # Decurso Prazo - Cliente
+						'13'    =>   'C13',  # Decurso Prazo - Banco
+						'14'    =>   'C14',  # Protestado
+						'15'    =>   'C15',  # Título Excluído
+
+						'C00'   =>   'C00',  # Baixado Conforme Instruções da Agência
+						'C16'   =>   'C16',  # Título Baixado pelo Banco por decurso Prazo
+						'C17'   =>   'C17',  # Titulo Baixado Transferido Carteira
+						'C20'   =>   'C20',  # Titulo Baixado e Transferido para Desconto
+						'C42'   =>   'C42',  # Rateio não efetuado, cód. Calculo 2 (VLR. Registro) 
+						'C46'   =>   'C46',  # Baixa Por alteração da variação
+						'C47'   =>   'C47',  # Baixa Por alteração da variação
+						'C51'   =>   'C51',  # Baixa Acerto
+						'C90'   =>   'C90',  # Baixa automática
+						'C100'  =>   'C100', # Casa Lotérica
+						'C101'  =>   'C101', # Agências CAIXA
+						'C102'  =>   'C102', # Correspondente Bancário
+						'C103'  =>   'C103', # Liquidação normal
+						'C104'  =>   'C104', # Liquidação parcial
+						'C105'  =>   'C105', # Liquidação com cheque a compensar
+						'C106'  =>   'C106', # Liquidação de título sem registro (carteira 7 tipo 4)
+						'C107'  =>   'C107', # Liquidação na apresentação
+						'C110'  =>   'C110', # Liquidação Parcial com Cheque a Compensar
+						'C111'  =>   'C111', # Liquidação por Saldo com Cheque a Compensar
+						'C118'  =>   'C118', # Baixa Por alteração da carteira
+						'C119'  =>   'C119', # Baixa Débito automático
+						'C131'  =>   'C131', # Baixa Liquidado anteriormente
+						'C132'  =>   'C132', # Baixa Habilitado em processo
+						'C133'  =>   'C133', # Baixa Incobrável por nosso intermédio
+						'C134'  =>   'C134', # Baixa Transferido para créditos em liquidação
+						'C135'  =>   'C135', # Acerto online
+						'C136'  =>   'C136', # Outros bancos – recebimento off-line
+						'C137'  =>   'C137', # Outros bancos – pelo código de barras
+						'C138'  =>   'C138', # Outros bancos – pela linha digitável
+						'C139'  =>   'C139', # Outros bancos – pelo auto atendimento
+						'C140'  =>   'C140', # Outros bancos – recebimento em casa lotérica
+						'C141'  =>   'C141', # Outros bancos – correspondente
+						'C142'  =>   'C142', # Outros bancos – telefone
+						'C143'  =>   'C143', # Outros bancos – arquivo eletrônico (pagamento efetuado por meio de troca de arquivos)
+						'C144'  =>   'C144', # Correspondente Itaú
+						'C145'  =>   'C145', # SISPAG – sistema de contas a pagar itaú
+						'C146'  =>   'C146', # Agência itaú – por débito em conta corrente, cheque itaú* ou dinheiro
+						'C147'  =>   'C147', # Agência itaú – capturado em off-line
+						'C148'  =>   'C148', # Pagamento em cartório de protesto com cheque
+						'C149'  =>   'C149', # Agendamento – pagamento agendado via bankline ou outro canal eletrônico e liquidado na data indicada
+						'C150'  =>   'C150', # Digitação – realimentação automática
+						'C151'  =>   'C151', # Pagamento via seltec
 					}
 				end				
-				def equivalent_codigo_motivo_ocorrencia_D codigo_movimento_gem
+				def equivalent_codigo_motivo_ocorrencia_D_240 codigo_movimento_gem
 					 # Exclusivo por banco
+				end
+
+				def equivalent_codigo_motivo_ocorrencia_A_400 codigo_movimento_gem
+					equivalent_codigo_motivo_ocorrencia_A_240 codigo_movimento_gem
+				end
+				def equivalent_codigo_motivo_ocorrencia_B_400 codigo_movimento_gem
+					equivalent_codigo_motivo_ocorrencia_B_240 codigo_movimento_gem
+				end
+				def equivalent_codigo_motivo_ocorrencia_C_400 codigo_movimento_gem
+					equivalent_codigo_motivo_ocorrencia_C_240 codigo_movimento_gem
+				end
+				def equivalent_codigo_motivo_ocorrencia_D_400 codigo_movimento_gem
+					equivalent_codigo_motivo_ocorrencia_D_240 codigo_movimento_gem
 				end
 
 			########################################################################################	
@@ -1336,11 +2549,21 @@ module BrBoleto
 					# 0616 = A entrega franco de pagamento é difícil 
 					# 0617 = Título recusado pelo cartório 
 					#
-				def get_codigo_ocorrencia_pagador(code)
-					equivalent_codigo_ocorrencia_pagador[code] || code
+					# Itaú:
+					# 1776 = Não foi possível a entrega do boleto ao pagador
+					# 1784 = Boleto não entregue, mudou-se / desconhecido
+					# 1792 = Boleto não entregue, CEP errado / incompleto
+					# 1800 = Boleto não entregue, número não existe/endereço incompleto
+					# 1818 = Boleto não retirado pelo pagador. reenviado pelo correio para carteiras com emissão pelo banco
+					# 1826 = Endereço de e-mail inválido/cobrança mensagem. boleto enviado pelo correio
+					# 1834 = Boleto DDA, divida reconhecida pelo pagador
+					# 1842 = Boleto DDA, divida não reconhecida pelo pagador
+
+				def get_codigo_ocorrencia_pagador(code, cnab)
+					send("equivalent_codigo_ocorrencia_pagador_#{cnab}")[code] || code
 				end
 				# Código adotado pela FEBRABAN para identificar o tipo de ocorrência do Pagador.
-				def equivalent_codigo_ocorrencia_pagador
+				def equivalent_codigo_ocorrencia_pagador_240
 					{
 						'0101' => '0101', # Pagador alega que não recebeu a mercadoria 
 						'0102' => '0102', # Pagador alega que a mercadoria chegou atrasada 
@@ -1396,9 +2619,21 @@ module BrBoleto
 						'0615' => '0615', # Entrega franco de pagamento ao representante 
 						'0616' => '0616', # A entrega franco de pagamento é difícil 
 						'0617' => '0617', # Título recusado pelo cartório 
+
+						'1776' => '1776', # Não foi possível a entrega do boleto ao pagador
+						'1784' => '1784', # Boleto não entregue, mudou-se / desconhecido
+						'1792' => '1792', # Boleto não entregue, CEP errado / incompleto
+						'1800' => '1800', # Boleto não entregue, número não existe/endereço incompleto
+						'1818' => '1818', # Boleto não retirado pelo pagador. reenviado pelo correio para carteiras com emissão pelo banco
+						'1826' => '1826', # Endereço de e-mail inválido/cobrança mensagem. boleto enviado pelo correio
+						'1834' => '1834', # Boleto DDA, divida reconhecida pelo pagador
+						'1842' => '1842', # Boleto DDA, divida não reconhecida pelo pagador
 					}
 				end
 
+				def equivalent_codigo_ocorrencia_pagador_400
+					equivalent_codigo_ocorrencia_pagador_240
+				end
 		end
 	end
 end

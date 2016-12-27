@@ -38,7 +38,8 @@ module BrBoleto
 						valor_liquido:                 254..266,
 						valor_juros_multa:             267..279,
 						valor_outros_creditos:         280..292,
-						# sacado_documento:              xxx..xxx,
+						
+						motivo_ocorrencia_original_1:  87..88,
 					}
 				end
 			end

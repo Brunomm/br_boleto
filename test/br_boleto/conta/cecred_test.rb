@@ -129,13 +129,13 @@ describe BrBoleto::Conta::Cecred do
 	end
 
 	describe "#get_codigo_motivo_ocorrencia" do
-		context "CÓDIGOS para o Cecred" do
-			it { subject.get_codigo_motivo_ocorrencia('P1', '91').must_equal 'A114' } # Enviado Cooperativa Emite e Expede
-			it { subject.get_codigo_motivo_ocorrencia('S1', '93').must_equal 'D02' }  # Sempre que a solicitação (inclusão ou exclusão) for efetuada com sucesso
-			it { subject.get_codigo_motivo_ocorrencia('S2', '94').must_equal 'D03' }  # Sempre que a solicitação for integrada na Serasa com sucesso
-			it { subject.get_codigo_motivo_ocorrencia('S3', '94').must_equal 'D04' }  # Sempre que vier retorno da Serasa por decurso de prazo
-			it { subject.get_codigo_motivo_ocorrencia('S4', '93').must_equal 'D05' }  # Sempre que o documento for integrado na Serasa com sucesso, quando o UF for de São Paulo
-			it { subject.get_codigo_motivo_ocorrencia('S5', '93').must_equal 'D06' }  # Sempre quando houver ação judicial, restringindo a negativação do boleto.
+		context "CÓDIGOS para o Cecred CNAB 240" do
+			it { subject.get_codigo_motivo_ocorrencia('P1', '91', 240).must_equal 'A114' } # Enviado Cooperativa Emite e Expede
+			it { subject.get_codigo_motivo_ocorrencia('S1', '93', 240).must_equal 'D02' }  # Sempre que a solicitação (inclusão ou exclusão) for efetuada com sucesso
+			it { subject.get_codigo_motivo_ocorrencia('S2', '94', 240).must_equal 'D03' }  # Sempre que a solicitação for integrada na Serasa com sucesso
+			it { subject.get_codigo_motivo_ocorrencia('S3', '94', 240).must_equal 'D04' }  # Sempre que vier retorno da Serasa por decurso de prazo
+			it { subject.get_codigo_motivo_ocorrencia('S4', '93', 240).must_equal 'D05' }  # Sempre que o documento for integrado na Serasa com sucesso, quando o UF for de São Paulo
+			it { subject.get_codigo_motivo_ocorrencia('S5', '93', 240).must_equal 'D06' }  # Sempre quando houver ação judicial, restringindo a negativação do boleto.
 		end
 	end
 end
