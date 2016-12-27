@@ -65,12 +65,18 @@ module BrBoleto
 			#    | 20       |  01     | Fixo 9                                      |
 			#    | 21-27    |  07     | Código do cedente padrão Santander          |
 			#    | 28-40    |  13     | Nosso Número (Num. Documeto + DV)           |
-			#    | 41       |  01     | IOF (somente para seguradoras)              |
+			#    | 41       |  01     | Zero (IOF somente para seguradoras)         |
 			#    | 42-44    |  03     | Carteira de cobrança                        |
 			#    -------------------------------------------------------------------
 			#
 			def codigo_de_barras_do_banco
-				"9#{conta.convenio}#{numero_documento}#{digito_verificador_nosso_numero}0#{conta.carteira}"
+				cod_barras = ''
+				cod_barras << "9" 
+				cod_barras << "#{conta.convenio}"
+				cod_barras << "#{nosso_numero.gsub('-','')}"
+				cod_barras << "0"
+				cod_barras << "#{conta.carteira}"
+				cod_barras
 			end
 		end
 	end

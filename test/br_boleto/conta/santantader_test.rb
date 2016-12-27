@@ -193,23 +193,24 @@ describe BrBoleto::Conta::Santander do
 	end
 
 	describe "#get_tipo_cobranca" do
-		context "CÓDIGOS para o cnab 400 do Santander" do
-			it { subject.get_tipo_cobranca('1', 400).must_equal '5' } # RÁPIDA COM REGISTRO
-			it { subject.get_tipo_cobranca('2', 400).must_equal '2' } # ELETRÔNICA COM REGISTRO
-			it { subject.get_tipo_cobranca('3', 400).must_equal '3' } # CAUCIONADA ELETRÔNICA
-			it { subject.get_tipo_cobranca('4', 400).must_equal '7' } # DESCONTADA ELETRÔNICA
-			it { subject.get_tipo_cobranca('5', 400).must_equal '4' } # COBRANÇA SEM REGISTRO
-			it { subject.get_tipo_cobranca('6', 400).must_equal '6' } # CAUCIONADA RAPIDA
+		context "CÓDIGOS para o cnab 240 do Santander" do
+			it { subject.get_tipo_cobranca('1', 240).must_equal '5' } # Cobrança Simples (Rápida com Registro)
+			it { subject.get_tipo_cobranca('3', 240).must_equal '3' } # Cobrança Caucionada (Eletrônica com Registro e Convencional com Registro)
+			it { subject.get_tipo_cobranca('4', 240).must_equal '4' } # Cobrança Descontada (Eletrônica com Registro)
+			it { subject.get_tipo_cobranca('6', 240).must_equal '6' } # Cobrança Caucionada (Rápida com Registro)
+			it { subject.get_tipo_cobranca('7', 240).must_equal '1' } # Cobrança Simples (Sem Registro / Eletrônica com Registro)
 		end
 
-		context "CÓDIGOS para o cnab 240 do Santander" do
-			it { subject.get_tipo_cobranca('06', 240).must_equal '06' } # Cobrança Caucionada (Rápida com Registro)
+		context "CÓDIGOS para o cnab 400 do Santander" do
+			it { subject.get_tipo_cobranca('7', 400).must_equal '4' } # Cobrança Sem Registro
+			it { subject.get_tipo_cobranca('4', 400).must_equal '7' } # Cobrança Descontada
 		end
 	end
 
 	describe "#get_codigo_protesto" do
 		context "CÓDIGOS para o Santander" do
-			it { subject.get_codigo_protesto('0').must_equal '0' } # Não Protestar
+			it { subject.get_codigo_protesto('3').must_equal '0' }  # Não Protestar
+			it { subject.get_codigo_protesto('99').must_equal '3' } # Utilizar perfil cedente
 		end
 	end
 

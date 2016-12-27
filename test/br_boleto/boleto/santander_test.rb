@@ -82,7 +82,7 @@ describe BrBoleto::Boleto::Santander do
 
 			result[0].must_equal      '9'
 			result[1..7].must_equal   '0000668'       # Convênio
-			result[8..20].must_equal  '0000000036463' # Numero documento
+			result[8..20].must_equal  '0000000036463' # Nosso Número
 			result[21].must_equal     '0'             # IOF
 			result[22..24].must_equal '121'           # Carteira
 

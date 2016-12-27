@@ -104,7 +104,7 @@ module BrBoleto
 					# Zeros                            05          73 - 77
 					# TOTAL = 15 posições 
 					def segmento_p_numero_do_documento(pagamento)
-						segmento = "#{pagamento.numero_documento}".adjust_size_to(15, '0', :right)
+						"#{pagamento.numero_documento}".adjust_size_to(15, '0', :right)
 					end
 
 				######################### TRAILER LOTE #############################

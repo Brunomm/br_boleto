@@ -79,18 +79,19 @@ module BrBoleto
 				######################### SEGMENTO P #############################
 					#
 					# segmento_p_posicao_024_a_057
-					# DESCRIÇÃO                      TAMANHO     POSIÇÃO
+					# TAMANHO     POSIÇÃO          DESCRIÇÃO                      
 					# ---------------------------------------------------------
-					# Número da Conta Corrente         12          24 - 35
-					# DV da Conta                      01          36 - 36 
-					# DV da Ag/Conta                   01          37 - 37  
-					# Nosso Número                     20          38 - 57   
+					#   12          24 - 35        Número da Conta Corrente       
+					#   01          36 - 36        DV da Conta                    
+					#   01          37 - 37        DV da Ag/Conta (Campo não tratado pelo Banco do Brasil. Informar 'branco')
+					#   20          38 - 57        Nosso Número                   
 					#                                                  
 					# TOTAL = 34 posições 
 					def complemento_p(pagamento)
 						complemento = ''
 						complemento << "#{conta.conta_corrente}".adjust_size_to(12, '0', :right)
-						complemento << "#{conta.conta_corrente_dv}".adjust_size_to(2)
+						complemento << "#{conta.conta_corrente_dv}"
+						complemento << ' '
 						complemento << "#{pagamento.nosso_numero}".adjust_size_to(20)
 						complemento
 					end

@@ -46,12 +46,29 @@ module BrBoleto
 					"#{conta.codigo_transmissao}".adjust_size_to(20, '0', :right)
 				end
 
-				# Nosso numero do pagamento e outras informações
-				# Posição: 063 até 108
+				# Detalhe posição: 063 até 76
 				# POSIÇÂO    TAM.  Descrição
 				# -----------------------------------------------------
 				# 063 a 070  008   Nosso Número
-				# 071 a 076  006   Data do segundo desconto
+				# 071 a 076  006   Data do segundo desconto (Zeros)
+				#
+				# Tamanho: 14
+				def detalhe_posicao_063_076(pagamento, sequencial)
+					detalhe = ''
+					detalhe << "#{nosso_numero_formatado(pagamento)}".adjust_size_to(8, '0', :right)
+					detalhe << ''.adjust_size_to(6, '0', :right)
+					detalhe
+				end
+				def nosso_numero_formatado(pagamento)
+					# Por padrão o nosso número possui 13 dígitos, mas nesse caso para a remessa
+					# serão utilizados apenas 8 dígitos.
+					nosso_numero = "#{pagamento.nosso_numero}".adjust_size_to(13, '0', :right)
+					nosso_numero[5..12] 
+				end
+
+				# Detalhe posição: 77 até 108
+				# POSIÇÂO    TAM.  Descrição
+				# -----------------------------------------------------
 				# 077 a 077  001   Branco
 				# 078 a 078  001   Informação de multa
 				# 079 a 082  004   Percentual multa por atraso %
@@ -61,32 +78,20 @@ module BrBoleto
 				# 102 a 107  006   Data para cobrança de multa
 				# 108 a 108  001   Cod. Carteira
 				#
-				# Tamanho: 46
-				def detalhe_posicao_063_076(pagamento, sequencial)
-					detalhe_posicao_063_108(pagamento)
-				end
+				# Tamanho: 32
 				def detalhe_posicao_077_108(pagamento, sequencial)
-					''
+					detalhe = ''
+					detalhe << ' '
+					detalhe << "#{conta.get_codigo_multa(pagamento.codigo_multa)}".adjust_size_to(1, '0', :right)
+					detalhe << "#{pagamento.valor_multa_formatado(4)}".adjust_size_to(4, '0', :right)
+					detalhe << '00'
+					detalhe << ''.adjust_size_to(13, '0', :right)
+					detalhe << ''.adjust_size_to(4)
+					detalhe << "#{pagamento.data_multa_formatado}".adjust_size_to(6, '0', :right)
+					detalhe << "#{conta.get_tipo_cobranca(conta.codigo_carteira, 400)}".adjust_size_to(1, '1') 
+					detalhe
 				end
-				def detalhe_posicao_063_108(pagamento)
-					info = ''
-					info << "#{nosso_numero_formatado(pagamento)}".adjust_size_to(8, '0', :right)
-					info << ''.adjust_size_to(6, '0', :right)
-					info << ''.adjust_size_to(1)
-					info << "#{conta.get_codigo_multa(pagamento.codigo_multa)}".adjust_size_to(1, '0', :right)
-					info << "#{pagamento.valor_multa_formatado(4)}".adjust_size_to(4, '0', :right)
-					info << '00'
-					info << ''.adjust_size_to(13, '0', :right)
-					info << ''.adjust_size_to(4)
-					info << "#{pagamento.data_multa_formatado}".adjust_size_to(6, '0', :right)
-					info << "#{conta.get_tipo_cobranca(conta.codigo_carteira, 400)}".adjust_size_to(1, '1') 
-					info
-				end
-				def nosso_numero_formatado(pagamento)
-					nosso_numero = "#{pagamento.nosso_numero}".adjust_size_to(13, '0', :right)
-					#nosso_numero.reverse.adjust_size_to(8, '0', :right).reverse
-					nosso_numero[5..12]
-				end
+
 
 
 				# Informações referente ao pagamento

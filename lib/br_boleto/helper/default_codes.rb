@@ -238,13 +238,7 @@ module BrBoleto
 					}
 				end	
 				def equivalent_tipo_cobranca_400
-					{
-						'1' => '1', # Cobrança Simples
-						'2' => '2', # Cobrança Vinculada
-						'3' => '3', # Cobrança Caucionada
-						'4' => '4', # Cobrança Descontada
-						'5' => '5', # Cobrança Vendor
-					}
+					equivalent_tipo_cobranca_240
 				end	
 
 			########################################################################################
@@ -269,11 +263,7 @@ module BrBoleto
 					}
 				end
 				def equivalent_tipo_impressao_400
-					{
-						'1' => '1', # Frente do Bloqueto
-						'2' => '2', # Verso do Bloqueto
-						'3' => '3', # Corpo de Instruções da Ficha de Compensação do Bloqueto
-					}
+					equivalent_tipo_impressao_240
 				end
 
 			########################################################################################
@@ -307,15 +297,7 @@ module BrBoleto
 					}
 				end
 				def equivalent_identificacao_emissao_400
-					{
-						'1' => '1', # Banco Emite
-						'2' => '2', # Cliente Emite
-						'3' => '3', # Banco Pré-emite e Cliente Complementa
-						'4' => '4', # Banco Reemite
-						'5' => '5', # Banco Não Reemite
-						'7' => '7', # Banco Emitente - Aberta
-						'8' => '8', # Banco Emitente - Auto-envelopável
-					}
+					equivalent_identificacao_emissao_240
 				end
 
 			########################################################################################
@@ -448,6 +430,7 @@ module BrBoleto
 					# 5 = Protestar Fim Falimentar - Dias Corridos
 					# 8 = Negativação sem Protesto
 					# 9 = Cancelamento Protesto Automático 
+					# 99 = Outros
 					#
 				def get_codigo_protesto(code)
 					equivalent_codigo_protesto[code] || code
@@ -462,7 +445,8 @@ module BrBoleto
 						'4' => '4', # Protestar Fim Falimentar - Dias Úteis
 						'5' => '5', # Protestar Fim Falimentar - Dias Corridos
 						'8' => '8', # Negativação sem Protesto
-						'9' => '9', # Cancelamento Protesto Automático 
+						'9' => '9', # Cancelamento Protesto Automático
+						'99' => '99', # Outros
 					}
 				end
 
@@ -509,22 +493,7 @@ module BrBoleto
 					}
 				end
 				def equivalent_codigo_moeda_400
-					{
-						'01'  => '01', # Reservado para Uso Futuro
-						'02'  => '02', # Dólar Americano Comercial (Venda)
-						'03'  => '03', # Dólar Americano Turismo (Venda)
-						'04'  => '04', # ITRD
-						'05'  => '05', # IDTR
-						'06'  => '06', # UFIR Diária
-						'07'  => '07', # UFIR Mensal
-						'08'  => '08', # FAJ - TR
-						'09'  => '09', # Real
-						'10'  => '10', # TR
-						'11'  => '11', # IGPM
-						'12'  => '12', # CDI
-						'13'  => '13', # Percentual do CDI
-						'14'  => '14', # Euro
-					}
+					equivalent_codigo_moeda_240
 				end
 
 			########################################################################################

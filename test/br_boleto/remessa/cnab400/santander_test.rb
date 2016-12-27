@@ -44,30 +44,43 @@ describe BrBoleto::Remessa::Cnab400::Santander do
 	end
 
 
-	describe '#detalhe_posicao_063_108' do
-		it "deve ter o tamanho de 46 digitos" do
-			subject.detalhe_posicao_063_108(pagamento).size.must_equal 46
+	describe '#detalhe_posicao_077_108' do
+		it "deve ter o tamanho de 14 digitos" do
+			subject.detalhe_posicao_063_076(pagamento, '1').size.must_equal 14
+		end
+		it "deve conter as informações nas posições corretas" do
+			pagamento.assign_attributes(nosso_numero: 763)
+
+			result = subject.detalhe_posicao_063_076(pagamento, '1')
+
+			result[0..7].must_equal    '00000763'         # Numero documento
+			result[8..13].must_equal   ('0' * 6)          # Zeros
+
+			result.size.must_equal 14
+		end
+	end
+
+	describe '#detalhe_posicao_077_108' do
+		it "deve ter o tamanho de 32 digitos" do
+			subject.detalhe_posicao_077_108(pagamento, '1').size.must_equal 32
 		end
 		it "deve conter as informações nas posições corretas" do
 			conta.carteira           = 123
 			conta.codigo_carteira    = 1
 			pagamento.assign_attributes(tipo_emissao: 2)
-			pagamento.assign_attributes(nosso_numero: 763)
 
-			result = subject.detalhe_posicao_063_108(pagamento)
+			result = subject.detalhe_posicao_077_108(pagamento, '1')
 
-			result[0..7].must_equal    '00000763'         # Numero documento                 
-			result[8..13].must_equal   ('0' * 6)          # Zeros
-			result[14..14].must_equal  ' '                # Branco
-			result[15..15].must_equal  '0'                # Codigo Multa
-			result[16..19].must_equal  '0000'             # Percentual Multa
-			result[20..21].must_equal  '00'               # Zeros
-			result[22..34].must_equal  ('0' * 13)         # Zeros
-			result[35..38].must_equal  (' ' * 4)          # Brancos
-			result[39..44].must_equal  ('0' * 6)          # Data Multa
-			result[45].must_equal      '1'                # Cod. Carteira
+			result[0..0].must_equal  ' '                # Branco
+			result[1..1].must_equal  '0'                # Codigo Multa
+			result[2..5].must_equal  '0000'             # Percentual Multa
+			result[6..7].must_equal  '00'               # Zeros
+			result[8..20].must_equal  ('0' * 13)        # Zeros
+			result[21..24].must_equal  (' ' * 4)        # Brancos
+			result[25..30].must_equal  ('0' * 6)        # Data Multa
+			result[31].must_equal      '1'              # Cod. Carteira
 
-			result.size.must_equal 46
+			result.size.must_equal 32
 		end
 	end
 
