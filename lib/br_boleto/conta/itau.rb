@@ -169,7 +169,7 @@ module BrBoleto
 				end
 
 				# Código para Protesto
-				def equivalent_codigo_protesto
+				def equivalent_codigo_protesto_240
 					super.merge(
 						#  Padrão    Código para  
 						{# da GEM     o Banco

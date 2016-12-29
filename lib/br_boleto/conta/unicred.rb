@@ -24,7 +24,7 @@ module BrBoleto
 
 				# Código adotado pelo UNICRED para identificar o tipo de prazo a ser considerado para o protesto.
 				# Segundo documentação, é permitido somente os códigos '1' = Protestar dias corridos e '3' = Não protestar
-				def equivalent_codigo_protesto
+				def equivalent_codigo_protesto_240
 					{
 						'1' => '1', # Protestar Dias Corridos
 						'2' => '1', # Protestar Dias Úteis

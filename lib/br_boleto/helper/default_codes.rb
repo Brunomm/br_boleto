@@ -280,7 +280,6 @@ module BrBoleto
 					# 8 = Banco Emitente - Auto-envelopável
 					#
 				def get_identificacao_emissao(code, cnab)
-					"#{code}".adjust_size_to(1, '0', :right)
 					send("equivalent_identificacao_emissao_#{cnab}")[code] || code
 				end
 				# Código adotado pela FEBRABAN para identificar o responsável e a forma de emissão do  Boleto de Pagamento.
@@ -432,12 +431,12 @@ module BrBoleto
 					# 9 = Cancelamento Protesto Automático 
 					# 99 = Outros
 					#
-				def get_codigo_protesto(code)
-					equivalent_codigo_protesto[code] || code
+				def get_codigo_protesto(code, cnab)
+					send("equivalent_codigo_protesto_#{cnab}")[code] || code
 				end
 				# Código adotado pela FEBRABAN para identificar o tipo de prazo a ser considerado para o protesto.
 				# O código '9' só sera aceito para código de movimento para remessa '31'
-				def equivalent_codigo_protesto
+				def equivalent_codigo_protesto_240
 					{
 						'1' => '1', # Protestar Dias Corridos
 						'2' => '2', # Protestar Dias Úteis
@@ -448,6 +447,9 @@ module BrBoleto
 						'9' => '9', # Cancelamento Protesto Automático
 						'99' => '99', # Outros
 					}
+				end
+				def equivalent_codigo_protesto_400
+					equivalent_codigo_protesto_240
 				end
 
 			########################################################################################
@@ -471,6 +473,7 @@ module BrBoleto
 					# 14 =  Euro
 					#
 				def get_codigo_moeda(code, cnab)
+					code = "#{code}".adjust_size_to(2, '0', :right)
 					send("equivalent_codigo_moeda_#{cnab}")[code] || code
 				end
 				# Código adotado pela FEBRABAN para identificar a moeda referenciada no Título

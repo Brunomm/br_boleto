@@ -298,4 +298,16 @@ describe BrBoleto::Conta::Caixa do
 			it { subject.get_codigo_movimento_retorno('34', 400).must_equal '156' }  # Tarifas Diversas 
 		end
 	end
+
+	describe "#get_codigo_protesto" do
+		context "CÓDIGOS para o Caixa" do
+			it { subject.get_codigo_protesto('3', 400).must_equal '2' }  # Devolver (Não Protestar)
+		end
+	end
+
+	describe "#get_codigo_moeda" do
+		context "CÓDIGOS para o Caixa" do
+			it { subject.get_codigo_moeda('09', 400).must_equal '1' }  # Real
+		end
+	end
 end

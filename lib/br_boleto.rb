@@ -126,6 +126,7 @@ module BrBoleto
 			autoload :Itau
 			autoload :BancoBrasil
 			autoload :Santander
+			autoload :Caixa
 		end
 	end
 	
@@ -156,6 +157,7 @@ module BrBoleto
 			autoload :Itau
 			autoload :BancoBrasil
 			autoload :Santander
+			autoload :Caixa
 		end
 	end
 

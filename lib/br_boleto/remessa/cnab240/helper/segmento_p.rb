@@ -300,7 +300,7 @@ module BrBoleto
 					# 1 posição
 					#
 					def segmento_p_posicao_221_a_221(pagamento)
-						"#{conta.get_codigo_protesto(pagamento.codigo_protesto)}".adjust_size_to(1, '1')
+						"#{conta.get_codigo_protesto(pagamento.codigo_protesto, 240)}".adjust_size_to(1, '1')
 					end
 
 					# Número de Dias para Protesto

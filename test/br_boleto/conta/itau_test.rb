@@ -157,8 +157,8 @@ describe BrBoleto::Conta::Itau do
 	end
 
 	describe "#get_codigo_protesto" do
-		it { subject.get_codigo_protesto('0').must_equal '0' } # Sem instrução
-		it { subject.get_codigo_protesto('07').must_equal '07' } # Negativar (Dias Corridos)
+		it { subject.get_codigo_protesto('0', 240).must_equal '0' } # Sem instrução
+		it { subject.get_codigo_protesto('07', 240).must_equal '07' } # Negativar (Dias Corridos)
 	end
 
 	describe "#get_codigo_multa" do
