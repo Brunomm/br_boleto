@@ -21,7 +21,7 @@ Emissão de Boletos Bancários em Ruby.
  2. Arquivo de remessa para os Bancos:
 - Banco do Brasil (CNAB240 e CNAB400)
 - Bradesco (CNAB240 e CNAB400)
-- Caixa (CNAB240)
+- Caixa (CNAB240 e CNAB400)
 - Cecred (CNAB240)
 - Itaú (CNAB240 e CNAB400)
 - Santander (CNAB240 e CNAB400)
@@ -31,7 +31,7 @@ Emissão de Boletos Bancários em Ruby.
  3. Arquivo de retorno para os Bancos:
 - Banco do Brasil (CNAB240 e CNAB400)
 - Bradesco (CNAB240 e CNAB400)
-- Caixa (CNAB240)
+- Caixa (CNAB240 e CNAB400)
 - Cecred (CNAB240)
 - Itaú (CNAB240 e CNAB400)
 - Santander (CNAB240 e CNAB400)
@@ -162,6 +162,12 @@ Para todos os bancos e carteiras implementadas, **seguimos as documentações** 
     <td>240</td>
     <td>Homologado dia 11/11/2016</td>
     <td>Bruno M. Merge</td>
+  </tr>
+  <tr>
+    <td>Caixa</td>
+    <td>400</td>
+    <td>Homologado dia 29/12/2016</td>
+    <td>Ricardo Zanuzzo</td>
   </tr>
   <tr>
     <td>Cecred</td>
