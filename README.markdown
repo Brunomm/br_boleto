@@ -13,7 +13,7 @@ Emissão de Boletos Bancários em Ruby.
 - Bradesco (em andamento)
 - Caixa
 - Cecred
-- Itaú (em andamento)
+- Itaú
 - Santander (em andamento)
 - Sicoob
 - Sicredi
@@ -114,14 +114,14 @@ Para todos os bancos e carteiras implementadas, **seguimos as documentações** 
    <td>Ricardo Zanuzzo</td>
   </tr>
   <tr>
-    <td>Bradesco</td>
-    <td>06, 09, 19, 21, 22.</td>
-    <td>Pendente</td>
+    <td>Itaú</td>
+    <td>104, 105, 107, 108, 109, 112, 113, 116, 117, 119, 121, 122, 126, 131, 134, 135, 136, 142, 143, 146, 147, 150, 168, 169, 174, 175, 180, 191, 196, 198.</td>
+    <td>Homologado dia 16/12/2016</td>
    <td>Ricardo Zanuzzo</td>
   </tr>
   <tr>
-    <td>Itaú</td>
-    <td>104, 105, 107, 108, 109, 112, 113, 116, 117, 119, 121, 122, 126, 131, 134, 135, 136, 142, 143, 146, 147, 150, 168, 169, 174, 175, 180, 191, 196, 198.</td>
+    <td>Bradesco</td>
+    <td>06, 09, 19, 21, 22.</td>
     <td>Pendente</td>
    <td>Ricardo Zanuzzo</td>
   </tr>
@@ -202,7 +202,7 @@ Para todos os bancos e carteiras implementadas, **seguimos as documentações** 
   <tr>
     <td>Banco do Brasil</td>
     <td>240</td>
-    <td>Pendente</td>
+    <td>Homologado dia 30/12/2016</td>
     <td>Ricardo Zanuzzo</td>
   </tr>
   <tr>
@@ -212,25 +212,25 @@ Para todos os bancos e carteiras implementadas, **seguimos as documentações** 
     <td>Ricardo Zanuzzo</td>
   </tr>
   <tr>
-    <td>Bradesco</td>
+    <td>Itaú</td>
     <td>240</td>
     <td>Pendente</td>
     <td>Ricardo Zanuzzo</td>
   </tr>
   <tr>
-    <td>Bradesco</td>
+    <td>Itaú</td>
     <td>400</td>
-    <td>Pendente</td>
+    <td>Homologado dia 16/12/2016</td>
     <td>Ricardo Zanuzzo</td>
   </tr>
   <tr>
-    <td>Itaú</td>
+    <td>Bradesco</td>
     <td>240</td>
     <td>Pendente</td>
     <td>Ricardo Zanuzzo</td>
   </tr>
   <tr>
-    <td>Itaú</td>
+    <td>Bradesco</td>
     <td>400</td>
     <td>Pendente</td>
     <td>Ricardo Zanuzzo</td>
