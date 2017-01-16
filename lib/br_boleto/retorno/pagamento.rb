@@ -135,27 +135,27 @@ module BrBoleto
 			#   10       214-223
 			attr_accessor :motivo_ocorrencia_original_1
 			def motivo_ocorrencia_1
-				conta.get_motivo_ocorrencia motivo_ocorrencia_original_1, codigo_movimento_retorno
+				conta.get_codigo_motivo_ocorrencia motivo_ocorrencia_original_1, codigo_movimento_retorno, cnab
 			end
 
 			attr_accessor :motivo_ocorrencia_original_2
 			def motivo_ocorrencia_2
-				conta.get_motivo_ocorrencia motivo_ocorrencia_original_2, codigo_movimento_retorno
+				conta.get_codigo_motivo_ocorrencia motivo_ocorrencia_original_2, codigo_movimento_retorno, cnab
 			end
 
 			attr_accessor :motivo_ocorrencia_original_3
 			def motivo_ocorrencia_3
-				conta.get_motivo_ocorrencia motivo_ocorrencia_original_3, codigo_movimento_retorno
+				conta.get_codigo_motivo_ocorrencia motivo_ocorrencia_original_3, codigo_movimento_retorno, cnab
 			end
 
 			attr_accessor :motivo_ocorrencia_original_4
 			def motivo_ocorrencia_4
-				conta.get_motivo_ocorrencia motivo_ocorrencia_original_4, codigo_movimento_retorno
+				conta.get_codigo_motivo_ocorrencia motivo_ocorrencia_original_4, codigo_movimento_retorno, cnab
 			end
 
 			attr_accessor :motivo_ocorrencia_original_5
 			def motivo_ocorrencia_5
-				conta.get_motivo_ocorrencia motivo_ocorrencia_original_5, codigo_movimento_retorno
+				conta.get_codigo_motivo_ocorrencia motivo_ocorrencia_original_5, codigo_movimento_retorno, cnab
 			end
 
 			def motivo_ocorrencia
