@@ -38,7 +38,11 @@ describe BrBoleto::Retorno::Cnab240::BancoBrasil do
 			pagamento.sacado_nome.must_equal                            "0000000000000000000000000000000000000"
 			pagamento.numero_contrato.must_equal                        "0000000000"
 			pagamento.valor_tarifa.must_equal                           1.03
-			pagamento.motivo_ocorrencia.must_equal                      "03"
+			pagamento.motivo_ocorrencia_original_1.must_equal           "03"
+			pagamento.motivo_ocorrencia_original_2.must_equal           ""
+			pagamento.motivo_ocorrencia_original_3.must_equal           ""
+			pagamento.motivo_ocorrencia_original_4.must_equal           ""
+			pagamento.motivo_ocorrencia_original_5.must_equal           ""
 			pagamento.valor_juros_multa.must_equal                      0.09
 			pagamento.valor_desconto.must_equal                         0.01
 			pagamento.valor_abatimento.must_equal                       0.02
@@ -80,7 +84,11 @@ describe BrBoleto::Retorno::Cnab240::BancoBrasil do
 			pagamento.sacado_nome.must_equal                            "0000000000000000000000000000000000000"
 			pagamento.numero_contrato.must_equal                        "0000000000"
 			pagamento.valor_tarifa.must_equal                           1.03
-			pagamento.motivo_ocorrencia.must_equal                      "03"
+			pagamento.motivo_ocorrencia_original_1.must_equal           "03"
+			pagamento.motivo_ocorrencia_original_2.must_equal           ""
+			pagamento.motivo_ocorrencia_original_3.must_equal           ""
+			pagamento.motivo_ocorrencia_original_4.must_equal           ""
+			pagamento.motivo_ocorrencia_original_5.must_equal           ""
 			pagamento.valor_juros_multa.must_equal                      0.0
 			pagamento.valor_desconto.must_equal                         0.0
 			pagamento.valor_abatimento.must_equal                       0.0
@@ -122,7 +130,11 @@ describe BrBoleto::Retorno::Cnab240::BancoBrasil do
 			pagamento.sacado_nome.must_equal                            "0000000000000000000000000000000000000"
 			pagamento.numero_contrato.must_equal                        "0000000000"
 			pagamento.valor_tarifa.must_equal                           1.03
-			pagamento.motivo_ocorrencia.must_equal                      "03"
+			pagamento.motivo_ocorrencia_original_1.must_equal           "03"
+			pagamento.motivo_ocorrencia_original_2.must_equal           ""
+			pagamento.motivo_ocorrencia_original_3.must_equal           ""
+			pagamento.motivo_ocorrencia_original_4.must_equal           ""
+			pagamento.motivo_ocorrencia_original_5.must_equal           ""
 			pagamento.valor_juros_multa.must_equal                      0.0
 			pagamento.valor_desconto.must_equal                         0.0
 			pagamento.valor_abatimento.must_equal                       0.0
@@ -164,7 +176,11 @@ describe BrBoleto::Retorno::Cnab240::BancoBrasil do
 			pagamento.sacado_nome.must_equal                            "0000000000000000000000000000000000000"
 			pagamento.numero_contrato.must_equal                        "0000000000"
 			pagamento.valor_tarifa.must_equal                           1.03
-			pagamento.motivo_ocorrencia.must_equal                      "03"
+			pagamento.motivo_ocorrencia_original_1.must_equal           "03"
+			pagamento.motivo_ocorrencia_original_2.must_equal           ""
+			pagamento.motivo_ocorrencia_original_3.must_equal           ""
+			pagamento.motivo_ocorrencia_original_4.must_equal           ""
+			pagamento.motivo_ocorrencia_original_5.must_equal           ""
 			pagamento.valor_juros_multa.must_equal                      0.0
 			pagamento.valor_desconto.must_equal                         0.0
 			pagamento.valor_abatimento.must_equal                       0.0
@@ -206,7 +222,11 @@ describe BrBoleto::Retorno::Cnab240::BancoBrasil do
 			pagamento.sacado_nome.must_equal                            "0000000000000000000000000000000000000"
 			pagamento.numero_contrato.must_equal                        "0000000000"
 			pagamento.valor_tarifa.must_equal                           1.03
-			pagamento.motivo_ocorrencia.must_equal                      "03"
+			pagamento.motivo_ocorrencia_original_1.must_equal           "03"
+			pagamento.motivo_ocorrencia_original_2.must_equal           ""
+			pagamento.motivo_ocorrencia_original_3.must_equal           ""
+			pagamento.motivo_ocorrencia_original_4.must_equal           ""
+			pagamento.motivo_ocorrencia_original_5.must_equal           ""
 			pagamento.valor_juros_multa.must_equal                      0.0
 			pagamento.valor_desconto.must_equal                         0.0
 			pagamento.valor_abatimento.must_equal                       0.0
@@ -248,7 +268,11 @@ describe BrBoleto::Retorno::Cnab240::BancoBrasil do
 			pagamento.sacado_nome.must_equal                            "0000000000000000000000000000000000000"
 			pagamento.numero_contrato.must_equal                        "0000000000"
 			pagamento.valor_tarifa.must_equal                           1.03
-			pagamento.motivo_ocorrencia.must_equal                      "03"
+			pagamento.motivo_ocorrencia_original_1.must_equal           "03"
+			pagamento.motivo_ocorrencia_original_2.must_equal           ""
+			pagamento.motivo_ocorrencia_original_3.must_equal           ""
+			pagamento.motivo_ocorrencia_original_4.must_equal           ""
+			pagamento.motivo_ocorrencia_original_5.must_equal           ""
 			pagamento.valor_juros_multa.must_equal                      0.0
 			pagamento.valor_desconto.must_equal                         0.0
 			pagamento.valor_abatimento.must_equal                       0.0

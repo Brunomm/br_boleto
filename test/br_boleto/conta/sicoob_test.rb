@@ -171,4 +171,12 @@ describe BrBoleto::Conta::Sicoob do
 			subject.default_codigo_multa.must_equal '0'
 		end
 	end
+
+	describe "#get_codigo_movimento_retorno" do
+		context "CÓDIGOS para o cnab 400 do SICOOB" do
+			it { subject.get_codigo_movimento_retorno('05', 400).must_equal '17' }  # Liquidação Sem Registro: Identifica a liquidação de título da modalidade "SEM REGISTRO";
+			it { subject.get_codigo_movimento_retorno('15', 400).must_equal '101' } # Liquidação em Cartório: Identifica as liquidações dos títulos ocorridas em cartórios de protesto;
+			it { subject.get_codigo_movimento_retorno('23', 400).must_equal '19' }  # Encaminhado a Protesto: Identifica o recebimento da instrução de protesto
+		end
+	end
 end

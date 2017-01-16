@@ -15,7 +15,7 @@ module BrBoleto
 					#
 					# TOTAL = 15 posições
 					def header_arquivo_posicao_033_a_47
-						"#{conta.convenio}".adjust_size_to(15, '0', :right)
+						"#{conta.codigo_transmissao}".adjust_size_to(15, '0', :right)
 					end					
 					def header_arquivo_posicao_033_a_052
 						header_arquivo_posicao_033_a_47
@@ -70,14 +70,18 @@ module BrBoleto
 						''.adjust_size_to(20)
 					end
 
-
-					# Cód. de Transmissão (15 posições) + Uso Banco (5 posições)
-					# TOTAL = 20 posições
-					def header_arquivo_posicao_054_a_68
-						"#{conta.convenio}".adjust_size_to(15, '0', :right)
-					end					
+					# header_lote_posicao_054_a_073
+					# DESCRIÇÃO                      TAMANHO   POSIÇÃO
+					# -------------------------------------------------
+					# Cód. de Transmissão              15       54-68
+					# Reservado uso Banco (Brancos)    05       69-73
+					#
+					# TOTAL = 20 posições		
 					def header_lote_posicao_054_a_073
-						"#{header_arquivo_posicao_054_a_68}".adjust_size_to(20)
+						info = ''
+						info << "#{conta.codigo_transmissao}".adjust_size_to(15, '0', :right)
+						info << ''.adjust_size_to(5)
+						info
 					end
 
 					# Reservado (uso Banco)
@@ -94,23 +98,20 @@ module BrBoleto
 
 				######################### SEGMENTO P ################################
 					#
-					# Agência Mantenedora da Conta 
-					# TOTAL = 4 posições
-					def segmento_p_posicao_018_a_021
-						"#{conta.agencia}".adjust_size_to(4, '0', :right)
-					end				
+					# O padrão da FEBRABAN é
+					# Posição 18-22 = Número da Agência
+					# Posição 23-23 = DV Agência
+					#
+					# Porém para o Santander a posição 23 já começa o complemento do segmento P com o número da conta.
+					# Padrão do Santander é:
+					# Posição 18-21 = Agência (4 dígitos)
+					# Posição 22-22 = DV Agência (1 dígito)
+					#
 					def segmento_p_posicao_018_a_022
-						segmento_p_posicao_018_a_021
+					"#{conta.agencia}#{conta.agencia_dv}".adjust_size_to(5, '0', :right)
 					end
+					def segmento_p_posicao_023_a_023; '' end
 
-					# Dígito Verificador da Agência 
-					# TOTAL = 1 posição
-					def segmento_p_posicao_022_a_022
-						"#{conta.agencia_dv}".adjust_size_to(1, '0')
-					end
-					def segmento_p_posicao_023_a_023
-						segmento_p_posicao_022_a_022
-					end
 					
 					# segmento_p_posicao_023_a_057
 					# DESCRIÇÃO                      TAMANHO        POSIÇÃO
@@ -139,13 +140,13 @@ module BrBoleto
 					# Reservado (uso Banco)
 					# TOTAL = 1 posição
 					def segmento_p_posicao_061_a_061(pagamento)
-						''.adjust_size_to(1)
+						" "
 					end
 
 					# Reservado (uso Banco)
 					# TOTAL = 1 posição
 					def segmento_p_posicao_062_a_062(pagamento)
-						''.adjust_size_to(1)
+						" "
 					end
 
 					# segmento_p_posicao_063_a_077

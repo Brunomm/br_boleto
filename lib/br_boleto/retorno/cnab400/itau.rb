@@ -16,7 +16,7 @@ module BrBoleto
 						nosso_numero_sem_dv:                          86..93,
 						nosso_numero_dv:                              94,
 						cod_carteira:                                 108,
-						codigo_ocorrencia_banco_correspondente:       109..110,
+						codigo_ocorrencia_retorno:                    109..110,
 						data_ocorrencia:                              111..116,
 						data_ocorrencia_sacado:                       111..116,
 						data_vencimento:                              147..152,
@@ -35,6 +35,10 @@ module BrBoleto
 						valor_outros_creditos:                        280..292,
 						data_credito:                                 296..301,
 						sacado_nome:                                  325..354,
+
+						motivo_ocorrencia_original_1:                 393..394, # Meio pelo qual o título foi liquidado
+						motivo_ocorrencia_original_2:                 302..305, # Código da instrução cancelada
+						motivo_ocorrencia_original_3:                 378..385, # Registros rejeitados ou alegação do sacado ou registro de mensagem informativa
 					}
 				end
 			end

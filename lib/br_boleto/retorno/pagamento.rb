@@ -2,6 +2,7 @@
 module BrBoleto
 	module Retorno
 		class Pagamento < BrBoleto::ActiveModelBase
+			include BrBoleto::HaveConta
 			
 			#############################################################################################
 			############################# VALORES ENCONTRADOS NO SEGMENTO T #############################
@@ -18,11 +19,17 @@ module BrBoleto
 				"#{numero_conta_sem_dv}#{numero_conta_dv}" # tamanho = 13
 			end
 			
-			
+			# Codigo identificação CNAB
+			attr_accessor :cnab
+
 			# CÓDIGO DE MOVIMENTO RETORNO
 			# Tamanho    Posição
 			#   2         16-17
 			attr_accessor :codigo_movimento_retorno
+			alias_attribute :codigo_ocorrencia_retorno, :codigo_movimento_retorno
+			def codigo_movimento_retorno
+				conta.get_codigo_movimento_retorno(@codigo_movimento_retorno, cnab)
+			end
 
 			# IDENTIFICAÇÃO DO TÍTULO
 			# Tamanho    Posição
@@ -121,7 +128,36 @@ module BrBoleto
 			# IDENTIFICAÇÃO PARA REJEIÇÕES, TARIFAS, CUSTOS, LIQUIDAÇÃO E BAIXAS
 			# Tamanho    Posição
 			#   10       214-223
-			attr_accessor :motivo_ocorrencia
+
+			attr_accessor :motivo_ocorrencia_original_1
+			def motivo_ocorrencia_1
+				conta.get_motivo_ocorrencia motivo_ocorrencia_original_1, codigo_movimento_retorno
+			end
+
+			attr_accessor :motivo_ocorrencia_original_2
+			def motivo_ocorrencia_2
+				conta.get_motivo_ocorrencia motivo_ocorrencia_original_2, codigo_movimento_retorno
+			end
+
+			attr_accessor :motivo_ocorrencia_original_3
+			def motivo_ocorrencia_3
+				conta.get_motivo_ocorrencia motivo_ocorrencia_original_3, codigo_movimento_retorno
+			end
+
+			attr_accessor :motivo_ocorrencia_original_4
+			def motivo_ocorrencia_4
+				conta.get_motivo_ocorrencia motivo_ocorrencia_original_4, codigo_movimento_retorno
+			end
+
+			attr_accessor :motivo_ocorrencia_original_5
+			def motivo_ocorrencia_5
+				conta.get_motivo_ocorrencia motivo_ocorrencia_original_5, codigo_movimento_retorno
+			end
+
+			def motivo_ocorrencia
+				"#{motivo_ocorrencia_1}#{motivo_ocorrencia_2}#{motivo_ocorrencia_3}#{motivo_ocorrencia_4}#{motivo_ocorrencia_5}"	
+			end
+
 
 			# BANCO SICREDI (PAG. 44)
 				#  Código do pagador na cooperativa do beneficiário
@@ -275,6 +311,13 @@ module BrBoleto
 				define_singleton_method "#{attr_name}=" do |value|
 					self.instance_variable_set("@#{attr_name}", BrBoleto::Helper::FormatValue.string_to_date(value) )
 				end
+			end
+
+			def conta_class= value
+				@conta_class = value
+			end
+			def conta_class
+				@conta_class
 			end
 
 

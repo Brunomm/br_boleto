@@ -14,7 +14,7 @@ module BrBoleto
 
 			#################  VALIDAÇÕES DINÂMICAS  #################
 				def valid_numero_documento_maximum
-					numero_documento_esperado[conta.convenio.to_s.size]
+					numero_documento_esperado["#{conta.convenio}".strip.size]
 				end
 
 				def valid_carteira_inclusion
@@ -98,31 +98,40 @@ module BrBoleto
 	      #     ___________________________________________________________________________
 	      #    | Posição         |   Tamanho     | Descrição                               |
 	      #    |-----------------|---------------|-----------------------------------------|
-	      #    | 20-30           |     11          | Nosso-Número, sem dígito verificador  |
-	      #    | 20-23 ou 20-25  |   4 ou 6      | Código do cedente fornecido pelo Banco  |
-	      #    | 24-30 ou 26-30  |   7 ou 5      | Nosso-Número, sem dígito verificador    |
-	      #    | 31-34           |     04          | Agência (sem o dígito)                |
-	      #    | 35-42           |     08          | Conta corrente (sem o dígito)         |
-	      #    | 43-44           |     02          | Carteira                              |
+	      #    | 20-23 ou 20-25  |   4 ou 6      | Código do cedente (4 ou 6 dígitos)      |
+	      #    | 24-30 ou 26-30  |   7 ou 5      | Número do documento (7 ou 5 dígitos)    |
+	      #    | 31-34           |     04        | Agência (sem o dígito)                  |
+	      #    | 35-42           |     08        | Conta corrente (sem o dígito)           |
+	      #    | 43-44           |     02        | Carteira                                |
 	      #    -----------------------------------------------------------------------------
 	      #
 	      # === Código de barras do banco com Convênio de 7 e 8 dígitos
 	      #     ___________________________________________________________________________
 	      #    | Posição         |   Tamanho     | Descrição                               |
 	      #    |-----------------|---------------|-----------------------------------------|
-	      #    | 20-30           |     17        | Nosso-Número, sem dígito verificador    |
-	      #    | 20-32 ou 20-33  |  7 ou 8       | Código do cedente fornecido pelo Banco  |
-	      #    | 33-42 ou 34-42  |  9 ou 10      | Nosso-Número, sem dígito verificador    |
+	      #    | 20-25           |    06         | Zeros                                   |
+	      #    | 26-32 ou 26-33  |  7 ou 8       | Código do cedente (7 ou 8 dígitos)      |
+	      #    | 33-42 ou 34-42  |  10 ou 9      | Número do documento (10 ou 9 dígitos)   |
 	      #    | 43-44           |    02         | Carteira                                |
 	      #    ----------------------------------------------------------------------------
 	      #
 			def codigo_de_barras_do_banco
-				tamanho = conta.convenio.to_s.size
-				if tamanho == 7 or tamanho == 8
-					"000000#{conta.convenio}#{numero_documento}#{conta.carteira}"
-				else
-					"#{conta.convenio}#{numero_documento}#{conta.agencia}#{conta.conta_corrente}#{conta.carteira}"
+				tamanho = "#{conta.convenio}".strip.size
+				cod_barras = ''
+				if tamanho == 4 or tamanho == 6
+					cod_barras << "#{conta.convenio}"
+					cod_barras << "#{numero_documento}"
+					cod_barras << "#{conta.agencia}"
+					cod_barras << "#{conta.conta_corrente}"
+					cod_barras << "#{conta.carteira}"
+
+				elsif tamanho == 7 or tamanho == 8
+					cod_barras << "000000"
+					cod_barras << "#{conta.convenio}"
+					cod_barras << "#{numero_documento}"
+					cod_barras << "#{conta.carteira}"
 				end
+				cod_barras
 			end
 
 		end

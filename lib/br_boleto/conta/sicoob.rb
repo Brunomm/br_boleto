@@ -62,32 +62,47 @@ module BrBoleto
 				@conta_corrente_dv ||= BrBoleto::Calculos::Modulo11FatorDe2a9RestoZero.new(conta_corrente).to_s
 			end
 
-			# Códigos de Movimento Remessa / Identificacao Ocorrência específicos do Banco
-			def equivalent_codigo_movimento_remessa_400
-				super.merge(
-					{
-						'23' => '12',  # Alteração de Pagador
-						'46' => '34',  # Baixa - Pagamento Direto ao Beneficiário
-					})
-			end
 
-			# Código que representa a isenção de juros e multa deve ser '0'
-			# Diferentemente do padrão da FEBRABAN que é '3'
-			# Ou seja, se passar o código 3 deve considerar '0'
-			#
-			def equivalent_codigo_juros
-				super.merge({'3' => '0', '0'=>'0'})
-			end
-			def equivalent_codigo_multa
-				super.merge({'3' => '0', '0'=>'0'})
-			end
+			##################################### DEFAULT CODES ###############################################
 
-			def default_codigo_juros
-				'0'
-			end
-			def default_codigo_multa
-				'0'
-			end
+				# Códigos de Movimento Remessa / Identificacao Ocorrência específicos do Banco
+				def equivalent_codigo_movimento_remessa_400
+					super.merge(
+						{
+							'23' => '12',  # Alteração de Pagador
+							'46' => '34',  # Baixa - Pagamento Direto ao Beneficiário
+						})
+				end
+
+				# Código que representa a isenção de juros e multa deve ser '0'
+				# Diferentemente do padrão da FEBRABAN que é '3'
+				# Ou seja, se passar o código 3 deve considerar '0'
+				#
+				def equivalent_codigo_juros
+					super.merge({'3' => '0', '0'=>'0'})
+				end
+				def equivalent_codigo_multa
+					super.merge({'3' => '0', '0'=>'0'})
+				end
+
+				def default_codigo_juros
+					'0'
+				end
+				def default_codigo_multa
+					'0'
+				end
+
+				# Identificações de Ocorrência / Código de ocorrência:
+				def equivalent_codigo_movimento_retorno_400
+					super.merge(
+						#  Padrão    Código para  
+						{# do Banco    a GEM
+							'05'    =>  '17' , # Liquidação Sem Registro: Identifica a liquidação de título da modalidade "SEM REGISTRO";
+							'15'    =>  '101', # Liquidação em Cartório: Identifica as liquidações dos títulos ocorridas em cartórios de protesto;
+							'23'    =>  '19' , # Encaminhado a Protesto: Identifica o recebimento da instrução de protesto
+						})
+				end
+				
 		end
 	end
 end

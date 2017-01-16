@@ -9,7 +9,7 @@ Emissão de Boletos Bancários em Ruby.
 **O que essa gem faz?**
 
  1. Boleto bancário (apenas os cálculos para o boleto, sem a interface) para os bancos:
-- Banco do Brasil (em andamento)
+- Banco do Brasil
 - Bradesco (em andamento)
 - Caixa
 - Cecred
@@ -110,7 +110,7 @@ Para todos os bancos e carteiras implementadas, **seguimos as documentações** 
   <tr>
     <td>Banco do Brasil</td>
     <td>11, 12, 15, 16, 17, 18, 31, 51.</td>
-    <td>Pendente</td>
+    <td>Homologado dia 15/12/2016</td>
    <td>Ricardo Zanuzzo</td>
   </tr>
   <tr>
@@ -202,7 +202,7 @@ Para todos os bancos e carteiras implementadas, **seguimos as documentações** 
   <tr>
     <td>Banco do Brasil</td>
     <td>400</td>
-    <td>Pendente</td>
+    <td>Homologado dia 15/12/2016</td>
     <td>Ricardo Zanuzzo</td>
   </tr>
   <tr>

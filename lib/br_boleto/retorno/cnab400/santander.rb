@@ -14,7 +14,7 @@ module BrBoleto
 						nosso_numero_sem_dv:                          63..69,
 						nosso_numero_dv:                              70,
 						cod_carteira:                                 108,
-						codigo_ocorrencia_banco_correspondente:       109..110,
+						codigo_ocorrencia_retorno:                    109..110,
 						data_ocorrencia:                              111..116,
 						data_ocorrencia_sacado:                       111..116,
 						numero_documento:                             117..126,
@@ -36,6 +36,10 @@ module BrBoleto
 						valor_outros_creditos:                        280..292,
 						data_credito:                                 296..301,
 						sacado_nome:                                  302..337,
+
+						motivo_ocorrencia_original_1:                 137..139,
+						motivo_ocorrencia_original_2:                 140..142,
+						motivo_ocorrencia_original_3:                 143..145,
 					}
 				end
 			end
