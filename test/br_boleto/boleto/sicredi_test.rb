@@ -112,6 +112,7 @@ describe BrBoleto::Boleto::Sicredi do
 				sicredi.numero_documento        = 100_10
 				sicredi.valor_documento         = 93015.78
 				sicredi.data_vencimento         = Date.parse('2020-02-17')
+				sicredi.data_documento          = Date.parse('2016-02-17')
 			end
 		end
 

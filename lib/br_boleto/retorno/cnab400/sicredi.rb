@@ -44,6 +44,12 @@ module BrBoleto
 						valor_juros_multa:             267..279,
 						valor_outros_creditos:         280..292,
 
+						motivo_ocorrencia_original_1:  319..320,
+						motivo_ocorrencia_original_2:  321..322,
+						motivo_ocorrencia_original_3:  323..324,
+						motivo_ocorrencia_original_4:  325..326,
+						motivo_ocorrencia_original_5:  327..328,
+
 						# sacado_documento:              4..17,
 						# agencia_sem_dv:                25..29,
 						# agencia_recebedora_com_dv:     169..173,

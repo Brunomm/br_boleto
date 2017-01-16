@@ -26,6 +26,30 @@ module BrBoleto
 		
 		private
 
+			def conta_pagamento_class
+				case codigo_banco.to_i.to_s.rjust(3, '0')
+				when '001'
+					BrBoleto::Conta::BancoBrasil
+				when '033'
+					BrBoleto::Conta::Santander
+				when '085'
+					BrBoleto::Conta::Cecred
+				when '104'
+					BrBoleto::Conta::Caixa
+				when '237'
+					BrBoleto::Conta::Bradesco
+				when '341'
+					BrBoleto::Conta::Itau
+				when '748'
+					BrBoleto::Conta::Sicredi
+				when '756'
+					BrBoleto::Conta::Sicoob
+				else
+					BrBoleto::Conta::Base
+				end
+				
+			end
+
 			def read_file!
 				raise NotImplementedError.new('Sobreescreva este método na classe referente ao CNAB 240 ou 400')
 			end

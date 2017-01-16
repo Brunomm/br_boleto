@@ -26,7 +26,11 @@ module BrBoleto
 						sacado_documento:              129..143,
 						sacado_nome:                   144..183,
 						valor_tarifa:                  194..208,
-						motivo_ocorrencia:             209..218
+						motivo_ocorrencia_original_1:  209..210,
+						motivo_ocorrencia_original_2:  211..212,
+						motivo_ocorrencia_original_3:  213..214,
+						motivo_ocorrencia_original_4:  215..216,
+						motivo_ocorrencia_original_5:  217..218,
 
 						# conta_cobranca:                184..193
 						# numero_contrato:               189..198,

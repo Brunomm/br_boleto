@@ -18,6 +18,7 @@ module BrBoleto
 						tipo_cobranca:                 81..81,
 						variacao_carteira:             92..94,
 						carteira:                      107..108,
+						codigo_ocorrencia_retorno:     109..110,
 						data_ocorrencia:               111..116,
 						data_ocorrencia_sacado:        111..116,
 						numero_documento:              117..126,
@@ -37,7 +38,8 @@ module BrBoleto
 						valor_liquido:                 254..266,
 						valor_juros_multa:             267..279,
 						valor_outros_creditos:         280..292,
-						# sacado_documento:              xxx..xxx,
+						
+						motivo_ocorrencia_original_1:  87..88,
 					}
 				end
 			end

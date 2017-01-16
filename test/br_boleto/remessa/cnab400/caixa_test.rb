@@ -1,13 +1,13 @@
 require 'test_helper'
 
-describe BrBoleto::Remessa::Cnab400::Santander do
-	subject { FactoryGirl.build(:remessa_cnab400_santander, pagamentos: pagamento, conta: conta) }
+describe BrBoleto::Remessa::Cnab400::Caixa do
+	subject { FactoryGirl.build(:remessa_cnab400_caixa, pagamentos: pagamento, conta: conta) }
 	let(:pagamento) { FactoryGirl.build(:remessa_pagamento, pagador: pagador) } 
-	let(:conta)     { FactoryGirl.build(:conta_santander) } 
+	let(:conta)     { FactoryGirl.build(:conta_caixa) } 
 	let(:pagador)   { FactoryGirl.build(:pagador) } 
 	
-	it "deve ter a class para a conta do santander" do
-		BrBoleto::Remessa::Cnab400::Santander.new.conta_class.must_equal BrBoleto::Conta::Santander
+	it "deve ter a class para a conta do Caixa" do
+		BrBoleto::Remessa::Cnab400::Caixa.new.conta_class.must_equal BrBoleto::Conta::Caixa
 	end
 
 	it "deve herdar de Cnab400::Base" do
@@ -19,44 +19,59 @@ describe BrBoleto::Remessa::Cnab400::Santander do
 			subject.informacoes_da_conta(:header).size.must_equal 20
 		end
 		it "deve trazer as informações em suas posições quando o parametro for :header" do
-			conta.codigo_transmissao           = 1234
+			conta.agencia           = 1234
+			conta.convenio          = 89755
+			conta.carteira          = 21
 			result = subject.informacoes_da_conta(:header)
-			result.must_equal    '00000000000000001234'    # codigo_transmissao
-		end
 
-		it "deve retornar com 20 caracteres" do
-			subject.informacoes_da_conta(:detalhe).size.must_equal 20
-		end
-		it "deve trazer as informações em suas posições quando o parametro for :detalhe" do
-			conta.codigo_transmissao           = 1234
-			result = subject.informacoes_da_conta(:detalhe)
-			result.must_equal    '00000000000000001234'    # codigo_transmissao
+			result[0..3].must_equal    '1234'      # Agência
+			result[4..9].must_equal   '089755'     # Convênio
+			result[10..19].must_equal  (' ' * 10)  # Brancos
 		end
 	end
 
 	describe '#complemento_registro' do
-		it "deve retornar as informações corretas do complemento_registro" do
-			subject.complemento_registro[0..15].must_equal ''.rjust(16, '0') 
-			subject.complemento_registro[16..290].must_equal ''.rjust(275) 
-			subject.complemento_registro[291..293].must_equal ''.rjust(3, '0') 
+		it "deve retornar o sequencial da remessa com 5 posições e mais 389 brancos" do
+			subject.sequencial_remessa = 4758
+
+			subject.complemento_registro[0..288].must_equal ''.rjust(289) 
+			subject.complemento_registro[289..393].must_equal '04758'
+
 			subject.complemento_registro.size.must_equal 294
 		end
 	end
 
-
-	describe '#detalhe_posicao_077_108' do
-		it "deve ter o tamanho de 14 digitos" do
-			subject.detalhe_posicao_063_076(pagamento, '1').size.must_equal 14
+	describe "#detalhe_posicao_028_058" do
+		it "deve retornar com 31 caracteres" do
+			subject.detalhe_posicao_028_058(pagamento).size.must_equal 31
 		end
-		it "deve conter as informações nas posições corretas" do
-			pagamento.assign_attributes(nosso_numero: 763)
+		it "deve trazer as informações em suas posições corretas" do
+			pagamento.assign_attributes(emissao_boleto: 1)
+			pagamento.assign_attributes(distribuicao_boleto: 2)
+			pagamento.numero_documento    = '255'
+			conta.carteira                = '99'
 
-			result = subject.detalhe_posicao_063_076(pagamento, '1')
+			result = subject.detalhe_posicao_028_058(pagamento)
 
-			result[0..7].must_equal    '00000763'         # Numero documento
-			result[8..13].must_equal   ('0' * 6)          # Zeros
+			result[0].must_equal    '1'                    # Identificação da Emissão do Boleto
+			result[1].must_equal    '2'                    # ID Entrega/Distribuição do Boleto
+			result[2..3].must_equal  '00'                  # Comissão de Permanência (Informar '00')
+			result[4..28].must_equal '255'.rjust(25, '0')  # Número do Documento
+			result[29..30].must_equal '99'                 # Carteira
+		end
+	end
 
-			result.size.must_equal 14
+	describe "#dados_do_pagamento" do
+		it "deve retornar com 18 caracteres" do
+			subject.dados_do_pagamento(pagamento).size.must_equal 18
+		end
+		it "deve trazer as informações em suas posições corretas" do
+			pagamento.numero_documento    = '255'
+
+			result = subject.dados_do_pagamento(pagamento)
+
+			result[0..14].must_equal '255'.rjust(15, '0')  # Número do Documento
+			result[15..17].must_equal (' ' * 3)            # Brancos
 		end
 	end
 
@@ -65,20 +80,11 @@ describe BrBoleto::Remessa::Cnab400::Santander do
 			subject.detalhe_posicao_077_108(pagamento, '1').size.must_equal 32
 		end
 		it "deve conter as informações nas posições corretas" do
-			conta.carteira           = 123
-			conta.codigo_carteira    = 1
-			pagamento.assign_attributes(tipo_emissao: 2)
-
+			conta.codigo_carteira = '5'
 			result = subject.detalhe_posicao_077_108(pagamento, '1')
 
-			result[0..0].must_equal  ' '                # Branco
-			result[1..1].must_equal  '0'                # Codigo Multa
-			result[2..5].must_equal  '0000'             # Percentual Multa
-			result[6..7].must_equal  '00'               # Zeros
-			result[8..20].must_equal  ('0' * 13)        # Zeros
-			result[21..24].must_equal  (' ' * 4)        # Brancos
-			result[25..30].must_equal  ('0' * 6)        # Data Multa
-			result[31].must_equal      '1'              # Cod. Carteira
+			result[0..29].must_equal   (' ' * 30)   # Brancos              
+			result[30..31].must_equal '05'           # Código da Carteira
 
 			result.size.must_equal 32
 		end
@@ -91,6 +97,7 @@ describe BrBoleto::Remessa::Cnab400::Santander do
 		it "deve conter as informações nas posições corretas" do
 			conta.agencia    = 4587
 			conta.agencia_dv = 45 # Vai retornar apenas o 4
+			pagamento.assign_attributes(codigo_protesto: 2)
 			pagamento.data_vencimento = Date.parse('05/08/2029')
 			pagamento.valor_documento = 47.56
 			pagamento.especie_titulo  = "12"
@@ -101,12 +108,12 @@ describe BrBoleto::Remessa::Cnab400::Santander do
 
 			result[00..05].must_equal '050829'        # "Data Vencimento: Formato DDMMAA Normal ""DDMMAA"" A vista = ""888888"" Contra Apresentação = ""999999"""
 			result[06..18].must_equal '0000000004756' # Valor do Titulo 
-			result[19..21].must_equal '033'           # Número Banco
+			result[19..21].must_equal '104'           # Número Banco
 			result[22..26].must_equal "00000"         # 000000 ou Agencia
 			result[27..28].must_equal "02"            # Espécie do Título
 			result[  29  ].must_equal "N"             # dentificação (Sempre 'N')
 			result[30..35].must_equal '150917'        # Data de Emissão do Título: formato ddmmaa
-			result[36..37].must_equal '00'            # Primeira instrução codificada
+			result[36..37].must_equal '02'            # Primeira instrução codificada
 			result[38..39].must_equal '00'            # Segunda instrução
 		end
 	end
@@ -138,7 +145,6 @@ describe BrBoleto::Remessa::Cnab400::Santander do
 			subject.informacoes_do_sacado(pagamento, 2).size.must_equal 176
 		end
 		it "deve conter as informações nas posições corretas" do
-			# pagador.tipo_cpf_cnpj =  '1'
 			pagador.cpf_cnpj           =  '12345678901'
 			pagador.nome               =  'nome pagador'
 			pagador.endereco           =  'rua do pagador'
@@ -147,9 +153,11 @@ describe BrBoleto::Remessa::Cnab400::Santander do
 			pagador.uf                 =  'SC'
 			pagador.cep                =  '89885-001'
 			pagador.nome_avalista      =  'Avalista'
-			pagador.documento_avalista =  '840.106.990-43'
-			conta.conta_corrente       = 123456789
-			conta.conta_corrente_dv    = 0
+
+			pagamento.data_multa   = Date.parse('28/12/2020')
+			pagamento.valor_multa  = 150.3
+			pagamento.codigo_moeda = '0'
+			pagamento.assign_attributes(dias_protesto: 30)
 
 			result = subject.informacoes_do_sacado(pagamento, 2)
 			result.size.must_equal 176
@@ -157,31 +165,20 @@ describe BrBoleto::Remessa::Cnab400::Santander do
 			result[00..01].must_equal "01"                                    # Tipo de Inscrição do Pagador: "01" = CPF / "02" = CNPJ
 			result[02..15].must_equal '00012345678901'                        # Número do CNPJ ou CPF do Pagador
 			result[16..55].must_equal 'nome pagador'.adjust_size_to(40)       # Nome do Pagador
+			
 			result[56..95].must_equal 'rua do pagador'.adjust_size_to(40)     # Endereço do Pagador
 			result[96..107].must_equal 'bairro do pagador'.adjust_size_to(12) # Bairro do Pagador
 			result[108..115].must_equal '89885001'                            # CEP do Pagador
 			result[116..130].must_equal 'Chapecó'.adjust_size_to(15)          # Cidade do Pagador
 			result[131..132].must_equal 'SC'.adjust_size_to(2)                # UF do Pagador
-			result[133..162].must_equal 'Avalista'.adjust_size_to(30)         # Nome Sacador/Avalista
 
-			result[163..163].must_equal ' '                                   # Complemento Registro (Brancos)
-			result[164..164].must_equal 'I'                                   # Identificador do Complemento (I)
-			result[165..166].must_equal '90'                                  # Complemento remessa
-			result[167..172].must_equal (' ' * 6)                             # Brancos
-			result[173..174].must_equal '00'                                  # Quantidade de dias (Zeros)
-			result[175].must_equal      ' '                                   # Complemento Registro (Branco)
-		end
-	end
+			result[133..138].must_equal '281220'.adjust_size_to(6)            # Data Multa
+			result[139..148].must_equal '15030'.rjust(10, '0')                # Valor Multa
+			result[149..170].must_equal 'Avalista'.adjust_size_to(22)         # Nome Sacador/Avalista
 
-	describe "#trailer_arquivo_posicao_002_a_394" do
-		it "deve conter as informações nas posições corretas" do
-			result = subject.trailer_arquivo_posicao_002_a_394(2)
-
-			result[00..05].must_equal "000002"                               # Quantidade total de linhas no arquivo
-			result[06..18].must_equal '0000000010012'                        # Valor total dos títulos
-			result[19..392].must_equal ('0' * 374)                           # Zeros
-
-			result.size.must_equal 393
+			result[171..172].must_equal '00'                                  # 3a instrução
+			result[173..174].must_equal '30'                                  # Dias para protesto
+			result[175].must_equal      '0'                                   # Código da Moeda
 		end
 	end
 end

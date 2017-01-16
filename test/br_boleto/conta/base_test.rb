@@ -738,14 +738,14 @@ describe BrBoleto::Remessa::Base do
 			it { subject.get_codigo_desconto('55').must_equal '55' } 
 		end
 		describe "#get_codigo_protesto" do
-			it { subject.get_codigo_protesto('1').must_equal '1' } # Protestar Dias Corridos
-			it { subject.get_codigo_protesto('2').must_equal '2' } # Protestar Dias Úteis
-			it { subject.get_codigo_protesto('3').must_equal '3' } # Não Protesta
-			it { subject.get_codigo_protesto('4').must_equal '4' } # Protestar Fim Falimentar - Dias Úteis
-			it { subject.get_codigo_protesto('5').must_equal '5' } # Protestar Fim Falimentar - Dias Corridos
-			it { subject.get_codigo_protesto('8').must_equal '8' } # Negativação sem Protesto
-			it { subject.get_codigo_protesto('9').must_equal '9' } # Cancelamento Protesto Automático 
-			it { subject.get_codigo_protesto('55').must_equal '55' } 
+			it { subject.get_codigo_protesto('1', 240).must_equal '1' } # Protestar Dias Corridos
+			it { subject.get_codigo_protesto('2', 240).must_equal '2' } # Protestar Dias Úteis
+			it { subject.get_codigo_protesto('3', 240).must_equal '3' } # Não Protesta
+			it { subject.get_codigo_protesto('4', 240).must_equal '4' } # Protestar Fim Falimentar - Dias Úteis
+			it { subject.get_codigo_protesto('5', 240).must_equal '5' } # Protestar Fim Falimentar - Dias Corridos
+			it { subject.get_codigo_protesto('8', 240).must_equal '8' } # Negativação sem Protesto
+			it { subject.get_codigo_protesto('9', 240).must_equal '9' } # Cancelamento Protesto Automático 
+			it { subject.get_codigo_protesto('55', 240).must_equal '55' } 
 		end
 		describe "#get_codigo_moeda_240" do
 			it { subject.get_codigo_moeda('01', 240).must_equal '01' } # Reservado para Uso Futuro
