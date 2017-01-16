@@ -127,6 +127,11 @@ module BrBoleto
 						complemento = ''.rjust(217, ' ') # USO EXCLUSIVO FEBRABAN
 					end
 
+
+					# Por padrão para o Banco do Brasil o Segmento S é opcional
+					def usa_segmento_S?
+						false
+					end
 			end
 		end
 	end

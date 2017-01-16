@@ -299,6 +299,24 @@ module BrBoleto
 							'34'   =>   '156',  # Tarifas Diversas 
 						})
 				end
+
+				# Código para Protesto
+				def equivalent_codigo_protesto_400
+					super.merge(
+						#  Padrão    Código para  
+						{# da GEM     o Banco
+							'3'   =>   '2',  # Devolver (Não Protestar)
+						})
+				end
+
+				# Código da Moeda
+				def equivalent_codigo_moeda_400
+					super.merge(
+						#  Padrão    Código para  
+						{# da GEM     o Banco
+							'09'   =>   '1',  # Real
+						})
+				end
 				
 		end
 	end

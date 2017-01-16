@@ -209,8 +209,8 @@ describe BrBoleto::Conta::Santander do
 
 	describe "#get_codigo_protesto" do
 		context "CÓDIGOS para o Santander" do
-			it { subject.get_codigo_protesto('3').must_equal '0' }  # Não Protestar
-			it { subject.get_codigo_protesto('99').must_equal '3' } # Utilizar perfil cedente
+			it { subject.get_codigo_protesto('3', 240).must_equal '0' }  # Não Protestar
+			it { subject.get_codigo_protesto('99', 240).must_equal '3' } # Utilizar perfil cedente
 		end
 	end
 

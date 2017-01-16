@@ -191,7 +191,7 @@ describe BrBoleto::Remessa::Cnab240::Itau do
 		end
 
 		it "2 - Segunda parte = 8 posições todas preenchidas com zeros (Nr. do aviso de lançamento do crédito referente aos títulos de cobrança)" do
-			subject.complemento_trailer_lote(lote, 5)[92..99].must_equal ('0' * 8)
+			subject.complemento_trailer_lote(lote, 5)[92..99].must_equal (' ' * 8)
 		end
 
 		it "3 - Terceira parte = EXCLUSIVO FEBRABAN com 117 posicoes em branco" do

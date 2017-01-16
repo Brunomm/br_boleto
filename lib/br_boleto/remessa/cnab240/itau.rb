@@ -77,6 +77,12 @@ module BrBoleto
 
 				######################### SEGMENTO P #############################
 					#
+					# Complemento de Registro - Conteúdo deve estar em 'Branco'
+					# 1 posição
+					def segmento_p_posicao_023_a_023
+						" "
+					end
+
 					# segmento_p_posicao_024_a_057
 					# DESCRIÇÃO                            TAMANHO      POSIÇÃO
 					# -----------------------------------------------------------
@@ -136,13 +142,18 @@ module BrBoleto
 						segmento
 					end
 
+					# Dígito Verificador da Agência cobradora - Conteúdo deve ser 'Zero'
+					# 1 posição
+					def segmento_p_posicao_106_a_106
+						"0"
+					end
+
 					# Código do Juros de Mora
 					# Para o Itau esse espaço deve ter 'Zero'
 					# 1 posição
 					def segmento_p_posicao_118_a_118(pagamento) 
 						'0'
 					end
-
 
 					# Código da Moeda
 					# Para o Itau esse espaço deve ter 'Zeros'
@@ -161,7 +172,7 @@ module BrBoleto
 					# Qtd. Títulos em Cobrança                 006       047  -  052
 					# Val. Tot. Títulos em Carteiras           017       053  -  069
 					# Complemento De Registro (Zeros)          046       070  -  115
-					# N. Aviso de Lançamento                   008       116  -  123
+					# Aviso Bancário (Brancos)                 008       116  -  123
 					# Uso FEBRABAN                             117       124  -  240 
 					#
 					# TOTAL = 217 posições 
@@ -169,10 +180,16 @@ module BrBoleto
 					def complemento_trailer_lote(lote, nr_lote)
 						complemento = ''
 						complemento << ''.rjust(92, '0')  # VALORES UTILIZADOS APENAS PARA ARQUIVO DE RETORNO
-						complemento << ''.rjust(8, '0')   # Número do aviso de lançamento do crédito referente a(os) título(s) de cobrança, que poderá ser utilizado no extrato de conta corrente.
+						complemento << ''.rjust(8, ' ')   # REFERÊNCIA DO AVISO BANCÁRIO
 						complemento << ''.rjust(117, ' ') # USO EXCLUSIVO FEBRABAN
 						complemento
 					end
+
+
+				# Por padrão o ITAU não utiliza o Segmento S
+				def usa_segmento_S?
+					false
+				end
 
 			end
 		end

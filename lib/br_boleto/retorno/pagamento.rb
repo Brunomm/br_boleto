@@ -59,7 +59,6 @@ module BrBoleto
 			# VARIAÇÃO DA CARTEIRA 
 			attr_accessor :variacao_carteira
 
-
 			# NÚMERO DO DOCUMENTO
 			# Tamanho    Posição
 			#   15        59-73
@@ -125,10 +124,15 @@ module BrBoleto
 			#   15       199-213
 			attr_accessor :valor_tarifa
 
+			# VALOR DA MULTA PAGA PELO PAGADOR
+			# Tamanho    Posição
+			#   13        280-92
+			attr_accessor :valor_multa
+			
+
 			# IDENTIFICAÇÃO PARA REJEIÇÕES, TARIFAS, CUSTOS, LIQUIDAÇÃO E BAIXAS
 			# Tamanho    Posição
 			#   10       214-223
-
 			attr_accessor :motivo_ocorrencia_original_1
 			def motivo_ocorrencia_1
 				conta.get_motivo_ocorrencia motivo_ocorrencia_original_1, codigo_movimento_retorno
@@ -258,7 +262,6 @@ module BrBoleto
 			# este valor está incluso junto com a posição do nosso_numero
 			# É implementado apenas para os bancos que não conseguem seguir um padrão estabelecido
 			attr_accessor :modalidade
-
 
 			attr_accessor :parcela
 

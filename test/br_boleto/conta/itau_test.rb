@@ -75,7 +75,7 @@ describe BrBoleto::Conta::Itau do
 
 	describe "#nome_banco" do
 		it "valor padrão para o nome_banco" do
-			subject.nome_banco.must_equal 'ITAU'
+			subject.nome_banco.must_equal 'BANCO ITAU SA'
 		end
 		it "deve ser possível mudar o valor do nome do banco" do
 			subject.nome_banco = 'MEU'
@@ -157,8 +157,8 @@ describe BrBoleto::Conta::Itau do
 	end
 
 	describe "#get_codigo_protesto" do
-		it { subject.get_codigo_protesto('0').must_equal '0' } # Sem instrução
-		it { subject.get_codigo_protesto('07').must_equal '07' } # Negativar (Dias Corridos)
+		it { subject.get_codigo_protesto('0', 240).must_equal '0' } # Sem instrução
+		it { subject.get_codigo_protesto('07', 240).must_equal '07' } # Negativar (Dias Corridos)
 	end
 
 	describe "#get_codigo_multa" do
