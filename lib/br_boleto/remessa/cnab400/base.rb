@@ -85,8 +85,9 @@ module BrBoleto
 					# Metodo 'monta_trailer' implementado no module -> BrBoleto::Remessa::Cnab400::Helper::Trailer
 					arquivo << monta_trailer(contador)
 
-					retorno = arquivo.join("\n")
-					ActiveSupport::Inflector.transliterate(retorno).upcase
+					retorno = ActiveSupport::Inflector.transliterate(arquivo.join("\n")).to_ascii.upcase
+					retorno << "\n"
+					retorno.encode(retorno.encoding, :universal_newline => true).encode(retorno.encoding, :crlf_newline => true)
 				end
 				
 			end

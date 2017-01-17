@@ -245,7 +245,7 @@ describe BrBoleto::Remessa::Cnab400::Base do
 			subject.expects(:monta_detalhe).with(pagamento, 2).returns('mônta_detalhe')
 			subject.expects(:monta_trailer).with(3).returns('monta_tráiler')
 
-			subject.dados_do_arquivo.must_equal "MONTA_HEADER\nMONTA_DETALHE\nMONTA_TRAILER"
+			subject.dados_do_arquivo.must_equal "MONTA_HEADER\r\nMONTA_DETALHE\r\nMONTA_TRAILER\r\n"
 		end
 		it "deve montar os dados do arquivo setando o sequencial e os pagamentos corretamente - com 2 pagamentos" do
 			pagamento2 = FactoryGirl.build(:remessa_pagamento)
@@ -256,7 +256,7 @@ describe BrBoleto::Remessa::Cnab400::Base do
 			subject.expects(:monta_detalhe).with(pagamento2, 3).returns('mônta_détalhe_pgto2').in_sequence(sequence_1)
 			subject.expects(:monta_trailer).with(4).returns('monta_tráiler').in_sequence(sequence_1)
 
-			subject.dados_do_arquivo.must_equal "MONTA_HEADER\nMONTA_DETALHE_PGTO1\nMONTA_DETALHE_PGTO2\nMONTA_TRAILER"
+			subject.dados_do_arquivo.must_equal "MONTA_HEADER\r\nMONTA_DETALHE_PGTO1\r\nMONTA_DETALHE_PGTO2\r\nMONTA_TRAILER\r\n"
 		end
 	end
 
