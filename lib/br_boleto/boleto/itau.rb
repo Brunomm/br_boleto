@@ -51,6 +51,12 @@ module BrBoleto
 			def nosso_numero
 				"#{conta.carteira}/#{numero_documento}-#{digito_verificador_nosso_numero}"
 			end
+			
+			# No arquivo de retorno a carteira não vem junto com o nosso núemro
+			#
+			def nosso_numero_retorno
+				"#{nosso_numero}".gsub(/[^\w\d]/i, '')[3..-1]
+			end
 
 			# Para a grande maioria das carteiras, são considerados para a obtenção do dígito do nosso número,
 			# os dados “AGÊNCIA / CONTA (sem dígito) / CARTEIRA / NOSSO NÚMERO”, calculado pelo critério do Módulo 10.
@@ -64,7 +70,6 @@ module BrBoleto
 					BrBoleto::Calculos::Modulo10.new("#{conta.agencia}#{conta.conta_corrente}#{conta.carteira}#{numero_documento}")
 				end
 			end
-
 
 			# As carteiras de cobrança 107, 122, 142, 143, 196 e 198 são carteiras especiais, sem registro, na qual são utilizadas 15 posições
 			# numéricas para identificação do título liquidado (8 do Nosso Número e 7 do Seu Número).

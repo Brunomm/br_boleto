@@ -240,4 +240,11 @@ describe BrBoleto::Boleto::Base do
 			subject.codigo_de_barras_do_banco
 		end
 	end
+
+	describe '#nosso_numero_retorno' do
+		it "deve retornar os números e letras encontrados no nosso_numero" do
+			subject.expects(:nosso_numero).returns(' 01/200000000365-X')
+			subject.nosso_numero_retorno.must_equal '01200000000365X'
+		end
+	end
 end

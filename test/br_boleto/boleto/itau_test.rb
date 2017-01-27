@@ -73,6 +73,13 @@ describe BrBoleto::Boleto::Itau do
 		end
 	end
 
+	describe '#nosso_numero_retorno' do
+		it "deve pegar o valor do nosso_numero desconsiderando a carteira" do
+			subject.expects(:nosso_numero).returns('109/00003646-9')
+			subject.nosso_numero_retorno.must_equal '000036469'
+		end
+	end
+
 	describe "#codigo_de_barras_do_banco (com as carteiras especiais de cobrança 107, 122, 142, 143, 196 e 198)" do
 		subject do 
 			FactoryGirl.build(:boleto_itau, conta: {

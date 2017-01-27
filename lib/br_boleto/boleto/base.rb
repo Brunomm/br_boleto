@@ -176,6 +176,29 @@ module BrBoleto
 				raise NotImplementedError.new("Not implemented #nosso_numero in #{self}.")
 			end
 
+			# Esse método deve ser utilizado para salvar o nosso número que 
+			# será retornado no arquivo de retorno.
+			# Foi necessário fazer esse método pois alguns bancos como o
+			# Bradesco e Itaú desconsideram o número da carteira no retorno,
+			# porém a carteira deve ser apresentada no boleto.
+			# Com o bjetivo de facilitar o desenvolvimento para não fazer essa
+			# regra da aplicação, foi desenvolvido esse método para que seja
+			# salvo o valor desse método na aplicação para que posteriormente
+			# a conciliação dos boletos funcione adecuadamente.
+			#
+			# Por padrão retorna os núemros e letras do nosso número, na qual
+			# é utilizada para a maioria dos bancos.
+			# Deve ser sobrescrito para os bancos que utilizam de forma diferente.
+			#
+			# O retorno é uma string pois em alguns bancos o DV do nosso número
+			# pode ser uma Letra.
+			# 
+			# @return [String] 999999999 OR 999999999X
+			#
+			def nosso_numero_retorno
+				"#{nosso_numero}".gsub(/[^\w\d]/i, '')
+			end
+
 			# Formata o valor do documentado para ser mostrado no código de barras
 			# e na linha digitável com 08 dígitos na casa dos Reais e 02 dígitos nas casas dos centavos.
 			#

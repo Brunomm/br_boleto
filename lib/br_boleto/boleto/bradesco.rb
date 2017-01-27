@@ -52,6 +52,12 @@ module BrBoleto
 				"#{conta.carteira}/#{numero_documento}-#{digito_verificador_nosso_numero}"
 			end
 
+			# No arquivo de retorno a carteira não vem junto com o nosso núemro
+			#
+			def nosso_numero_retorno
+				"#{nosso_numero}".gsub(/[^\w\d]/i, '')[2..-1]
+			end
+
 			# Para o cálculo do dígito, será necessário acrescentar o número da carteira à esquerda
 			# antes do Nosso Número (número do documento), e aplicar o módulo 11, com fatores de 2 a 7.
 			# @return [String] Retorno do cálculo do módulo 11 na base 7 (2,3,4,5,6,7)
