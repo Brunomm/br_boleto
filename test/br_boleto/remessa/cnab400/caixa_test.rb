@@ -123,7 +123,7 @@ describe BrBoleto::Remessa::Cnab400::Caixa do
 			subject.detalhe_multas_e_juros_do_pagamento(pagamento, 2).size.must_equal 58
 		end
 		it "deve conter as informações nas posições corretas" do
-			pagamento.valor_mora = '0.39'
+			pagamento.valor_juros = '0.39'
 			pagamento.valor_iof = '2.7'
 			pagamento.data_desconto = Date.parse('21/03/2018')
 			pagamento.valor_desconto = 4.3

@@ -81,6 +81,32 @@ describe BrBoleto::Remessa::Pagamento do
 		end
 	end
 
+	describe "#valor_multa_monetario" do
+		it "Quando o codigo_multa for 1, então deve retornar o próprio valor que está em valor_multa, pois representa o valor em R$" do
+			subject.assign_attributes(codigo_multa: '1', valor_multa: 7.47, valor_documento: 78.98)
+			subject.valor_multa_monetario.must_equal 7.47
+
+			subject.assign_attributes(codigo_multa: 1, valor_multa: 8.5, valor_documento: 90.0)
+			subject.valor_multa_monetario.must_equal 8.5
+		end
+
+		it "Quando o codigo_multa for 2, então deve calcular o valor de multa pois o valor_multa representa o valor em %" do
+			subject.assign_attributes(codigo_multa: '2', valor_multa: 7.47, valor_documento: 78.98)
+			subject.valor_multa_monetario.must_equal 5.8998
+
+			subject.assign_attributes(codigo_multa: 2, valor_multa: 8.5, valor_documento: 90.0)
+			subject.valor_multa_monetario.must_equal 7.65
+		end
+
+		it "Quando o codigo_multa for 0 ou 3, então deve retornar zero, pois não tem multa" do
+			subject.assign_attributes(codigo_multa: '0', valor_multa: 7.47, valor_documento: 78.98)
+			subject.valor_multa_monetario.must_equal 0
+
+			subject.assign_attributes(codigo_multa: 3, valor_multa: 8.5, valor_documento: 90.0)
+			subject.valor_multa_monetario.must_equal 0
+		end
+	end
+
 	describe "#percentual_juros" do
 		it "Quando o codigo_juros for 1, então deve calcular o percentual de juros pois o valor_juros representa o valor em R$" do
 			subject.assign_attributes(codigo_juros: '1', valor_juros: 7.47, valor_documento: 78.98)
@@ -104,6 +130,32 @@ describe BrBoleto::Remessa::Pagamento do
 
 			subject.assign_attributes(codigo_juros: 3, valor_juros: 8.5, valor_documento: 90.0)
 			subject.percentual_juros.must_equal 0
+		end
+	end
+
+	describe "#valor_juros_monetario" do
+		it "Quando o codigo_juros for 1, então deve retornar o próprio valor que está em valor_juros, pois representa o valor em R$" do
+			subject.assign_attributes(codigo_juros: '1', valor_juros: 7.47, valor_documento: 78.98)
+			subject.valor_juros_monetario.must_equal 7.47
+
+			subject.assign_attributes(codigo_juros: 1, valor_juros: 8.5, valor_documento: 90.0)
+			subject.valor_juros_monetario.must_equal 8.5
+		end
+
+		it "Quando o codigo_juros for 2, então deve calcular o valor de juros pois o valor_juros representa o valor em %" do
+			subject.assign_attributes(codigo_juros: '2', valor_juros: 7.47, valor_documento: 78.98)
+			subject.valor_juros_monetario.must_equal 5.8998
+
+			subject.assign_attributes(codigo_juros: 2, valor_juros: 8.5, valor_documento: 90.0)
+			subject.valor_juros_monetario.must_equal 7.65
+		end
+
+		it "Quando o codigo_juros for 0 ou 3, então deve retornar zero, pois não tem juros" do
+			subject.assign_attributes(codigo_juros: '0', valor_juros: 7.47, valor_documento: 78.98)
+			subject.valor_juros_monetario.must_equal 0
+
+			subject.assign_attributes(codigo_juros: 3, valor_juros: 8.5, valor_documento: 90.0)
+			subject.valor_juros_monetario.must_equal 0
 		end
 	end
 
@@ -140,7 +192,6 @@ describe BrBoleto::Remessa::Pagamento do
 	describe "default_values" do
 		let(:object) { subject.class.new() } 
 		it "for data_emissao"             do object.data_emissao.must_equal             Date.today end
-		it "for valor_mora"               do object.valor_mora.must_equal               0.0 end
 		it "for valor_desconto"           do object.valor_desconto.must_equal           0.0 end
 		it "for valor_iof"                do object.valor_iof.must_equal                0.0 end
 		it "for valor_abatimento"         do object.valor_abatimento.must_equal         0.0 end
@@ -255,6 +306,20 @@ describe BrBoleto::Remessa::Pagamento do
 			end
 		end
 	end
+	describe "#valor_multa_monetario_formatado" do
+		context "com padrao de tamanho = 13 digitos" do
+			it "deve formatar o valor removendo separador de casas decimais e aredondando para 2 casas decimais" do
+				subject.stubs(:valor_multa_monetario).returns 7856.888
+				subject.valor_multa_monetario_formatado.must_equal "0000000785689"
+			end
+		end
+		context "passando a quantidade de digitos" do
+			it "deve formatar o valor removendo separador de casas decimais e aredondando para 2 casas decimais" do
+				subject.stubs(:valor_multa_monetario).returns 6.888
+				subject.valor_multa_monetario_formatado(4).must_equal "0689"
+			end
+		end
+	end
 
 	describe "#data_juros_formatado" do
 		it "deve chamar o metodo formata_data com padrão de formato %d%m%Y" do
@@ -282,6 +347,20 @@ describe BrBoleto::Remessa::Pagamento do
 			end
 		end
 	end
+	describe "#valor_juros_monetario_formatado" do
+		context "com padrao de tamanho = 13 digitos" do
+			it "deve formatar o valor removendo separador de casas decimais e aredondando para 2 casas decimais" do
+				subject.stubs(:valor_juros_monetario).returns 7856.888
+				subject.valor_juros_monetario_formatado.must_equal "0000000785689"
+			end
+		end
+		context "passando a quantidade de digitos" do
+			it "deve formatar o valor removendo separador de casas decimais e aredondando para 2 casas decimais" do
+				subject.stubs(:valor_juros_monetario).returns 6.888
+				subject.valor_juros_monetario_formatado(4).must_equal "0689"
+			end
+		end
+	end
 
 	describe "#valor_documento_formatado" do
 		context "com padrao de tamanho = 13 digitos" do
@@ -294,21 +373,6 @@ describe BrBoleto::Remessa::Pagamento do
 			it "deve formatar o valor removendo separador de casas decimais e aredondando para 2 casas decimais" do
 				subject.valor_documento = 7856.888
 				subject.valor_documento_formatado(10).must_equal "0000785689"
-			end
-		end
-	end
-
-	describe "#valor_mora_formatado" do
-		context "com padrao de tamanho = 13 digitos" do
-			it "deve formatar o valor removendo separador de casas decimais e aredondando para 2 casas decimais" do
-				subject.valor_mora = 7856.123
-				subject.valor_mora_formatado.must_equal "0000000785612"
-			end
-		end
-		context "passando a quantidade de digitos" do
-			it "deve formatar o valor removendo separador de casas decimais e aredondando para 2 casas decimais" do
-				subject.valor_mora = 7856.123
-				subject.valor_mora_formatado(10).must_equal "0000785612"
 			end
 		end
 	end

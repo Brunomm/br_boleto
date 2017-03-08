@@ -135,7 +135,7 @@ module BrBoleto
 				# Tamanho: 58
 				def detalhe_multas_e_juros_do_pagamento(pagamento, sequencial)
 					detalhe = ''
-					detalhe << "#{pagamento.valor_mora_formatado}".adjust_size_to(13,'0', :right ) 
+					detalhe << pagamento.valor_juros_monetario_formatado(13)
 					detalhe << "#{pagamento.data_desconto_formatado('%d%m%y')}".adjust_size_to(6,'0', :right )
 					detalhe << "#{pagamento.valor_desconto_formatado}".adjust_size_to(13,'0', :right )
 					detalhe << "#{pagamento.valor_iof_formatado}".adjust_size_to(13,'0', :right )

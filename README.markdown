@@ -345,7 +345,6 @@ pagamento = BrBoleto::Remessa::Pagamento.new({
     # ....
   },
   data_emissao:      Date.today, # Valor default
-  valor_mora:        0.0, # Valor default
   valor_desconto:    0.0, # Valor default
   valor_iof:         0.0, # Valor default
   valor_abatimento:  0.0, # Valor default

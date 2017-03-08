@@ -7,6 +7,7 @@ FactoryGirl.define do
 		data_vencimento  { Date.tomorrow }
 		valor_documento  100.123
 		pagador          { FactoryGirl.build(:pagador) }
+		codigo_juros     '1'
 		# documento_sacado "12345678901"
 		# nome_sacado      "TESTE NOME DO SACADO"
 		# endereco_sacado  "R. TESTE DO SACADO"

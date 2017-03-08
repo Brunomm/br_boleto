@@ -46,11 +46,6 @@ module BrBoleto
 			# <b>OPCIONAL</b>: codigo da 2a instrucao
 			attr_accessor :cod_segunda_instrucao
 
-			# <b>OPCIONAL</b>: valor da mora ao dia
-			# Dependendo do banco será o valor percentual ou valor em reais
-			# CNAB: 240 e 400
-			attr_accessor :valor_mora
-
 			# <b>OPCIONAL</b>: data limite para o desconto
 			# CNAB: 240 e 400
 			attr_accessor :data_desconto
@@ -92,6 +87,15 @@ module BrBoleto
 					0.0
 				end
 			end
+			def valor_multa_monetario # Valor da multa em R$
+				if codigo_multa.to_i == 1
+					valor_multa.to_f
+				elsif codigo_multa.to_i == 2
+					(valor_multa.to_f/100.0 * valor_documento.to_f).round(4)
+				else
+					0.0
+				end
+			end
 
 			# <b>OPCIONAL</b>: Informações para Juros
 			#  Código do juros pode ser:
@@ -107,6 +111,15 @@ module BrBoleto
 					BrBoleto::Helper::Number.new(valor_juros).get_percent_by_total(valor_documento)
 				elsif codigo_juros.to_i == 2
 					valor_juros.to_f
+				else
+					0.0
+				end
+			end
+			def valor_juros_monetario # Valor da juros em R$
+				if codigo_juros.to_i == 1
+					valor_juros.to_f
+				elsif codigo_juros.to_i == 2
+					(valor_juros.to_f/100.0 * valor_documento.to_f).round(4)
 				else
 					0.0
 				end
@@ -298,7 +311,6 @@ module BrBoleto
 			def default_values
 				{
 					data_emissao:      Date.today,
-					valor_mora:        0.0,
 					valor_desconto:    0.0,
 					valor_iof:         0.0,
 					valor_abatimento:  0.0,
@@ -373,13 +385,26 @@ module BrBoleto
 				BrBoleto::Helper::Number.new(valor_documento).formata_valor_monetario(tamanho) 
 			end
 
-			# Formata o campo valor da mora
+			# Formata o campo valor_juros_monetario
+			# referentes as casas decimais
+			# exe. R$199,90 => 0000000019990
 			#
 			# @param tamanho [Integer]
 			#   quantidade de caracteres a ser retornado
 			#
-			def valor_mora_formatado(tamanho = 13)
-				BrBoleto::Helper::Number.new(valor_mora).formata_valor_monetario(tamanho) 
+			def valor_juros_monetario_formatado(tamanho = 13)
+				BrBoleto::Helper::Number.new(valor_juros_monetario).formata_valor_monetario(tamanho) 
+			end
+
+			# Formata o campo valor_multa_monetario
+			# referentes as casas decimais
+			# exe. R$199,90 => 0000000019990
+			#
+			# @param tamanho [Integer]
+			#   quantidade de caracteres a ser retornado
+			#
+			def valor_multa_monetario_formatado(tamanho = 13)
+				BrBoleto::Helper::Number.new(valor_multa_monetario).formata_valor_monetario(tamanho) 
 			end
 
 			# Formata o campo valor dos descontos
