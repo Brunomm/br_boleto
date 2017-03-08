@@ -105,21 +105,26 @@ module BrBoleto
 			#      - E Ainda alguns bancos como o SICOOB não conseguem seguir o padrão e usam o cód '0' para Isento
 			attr_accessor :codigo_juros, :data_juros
 			attr_accessor :valor_juros      # Valor de acordo com o código da multa
-			# É calculado em base no valor do juros 
+			
+			# Cálculo para saber a taxa de juros % ao mês.
+			# É efetuado o calculo apenas quando o codigo de juros for setado
+			# com 1, na qual significa que foi setado o valor R$ diário.
+			# Esse método sempre deve retornar o percentual de juros MENSAL
+			# 
 			def percentual_juros # Valor % Ex: 2.5% = 2.5
 				if codigo_juros.to_i == 1
-					BrBoleto::Helper::Number.new(valor_juros).get_percent_by_total(valor_documento)
+					(valor_juros.to_f*30/valor_documento.to_f*100).to_f.round(2)
 				elsif codigo_juros.to_i == 2
 					valor_juros.to_f
 				else
 					0.0
 				end
 			end
-			def valor_juros_monetario # Valor da juros em R$
+			def valor_juros_monetario # Valor da juros em R$ cobrado ao dia
 				if codigo_juros.to_i == 1
 					valor_juros.to_f
 				elsif codigo_juros.to_i == 2
-					(valor_juros.to_f/100.0 * valor_documento.to_f).round(4)
+					(valor_juros.to_f/100.0 * valor_documento.to_f / 30).round(4)
 				else
 					0.0
 				end

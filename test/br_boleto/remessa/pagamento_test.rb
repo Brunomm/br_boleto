@@ -107,13 +107,13 @@ describe BrBoleto::Remessa::Pagamento do
 		end
 	end
 
-	describe "#percentual_juros" do
+	describe "#percentual_juros -> Deve retornar a taxa de juros mensal" do
 		it "Quando o codigo_juros for 1, então deve calcular o percentual de juros pois o valor_juros representa o valor em R$" do
-			subject.assign_attributes(codigo_juros: '1', valor_juros: 7.47, valor_documento: 78.98)
-			subject.percentual_juros.must_equal 9.458091
+			subject.assign_attributes(codigo_juros: '1', valor_juros: 0.9, valor_documento: 78.98)
+			subject.percentual_juros.must_equal 34.19
 
-			subject.assign_attributes(codigo_juros: 1, valor_juros: 8.5, valor_documento: 90.0)
-			subject.percentual_juros.must_equal 9.444444
+			subject.assign_attributes(codigo_juros: 1, valor_juros: 0.0153, valor_documento: 90.0)
+			subject.percentual_juros.must_equal 0.51
 		end
 
 		it "Quando o codigo_juros for 2, então deve retornar o próprio valor que está em valor_juros, pois representa o valor em %" do
@@ -133,21 +133,21 @@ describe BrBoleto::Remessa::Pagamento do
 		end
 	end
 
-	describe "#valor_juros_monetario" do
+	describe "#valor_juros_monetario -> Deve retornar o valor do juros cobrado por dia" do
 		it "Quando o codigo_juros for 1, então deve retornar o próprio valor que está em valor_juros, pois representa o valor em R$" do
-			subject.assign_attributes(codigo_juros: '1', valor_juros: 7.47, valor_documento: 78.98)
-			subject.valor_juros_monetario.must_equal 7.47
+			subject.assign_attributes(codigo_juros: '1', valor_juros: 1.0, valor_documento: 78.98)
+			subject.valor_juros_monetario.must_equal 1.0
 
-			subject.assign_attributes(codigo_juros: 1, valor_juros: 8.5, valor_documento: 90.0)
-			subject.valor_juros_monetario.must_equal 8.5
+			subject.assign_attributes(codigo_juros: 1, valor_juros: 0.50, valor_documento: 90.0)
+			subject.valor_juros_monetario.must_equal 0.50
 		end
 
-		it "Quando o codigo_juros for 2, então deve calcular o valor de juros pois o valor_juros representa o valor em %" do
+		it "Quando o codigo_juros for 2, então deve calcular o valor de juros por 30 dias pois o valor_juros representa o valor em %" do
 			subject.assign_attributes(codigo_juros: '2', valor_juros: 7.47, valor_documento: 78.98)
-			subject.valor_juros_monetario.must_equal 5.8998
+			subject.valor_juros_monetario.must_equal 0.1967
 
 			subject.assign_attributes(codigo_juros: 2, valor_juros: 8.5, valor_documento: 90.0)
-			subject.valor_juros_monetario.must_equal 7.65
+			subject.valor_juros_monetario.must_equal 0.255
 		end
 
 		it "Quando o codigo_juros for 0 ou 3, então deve retornar zero, pois não tem juros" do
