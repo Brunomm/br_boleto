@@ -70,7 +70,7 @@ describe BrBoleto::Remessa::Cnab400::Bradesco do
 			subject.detalhe_posicao_063_108(pagamento).size.must_equal 46
 		end
 		it "deve conter as informações nas posições corretas" do
-			pagamento.assign_attributes(tipo_emissao: 2)
+			pagamento.assign_attributes(tipo_emissao: 2, codigo_multa: 0)
 			result = subject.detalhe_posicao_063_108(pagamento)
 
 			result[0..2].must_equal   '000'                 
@@ -83,6 +83,18 @@ describe BrBoleto::Remessa::Cnab400::Bradesco do
 			result[31..45].must_equal ''.rjust(15)         # Preencher com Branco
 
 			result.size.must_equal 46
+		end
+		it "Quando houver multa porém foi setado com o codigo_multa 1 - deve sempre setar o valor percentual da multa e o codigo 2" do
+			pagamento.assign_attributes(codigo_multa: '1', valor_multa: 7.47, valor_documento: 78.98)
+			result = subject.detalhe_posicao_063_108(pagamento)
+			result[3].must_equal      '2'                  # Identificativos de Multa
+			result[4..7].must_equal   '0946'               # Percentual de Multa por Atraso
+		end
+		it "Quando houver multa porém foi setado com o codigo_multa 2 - deve sempre setar o valor percentual da multa e o codigo 2" do
+			pagamento.assign_attributes(codigo_multa: '2', valor_multa: 7.47, valor_documento: 78.98)
+			result = subject.detalhe_posicao_063_108(pagamento)
+			result[3].must_equal      '2'                  # Identificativos de Multa
+			result[4..7].must_equal   '0747'               # Percentual de Multa por Atraso
 		end
 	end
 

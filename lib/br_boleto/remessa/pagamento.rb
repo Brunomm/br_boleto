@@ -82,9 +82,15 @@ module BrBoleto
 			#      - E Ainda alguns bancos como o SICOOB não conseguem seguir o padrão e usam o cód '0' para Isento
 			attr_accessor :codigo_multa, :data_multa
 			#CNAB 240 e 400
-			attr_accessor :valor_multa      # Valor R$
+			attr_accessor :valor_multa      # Valor de acordo com o código da multa
 			def percentual_multa # Valor % Ex: 2.5% = 2.5
-				BrBoleto::Helper::Number.new(valor_multa).get_percent_by_total(valor_documento)
+				if codigo_multa.to_i == 1
+					BrBoleto::Helper::Number.new(valor_multa).get_percent_by_total(valor_documento)
+				elsif codigo_multa.to_i == 2
+					valor_multa.to_f
+				else
+					0.0
+				end
 			end
 
 			# <b>OPCIONAL</b>: Informações para Juros
@@ -94,10 +100,16 @@ module BrBoleto
 			#      - '3' Isento
 			#      - E Ainda alguns bancos como o SICOOB não conseguem seguir o padrão e usam o cód '0' para Isento
 			attr_accessor :codigo_juros, :data_juros
-			attr_accessor :valor_juros      # Valor R$			
+			attr_accessor :valor_juros      # Valor de acordo com o código da multa
 			# É calculado em base no valor do juros 
 			def percentual_juros # Valor % Ex: 2.5% = 2.5
-				BrBoleto::Helper::Number.new(valor_juros).get_percent_by_total(valor_documento)
+				if codigo_juros.to_i == 1
+					BrBoleto::Helper::Number.new(valor_juros).get_percent_by_total(valor_documento)
+				elsif codigo_juros.to_i == 2
+					valor_juros.to_f
+				else
+					0.0
+				end
 			end
 			
 			# <b>OPCIONAL</b>: Número da parquela que o pagamento representa

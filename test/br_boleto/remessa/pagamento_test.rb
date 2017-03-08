@@ -56,32 +56,54 @@ describe BrBoleto::Remessa::Pagamento do
 	end
 
 	describe "#percentual_multa" do
-		it "deve retornar o percentual representativo do valor_multa para o valor_documento utilizando" do
-			subject.assign_attributes(valor_multa: 7.47, valor_documento: 78.98)
+		it "Quando o codigo_multa for 1, então deve calcular o percentual de multa pois o valor_multa representa o valor em R$" do
+			subject.assign_attributes(codigo_multa: '1', valor_multa: 7.47, valor_documento: 78.98)
 			subject.percentual_multa.must_equal 9.458091
-		end
-		it "deve utilizar o metodo get_percent_by_total de Helper::Number para gerar o percentual" do
-			subject.assign_attributes(valor_multa: 8.47, valor_documento: 100.00)
-			numero = BrBoleto::Helper::Number.new(50.0)
-			BrBoleto::Helper::Number.expects(:new).returns(numero)
-			numero.expects(:get_percent_by_total).with(100.00).returns(10.47)
 
-			subject.percentual_multa.must_equal 10.47
+			subject.assign_attributes(codigo_multa: 1, valor_multa: 8.5, valor_documento: 90.0)
+			subject.percentual_multa.must_equal 9.444444
+		end
+
+		it "Quando o codigo_multa for 2, então deve retornar o próprio valor que está em valor_multa, pois representa o valor em %" do
+			subject.assign_attributes(codigo_multa: '2', valor_multa: 7.47, valor_documento: 78.98)
+			subject.percentual_multa.must_equal 7.47
+
+			subject.assign_attributes(codigo_multa: 2, valor_multa: 8.5, valor_documento: 90.0)
+			subject.percentual_multa.must_equal 8.5
+		end
+
+		it "Quando o codigo_multa for 0 ou 3, então deve retornar zero, pois não tem multa" do
+			subject.assign_attributes(codigo_multa: '0', valor_multa: 7.47, valor_documento: 78.98)
+			subject.percentual_multa.must_equal 0
+
+			subject.assign_attributes(codigo_multa: 3, valor_multa: 8.5, valor_documento: 90.0)
+			subject.percentual_multa.must_equal 0
 		end
 	end
 
 	describe "#percentual_juros" do
-		it "deve retornar o percentual representativo do valor_juros para o valor_documento utilizando" do
-			subject.assign_attributes(valor_juros: 7.47, valor_documento: 78.98)
+		it "Quando o codigo_juros for 1, então deve calcular o percentual de juros pois o valor_juros representa o valor em R$" do
+			subject.assign_attributes(codigo_juros: '1', valor_juros: 7.47, valor_documento: 78.98)
 			subject.percentual_juros.must_equal 9.458091
-		end
-		it "deve utilizar o metodo get_percent_by_total de Helper::Number para gerar o percentual" do
-			subject.assign_attributes(valor_juros: 8.47, valor_documento: 100.00)
-			numero = BrBoleto::Helper::Number.new(50.0)
-			BrBoleto::Helper::Number.expects(:new).returns(numero)
-			numero.expects(:get_percent_by_total).with(100.00).returns(10.47)
 
-			subject.percentual_juros.must_equal 10.47
+			subject.assign_attributes(codigo_juros: 1, valor_juros: 8.5, valor_documento: 90.0)
+			subject.percentual_juros.must_equal 9.444444
+		end
+
+		it "Quando o codigo_juros for 2, então deve retornar o próprio valor que está em valor_juros, pois representa o valor em %" do
+			subject.assign_attributes(codigo_juros: '2', valor_juros: 7.47, valor_documento: 78.98)
+			subject.percentual_juros.must_equal 7.47
+
+			subject.assign_attributes(codigo_juros: 2, valor_juros: 8.5, valor_documento: 90.0)
+			subject.percentual_juros.must_equal 8.5
+		end
+
+		it "Quando o codigo_juros for 0 ou 3, então deve retornar zero, pois não tem juros" do
+			subject.assign_attributes(codigo_juros: '0', valor_juros: 7.47, valor_documento: 78.98)
+			subject.percentual_juros.must_equal 0
+
+			subject.assign_attributes(codigo_juros: 3, valor_juros: 8.5, valor_documento: 90.0)
+			subject.percentual_juros.must_equal 0
 		end
 	end
 

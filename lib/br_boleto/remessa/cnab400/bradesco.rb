@@ -100,9 +100,9 @@ module BrBoleto
 				end
 				def detalhe_posicao_063_108(pagamento)
 					info = ''.adjust_size_to(3, '0')
-					if (pagamento.codigo_multa == 1 or pagamento.codigo_multa == 2)
+					if "#{pagamento.codigo_multa}".in?(%w[1 2])
 						info << '2'
-						info << (pagamento.percentual_multa_formatado(2)).adjust_size_to(4, '0')       # tem multa: preencher com percentual da multa com 2 decimais
+						info << pagamento.percentual_multa_formatado(4)       # tem multa: preencher com percentual da multa com 2 decimais
 					else
 						info << '0'
 						info << ''.adjust_size_to(4, '0', :right) 						                   # sem multa: preencher com zeros.
