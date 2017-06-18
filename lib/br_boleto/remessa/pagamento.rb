@@ -307,8 +307,13 @@ module BrBoleto
 				@parcela
 			end
 
+			# Nosso número deve retornar apenas letras e números
+			# Ex: self.nosso_numero = '0100245-P'
+			#     self.nosso_numero 
+			#      ~> '0100245P'
+			# 
 			def nosso_numero
-				"#{@nosso_numero}".gsub(/[^0-9]/, "")
+				"#{@nosso_numero}".remove(/[^\d\w]/i)
 			end
 
 			validates :nosso_numero, :data_vencimento, :valor_documento, presence: true

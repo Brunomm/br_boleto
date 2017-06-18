@@ -13,7 +13,7 @@ Gem::Specification.new do |gem|
   gem.homepage      = "https://github.com/Brunomm/br_boleto"
 
   gem.files         = `git ls-files`.split("\n").reject{|fil| 
-    fil.include?('documentacoes_boletos/')
+    fil.include?('documentacoes_boletos/') || fil.include?('gemfiles/')
   }
   gem.test_files    = `git ls-files -- test`.split("\n")
   # gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }

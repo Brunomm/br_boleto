@@ -4,4 +4,4 @@ coverage/
 **/*.~lock.*
 dev_load_data*.rb
 saida.rem
-br_boleto*.gem
+/br_boleto*.gem

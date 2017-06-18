@@ -184,10 +184,17 @@ describe BrBoleto::Remessa::Pagamento do
 		subject.parcela.must_equal '1'
 	end
 
-	it "nosso_numero deve retornar apenas numeros" do
-		subject.nosso_numero = 'A1!@#$%*()-234vc.,;-56789o0'
-		subject.nosso_numero.must_equal '1234567890'
+	describe '#nosso_numero' do
+		it "deve retornar apenas numeros e letras" do
+			subject.nosso_numero = 'A1!@#$%*()-234vc.,;-56789o0'
+			subject.nosso_numero.must_equal 'A1234vc56789o0'
+		end
+		it "deve retornar corretamente o nosso_numero quando o DV é uma letra" do
+			subject.nosso_numero = '001240002-P'
+			subject.nosso_numero.must_equal '001240002P'
+		end
 	end
+
 
 	describe "default_values" do
 		let(:object) { subject.class.new() } 
