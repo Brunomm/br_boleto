@@ -238,15 +238,6 @@ module BrBoleto
 				def complemento_trailer_lote_posicao_124_a_240
 					''.rjust(117, ' ')
 				end
-
-				# Código para Protesto
-				# Padrão do SICOOB  '1' = Protestar Dias Corridos
-				# 1 posição
-				#
-				def segmento_p_posicao_221_a_221(pagamento)
-					'1'
-				end
-
 			end
 		end
 	end
