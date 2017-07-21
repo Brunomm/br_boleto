@@ -310,4 +310,19 @@ describe BrBoleto::Conta::Caixa do
 			it { subject.get_codigo_moeda('09', 400).must_equal '1' }  # Real
 		end
 	end
+
+	describe '#get_distribuicao_boleto -> Para a caixa os códigos são diferentes da FEBRABAN' do
+		it "Quando o banco distribui deve converter o código para 2" do
+			subject.get_distribuicao_boleto('1').must_equal '2'
+		end
+		it "Quando o Cliente distribui deve converter o código para 0" do
+			subject.get_distribuicao_boleto('2').must_equal '0'
+		end
+		it "Quando envia e-mail deve manter o código 3" do
+			subject.get_distribuicao_boleto('3').must_equal '3'
+		end
+		it "Quando envia SMS deve manter o código 4" do
+			subject.get_distribuicao_boleto('4').must_equal '4'
+		end
+	end
 end

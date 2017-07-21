@@ -114,7 +114,12 @@ module BrBoleto
 
 				# Identificação da Distribuição exclusiva da CAIXA
 				def equivalent_distribuicao_boleto
-					super.merge({'0' => '0' }) # 0 = Postagem pelo Beneficiário
+					{
+						'1' => '2', # Banco Distribui
+						'2' => '0', # Cliente Distribui
+						'3' => '3', # Banco envia e-mail
+						'4' => '4', # Banco envia SMS
+					}
 				end
 
 				# Código de Movimento Retorno 

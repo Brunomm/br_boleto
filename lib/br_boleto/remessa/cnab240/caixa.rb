@@ -122,6 +122,13 @@ module BrBoleto
 					"#{pagamento.numero_documento}".adjust_size_to(25, '0', :right)
 				end
 
+				# Código para Baixa/Devolução 
+				# 1 posição
+				#
+				def segmento_p_posicao_224_a_224
+					'1'
+				end
+
 				# Segmento Q Cód. Bco. Corresp. na Compensação
 				# Deve ser 3 espaços em branco
 				# 3 posições

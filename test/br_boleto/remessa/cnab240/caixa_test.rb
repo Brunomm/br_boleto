@@ -234,6 +234,12 @@ describe BrBoleto::Remessa::Cnab240::Caixa do
 		end
 	end
 
+	describe '#segmento_p_posicao_224_a_224 - Deve ter o valor fixo de 1 ao invés de zero que é o padrão da FEBRABAN' do
+		it "deve retornar 1" do
+			subject.segmento_p_posicao_224_a_224.must_equal '1'
+		end
+	end
+
 	describe 'Geração do arquivo' do
 		let(:conta) do 
 			{
