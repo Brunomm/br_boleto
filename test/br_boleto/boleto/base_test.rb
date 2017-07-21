@@ -135,7 +135,7 @@ describe BrBoleto::Boleto::Base do
 		context "when have many decimal points" do
 			before { subject.stubs(:valor_documento).returns(10.999999) }
 
-			it {subject.valor_formatado_para_codigo_de_barras.must_equal '0000001099' }
+			it {subject.valor_formatado_para_codigo_de_barras.must_equal '0000001100' }
 		end
 
 		context "when integer" do
@@ -151,7 +151,7 @@ describe BrBoleto::Boleto::Base do
 		end
 
 		context "when period with string with many decimals" do
-			before { subject.stubs(:valor_documento).returns('10.999999') }
+			before { subject.stubs(:valor_documento).returns('10.9895145') }
 
 			it {subject.valor_formatado_para_codigo_de_barras.must_equal '0000001099' }
 		end

@@ -210,7 +210,7 @@ module BrBoleto
 			# @return [String] Precisa retornar 10 dígitos para o código de barras (incluindo os centavos).
 			#
 			def valor_formatado_para_codigo_de_barras
-				valor_documento_formatado = (Integer(valor_documento.to_f * 100) / Float(100))
+				valor_documento_formatado = valor_documento.to_f.round(2)
 				real, centavos            = valor_documento_formatado.to_s.split(/\./)
 				"#{real.rjust(8, '0')}#{centavos.ljust(2, '0')}"
 			end
