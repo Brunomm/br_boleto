@@ -3,11 +3,11 @@ require 'test_helper'
 
 describe BrBoleto::Boleto::Sicredi do
 	subject { FactoryGirl.build(:boleto_sicredi, conta: conta) }
-	let(:conta) { FactoryGirl.build(:conta_sicredi) } 
-	
+	let(:conta) { FactoryGirl.build(:conta_sicredi) }
+
 	context "on validations" do
 		it { must validate_length_of(:numero_documento).is_at_most(5).with_message(:custom_length_maximum) }
-		
+
 		context '#conta.carteira' do
 			it { subject.valid_carteira_inclusion.must_equal ['1','3'] }
 			it "validação da carteira da conta" do
@@ -21,7 +21,7 @@ describe BrBoleto::Boleto::Sicredi do
 		describe '#conta.convenio / codigo_cedente' do
 			it { subject.valid_convenio_maximum.must_equal 5 }
 			it { subject.valid_convenio_required.must_equal true }
-			
+
 			it "validação obrigatoriedade do codigo_cedente da conta" do
 				subject.conta.codigo_cedente = ''
 				conta_must_be_msg_error(:convenio, :blank)
@@ -49,8 +49,8 @@ describe BrBoleto::Boleto::Sicredi do
 	describe "#digito_verificador_nosso_numero" do
 		it "deve utilizar o Modulo11FatorDe2a9RestoZero para calcular o digito passando a agencia, posto, conta_corrente, ano, byte_id e numero_documento" do
 			subject.stubs(:ano).returns('16')
-			subject.assign_attributes(conta: {agencia: '4697', posto: '02', conta_corrente: '55825', byte_id: '3'}, numero_documento: '77445')
-			BrBoleto::Calculos::Modulo11FatorDe2a9RestoZero.expects(:new).with("4697025582516377445").returns('8')
+			subject.assign_attributes(conta: {agencia: '4697', posto: '02', conta_corrente: '55825', codigo_cedente: '9886', byte_id: '3'}, numero_documento: '77445')
+			BrBoleto::Calculos::Modulo11FatorDe2a9RestoZero.expects(:new).with("4697020988616377445").returns('8')
 
 			subject.digito_verificador_nosso_numero.must_equal '8'
 		end
@@ -59,7 +59,7 @@ describe BrBoleto::Boleto::Sicredi do
 	describe "#nosso_numero" do
 		subject { FactoryGirl.build(:boleto_sicredi, numero_documento: '68315') }
 
-		it "deve retornar o numero do documento com o digito_verificador_nosso_numero" do 
+		it "deve retornar o numero do documento com o digito_verificador_nosso_numero" do
 			subject.stubs(:ano).returns('15')
 			subject.conta.byte_id    = '7'
 			subject.numero_documento = '3646'
@@ -69,11 +69,12 @@ describe BrBoleto::Boleto::Sicredi do
 	end
 
 	describe "#codigo_de_barras_do_banco" do
-		subject do 
+		subject do
 			FactoryGirl.build(:boleto_sicredi, conta: {
 					carteira:          '3',
 					codigo_carteira:   '1',
 					agencia:           '7832',
+					codigo_cedente:    '9649',
 					conta_corrente:    '668',
 					posto:             '22',
 				},
@@ -92,11 +93,11 @@ describe BrBoleto::Boleto::Sicredi do
 			result[2..10].must_equal '152003952'   # Nosso número com o DV
 			result[11..14].must_equal '7832'       # Agência
 			result[15..16].must_equal '22'         # Posto
-			result[17..21].must_equal '00668'      # Conta Corrente
-			result[22].must_equal '1'              
-			result[23].must_equal '0'              
-			result[24].must_equal '5'              # DV Campo Livre
-			subject.codigo_de_barras_do_banco.must_equal '3115200395278322200668105'
+			result[17..21].must_equal '09649'      # Cód. Cedente
+			result[22].must_equal '1'
+			result[23].must_equal '0'
+			result[24].must_equal '3'              # DV Campo Livre
+			subject.codigo_de_barras_do_banco.must_equal '3115200395278322209649103'
 		end
 	end
 
@@ -116,12 +117,12 @@ describe BrBoleto::Boleto::Sicredi do
 			end
 		end
 
-		it { subject.codigo_de_barras.must_equal '74898816800093015781116210010830696689755104' }
-		it { subject.linha_digitavel.must_equal '74891.11620 10010.830692 66897.551041 8 81680009301578' }		
+		it { subject.codigo_de_barras.must_equal '74897816800093015781116210010030696682819108' }
+		it { subject.linha_digitavel.must_equal '74891.11620 10010.030699 66828.191081 7 81680009301578' }
 
 		it "codigo de barras de um boleto de exemplo" do
-			subject.conta.agencia           = 3069 
-			subject.conta.posto             = 66 
+			subject.conta.agencia           = 3069
+			subject.conta.posto             = 66
 			subject.conta.codigo_cedente    = 82819 # Para o sicredi é o código do cliente
 			subject.conta.codigo_cedente_dv = 0     # Para o sicredi é o código do cliente
 			subject.conta.carteira          = '1'
@@ -130,8 +131,8 @@ describe BrBoleto::Boleto::Sicredi do
 			subject.valor_documento         = 408.50
 			subject.data_vencimento         = Date.parse('2016-09-01')
 
-			subject.linha_digitavel.must_equal '74891.11620 15679.030690 66897.551066 9 69040000040850'
-			subject.codigo_de_barras.must_equal '74899690400000408501116215679030696689755106'
+			subject.linha_digitavel.must_equal '74891.11620 15679.230696 66828.191065 2 69040000040850'
+			subject.codigo_de_barras.must_equal '74892690400000408501116215679230696682819106'
 		end
 	end
 end

@@ -1,7 +1,7 @@
 # encoding: utf-8
 module BrBoleto
 	module Boleto
-		
+
 		class Sicredi < Base
 
 			def conta_class
@@ -16,14 +16,14 @@ module BrBoleto
 				def valid_carteira_inclusion
 					%w[1 3]
 				end
-				
+
 				# Tamanho máximo para o codigo_cedente/Convênio
-				def valid_convenio_maximum 
+				def valid_convenio_maximum
 					5
-				end				
+				end
 
 				# Tamanho máximo de uma conta corrente no Banco Sicredi
-				def valid_conta_corrente_maximum 
+				def valid_conta_corrente_maximum
 					5
 				end
 
@@ -52,7 +52,7 @@ module BrBoleto
 				"#{ano}/#{conta.byte_id}#{numero_documento}-#{digito_verificador_nosso_numero}"
 			end
 			def digito_verificador_nosso_numero
-				BrBoleto::Calculos::Modulo11FatorDe2a9RestoZero.new("#{conta.agencia}#{conta.posto}#{conta.conta_corrente}#{ano}#{conta.byte_id}#{numero_documento}")
+				BrBoleto::Calculos::Modulo11FatorDe2a9RestoZero.new("#{conta.agencia}#{conta.posto}#{conta.codigo_cedente}#{ano}#{conta.byte_id}#{numero_documento}")
 			end
 			def ano
 				data_documento.strftime('%y')
@@ -80,8 +80,8 @@ module BrBoleto
 				campo_livre << "#{nosso_numero_codigo_de_barras}"
 				campo_livre << "#{conta.agencia}"
 				campo_livre << "#{conta.posto}"
-				campo_livre << "#{conta.conta_corrente}"
-				campo_livre << "#{valor_expresso}" 
+				campo_livre << "#{conta.codigo_cedente}"
+				campo_livre << "#{valor_expresso}"
 				campo_livre << "0"
 				campo_livre << "#{codigo_dv(campo_livre)}"
 				campo_livre
