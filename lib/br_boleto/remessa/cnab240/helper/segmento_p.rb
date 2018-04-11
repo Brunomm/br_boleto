@@ -312,7 +312,7 @@ module BrBoleto
 						if  pagamento.codigo_protesto.to_i.in?([3, 8])
 							'00' 
 						else
-							"#{pagamento.dias_protesto}".adjust_size_to(2, '0')
+							"#{pagamento.dias_protesto}".rjust(2, '0')
 						end
 					end
 

@@ -79,13 +79,13 @@ module BrBoleto
 				# Modalidade carteira     02          41 - 42
 				# nosso_numero            15          43 - 57
 				#
-				# TOTAL = 34 posições 
+				# TOTAL = 34 posições
 				#
 				def complemento_p(pagamento)
 					complemento  = "#{conta.convenio}".adjust_size_to(6, '0', :right)
 					complemento << ''.rjust(11, '0')
 					complemento << "#{conta.carteira}".adjust_size_to(conta.valid_carteira_length, '2', :right)
-					complemento << pagamento.nosso_numero.adjust_size_to(15, '0', :right)
+					complemento << pagamento.nosso_numero.adjust_size_to(15, '0', :right) # Sem a carteira e sem o DV
 					complemento
 				end
 
@@ -95,7 +95,7 @@ module BrBoleto
 				# Nr Doc. cobrança          11       63 - 73
 				# Uso da CAIXA              04       74 - 77
 				#
-				# TOTAL = 15 posições 
+				# TOTAL = 15 posições
 				#
 				def segmento_p_numero_do_documento(pagamento)
 					complemento =  "#{pagamento.numero_documento}".adjust_size_to(11, '0', :right)
@@ -106,13 +106,13 @@ module BrBoleto
 				# Digito verificador da agência
 				# Segundo a documentação nessa posição vai o valor '0'
 				#
-				# TOTAL = 01 posição 
+				# TOTAL = 01 posição
 				#
 				def segmento_p_posicao_106_a_106
 					'0'
 				end
 
-				# Identificação do Título na Empresa 
+				# Identificação do Título na Empresa
 				# Campo destinado para uso da Empresa Cedente para identificação do Título.
 				# Informar o Número do Documento - Seu Número (mesmo das posições 63-73 do Segmento P)
 				#
@@ -122,7 +122,7 @@ module BrBoleto
 					"#{pagamento.numero_documento}".adjust_size_to(25, '0', :right)
 				end
 
-				# Código para Baixa/Devolução 
+				# Código para Baixa/Devolução
 				# 1 posição
 				#
 				def segmento_p_posicao_224_a_224
@@ -133,9 +133,9 @@ module BrBoleto
 				# Deve ser 3 espaços em branco
 				# 3 posições
 				def segmento_q_posicao_210_a_212
-					''.rjust(3, ' ') 
+					''.rjust(3, ' ')
 				end
-				
+
 				def segmento_s_posicao_019_a_020_tipo_impressao_1_ou_2(pagamento)
 					'00'
 				end
@@ -152,9 +152,9 @@ module BrBoleto
 				# Val. Tot Cobr. Caucionada 17       53  -  69     >  VALORES UTILIZADOS APENAS PARA ARQUIVO DE RETORNO
 				# Qtd. cobr. Descontada     06       70  -  75    /
 				# Val. Tot Cobr. Descontada 17       76  -  92  _/
-				# Uso FEBRABAN              148      93  - 240 
+				# Uso FEBRABAN              148      93  - 240
 				#
-				# TOTAL = 217 posições 
+				# TOTAL = 217 posições
 				#
 				def complemento_trailer_lote(lote, nr_lote)
 					complemento = ''
