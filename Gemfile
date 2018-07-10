@@ -9,7 +9,7 @@ end
 group :test do
 	# gem "mocha", :require => false
 	gem "mocha", :require => false
-	gem "factory_girl_rails"
+	gem "factory_bot_rails"
 	gem 'minitest-reporters'
 	gem 'minitest-rails'
 	gem 'minitest-spec-rails'

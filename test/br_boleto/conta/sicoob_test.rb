@@ -1,7 +1,7 @@
 require 'test_helper'
 
 describe BrBoleto::Conta::Sicoob do
-	subject { FactoryGirl.build(:conta_sicoob) }
+	subject { FactoryBot.build(:conta_sicoob) }
 
 	it "deve herdar de Conta::Base" do
 		subject.class.superclass.must_equal BrBoleto::Conta::Base
@@ -46,7 +46,7 @@ describe BrBoleto::Conta::Sicoob do
 			subject.agencia_dv = 21
 			must_be_message_error(:agencia_dv, :custom_length_is, {count: 1})
 		end
-		
+
 		context 'Validações padrões da modalidade' do
 			subject { BrBoleto::Conta::Sicoob.new }
 			it { must validate_presence_of(:modalidade) }
@@ -145,7 +145,7 @@ describe BrBoleto::Conta::Sicoob do
 			it { subject.get_codigo_movimento_remessa('46', 400).must_equal '34' } # Baixa - Pagamento Direto ao Beneficiário
 		end
 	end
-	describe '#get_codigo_juros' do 
+	describe '#get_codigo_juros' do
 		it { subject.get_codigo_juros('1').must_equal '1' }
 		it { subject.get_codigo_juros('2').must_equal '2' }
 		it "para o siccob o código que representa sem juros deve ser 0(zero)" do
@@ -158,7 +158,7 @@ describe BrBoleto::Conta::Sicoob do
 			subject.default_codigo_juros.must_equal '0'
 		end
 	end
-	describe '#get_codigo_multa' do 
+	describe '#get_codigo_multa' do
 		it { subject.get_codigo_multa('1').must_equal '1' }
 		it { subject.get_codigo_multa('2').must_equal '2' }
 		it "para o siccob o código que representa sem multa deve ser 0(zero)" do

@@ -1,7 +1,7 @@
 require 'test_helper'
 
 describe BrBoleto::Conta::Bradesco do
-	subject { FactoryGirl.build(:conta_bradesco) }
+	subject { FactoryBot.build(:conta_bradesco) }
 
 	it "deve herdar de Conta::Base" do
 		subject.class.superclass.must_equal BrBoleto::Conta::Base
@@ -139,7 +139,7 @@ describe BrBoleto::Conta::Bradesco do
 			it { subject.get_codigo_movimento_remessa('34', 400).must_equal '69' } # Cancelamento do rateio de crédito.
 		end
 	end
-	
+
 	describe "#get_codigo_movimento_retorno" do
 		context "CÓDIGOS para o Bradesco" do
 			it { subject.get_codigo_movimento_retorno('73', 240).must_equal '73' } # Confirmação recebimento pedido de negativação

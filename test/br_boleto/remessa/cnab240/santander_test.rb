@@ -1,9 +1,9 @@
 require 'test_helper'
 
 describe BrBoleto::Remessa::Cnab240::Santander do
-	subject { FactoryGirl.build(:remessa_cnab240_santander, lotes: lote) }
-	let(:pagamento) { FactoryGirl.build(:remessa_pagamento, valor_documento: 879.66) } 
-	let(:lote) { FactoryGirl.build(:remessa_lote, pagamentos: pagamento) } 
+	subject { FactoryBot.build(:remessa_cnab240_santander, lotes: lote) }
+	let(:pagamento) { FactoryBot.build(:remessa_pagamento, valor_documento: 879.66) }
+	let(:lote) { FactoryBot.build(:remessa_lote, pagamentos: pagamento) }
 
 	it "deve herdar da class Base" do
 		subject.class.superclass.must_equal BrBoleto::Remessa::Cnab240::Base
@@ -64,7 +64,7 @@ describe BrBoleto::Remessa::Cnab240::Santander do
 			subject.informacoes_da_conta.size.must_equal 25
 		end
 
-		it "deve ter 25 posições em brancos" do	
+		it "deve ter 25 posições em brancos" do
 			subject.informacoes_da_conta.must_equal (' '	* 25)
 
 		end
@@ -89,11 +89,11 @@ describe BrBoleto::Remessa::Cnab240::Santander do
 		it "1 - Primeira parte = conta_corrente com 12 posicoes - ajustados com zeros a esquerda" do
 			subject.conta.conta_corrente = '1234'
 			subject.complemento_p(pagamento)[0..8].must_equal '000001234'
-		
+
 			subject.conta.conta_corrente = '264631'
 			subject.complemento_p(pagamento)[0..8].must_equal '000264631'
 		end
-		
+
 		it "2 - Seguna parte = Conta Corrente DV - 1 posicao" do
 			subject.conta.conta_corrente_dv = '7'
 			subject.complemento_p(pagamento)[9..9].must_equal '7'
@@ -109,11 +109,11 @@ describe BrBoleto::Remessa::Cnab240::Santander do
 
 		it "5 - Quinta parte = brancos" do
 			subject.complemento_p(pagamento)[20..21].must_equal '  '
-		end			
+		end
 
 		it "7 - Setima parte = numero_documento DV com 1 posicao - Deve ser o ultimo digito do nosso numero" do
 			pagamento.nosso_numero = '1212121212129'
-			subject.complemento_p(pagamento)[22..34].must_equal '1212121212129'			
+			subject.complemento_p(pagamento)[22..34].must_equal '1212121212129'
 
 			pagamento.nosso_numero = '9999999999990'
 			subject.complemento_p(pagamento)[22..34].must_equal '9999999999990'
@@ -126,7 +126,7 @@ describe BrBoleto::Remessa::Cnab240::Santander do
 			subject.segmento_p_numero_do_documento(pagamento).size.must_equal 15
 		end
 
-		it "deve conter o numero do documento 15 posicoes - ajustados com zeros a esquerda" do	
+		it "deve conter o numero do documento 15 posicoes - ajustados com zeros a esquerda" do
 			pagamento.expects(:numero_documento).returns("977897")
 			subject.segmento_p_numero_do_documento(pagamento).must_equal '000000000977897'
 		end

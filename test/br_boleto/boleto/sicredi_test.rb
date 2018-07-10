@@ -2,8 +2,8 @@
 require 'test_helper'
 
 describe BrBoleto::Boleto::Sicredi do
-	subject { FactoryGirl.build(:boleto_sicredi, conta: conta) }
-	let(:conta) { FactoryGirl.build(:conta_sicredi) }
+	subject { FactoryBot.build(:boleto_sicredi, conta: conta) }
+	let(:conta) { FactoryBot.build(:conta_sicredi) }
 
 	context "on validations" do
 		it { must validate_length_of(:numero_documento).is_at_most(5).with_message(:custom_length_maximum) }
@@ -57,7 +57,7 @@ describe BrBoleto::Boleto::Sicredi do
 	end
 
 	describe "#nosso_numero" do
-		subject { FactoryGirl.build(:boleto_sicredi, numero_documento: '68315') }
+		subject { FactoryBot.build(:boleto_sicredi, numero_documento: '68315') }
 
 		it "deve retornar o numero do documento com o digito_verificador_nosso_numero" do
 			subject.stubs(:ano).returns('15')
@@ -70,7 +70,7 @@ describe BrBoleto::Boleto::Sicredi do
 
 	describe "#codigo_de_barras_do_banco" do
 		subject do
-			FactoryGirl.build(:boleto_sicredi, conta: {
+			FactoryBot.build(:boleto_sicredi, conta: {
 					carteira:          '3',
 					codigo_carteira:   '1',
 					agencia:           '7832',
@@ -103,7 +103,7 @@ describe BrBoleto::Boleto::Sicredi do
 
 	describe "#codigo_de_barras" do
 		subject do
-			FactoryGirl.build(:boleto_sicredi) do |sicredi|
+			FactoryBot.build(:boleto_sicredi) do |sicredi|
 				sicredi.conta.agencia           = 3069
 				sicredi.conta.posto             = 66
 				sicredi.conta.codigo_cedente    = 828_19 # Para o sicredi é o código do cliente

@@ -2,13 +2,13 @@
 require 'test_helper'
 
 describe BrBoleto::Retorno::Pagamento do
-	
-	subject { FactoryGirl.build(:retorno_pagamento, conta_class: BrBoleto::Conta::Caixa) }
-	let(:conta) { FactoryGirl.build(:conta_caixa) }
+
+	subject { FactoryBot.build(:retorno_pagamento, conta_class: BrBoleto::Conta::Caixa) }
+	let(:conta) { FactoryBot.build(:conta_caixa) }
 	before do
 		subject.conta = conta
 	end
-	
+
 	describe "atributos que devem ser convertidos para data quando o valor for setado" do
 		describe "#data_vencimento" do
 			it "deve converter para uma data se a string estiver no formato DDMMYYYY" do
@@ -195,7 +195,7 @@ describe BrBoleto::Retorno::Pagamento do
 			subject.stubs(:motivo_ocorrencia_3).returns('03')
 			subject.stubs(:motivo_ocorrencia_4).returns('04')
 			subject.stubs(:motivo_ocorrencia_5).returns('05')
-			
+
 			subject.motivo_ocorrencia.must_equal '0102030405'
 		end
 	end

@@ -9,10 +9,10 @@ Gem::Specification.new do |gem|
   gem.description   = %q{Emissão de Boletos Bancários em Ruby}
   gem.authors       = ["Bruno M. Mergen"]
   gem.email         = ["brunomergen@gmail.com"]
-  
+
   gem.homepage      = "https://github.com/Brunomm/br_boleto"
 
-  gem.files         = `git ls-files`.split("\n").reject{|fil| 
+  gem.files         = `git ls-files`.split("\n").reject{|fil|
     fil.include?('documentacoes_boletos/') || fil.include?('gemfiles/')
   }
   gem.test_files    = `git ls-files -- test`.split("\n")
@@ -23,7 +23,7 @@ Gem::Specification.new do |gem|
 
 
   gem.add_dependency "rake", '>= 0.8.7'
-  gem.add_dependency "activesupport", '~> 4.2'
-  gem.add_dependency "activemodel",   '~> 4.2'
+  gem.add_dependency "activesupport", '~> 5.1.6'
+  gem.add_dependency "activemodel",   '~> 5.1.6'
   gem.add_dependency 'unidecoder', '~> 1.1'
 end

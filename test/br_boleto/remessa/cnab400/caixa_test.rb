@@ -1,11 +1,11 @@
 require 'test_helper'
 
 describe BrBoleto::Remessa::Cnab400::Caixa do
-	subject { FactoryGirl.build(:remessa_cnab400_caixa, pagamentos: pagamento, conta: conta) }
-	let(:pagamento) { FactoryGirl.build(:remessa_pagamento, pagador: pagador) } 
-	let(:conta)     { FactoryGirl.build(:conta_caixa) } 
-	let(:pagador)   { FactoryGirl.build(:pagador) } 
-	
+	subject { FactoryBot.build(:remessa_cnab400_caixa, pagamentos: pagamento, conta: conta) }
+	let(:pagamento) { FactoryBot.build(:remessa_pagamento, pagador: pagador) }
+	let(:conta)     { FactoryBot.build(:conta_caixa) }
+	let(:pagador)   { FactoryBot.build(:pagador) }
+
 	it "deve ter a class para a conta do Caixa" do
 		BrBoleto::Remessa::Cnab400::Caixa.new.conta_class.must_equal BrBoleto::Conta::Caixa
 	end
@@ -34,7 +34,7 @@ describe BrBoleto::Remessa::Cnab400::Caixa do
 		it "deve retornar o sequencial da remessa com 5 posições e mais 389 brancos" do
 			subject.sequencial_remessa = 4758
 
-			subject.complemento_registro[0..288].must_equal ''.rjust(289) 
+			subject.complemento_registro[0..288].must_equal ''.rjust(289)
 			subject.complemento_registro[289..393].must_equal '04758'
 
 			subject.complemento_registro.size.must_equal 294
@@ -83,7 +83,7 @@ describe BrBoleto::Remessa::Cnab400::Caixa do
 			conta.codigo_carteira = '5'
 			result = subject.detalhe_posicao_077_108(pagamento, '1')
 
-			result[0..29].must_equal   (' ' * 30)   # Brancos              
+			result[0..29].must_equal   (' ' * 30)   # Brancos
 			result[30..31].must_equal '05'           # Código da Carteira
 
 			result.size.must_equal 32
@@ -107,7 +107,7 @@ describe BrBoleto::Remessa::Cnab400::Caixa do
 			result.size.must_equal 40
 
 			result[00..05].must_equal '050829'        # "Data Vencimento: Formato DDMMAA Normal ""DDMMAA"" A vista = ""888888"" Contra Apresentação = ""999999"""
-			result[06..18].must_equal '0000000004756' # Valor do Titulo 
+			result[06..18].must_equal '0000000004756' # Valor do Titulo
 			result[19..21].must_equal '104'           # Número Banco
 			result[22..26].must_equal "00000"         # 000000 ou Agencia
 			result[27..28].must_equal "02"            # Espécie do Título
@@ -165,7 +165,7 @@ describe BrBoleto::Remessa::Cnab400::Caixa do
 			result[00..01].must_equal "01"                                    # Tipo de Inscrição do Pagador: "01" = CPF / "02" = CNPJ
 			result[02..15].must_equal '00012345678901'                        # Número do CNPJ ou CPF do Pagador
 			result[16..55].must_equal 'nome pagador'.adjust_size_to(40)       # Nome do Pagador
-			
+
 			result[56..95].must_equal 'rua do pagador'.adjust_size_to(40)     # Endereço do Pagador
 			result[96..107].must_equal 'bairro do pagador'.adjust_size_to(12) # Bairro do Pagador
 			result[108..115].must_equal '89885001'                            # CEP do Pagador

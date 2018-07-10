@@ -1,7 +1,7 @@
 require 'test_helper'
 
 describe BrBoleto::Conta::Cecred do
-	subject { FactoryGirl.build(:conta_cecred) }
+	subject { FactoryBot.build(:conta_cecred) }
 
 	it "deve herdar de Conta::Base" do
 		subject.class.superclass.must_equal BrBoleto::Conta::Base

@@ -1,11 +1,11 @@
 require 'test_helper'
 
 describe BrBoleto::Remessa::Cnab400::BancoBrasil do
-	subject { FactoryGirl.build(:remessa_cnab400_banco_brasil, pagamentos: pagamento, conta: conta) }
-	let(:pagamento) { FactoryGirl.build(:remessa_pagamento, pagador: pagador) } 
-	let(:conta)     { FactoryGirl.build(:conta_banco_brasil) } 
-	let(:pagador)   { FactoryGirl.build(:pagador) } 
-	
+	subject { FactoryBot.build(:remessa_cnab400_banco_brasil, pagamentos: pagamento, conta: conta) }
+	let(:pagamento) { FactoryBot.build(:remessa_pagamento, pagador: pagador) }
+	let(:conta)     { FactoryBot.build(:conta_banco_brasil) }
+	let(:pagador)   { FactoryBot.build(:pagador) }
+
 	it "deve ter a class para a conta do Banco do Brasil" do
 		BrBoleto::Remessa::Cnab400::BancoBrasil.new.conta_class.must_equal BrBoleto::Conta::BancoBrasil
 	end
@@ -17,7 +17,7 @@ describe BrBoleto::Remessa::Cnab400::BancoBrasil do
 	describe '#informacoes_da_conta' do
 		it "deve retornar com 20 caracteres quando o parametro for :header" do
 			subject.informacoes_da_conta(:header).size.must_equal 20
-		end		
+		end
 		it "deve retornar com 21 caracteres quando o parametro for :detalhe" do
 			subject.informacoes_da_conta(:detalhe).size.must_equal 21
 		end
@@ -57,8 +57,8 @@ describe BrBoleto::Remessa::Cnab400::BancoBrasil do
 
 			subject.complemento_registro[0..6].must_equal '0004758'
 			subject.complemento_registro[7..28].must_equal ''.rjust(22)
-			subject.complemento_registro[29..35].must_equal '0004321' 
-			subject.complemento_registro[36..293].must_equal ''.rjust(258) 
+			subject.complemento_registro[29..35].must_equal '0004321'
+			subject.complemento_registro[36..293].must_equal ''.rjust(258)
 
 			subject.complemento_registro.size.must_equal 294
 		end
@@ -160,7 +160,7 @@ describe BrBoleto::Remessa::Cnab400::BancoBrasil do
 			result.size.must_equal 40
 
 			result[00..05].must_equal '050829'        # "Data Vencimento: Formato DDMMAA Normal ""DDMMAA"" A vista = ""888888"" Contra Apresentação = ""999999"""
-			result[06..18].must_equal '0000000004756' # Valor do Titulo 
+			result[06..18].must_equal '0000000004756' # Valor do Titulo
 			result[19..21].must_equal '001'           # Número Banco
 			result[22..26].must_equal "00000"         # 000000 ou Agencia
 			result[27..28].must_equal "02"            # Espécie do Título

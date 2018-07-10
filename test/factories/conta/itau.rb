@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-FactoryGirl.define do
+FactoryBot.define do
 	factory :conta_itau, class:  BrBoleto::Conta::Itau do
 		codigo_cedente    '90904'
 		conta_corrente    '89755'

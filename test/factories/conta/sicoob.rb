@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-FactoryGirl.define do
+FactoryBot.define do
 	factory :conta_sicoob, class:  BrBoleto::Conta::Sicoob do
 		codigo_beneficiario     '253167'
 		codigo_beneficiario_dv  '4'

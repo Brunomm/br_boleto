@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-FactoryGirl.define do
+FactoryBot.define do
 	factory :conta_base, class:  BrBoleto::Conta::Base do
 		nome_banco  'Conta Base'
 		razao_social 'Emitente'

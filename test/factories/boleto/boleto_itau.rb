@@ -1,9 +1,9 @@
 # encoding: UTF-8
 
-FactoryGirl.define do
+FactoryBot.define do
 	factory :boleto_itau, class:  BrBoleto::Boleto::Itau do
-		conta             { FactoryGirl.build(:conta_itau) }
-		pagador          { FactoryGirl.build(:pagador) }
+		conta             { FactoryBot.build(:conta_itau) }
+		pagador          { FactoryBot.build(:pagador) }
 		numero_documento  '712'
 		data_vencimento   { Date.tomorrow }
 		data_documento    { Date.current }

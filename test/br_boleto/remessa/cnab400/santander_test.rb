@@ -1,11 +1,11 @@
 require 'test_helper'
 
 describe BrBoleto::Remessa::Cnab400::Santander do
-	subject { FactoryGirl.build(:remessa_cnab400_santander, pagamentos: pagamento, conta: conta) }
-	let(:pagamento) { FactoryGirl.build(:remessa_pagamento, pagador: pagador) } 
-	let(:conta)     { FactoryGirl.build(:conta_santander) } 
-	let(:pagador)   { FactoryGirl.build(:pagador) } 
-	
+	subject { FactoryBot.build(:remessa_cnab400_santander, pagamentos: pagamento, conta: conta) }
+	let(:pagamento) { FactoryBot.build(:remessa_pagamento, pagador: pagador) }
+	let(:conta)     { FactoryBot.build(:conta_santander) }
+	let(:pagador)   { FactoryBot.build(:pagador) }
+
 	it "deve ter a class para a conta do santander" do
 		BrBoleto::Remessa::Cnab400::Santander.new.conta_class.must_equal BrBoleto::Conta::Santander
 	end
@@ -36,9 +36,9 @@ describe BrBoleto::Remessa::Cnab400::Santander do
 
 	describe '#complemento_registro' do
 		it "deve retornar as informações corretas do complemento_registro" do
-			subject.complemento_registro[0..15].must_equal ''.rjust(16, '0') 
-			subject.complemento_registro[16..290].must_equal ''.rjust(275) 
-			subject.complemento_registro[291..293].must_equal ''.rjust(3, '0') 
+			subject.complemento_registro[0..15].must_equal ''.rjust(16, '0')
+			subject.complemento_registro[16..290].must_equal ''.rjust(275)
+			subject.complemento_registro[291..293].must_equal ''.rjust(3, '0')
 			subject.complemento_registro.size.must_equal 294
 		end
 	end
@@ -100,7 +100,7 @@ describe BrBoleto::Remessa::Cnab400::Santander do
 			result.size.must_equal 40
 
 			result[00..05].must_equal '050829'        # "Data Vencimento: Formato DDMMAA Normal ""DDMMAA"" A vista = ""888888"" Contra Apresentação = ""999999"""
-			result[06..18].must_equal '0000000004756' # Valor do Titulo 
+			result[06..18].must_equal '0000000004756' # Valor do Titulo
 			result[19..21].must_equal '033'           # Número Banco
 			result[22..26].must_equal "00000"         # 000000 ou Agencia
 			result[27..28].must_equal "02"            # Espécie do Título

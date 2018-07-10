@@ -2,12 +2,12 @@
 require 'test_helper'
 
 describe BrBoleto::Boleto::Bradesco do
-	subject { FactoryGirl.build(:boleto_bradesco, conta: conta) }
-	let(:conta) { FactoryGirl.build(:conta_bradesco) } 
-	
+	subject { FactoryBot.build(:boleto_bradesco, conta: conta) }
+	let(:conta) { FactoryBot.build(:conta_bradesco) }
+
 	context "on validations" do
 		it { must validate_length_of(:numero_documento).is_at_most(11).with_message(:custom_length_maximum) }
-		
+
 		context '#conta.carteira' do
 			it { subject.valid_carteira_inclusion.must_equal ['06','09','19','21','22'] }
 			it "validação da carteira da conta" do
@@ -21,7 +21,7 @@ describe BrBoleto::Boleto::Bradesco do
 		describe '#conta.convenio / codigo_cedente' do
 			it { subject.valid_convenio_maximum.must_equal 7 }
 			it { subject.valid_convenio_required.must_equal true }
-			
+
 			it "validação obrigatoriedade do codigo_cedente da conta" do
 				subject.conta.codigo_cedente = ''
 				conta_must_be_msg_error(:convenio, :blank)
@@ -56,9 +56,9 @@ describe BrBoleto::Boleto::Bradesco do
 	end
 
 	describe "#nosso_numero" do
-		subject { FactoryGirl.build(:boleto_bradesco, numero_documento: '68315') }
+		subject { FactoryBot.build(:boleto_bradesco, numero_documento: '68315') }
 
-		it "deve retornar o numero do documento com o digito_verificador_nosso_numero" do 
+		it "deve retornar o numero do documento com o digito_verificador_nosso_numero" do
 			subject.stubs(:digito_verificador_nosso_numero).returns('9')
 			subject.numero_documento = '3646'
 			subject.nosso_numero.must_equal "21/00000003646-9"
@@ -73,8 +73,8 @@ describe BrBoleto::Boleto::Bradesco do
 	end
 
 	describe "#codigo_de_barras_do_banco" do
-		subject do 
-			FactoryGirl.build(:boleto_bradesco, conta: {
+		subject do
+			FactoryBot.build(:boleto_bradesco, conta: {
 					carteira: '21',
 					agencia: '78',
 					conta_corrente: '668',
@@ -102,7 +102,7 @@ describe BrBoleto::Boleto::Bradesco do
 
 	describe "#codigo_de_barras" do
 		subject do
-			FactoryGirl.build(:boleto_bradesco) do |bradesco|
+			FactoryBot.build(:boleto_bradesco) do |bradesco|
 				bradesco.conta.agencia        = 3069
 				bradesco.conta.codigo_cedente = 828_19 # Para o bradesco é o código do cliente
 				bradesco.conta.codigo_cedente_dv = '0' # Para o bradesco é o código do cliente
@@ -114,10 +114,10 @@ describe BrBoleto::Boleto::Bradesco do
 		end
 
 		it { subject.codigo_de_barras.must_equal '23799816800093015783069060000001001000897550' }
-		it { subject.linha_digitavel.must_equal '23793.06901 60000.001002 10008.975509 9 81680009301578' }		
+		it { subject.linha_digitavel.must_equal '23793.06901 60000.001002 10008.975509 9 81680009301578' }
 
 		it "codigo de barras de um boleto de exemplo" do
-			subject.conta.agencia           = 3069  
+			subject.conta.agencia           = 3069
 			subject.conta.codigo_cedente    = 82819 # Para o bradesco é o código do cliente
 			subject.conta.codigo_cedente_dv = 0 # Para o bradesco é o código do cliente
 			subject.conta.carteira       = '06'

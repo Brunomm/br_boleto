@@ -9,13 +9,13 @@ require 'br_boleto/remessa/cnab240/helper/trailer_arquivo_test'
 require 'br_boleto/remessa/cnab240/helper/trailer_lote_test'
 
 describe BrBoleto::Remessa::Cnab240::Base do
-	subject { FactoryGirl.build(:remessa_cnab240_base, lotes: lote) }
-	let(:pagamento) { FactoryGirl.build(:remessa_pagamento) } 
-	let(:lote) { FactoryGirl.build(:remessa_lote, pagamentos: pagamento) }
+	subject { FactoryBot.build(:remessa_cnab240_base, lotes: lote) }
+	let(:pagamento) { FactoryBot.build(:remessa_pagamento) }
+	let(:lote) { FactoryBot.build(:remessa_lote, pagamentos: pagamento) }
 
-	before do 
+	before do
 		subject.stubs(:conta_class).returns(BrBoleto::Conta::Sicoob)
-		subject.stubs(:conta).returns FactoryGirl.build(:conta_sicoob)
+		subject.stubs(:conta).returns FactoryBot.build(:conta_sicoob)
 	end
 
 	context "TESTE DAS PARTES DO ARQUIVO" do
@@ -43,10 +43,10 @@ describe BrBoleto::Remessa::Cnab240::Base do
 		end
 
 		private
-	
+
 		def pagamentos_must_be_msg_error(pagamento, attr_validation, msg_key, options_msg={})
 			must_be_message_error(:base, "#{BrBoleto::Remessa::Lote.human_attribute_name(:pagamentos)} #{pagamento.nosso_numero}: #{BrBoleto::Remessa::Pagamento.human_attribute_name(attr_validation)} #{get_message(msg_key, options_msg)}")
-		end	
+		end
 	end
 
 	describe "#lotes" do
@@ -57,7 +57,7 @@ describe BrBoleto::Remessa::Cnab240::Base do
 			must allow_value([lote]).for(:lotes)
 		end
 		it "não deve ser válido se houver algum lote inválido" do
-			subject.lotes = [FactoryGirl.build(:remessa_lote, pagamentos: [])]
+			subject.lotes = [FactoryBot.build(:remessa_lote, pagamentos: [])]
 			must_be_message_error(:base)
 		end
 		it "deve ser válido se passar apenas um lote sem Array" do
@@ -70,7 +70,7 @@ describe BrBoleto::Remessa::Cnab240::Base do
 			subject.lotes[0].must_equal lote
 		end
 		it "posso setar mais que 1 lote" do
-			lote2 = FactoryGirl.build(:remessa_lote)
+			lote2 = FactoryBot.build(:remessa_lote)
 			subject.lotes = [lote, lote2]
 			subject.lotes.size.must_equal 2
 			subject.lotes.is_a?(Array).must_equal true
@@ -79,7 +79,7 @@ describe BrBoleto::Remessa::Cnab240::Base do
 		end
 
 		it "posso incrementar os lotes com <<" do
-			lote2 = FactoryGirl.build(:remessa_lote)
+			lote2 = FactoryBot.build(:remessa_lote)
 			subject.lotes = lote
 			subject.lotes.size.must_equal 1
 			subject.lotes << lote2
@@ -90,7 +90,7 @@ describe BrBoleto::Remessa::Cnab240::Base do
 		end
 
 		it "retorna apenas objetos de Lote" do
-			lote2 = FactoryGirl.build(:remessa_lote)
+			lote2 = FactoryBot.build(:remessa_lote)
 			subject.lotes << 123
 			subject.lotes << lote2
 			subject.lotes << '123'
@@ -139,7 +139,7 @@ describe BrBoleto::Remessa::Cnab240::Base do
 			subject.complemento_trailer_lote(nil, nil).must_equal ''.rjust(217, ' ')
 		end
 	end
-	
+
 	context "MONTAGEM DO ARQUIVO " do
 		before do
 			# Stub nos metodos que devem ser sobrescritos nos bancos
@@ -155,7 +155,7 @@ describe BrBoleto::Remessa::Cnab240::Base do
 			subject.stubs(:complemento_p).returns(           ''.rjust(34, ' '))
 		end
 		describe "#dados_do_arquivo#" do
-			let(:lote_2) { FactoryGirl.build(:remessa_lote) } 
+			let(:lote_2) { FactoryBot.build(:remessa_lote) }
 			before do
 				subject.lotes = [lote, lote_2]
 			end
@@ -226,7 +226,7 @@ describe BrBoleto::Remessa::Cnab240::Base do
 					resultado[1].must_equal "RESULTADO_SEGMENTO_P"
 				end
 				it "Se o lote tiver 2 pagamentos deve setar o segmento_p na posição 1 e 5" do
-					pagamento_2 = FactoryGirl.build(:remessa_pagamento)
+					pagamento_2 = FactoryBot.build(:remessa_pagamento)
 					lote.pagamentos = [pagamento, pagamento_2]
 					subject.stubs(:monta_header_lote).with(lote, 123).returns("RESULTADO_HEADER_LOTE")
 					subject.expects(:monta_segmento_p).with(pagamento,   123, 1).returns("RESULTADO_SEGMENTO_P_2")
@@ -245,7 +245,7 @@ describe BrBoleto::Remessa::Cnab240::Base do
 					resultado[2].must_equal "RESULTADO_SEGMENTO_Q"
 				end
 				it "Se o lote tiver 2 pagamentos deve setar o segmento_q na posição 3 e 7" do
-					pagamento_2 = FactoryGirl.build(:remessa_pagamento)
+					pagamento_2 = FactoryBot.build(:remessa_pagamento)
 					lote.pagamentos = [pagamento, pagamento_2]
 					subject.stubs(:monta_header_lote).with(lote, 55).returns("RESULTADO_HEADER_LOTE")
 					subject.stubs(:monta_segmento_p).with(pagamento,      55, 1).returns("RESULTADO_SEGMENTO_P")
@@ -268,7 +268,7 @@ describe BrBoleto::Remessa::Cnab240::Base do
 					resultado[3].must_equal "RESULTADO_SEGMENTO_R"
 				end
 				it "Se o lote tiver 2 pagamentos deve setar o segmento_r na posição 4 e 8" do
-					pagamento_2 = FactoryGirl.build(:remessa_pagamento)
+					pagamento_2 = FactoryBot.build(:remessa_pagamento)
 					lote.pagamentos = [pagamento, pagamento_2]
 					subject.stubs(:monta_header_lote).with(lote, 55).returns("RESULTADO_HEADER_LOTE")
 					subject.stubs(:monta_segmento_p).with(pagamento,      55, 1).returns("RESULTADO_SEGMENTO_P")
@@ -294,7 +294,7 @@ describe BrBoleto::Remessa::Cnab240::Base do
 					resultado[4].must_equal "RESULTADO_SEGMENTO_S"
 				end
 				it "Se o lote tiver 2 pagamentos deve setar o monta_segmento_s na posição 5 e 9" do
-					pagamento_2 = FactoryGirl.build(:remessa_pagamento)
+					pagamento_2 = FactoryBot.build(:remessa_pagamento)
 					lote.pagamentos = [pagamento, pagamento_2]
 					subject.stubs(:monta_header_lote).with(lote, 55).returns("RESULTADO_HEADER_LOTE")
 					subject.stubs(:monta_segmento_p).with(pagamento,      55, 1).returns("RESULTADO_SEGMENTO_P")
@@ -323,7 +323,7 @@ describe BrBoleto::Remessa::Cnab240::Base do
 					resultado[5].must_equal "RESULTADO_TRAILER_LOTE"
 				end
 				it "Se o lote tiver 2 pagamentos deve setar o monta_trailer_lote 10" do
-					pagamento_2 = FactoryGirl.build(:remessa_pagamento)
+					pagamento_2 = FactoryBot.build(:remessa_pagamento)
 					lote.pagamentos = [pagamento, pagamento_2]
 					subject.stubs(:monta_header_lote).with(lote, 55).returns("RESULTADO_HEADER_LOTE")
 					subject.stubs(:monta_segmento_p).with(pagamento,      55, 1).returns("RESULTADO_SEGMENTO_P")
@@ -384,13 +384,13 @@ describe BrBoleto::Remessa::Cnab240::Base do
 
 	describe "usa_segmento_R?" do
 		it "deve retornar como padrão sempre true" do
-			subject.usa_segmento_R?.must_equal true 
+			subject.usa_segmento_R?.must_equal true
 		end
 	end
 
 	describe "usa_segmento_S?" do
 		it "deve retornar como padrão sempre true" do
-			subject.usa_segmento_S?.must_equal true 
+			subject.usa_segmento_S?.must_equal true
 		end
 	end
 

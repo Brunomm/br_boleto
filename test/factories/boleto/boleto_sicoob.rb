@@ -1,9 +1,9 @@
 # encoding: UTF-8
 
-FactoryGirl.define do
+FactoryBot.define do
 	factory :boleto_sicoob, class:  BrBoleto::Boleto::Sicoob do
-		conta            { FactoryGirl.build(:conta_sicoob) }
-		pagador          { FactoryGirl.build(:pagador) }
+		conta            { FactoryBot.build(:conta_sicoob) }
+		pagador          { FactoryBot.build(:pagador) }
 		numero_documento 1101
 		valor_documento  93015.78
 		data_vencimento  Date.parse('2019-02-17')

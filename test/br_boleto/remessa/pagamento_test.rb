@@ -2,18 +2,18 @@
 require 'test_helper'
 
 describe BrBoleto::Remessa::Pagamento do
-	subject { FactoryGirl.build(:remessa_pagamento) }
+	subject { FactoryBot.build(:remessa_pagamento) }
 
 	it "deve conter o mdule HavePagador" do
 		subject.class.included_modules.must_include BrBoleto::HavePagador
 	end
-	
-	
+
+
 	describe "validations" do
 		it { must validate_presence_of(:nosso_numero) }
 		it { must validate_presence_of(:data_vencimento) }
 		it { must validate_presence_of(:valor_documento) }
-		
+
 		describe '#tipo_impressao' do
 			it { wont validate_presence_of(:tipo_impressao) }
 
@@ -21,9 +21,9 @@ describe BrBoleto::Remessa::Pagamento do
 				subject.valid_tipo_impressao_required = true
 				must validate_presence_of(:tipo_impressao)
 			end
-			
+
 		end
-		
+
 		describe '#cod_desconto' do
 			before { subject.cod_desconto = '555' }
 
@@ -197,7 +197,7 @@ describe BrBoleto::Remessa::Pagamento do
 
 
 	describe "default_values" do
-		let(:object) { subject.class.new() } 
+		let(:object) { subject.class.new() }
 		it "for data_emissao"             do object.data_emissao.must_equal             Date.today end
 		it "for valor_desconto"           do object.valor_desconto.must_equal           0.0 end
 		it "for valor_iof"                do object.valor_iof.must_equal                0.0 end
@@ -430,7 +430,7 @@ describe BrBoleto::Remessa::Pagamento do
 	end
 
 	describe '#percentual_multa_formatado' do
-		let(:number) { BrBoleto::Helper::Number.new(5.47) } 
+		let(:number) { BrBoleto::Helper::Number.new(5.47) }
 		it "deve formatar o valor no formato de valores em percentual" do
 			subject.stubs(:percentual_multa).returns(72.50)
 			number
@@ -451,7 +451,7 @@ describe BrBoleto::Remessa::Pagamento do
 		end
 	end
 	describe '#percentual_juros_formatado' do
-		let(:number) { BrBoleto::Helper::Number.new(5.47) } 
+		let(:number) { BrBoleto::Helper::Number.new(5.47) }
 		it "deve formatar o valor no formato de valores em percentual" do
 			subject.stubs(:percentual_juros).returns(7.50)
 			number

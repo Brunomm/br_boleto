@@ -1,9 +1,9 @@
 require 'test_helper'
 
 describe BrBoleto::Remessa::Cnab240::Unicred do
-	subject { FactoryGirl.build(:remessa_cnab240_unicred, lotes: lote) }
-	let(:pagamento) { FactoryGirl.build(:remessa_pagamento, valor_documento: 879.66) } 
-	let(:lote) { FactoryGirl.build(:remessa_lote, pagamentos: pagamento) } 
+	subject { FactoryBot.build(:remessa_cnab240_unicred, lotes: lote) }
+	let(:pagamento) { FactoryBot.build(:remessa_pagamento, valor_documento: 879.66) }
+	let(:lote) { FactoryBot.build(:remessa_lote, pagamentos: pagamento) }
 
 	it "deve herdar da class Bradesco" do
 		subject.class.superclass.must_equal BrBoleto::Remessa::Cnab240::Bradesco
@@ -74,9 +74,9 @@ describe BrBoleto::Remessa::Cnab240::Unicred do
 			subject.informacoes_da_conta.size.must_equal 20
 		end
 
-		it "1 - Primeira parte = agencia 5 posicoes - ajustados com zeros a esquerda" do	
+		it "1 - Primeira parte = agencia 5 posicoes - ajustados com zeros a esquerda" do
 			subject.conta.agencia = '47'
-			subject.informacoes_da_conta[0..4].must_equal '00047'			
+			subject.informacoes_da_conta[0..4].must_equal '00047'
 
 			subject.conta.agencia = '1234'
 			subject.informacoes_da_conta[0..4].must_equal '01234'
@@ -89,7 +89,7 @@ describe BrBoleto::Remessa::Cnab240::Unicred do
 
 		it "3 - Terceira parte = conta_corrente 12 posicoes - ajustados com zeros a esquerda" do
 			subject.conta.conta_corrente = '89755'
-			subject.informacoes_da_conta[6..17].must_equal '000000089755'			
+			subject.informacoes_da_conta[6..17].must_equal '000000089755'
 
 			subject.conta.conta_corrente = '1234567890'
 			subject.informacoes_da_conta[6..17].must_equal '001234567890'
@@ -97,7 +97,7 @@ describe BrBoleto::Remessa::Cnab240::Unicred do
 
 		it "4 - Quarta parte = Conta Corrente DV" do
 			subject.conta.conta_corrente_dv = '8'
-			subject.informacoes_da_conta[18..18].must_equal('8')			
+			subject.informacoes_da_conta[18..18].must_equal('8')
 		end
 
 		it "5 - Quinta parte = Se o conta_corrente_dv não for 2 digitos deve ter 1 espaço em branco" do
@@ -124,23 +124,23 @@ describe BrBoleto::Remessa::Cnab240::Unicred do
 		it "1 - Primeira parte = conta_corrente com 12 posicoes - ajustados com zeros a esquerda" do
 			subject.conta.conta_corrente = '1234'
 			subject.complemento_p(pagamento)[0..11].must_equal '000000001234'
-		
+
 			subject.conta.conta_corrente = '264631'
 			subject.complemento_p(pagamento)[0..11].must_equal '000000264631'
 		end
-		
+
 		it "2 - Seguna parte = Conta Corrente DV - 1 posicao" do
 			subject.conta.conta_corrente_dv = '7'
 			subject.complemento_p(pagamento)[12..12].must_equal '7'
 		end
 
 		it "3 - Terceira parte = Se o conta_corrente_dv não for 2 digitos deve ter 1 espaço em branco" do
-			subject.complemento_p(pagamento)[13..13].must_equal ' '			
+			subject.complemento_p(pagamento)[13..13].must_equal ' '
 		end
 
 		it "4 - Quarta parte = Numero documento com 11 posicoes" do
 			pagamento.numero_documento = '89378'
-			subject.complemento_p(pagamento)[14..24].must_equal '00000089378'		
+			subject.complemento_p(pagamento)[14..24].must_equal '00000089378'
 
 			pagamento.numero_documento = '12345678901'
 			subject.complemento_p(pagamento)[14..24].must_equal '12345678901'
@@ -148,7 +148,7 @@ describe BrBoleto::Remessa::Cnab240::Unicred do
 
 		it "5 - Quinta parte = numero_documento DV com 1 posicao - Deve ser o ultimo digito do nosso numero" do
 			pagamento.nosso_numero = '99/99999999999-9'
-			subject.complemento_p(pagamento)[25..25].must_equal '9'			
+			subject.complemento_p(pagamento)[25..25].must_equal '9'
 
 			pagamento.nosso_numero = '99/99999999999-0'
 			subject.complemento_p(pagamento)[25..25].must_equal '0'
@@ -156,7 +156,7 @@ describe BrBoleto::Remessa::Cnab240::Unicred do
 
 		it "6 - Sexta parte = Exclusivo Banco com 8 posicoes preenchidas com zeros" do
 			subject.complemento_p(pagamento)[26..33].must_equal ' ' * 8
-		end	
+		end
 
 	end
 
@@ -165,7 +165,7 @@ describe BrBoleto::Remessa::Cnab240::Unicred do
 			subject.segmento_p_numero_do_documento(pagamento).size.must_equal 15
 		end
 
-		it "deve conter o numero do documento 15 posicoes - ajustados com zeros a esquerda" do	
+		it "deve conter o numero do documento 15 posicoes - ajustados com zeros a esquerda" do
 			pagamento.expects(:numero_documento).returns("977897")
 			subject.segmento_p_numero_do_documento(pagamento).must_equal '000000000977897'
 		end
@@ -191,12 +191,12 @@ describe BrBoleto::Remessa::Cnab240::Unicred do
 
 	describe "usa_segmento_S?" do
 		it "deve retornar false como padrão para o UNICRED" do
-			subject.usa_segmento_S?.must_equal false 
+			subject.usa_segmento_S?.must_equal false
 		end
 	end
 
 	describe 'Geração do arquivo' do
-		let(:conta) do 
+		let(:conta) do
 			{
 				razao_social:   'EMPRESA EMITENTE',
 				cpf_cnpj:       '33.486.451/0001-30',
@@ -204,9 +204,9 @@ describe BrBoleto::Remessa::Cnab240::Unicred do
 				agencia:        '7506',
 				codigo_cedente: '82819',
 				conta_corrente: '1354843'
-			} 
+			}
 		end
-		let(:pagador) { 
+		let(:pagador) {
 			{
 				nome:     'Benjamin Francisco Marcos Vinicius Fernandes',
 				cpf_cnpj: '787.933.211-12',
@@ -219,7 +219,7 @@ describe BrBoleto::Remessa::Cnab240::Unicred do
 				documento_avalista: '33486451000130'
 			}
 		}
-		let(:pagamento) { 
+		let(:pagamento) {
 			BrBoleto::Remessa::Pagamento.new({
 				nosso_numero:     '09000000000011',
 				numero_documento: '00000000001',
@@ -227,16 +227,16 @@ describe BrBoleto::Remessa::Cnab240::Unicred do
 				valor_documento:  50.00,
 				pagador:          pagador,
 				especie_titulo:   '02',
-				codigo_juros:     '0', 
+				codigo_juros:     '0',
 				data_juros:       Date.parse('15/12/2016'),
 				valor_juros:      0.00,
-				codigo_multa:     '0', 
+				codigo_multa:     '0',
 				data_multa:       Date.parse('14/12/2016'),
 				valor_multa:      0.00,
 				data_emissao:     Date.parse('10/11/2016'),
 			})
 		}
-		let(:lote) { BrBoleto::Remessa::Lote.new(pagamentos: pagamento) } 
+		let(:lote) { BrBoleto::Remessa::Lote.new(pagamentos: pagamento) }
 		it "deve gerar o arquivo de remessa corretamente com as informações passadas" do
 			remessa = BrBoleto::Remessa::Cnab240::Unicred.new({
 				data_hora_arquivo:  Time.parse('10/11/2016 09:27:45'),

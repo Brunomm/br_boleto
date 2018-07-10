@@ -1,7 +1,7 @@
 require 'test_helper'
 
 describe BrBoleto::Remessa::Base do
-	subject { FactoryGirl.build(:conta_base) }
+	subject { FactoryBot.build(:conta_base) }
 
 	describe "Validations" do
 		it { must validate_presence_of(:agencia) }
@@ -17,7 +17,7 @@ describe BrBoleto::Remessa::Base do
 			context "#valid_endereco_required" do
 				it "quando setado deve validar a obrigatoriedade" do
 					wont validate_presence_of(:endereco)
-					
+
 					subject.valid_endereco_required = true
 					must validate_presence_of(:endereco)
 				end
@@ -33,7 +33,7 @@ describe BrBoleto::Remessa::Base do
 			context "#valid_conta_corrente_required" do
 				it "quando setado deve validar a obrigatoriedade" do
 					wont validate_presence_of(:conta_corrente)
-					
+
 					subject.valid_conta_corrente_required = true
 					must validate_presence_of(:conta_corrente)
 				end
@@ -70,7 +70,7 @@ describe BrBoleto::Remessa::Base do
 					subject.valid_conta_corrente_maximum = 5
 					subject.conta_corrente = '123'
 					subject.conta_corrente.must_equal '00123'
-					
+
 					subject.valid_conta_corrente_maximum = 7
 					subject.conta_corrente.must_equal '0000123'
 				end
@@ -96,7 +96,7 @@ describe BrBoleto::Remessa::Base do
 			context "#valid_modalidade_required" do
 				it "quando setado deve validar a obrigatoriedade" do
 					wont validate_presence_of(:modalidade)
-					
+
 					subject.valid_modalidade_required = true
 					must validate_presence_of(:modalidade)
 				end
@@ -148,7 +148,7 @@ describe BrBoleto::Remessa::Base do
 					subject.valid_modalidade_maximum = 5
 					subject.modalidade = '123'
 					subject.modalidade.must_equal '00123'
-					
+
 					subject.valid_modalidade_maximum = 7
 					subject.modalidade.must_equal '0000123'
 				end
@@ -175,7 +175,7 @@ describe BrBoleto::Remessa::Base do
 			context "#valid_codigo_cedente_required" do
 				it "quando setado deve validar a obrigatoriedade" do
 					wont validate_presence_of(:convenio)
-					
+
 					subject.valid_codigo_cedente_required = true
 					must validate_presence_of(:convenio)
 				end
@@ -218,7 +218,7 @@ describe BrBoleto::Remessa::Base do
 			context "#valid_carteira_required" do
 				it "quando setado deve validar a obrigatoriedade" do
 					wont validate_presence_of(:carteira)
-					
+
 					subject.valid_carteira_required = true
 					must validate_presence_of(:carteira)
 				end
@@ -268,7 +268,7 @@ describe BrBoleto::Remessa::Base do
 					subject.valid_carteira_maximum = 5
 					subject.carteira = '123'
 					subject.carteira.must_equal '00123'
-					
+
 					subject.valid_carteira_maximum = 7
 					subject.carteira.must_equal '0000123'
 				end
@@ -293,7 +293,7 @@ describe BrBoleto::Remessa::Base do
 			context "#valid_codigo_carteira_required" do
 				it "quando setado deve validar a obrigatoriedade" do
 					wont validate_presence_of(:codigo_carteira)
-					
+
 					subject.valid_codigo_carteira_required = true
 					must validate_presence_of(:codigo_carteira)
 				end
@@ -317,7 +317,7 @@ describe BrBoleto::Remessa::Base do
 			context "#valid_convenio_required" do
 				it "quando setado deve validar a obrigatoriedade" do
 					wont validate_presence_of(:convenio)
-					
+
 					subject.valid_convenio_required = true
 					must validate_presence_of(:convenio)
 				end
@@ -367,7 +367,7 @@ describe BrBoleto::Remessa::Base do
 					subject.valid_convenio_maximum = 5
 					subject.convenio = '123'
 					subject.convenio.must_equal '00123'
-					
+
 					subject.valid_convenio_maximum = 7
 					subject.convenio.must_equal '0000123'
 				end
@@ -557,7 +557,7 @@ describe BrBoleto::Remessa::Base do
 				it { subject.get_especie_titulo('23', 240).must_equal '23' } #  NF   –  Nota Fiscal
 				it { subject.get_especie_titulo('24', 240).must_equal '24' } #  DD   –  Documento de Dívida
 				it { subject.get_especie_titulo('25', 240).must_equal '25' } #  Cédula de Produto Rural
-				it { subject.get_especie_titulo('26', 240).must_equal '26' } #  Warrant 
+				it { subject.get_especie_titulo('26', 240).must_equal '26' } #  Warrant
 				it { subject.get_especie_titulo('27', 240).must_equal '27' } #  Dívida Ativa de Estado
 				it { subject.get_especie_titulo('28', 240).must_equal '28' } #  Dívida Ativa de Município
 				it { subject.get_especie_titulo('29', 240).must_equal '29' } #  Dívida Ativa da União
@@ -585,7 +585,7 @@ describe BrBoleto::Remessa::Base do
 				it { subject.get_especie_titulo('22', 400).must_equal '22' } #  Parcela de Consórcio
 				it { subject.get_especie_titulo('26', 400).must_equal '09' } #  Warrant
 				it { subject.get_especie_titulo('99', 400).must_equal '99' } #  Outros"
-				it { subject.get_especie_titulo('00', 400).must_equal '99' } 
+				it { subject.get_especie_titulo('00', 400).must_equal '99' }
 			end
 		end
 		describe "#get_codigo_movimento_remessa" do
@@ -634,14 +634,14 @@ describe BrBoleto::Remessa::Base do
 			context "CÓDIGOS para o cnab 400" do
 				it { subject.get_codigo_movimento_remessa('01', 400).must_equal '01' } # Registro de títulos / Remessa
 				it { subject.get_codigo_movimento_remessa('02', 400).must_equal '02' } # Pedido de Baixa
-				it { subject.get_codigo_movimento_remessa('03', 400).must_equal '03' } # Pedido de Protesto Falimentar 
+				it { subject.get_codigo_movimento_remessa('03', 400).must_equal '03' } # Pedido de Protesto Falimentar
 				it { subject.get_codigo_movimento_remessa('04', 400).must_equal '04' } # Concessão de abatimento
 				it { subject.get_codigo_movimento_remessa('05', 400).must_equal '05' } # Cancelamento de abatimento concedido
 				it { subject.get_codigo_movimento_remessa('06', 400).must_equal '06' } # Alteração de vencimento
 				it { subject.get_codigo_movimento_remessa('09', 400).must_equal '09' } # Pedido de protesto (Protestar)
 				it { subject.get_codigo_movimento_remessa('22', 400).must_equal '08' } # Alterar número controle do Participante (seu número)
 				it { subject.get_codigo_movimento_remessa('31', 400).must_equal '31' } # Alteração de outros dados
-				it { subject.get_codigo_movimento_remessa('00', 400).must_equal '31' } 
+				it { subject.get_codigo_movimento_remessa('00', 400).must_equal '31' }
 			end
 		end
 		describe "#get_tipo_cobranca_240" do
@@ -650,7 +650,7 @@ describe BrBoleto::Remessa::Base do
 			it { subject.get_tipo_cobranca('3', 240).must_equal '3' } # Cobrança Caucionada
 			it { subject.get_tipo_cobranca('4', 240).must_equal '4' } # Cobrança Descontada
 			it { subject.get_tipo_cobranca('5', 240).must_equal '5' } # Cobrança Vendor
-			it { subject.get_tipo_cobranca('00', 240).must_equal '00' } 
+			it { subject.get_tipo_cobranca('00', 240).must_equal '00' }
 		end
 		describe "#get_tipo_cobranca_400" do
 			it { subject.get_tipo_cobranca('1', 400).must_equal '1' } # Cobrança Simples
@@ -658,7 +658,7 @@ describe BrBoleto::Remessa::Base do
 			it { subject.get_tipo_cobranca('3', 400).must_equal '3' } # Cobrança Caucionada
 			it { subject.get_tipo_cobranca('4', 400).must_equal '4' } # Cobrança Descontada
 			it { subject.get_tipo_cobranca('5', 400).must_equal '5' } # Cobrança Vendor
-			it { subject.get_tipo_cobranca('00', 400).must_equal '00' } 
+			it { subject.get_tipo_cobranca('00', 400).must_equal '00' }
 		end
 		describe "#get_identificacao_emissao_240" do
 			it { subject.get_identificacao_emissao('1', 240).must_equal '1' } # Banco Emite
@@ -668,7 +668,7 @@ describe BrBoleto::Remessa::Base do
 			it { subject.get_identificacao_emissao('5', 240).must_equal '5' } # Banco Não Reemite
 			it { subject.get_identificacao_emissao('7', 240).must_equal '7' } # Banco Emitente - Aberta
 			it { subject.get_identificacao_emissao('8', 240).must_equal '8' } # Banco Emitente - Auto-envelopável
-			it { subject.get_identificacao_emissao('99', 240).must_equal '99' } 
+			it { subject.get_identificacao_emissao('99', 240).must_equal '99' }
 		end
 		describe "#get_identificacao_emissao_400" do
 			it { subject.get_identificacao_emissao('1', 400).must_equal '1' } # Banco Emite
@@ -678,14 +678,14 @@ describe BrBoleto::Remessa::Base do
 			it { subject.get_identificacao_emissao('5', 400).must_equal '5' } # Banco Não Reemite
 			it { subject.get_identificacao_emissao('7', 400).must_equal '7' } # Banco Emitente - Aberta
 			it { subject.get_identificacao_emissao('8', 400).must_equal '8' } # Banco Emitente - Auto-envelopável
-			it { subject.get_identificacao_emissao('00', 400).must_equal '00' } 
+			it { subject.get_identificacao_emissao('00', 400).must_equal '00' }
 		end
 		describe "#get_distribuicao_boleto" do
 			it { subject.get_distribuicao_boleto('1').must_equal '1' } # Banco Distribui
 			it { subject.get_distribuicao_boleto('2').must_equal '2' } # Cliente Distribui
 			it { subject.get_distribuicao_boleto('3').must_equal '3' } # Banco envia e-mail
 			it { subject.get_distribuicao_boleto('4').must_equal '4' } # Banco envia SMS
-			it { subject.get_distribuicao_boleto('00').must_equal '00' } 
+			it { subject.get_distribuicao_boleto('00').must_equal '00' }
 		end
 		describe "#get_tipo_impressao_240" do
 			it { subject.get_tipo_impressao('1', 240).must_equal '1' } # Frente do Bloqueto
@@ -717,7 +717,7 @@ describe BrBoleto::Remessa::Base do
 			it { subject.get_codigo_multa('1').must_equal '1' } # Valor fixo
 			it { subject.get_codigo_multa('2').must_equal '2' } # Percentual
 			it { subject.get_codigo_multa('3').must_equal '3' } # Isento
-			it { subject.get_codigo_multa('9').must_equal '3' } 
+			it { subject.get_codigo_multa('9').must_equal '3' }
 			it 'se passar um valor inexistente deve pegar o valor padrão' do
 				subject.expects(:default_codigo_multa).returns(8)
 				subject.get_codigo_multa('9').must_equal 8
@@ -735,7 +735,7 @@ describe BrBoleto::Remessa::Base do
 			it { subject.get_codigo_desconto('5').must_equal '5' } # Percentual Sobre o Valor Nominal Dia Corrido
 			it { subject.get_codigo_desconto('6').must_equal '6' } # Percentual Sobre o Valor Nominal Dia Útil
 			it { subject.get_codigo_desconto('7').must_equal '7' } # Cancelamento de Desconto
-			it { subject.get_codigo_desconto('55').must_equal '55' } 
+			it { subject.get_codigo_desconto('55').must_equal '55' }
 		end
 		describe "#get_codigo_protesto" do
 			it { subject.get_codigo_protesto('1', 240).must_equal '1' } # Protestar Dias Corridos
@@ -744,8 +744,8 @@ describe BrBoleto::Remessa::Base do
 			it { subject.get_codigo_protesto('4', 240).must_equal '4' } # Protestar Fim Falimentar - Dias Úteis
 			it { subject.get_codigo_protesto('5', 240).must_equal '5' } # Protestar Fim Falimentar - Dias Corridos
 			it { subject.get_codigo_protesto('8', 240).must_equal '8' } # Negativação sem Protesto
-			it { subject.get_codigo_protesto('9', 240).must_equal '9' } # Cancelamento Protesto Automático 
-			it { subject.get_codigo_protesto('55', 240).must_equal '55' } 
+			it { subject.get_codigo_protesto('9', 240).must_equal '9' } # Cancelamento Protesto Automático
+			it { subject.get_codigo_protesto('55', 240).must_equal '55' }
 		end
 		describe "#get_codigo_moeda_240" do
 			it { subject.get_codigo_moeda('01', 240).must_equal '01' } # Reservado para Uso Futuro
@@ -762,7 +762,7 @@ describe BrBoleto::Remessa::Base do
 			it { subject.get_codigo_moeda('12', 240).must_equal '12' } # CDI
 			it { subject.get_codigo_moeda('13', 240).must_equal '13' } # Percentual do CDI
 			it { subject.get_codigo_moeda('14', 240).must_equal '14' } # Euro
-			it { subject.get_codigo_moeda('55', 240).must_equal '55' } 
+			it { subject.get_codigo_moeda('55', 240).must_equal '55' }
 		end
 		describe "#get_codigo_moeda_400" do
 			it { subject.get_codigo_moeda('01', 400).must_equal '01' } # Reservado para Uso Futuro
@@ -779,7 +779,7 @@ describe BrBoleto::Remessa::Base do
 			it { subject.get_codigo_moeda('12', 400).must_equal '12' } # CDI
 			it { subject.get_codigo_moeda('13', 400).must_equal '13' } # Percentual do CDI
 			it { subject.get_codigo_moeda('14', 400).must_equal '14' } # Euro
-			it { subject.get_codigo_moeda('55', 400).must_equal '55' } 
+			it { subject.get_codigo_moeda('55', 400).must_equal '55' }
 		end
 	end
 end

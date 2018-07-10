@@ -1,7 +1,7 @@
 # encoding: UTF-8
 
-FactoryGirl.define do
+FactoryBot.define do
 	factory :remessa_lote, class:  BrBoleto::Remessa::Lote do
-		pagamentos { FactoryGirl.build(:remessa_pagamento) }
+		pagamentos { FactoryBot.build(:remessa_pagamento) }
 	end
 end

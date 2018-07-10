@@ -1,11 +1,11 @@
 require 'test_helper'
 
 describe BrBoleto::Remessa::Cnab400::Sicoob do
-	subject { FactoryGirl.build(:remessa_cnab400_sicoob, pagamentos: pagamento, conta: conta) }
-	let(:pagamento) { FactoryGirl.build(:remessa_pagamento, pagador: pagador) } 
-	let(:conta)     { FactoryGirl.build(:conta_sicoob) } 
-	let(:pagador)   { FactoryGirl.build(:pagador) } 
-	
+	subject { FactoryBot.build(:remessa_cnab400_sicoob, pagamentos: pagamento, conta: conta) }
+	let(:pagamento) { FactoryBot.build(:remessa_pagamento, pagador: pagador) }
+	let(:conta)     { FactoryBot.build(:conta_sicoob) }
+	let(:pagador)   { FactoryBot.build(:pagador) }
+
 	it "deve ter a class para a conta do sicoob" do
 		BrBoleto::Remessa::Cnab400::Sicoob.new.conta_class.must_equal BrBoleto::Conta::Sicoob
 	end
@@ -50,7 +50,7 @@ describe BrBoleto::Remessa::Cnab400::Sicoob do
 		it "deve retornar o sequencial da remessa com 7 posições e mais 287 brancos" do
 			subject.sequencial_remessa = 4758
 			subject.complemento_registro.size.must_equal 294
-			subject.complemento_registro.must_equal '0004758'.ljust(294, ' ') 
+			subject.complemento_registro.must_equal '0004758'.ljust(294, ' ')
 		end
 	end
 
@@ -82,7 +82,7 @@ describe BrBoleto::Remessa::Cnab400::Sicoob do
 			result[12].must_equal '0'                # 089  089  001  9(01)  Conta Cauç
 			result[13..17].must_equal ''.rjust(5, '0')   # 090  094  005  9(05)  "Número do
 			result[18].must_equal '0'                # 095  095  001  X(01)  "DV do con
-			result[19..24].must_equal ''.rjust(6, '0')   # 096  101  006  9(06)  Numero do 
+			result[19..24].must_equal ''.rjust(6, '0')   # 096  101  006  9(06)  Numero do
 			result[25..28].must_equal ''.rjust(4, ' ')   # 102  105  004  X(04)  Complement
 			result[29].must_equal     "2" #  tipo_emissao
 			result[30..31].must_equal '03' #modalidade
@@ -106,7 +106,7 @@ describe BrBoleto::Remessa::Cnab400::Sicoob do
 			result.size.must_equal 40
 
 			result[00..05].must_equal '050829' # "Data Vencimento: Formato DDMMAA Normal ""DDMMAA"" A vista = ""888888"" Contra Apresentação = ""999999"""
-			result[06..18].must_equal '0000000004756' # Valor do Titulo 
+			result[06..18].must_equal '0000000004756' # Valor do Titulo
 			result[19..21].must_equal '756' # Número Banco: "756"
 			result[22..25].must_equal "4587" # Prefixo da Cooperativa: vide e-mail enviado com os dados do processo de homologação
 			result[  26  ].must_equal "4" # Dígito Verificador do Prefixo: vide e-mail enviado com os dados do processo de homologação

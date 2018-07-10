@@ -2,12 +2,12 @@
 require 'test_helper'
 
 describe BrBoleto::Boleto::Cecred do
-	subject { FactoryGirl.build(:boleto_cecred, conta: conta) }
-	let(:conta) { FactoryGirl.build(:conta_cecred) } 
-	
+	subject { FactoryBot.build(:boleto_cecred, conta: conta) }
+	let(:conta) { FactoryBot.build(:conta_cecred) }
+
 	context "on validations" do
 		it { must validate_length_of(:numero_documento).is_at_most(9).with_message(:custom_length_maximum) }
-		
+
 		context '#conta.carteira' do
 			it { subject.valid_carteira_inclusion.must_equal ['1'] }
 			it "validação da carteira da conta" do
@@ -21,7 +21,7 @@ describe BrBoleto::Boleto::Cecred do
 		describe '#conta.convenio / codigo_cedente' do
 			it { subject.valid_convenio_maximum.must_equal 6 }
 			it { subject.valid_convenio_required.must_equal true }
-			
+
 			it "validação obrigatoriedade do codigo_cedente da conta" do
 				subject.conta.codigo_cedente = ''
 				conta_must_be_msg_error(:convenio, :blank)
@@ -47,9 +47,9 @@ describe BrBoleto::Boleto::Cecred do
 	end
 
 	describe "#nosso_numero" do
-		subject { FactoryGirl.build(:boleto_cecred, numero_documento: '68315') }
+		subject { FactoryBot.build(:boleto_cecred, numero_documento: '68315') }
 
-		it "deve retornar a conta corrente com DV e o numero do documento" do 
+		it "deve retornar a conta corrente com DV e o numero do documento" do
 			subject.numero_documento = '3646'
 			subject.conta.conta_corrente = '1234567'
 			subject.conta.conta_corrente_dv = '9'
@@ -58,8 +58,8 @@ describe BrBoleto::Boleto::Cecred do
 	end
 
 	describe "#codigo_de_barras_do_banco" do
-		subject do 
-			FactoryGirl.build(:boleto_cecred, conta: {
+		subject do
+			FactoryBot.build(:boleto_cecred, conta: {
 					carteira: '1',
 					conta_corrente: '668',
 					conta_corrente_dv: '7',
@@ -85,7 +85,7 @@ describe BrBoleto::Boleto::Cecred do
 
 	describe "#codigo_de_barras" do
 		subject do
-			FactoryGirl.build(:boleto_cecred) do |cecred|
+			FactoryBot.build(:boleto_cecred) do |cecred|
 				cecred.conta.agencia        = 3069
 				cecred.conta.codigo_cedente = 828_19 # Para o cecred é o código do cliente
 				cecred.conta.codigo_cedente_dv = '0' # Para o cecred é o código do cliente
@@ -97,10 +97,10 @@ describe BrBoleto::Boleto::Cecred do
 		end
 
 		it { subject.codigo_de_barras.must_equal '08595816800093015780828198975599800001001006' }
-		it { subject.linha_digitavel.must_equal '08590.82810 98975.599808 00010.010064 5 81680009301578' }		
+		it { subject.linha_digitavel.must_equal '08590.82810 98975.599808 00010.010064 5 81680009301578' }
 
 		it "codigo de barras de um boleto de exemplo" do
-			subject.conta.agencia           = 3069  
+			subject.conta.agencia           = 3069
 			subject.conta.codigo_cedente    = 82819 # Para o cecred é o código do cliente
 			subject.conta.codigo_cedente_dv = 0 # Para o cecred é o código do cliente
 			subject.conta.carteira       = '06'

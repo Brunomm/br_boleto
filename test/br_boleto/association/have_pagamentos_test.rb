@@ -5,9 +5,9 @@ class HavePagamentosTest < BrBoleto::ActiveModelBase
 end
 
 describe BrBoleto::HavePagamentos do
-	subject { HavePagamentosTest.new(pagamentos: [pagamento]) } 
+	subject { HavePagamentosTest.new(pagamentos: [pagamento]) }
 	let(:pagamento) { BrBoleto::Remessa::Pagamento.new(nosso_numero: '123', data_vencimento: Date.tomorrow, valor_documento: 100.60) }
-	 
+
 	it "por padrão nao deve validar nada a não ser o nosso_numero, data_vencimento e valor_documento" do
 		wont_be_message_error(:base)
 	end
@@ -16,10 +16,10 @@ describe BrBoleto::HavePagamentos do
 		wont allow_value([]).for(:pagamentos).with_message(:blank)
 	end
 	it "não deve ser válidose houver algum pagamento inválido" do
-		wont allow_value([FactoryGirl.build(:remessa_pagamento, nosso_numero: nil)]).for(:pagamentos)
+		wont allow_value([FactoryBot.build(:remessa_pagamento, nosso_numero: nil)]).for(:pagamentos)
 	end
 	it "deve ser válido se passar apenas um pagamento sem Array" do
-		pagamento_valido = FactoryGirl.build(:remessa_pagamento)
+		pagamento_valido = FactoryBot.build(:remessa_pagamento)
 		must allow_value(pagamento_valido).for(:pagamentos)
 	end
 	it "se setar apenas 1 pagamento sem array deve retornar um array de 1 posicao" do
@@ -29,7 +29,7 @@ describe BrBoleto::HavePagamentos do
 		subject.pagamentos[0].must_equal pagamento
 	end
 	it "posso setar mais que 1 pagamento" do
-		pagamento2 = FactoryGirl.build(:remessa_pagamento)
+		pagamento2 = FactoryBot.build(:remessa_pagamento)
 		subject.pagamentos = [pagamento, pagamento2]
 		subject.pagamentos.size.must_equal 2
 		subject.pagamentos.is_a?(Array).must_equal true
@@ -38,7 +38,7 @@ describe BrBoleto::HavePagamentos do
 	end
 
 	it "posso incrementar os pagamentos com <<" do
-		pagamento2 = FactoryGirl.build(:remessa_pagamento, valor_documento: 0.50)
+		pagamento2 = FactoryBot.build(:remessa_pagamento, valor_documento: 0.50)
 		subject.pagamentos = pagamento
 		subject.pagamentos.size.must_equal 1
 		subject.pagamentos << pagamento2
@@ -49,7 +49,7 @@ describe BrBoleto::HavePagamentos do
 	end
 
 	it "o metodo pagamentos deve considerar apenas objetos'Pagamento" do
-		pagamento2 = FactoryGirl.build(:remessa_pagamento, valor_documento: 0.50)
+		pagamento2 = FactoryBot.build(:remessa_pagamento, valor_documento: 0.50)
 		subject.pagamentos << 'abc'
 		subject.pagamentos << pagamento2
 		subject.pagamentos << 123

@@ -2,11 +2,11 @@
 require 'test_helper'
 
 describe BrBoleto::Boleto::Caixa do
-	subject { FactoryGirl.build(:boleto_caixa) }
+	subject { FactoryBot.build(:boleto_caixa) }
 
 		context "on validations" do
 			it { must validate_length_of(:numero_documento).is_at_most(11).with_message(:custom_length_maximum) }
-			
+
 			context '#conta.carteira' do
 				it { subject.valid_carteira_inclusion.must_equal ['14','24'] }
 				it 'carteira deve ter 2 digitos' do
@@ -29,7 +29,7 @@ describe BrBoleto::Boleto::Caixa do
 			describe '#conta.convenio / codigo_cedente' do
 				it { subject.valid_convenio_maximum.must_equal 6 }
 				it { subject.valid_convenio_required.must_equal true }
-				
+
 				it "validação obrigatoriedade do codigo_cedente da conta" do
 					subject.conta.codigo_cedente = ''
 					conta_must_be_msg_error(:convenio, :blank)
@@ -162,7 +162,7 @@ describe BrBoleto::Boleto::Caixa do
 
 		it "a posição 24 deve ser nil " do
 			subject.composicao_codigo_barras[24].must_be_nil
-		end		
+		end
 	end
 
 	describe "#codigo_de_barras_do_banco" do
