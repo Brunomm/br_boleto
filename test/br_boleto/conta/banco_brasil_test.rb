@@ -1,7 +1,7 @@
 require 'test_helper'
 
 describe BrBoleto::Conta::BancoBrasil do
-	subject { FactoryGirl.build(:conta_banco_brasil) }
+	subject { FactoryBot.build(:conta_banco_brasil) }
 
 	it "deve herdar de Conta::Base" do
 		subject.class.superclass.must_equal BrBoleto::Conta::Base
@@ -169,7 +169,7 @@ describe BrBoleto::Conta::BancoBrasil do
 			it { subject.get_codigo_movimento_remessa('06', 400).must_equal '06' } # Alteração de vencimento de título
 			it { subject.get_codigo_movimento_remessa('22', 400).must_equal '07' } # Alteração do número de controle do participante
 			it { subject.get_codigo_movimento_remessa('21', 400).must_equal '08' } # Alteração do número do titulo dado pelo cedente
-			it { subject.get_codigo_movimento_remessa('09', 400).must_equal '09' } # Instrução para protestar 
+			it { subject.get_codigo_movimento_remessa('09', 400).must_equal '09' } # Instrução para protestar
 			it { subject.get_codigo_movimento_remessa('10', 400).must_equal '10' } # Instrução para sustar protesto
 			it { subject.get_codigo_movimento_remessa('11', 400).must_equal '11' } # Instrução para dispensar juros
 			it { subject.get_codigo_movimento_remessa('24', 400).must_equal '12' } # Alteração de nome e endereço do Sacado
@@ -178,8 +178,8 @@ describe BrBoleto::Conta::BancoBrasil do
 			it { subject.get_codigo_movimento_remessa('32', 400).must_equal '32' } # Não conceder desconto
 			it { subject.get_codigo_movimento_remessa('33', 400).must_equal '33' } # Retificar dados da concessão de desconto
 			it { subject.get_codigo_movimento_remessa('34', 400).must_equal '34' } # Alterar data para concessão de desconto
-			it { subject.get_codigo_movimento_remessa('35', 400).must_equal '35' } # Cobrar multa 
-			it { subject.get_codigo_movimento_remessa('36', 400).must_equal '36' } # Dispensar multa 
+			it { subject.get_codigo_movimento_remessa('35', 400).must_equal '35' } # Cobrar multa
+			it { subject.get_codigo_movimento_remessa('36', 400).must_equal '36' } # Dispensar multa
 			it { subject.get_codigo_movimento_remessa('37', 400).must_equal '37' } # Dispensar indexador
 			it { subject.get_codigo_movimento_remessa('38', 400).must_equal '38' } # Dispensar prazo limite de recebimento
 			it { subject.get_codigo_movimento_remessa('39', 400).must_equal '39' } # Alterar prazo limite de recebimento

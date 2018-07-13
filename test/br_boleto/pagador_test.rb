@@ -1,37 +1,37 @@
 require 'test_helper'
 
 describe BrBoleto::Pagador do
-	subject { FactoryGirl.build(:pagador) } 
+	subject { FactoryBot.build(:pagador) }
 
 	describe "validations" do
 		it { must validate_presence_of(:nome) }
 		it { must validate_presence_of(:cpf_cnpj) }
 		context "validação de presença do endereço" do
 			context "por padrão não deve ser obrigatorio" do
-				it { wont validate_presence_of(:endereco) } 
+				it { wont validate_presence_of(:endereco) }
 				it { wont validate_presence_of(:bairro) }
-				it { wont validate_presence_of(:cep) } 
-				it { wont validate_presence_of(:cidade) } 
+				it { wont validate_presence_of(:cep) }
+				it { wont validate_presence_of(:cidade) }
 				it { wont validate_presence_of(:uf) }
 			end
 			context "se setar o valid_endereco_required então valida a presença do endereço" do
 				before { subject.valid_endereco_required = true }
-				it { must validate_presence_of(:endereco) } 
+				it { must validate_presence_of(:endereco) }
 				it { must validate_presence_of(:bairro) }
-				it { must validate_presence_of(:cep) } 
-				it { must validate_presence_of(:cidade) } 
+				it { must validate_presence_of(:cep) }
+				it { must validate_presence_of(:cidade) }
 				it { must validate_presence_of(:uf) }
 			end
 		end
 		context "validação de presença do avalsita" do
 			context "por padrão não deve ser obrigatorio" do
-				it { wont validate_presence_of(:nome_avalista) } 
+				it { wont validate_presence_of(:nome_avalista) }
 				it { wont validate_presence_of(:documento_avalista) }
 				it { wont validate_presence_of(:endereco_avalista) }
 			end
 			context "se setar o valid_avalista_required então valida a presença do avalista" do
 				before { subject.valid_avalista_required = true }
-				it { must validate_presence_of(:nome_avalista) } 
+				it { must validate_presence_of(:nome_avalista) }
 				it { must validate_presence_of(:documento_avalista) }
 			end
 		end
@@ -40,7 +40,7 @@ describe BrBoleto::Pagador do
 
 	it "cep deve retornar apenas numeros" do
 		subject.cep = '89A885-3L69'
-		subject.cep.must_equal '89885369'		
+		subject.cep.must_equal '89885369'
 	end
 
 	describe "#cpf_cnpj" do
@@ -108,9 +108,9 @@ describe BrBoleto::Pagador do
 			it "se setar o CPF com a pontuação deve sempre retornar apenas os numeros" do
 				subject.documento_avalista = '725.211.506-22'
 				subject.documento_avalista.must_equal '72521150622'
-			end		
+			end
 		end
-		
+
 		describe "#tipo_documento_avalista" do
 			context "#CPF retorna 01" do
 				it "por padrão deve retornar 01 (com 2 digitos)" do

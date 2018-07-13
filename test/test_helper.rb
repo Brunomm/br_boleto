@@ -15,15 +15,15 @@ require 'mocha/mini_test'
 require 'pry'
 
 
-require 'factory_girl_rails'
+require 'factory_bot_rails'
 
 
 Minitest::Reporters.use!
 
 ActiveSupport::TestCase.test_order = :sorted
 
-FactoryGirl.definition_file_paths = [File.expand_path('../factories', __FILE__)]
-FactoryGirl.find_definitions
+FactoryBot.definition_file_paths = [File.expand_path('../factories', __FILE__)]
+FactoryBot.find_definitions
 
 class Module
 	include Minitest::Spec::DSL
@@ -35,7 +35,7 @@ end
 
 class MiniTest::Spec
 	include Shoulda::Matchers::ActiveModel
-	include FactoryGirl::Syntax::Methods
+	include FactoryBot::Syntax::Methods
 
 	def open_fixture(path)
 		file_path = File.expand_path('../fixtures', __FILE__) + '/'+ path
@@ -55,8 +55,8 @@ class MiniTest::Spec
 			messages.nil?.must_equal true, "Não deveria ter mensagem de erro para o atributo #{column}, mas foi encontrado os erros: \n -> #{messages ? messages.join("\n -> ") : '' }"
 		elsif messages.blank?
 			assert true
-		elsif messages.include?(message) 
-			flunk "Não deveria ter o erro \"#{message}\" para o atributo \"#{column}\"" 
+		elsif messages.include?(message)
+			flunk "Não deveria ter o erro \"#{message}\" para o atributo \"#{column}\""
 		end
 	end
 
@@ -67,11 +67,11 @@ class MiniTest::Spec
 		if message.nil?
 			messages.nil?.must_equal false, "Deveria ter alguma mensagem de erro para o atributo #{column}"
 		elsif messages.blank?
-			flunk "Deveria ter o erro \"#{message}\" para o atributo \"#{column}\", porém não há erro algum." 
-		elsif messages.include?(message) 
+			flunk "Deveria ter o erro \"#{message}\" para o atributo \"#{column}\", porém não há erro algum."
+		elsif messages.include?(message)
 			assert true
 		else
-			flunk "Deveria ter o erro \"#{message}\" para o atributo \"#{column}\", mas foi encontrado apenas os erros: \n -> #{messages.join("\n -> ") }" 			
+			flunk "Deveria ter o erro \"#{message}\" para o atributo \"#{column}\", mas foi encontrado apenas os erros: \n -> #{messages.join("\n -> ") }"
 		end
 	end
 
@@ -101,7 +101,7 @@ private
 				I18n.t("activemodel.errors.messages.#{msg}", msg_params)
 			else
 				I18n.t("errors.messages.#{msg}", msg_params)
-			end					
+			end
 		end
 	end
 end

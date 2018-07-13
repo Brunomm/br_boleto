@@ -1,7 +1,7 @@
 require 'test_helper'
 
 describe BrBoleto::Conta::Unicred do
-	subject { FactoryGirl.build(:conta_unicred) }
+	subject { FactoryBot.build(:conta_unicred) }
 
 	it "deve herdar de Conta::Bradesco" do
 		subject.class.superclass.must_equal BrBoleto::Conta::Bradesco
@@ -148,7 +148,7 @@ describe BrBoleto::Conta::Unicred do
 			it { subject.get_codigo_protesto('4', 240).must_equal '1' } # Protestar Fim Falimentar - Dias Úteis
 			it { subject.get_codigo_protesto('5', 240).must_equal '1' } # Protestar Fim Falimentar - Dias Corridos
 			it { subject.get_codigo_protesto('8', 240).must_equal '3' } # Negativação sem Protesto
-			it { subject.get_codigo_protesto('9', 240).must_equal '3' } # Cancelamento Protesto Automático 
+			it { subject.get_codigo_protesto('9', 240).must_equal '3' } # Cancelamento Protesto Automático
 		end
 	end
 end

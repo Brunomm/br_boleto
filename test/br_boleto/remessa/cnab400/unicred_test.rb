@@ -1,11 +1,11 @@
 require 'test_helper'
 
 describe BrBoleto::Remessa::Cnab400::Unicred do
-	subject { FactoryGirl.build(:remessa_cnab400_unicred, pagamentos: pagamento, conta: conta) }
-	let(:pagamento) { FactoryGirl.build(:remessa_pagamento, pagador: pagador) } 
-	let(:conta)     { FactoryGirl.build(:conta_unicred) } 
-	let(:pagador)   { FactoryGirl.build(:pagador) } 
-	
+	subject { FactoryBot.build(:remessa_cnab400_unicred, pagamentos: pagamento, conta: conta) }
+	let(:pagamento) { FactoryBot.build(:remessa_pagamento, pagador: pagador) }
+	let(:conta)     { FactoryBot.build(:conta_unicred) }
+	let(:pagador)   { FactoryBot.build(:pagador) }
+
 	it "deve ter a class para a conta do unicred" do
 		BrBoleto::Remessa::Cnab400::Unicred.new.conta_class.must_equal BrBoleto::Conta::Unicred
 	end
@@ -36,8 +36,8 @@ describe BrBoleto::Remessa::Cnab400::Unicred do
 			result = subject.informacoes_da_conta(:detalhe)
 
 			result[0..2].must_equal    '   '
-			result[3].must_equal       '0'  
-			result[4..6].must_equal    '021'  
+			result[3].must_equal       '0'
+			result[4..6].must_equal    '021'
 			result[7..11].must_equal   '01234'    # Agencia
 			result[12..18].must_equal  '0089755'  # Conta Corrente
 			result[19].must_equal      '7'        # Conta Corrente DV
@@ -51,7 +51,7 @@ describe BrBoleto::Remessa::Cnab400::Unicred do
 			subject.complemento_registro[0..7].must_equal '        '
 			subject.complemento_registro[8..9].must_equal 'MX'
 			subject.complemento_registro[10..16].must_equal '0004758'
-			subject.complemento_registro[17..293].must_equal ''.rjust(277) 
+			subject.complemento_registro[17..293].must_equal ''.rjust(277)
 
 			subject.complemento_registro.size.must_equal 294
 		end
@@ -66,7 +66,7 @@ describe BrBoleto::Remessa::Cnab400::Unicred do
 			result = subject.detalhe_posicao_038_062(pagamento)
 
 			result[00..13].must_equal ''.rjust(14)              # Preencher com Branco
-			result[14..24].must_equal   '534423'.rjust(11, '0') # Numero documento         
+			result[14..24].must_equal   '534423'.rjust(11, '0') # Numero documento
 			result.size.must_equal 25
 		end
 	end
@@ -79,7 +79,7 @@ describe BrBoleto::Remessa::Cnab400::Unicred do
 			pagamento.assign_attributes(tipo_emissao: 2)
 			result = subject.detalhe_posicao_063_108(pagamento)
 
-			result[0..2].must_equal   '000'                 
+			result[0..2].must_equal   '000'
 			result[3].must_equal      '0'                  # Identificativos de Multa
 			result[4..7].must_equal   '0000'               # Percentual de Multa por Atraso
 			result[8..18].must_equal  '00000977897'        # Identificação do Título no Banco
@@ -108,7 +108,7 @@ describe BrBoleto::Remessa::Cnab400::Unicred do
 			result.size.must_equal 40
 
 			result[00..05].must_equal '050829'        # "Data Vencimento: Formato DDMMAA Normal ""DDMMAA"" A vista = ""888888"" Contra Apresentação = ""999999"""
-			result[06..18].must_equal '0000000004756' # Valor do Titulo 
+			result[06..18].must_equal '0000000004756' # Valor do Titulo
 			result[19..21].must_equal '000'           # 000 ou Número Banco
 			result[22..26].must_equal "00000"         # 000000 ou Agencia
 			result[27..28].must_equal "02"            # Espécie do Título

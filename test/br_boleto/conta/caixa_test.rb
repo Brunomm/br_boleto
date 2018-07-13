@@ -1,7 +1,7 @@
 require 'test_helper'
 
 describe BrBoleto::Conta::Caixa do
-	subject { FactoryGirl.build(:conta_caixa) }
+	subject { FactoryBot.build(:conta_caixa) }
 
 	it "deve herdar de Conta::Base" do
 		subject.class.superclass.must_equal BrBoleto::Conta::Base
@@ -10,14 +10,14 @@ describe BrBoleto::Conta::Caixa do
 	context "valores padrões" do
 		it "deve setar a carteira da carteira com 14'" do
 			subject.class.new.carteira.must_equal '14'
-		end		
+		end
 		it "deve setar a valid_carteira_required com true" do
 			subject.class.new.valid_carteira_required.must_equal true
 		end
 		it "deve setar a valid_carteira_length com 2" do
 			subject.class.new.valid_carteira_length.must_equal 2
 		end
-		
+
 		it "deve setar a valid_carteira_inclusion com %w[14 24]" do
 			subject.class.new.valid_carteira_inclusion.must_equal %w[14 24]
 		end
@@ -168,7 +168,7 @@ describe BrBoleto::Conta::Caixa do
 
 	describe "#get_codigo_motivo_ocorrencia" do
 		context "CÓDIGOS para oa Caixa com Motivo Ocorrência A para CNAB 240" do
-			it { subject.get_codigo_motivo_ocorrencia('11', '02', 240).must_equal 'A115' } # Data de Geração Inválida 
+			it { subject.get_codigo_motivo_ocorrencia('11', '02', 240).must_equal 'A115' } # Data de Geração Inválida
 			it { subject.get_codigo_motivo_ocorrencia('64', '03', 240).must_equal 'A116' } # Entrada Inválida para Cobrança Caucionada
 			it { subject.get_codigo_motivo_ocorrencia('65', '26', 240).must_equal 'A117' } # CEP do Pagador não encontrado
 			it { subject.get_codigo_motivo_ocorrencia('66', '30', 240).must_equal 'A118' } # Agencia Cobradora não encontrada
@@ -283,19 +283,19 @@ describe BrBoleto::Conta::Caixa do
 			it { subject.get_codigo_movimento_retorno('11', 400).must_equal '149' }  # Alteração da opção de Protesto para Devolução Confirmada
 			it { subject.get_codigo_movimento_retorno('12', 400).must_equal '150' }  # Alteração da opção de Devolução para Protesto Confirmada
 			it { subject.get_codigo_movimento_retorno('20', 400).must_equal '11' }   # Em Ser
-			it { subject.get_codigo_movimento_retorno('21', 400).must_equal '06' }   # Liquidação 
-			it { subject.get_codigo_movimento_retorno('22', 400).must_equal '101' }  # Liquidação em Cartório 
-			it { subject.get_codigo_movimento_retorno('23', 400).must_equal '151' }  # Baixa por Devolução 
-			it { subject.get_codigo_movimento_retorno('25', 400).must_equal '152' }  # Baixa por Protesto 
-			it { subject.get_codigo_movimento_retorno('26', 400).must_equal '23' }  # Título enviado para Cartório 
-			it { subject.get_codigo_movimento_retorno('27', 400).must_equal '20' }   # Sustação de Protesto 
-			it { subject.get_codigo_movimento_retorno('28', 400).must_equal '153' }  # Estorno de Protesto 
-			it { subject.get_codigo_movimento_retorno('29', 400).must_equal '154' }  # Estorno de Sustação de Protesto 
-			it { subject.get_codigo_movimento_retorno('30', 400).must_equal '61' }   # Alteração de Título 
-			it { subject.get_codigo_movimento_retorno('31', 400).must_equal '108' }  # Tarifa sobre Título Vencido 
-			it { subject.get_codigo_movimento_retorno('32', 400).must_equal '155' }  # Outras Tarifas de Alteração 
-			it { subject.get_codigo_movimento_retorno('33', 400).must_equal '144' }  # Estorno de Baixa / Liquidação 
-			it { subject.get_codigo_movimento_retorno('34', 400).must_equal '156' }  # Tarifas Diversas 
+			it { subject.get_codigo_movimento_retorno('21', 400).must_equal '06' }   # Liquidação
+			it { subject.get_codigo_movimento_retorno('22', 400).must_equal '101' }  # Liquidação em Cartório
+			it { subject.get_codigo_movimento_retorno('23', 400).must_equal '151' }  # Baixa por Devolução
+			it { subject.get_codigo_movimento_retorno('25', 400).must_equal '152' }  # Baixa por Protesto
+			it { subject.get_codigo_movimento_retorno('26', 400).must_equal '23' }  # Título enviado para Cartório
+			it { subject.get_codigo_movimento_retorno('27', 400).must_equal '20' }   # Sustação de Protesto
+			it { subject.get_codigo_movimento_retorno('28', 400).must_equal '153' }  # Estorno de Protesto
+			it { subject.get_codigo_movimento_retorno('29', 400).must_equal '154' }  # Estorno de Sustação de Protesto
+			it { subject.get_codigo_movimento_retorno('30', 400).must_equal '61' }   # Alteração de Título
+			it { subject.get_codigo_movimento_retorno('31', 400).must_equal '108' }  # Tarifa sobre Título Vencido
+			it { subject.get_codigo_movimento_retorno('32', 400).must_equal '155' }  # Outras Tarifas de Alteração
+			it { subject.get_codigo_movimento_retorno('33', 400).must_equal '144' }  # Estorno de Baixa / Liquidação
+			it { subject.get_codigo_movimento_retorno('34', 400).must_equal '156' }  # Tarifas Diversas
 		end
 	end
 

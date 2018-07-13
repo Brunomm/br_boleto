@@ -1,7 +1,7 @@
 require 'test_helper'
 
 describe BrBoleto::Boleto::Base do
-	subject { FactoryGirl.build(:boleto_base) }
+	subject { FactoryBot.build(:boleto_base) }
 
 	before do
 		subject.stubs(:conta_class).returns(BrBoleto::Conta::Sicoob)
@@ -93,10 +93,10 @@ describe BrBoleto::Boleto::Base do
 		it "deve ajustar o tamanho do numero conforme valid_numero_documento_maximum" do
 			subject.numero_documento = 354
 			subject.numero_documento.must_equal '000354'
-			
+
 			subject.stubs(:valid_numero_documento_maximum).returns(4)
 			subject.numero_documento.must_equal '0354'
-			
+
 			subject.stubs(:valid_numero_documento_maximum).returns(nil)
 			subject.numero_documento.must_equal 354
 		end
@@ -165,20 +165,20 @@ describe BrBoleto::Boleto::Base do
 
 	describe "#aceite_formatado" do
 		context "when is true" do
-			subject { FactoryGirl.build(:boleto_base, aceite: true) }
+			subject { FactoryBot.build(:boleto_base, aceite: true) }
 
 			it{ subject.aceite_formatado.must_equal 'S' }
 		end
 
 		context "when is false" do
-			subject { FactoryGirl.build(:boleto_base, aceite: false) }
-			
+			subject { FactoryBot.build(:boleto_base, aceite: false) }
+
 			it{ subject.aceite_formatado.must_equal 'N' }
 		end
 
 		context "when is nil" do
-			subject { FactoryGirl.build(:boleto_base, aceite: nil) }
-			
+			subject { FactoryBot.build(:boleto_base, aceite: nil) }
+
 			it{ subject.aceite_formatado.must_equal 'N' }
 		end
 	end
@@ -199,13 +199,13 @@ describe BrBoleto::Boleto::Base do
 			subject.codigo_moeda    = '8'
 			subject.valor_documento   = 5_123.05
 			subject.conta.expects(:codigo_banco).returns('554')
-			
+
 			resul = subject.codigo_de_barras_padrao
 			resul.size.must_equal 18
 			resul[0..2].must_equal '554'  # Código do banco
 			resul[ 3  ].must_equal '8'    # Código da moeda
 			resul[4..7].must_equal '9999' # Fator de vencimento
-			resul[8..17].must_equal '0000512305' # Valor do documento			
+			resul[8..17].must_equal '0000512305' # Valor do documento
 		end
 	end
 

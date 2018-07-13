@@ -2,9 +2,9 @@
 require 'test_helper'
 
 describe BrBoleto::Boleto::Sicoob do
-	subject { FactoryGirl.build(:boleto_sicoob, conta: conta) }
-	let(:conta) { FactoryGirl.build(:conta_sicoob) } 
-	
+	subject { FactoryBot.build(:boleto_sicoob, conta: conta) }
+	let(:conta) { FactoryBot.build(:conta_sicoob) }
+
 	context "on validations" do
 		it { must validate_length_of(:numero_documento).is_at_most(7).with_message(:custom_length_maximum) }
 		context '#conta.modalidade' do
@@ -30,7 +30,7 @@ describe BrBoleto::Boleto::Sicoob do
 		describe '#conta.convenio / codigo_cedente' do
 			it { subject.valid_convenio_maximum.must_equal 6 }
 			it { subject.valid_convenio_required.must_equal true }
-			
+
 			it "validação obrigatoriedade do codigo_cedente da conta" do
 				subject.conta.codigo_cedente = ''
 				conta_must_be_msg_error(:convenio, :blank)
@@ -73,9 +73,9 @@ describe BrBoleto::Boleto::Sicoob do
 	end
 
 	describe "#nosso_numero" do
-		subject { FactoryGirl.build(:boleto_sicoob, numero_documento: '68315') }
+		subject { FactoryBot.build(:boleto_sicoob, numero_documento: '68315') }
 
-		it "deve retornar o numero do documento com o digito_verificador_nosso_numero" do 
+		it "deve retornar o numero do documento com o digito_verificador_nosso_numero" do
 			subject.stubs(:digito_verificador_nosso_numero).returns('9')
 			subject.numero_documento = '3646'
 			subject.nosso_numero.must_equal "0003646-9"
@@ -83,8 +83,8 @@ describe BrBoleto::Boleto::Sicoob do
 	end
 
 	describe "#codigo_de_barras_do_banco" do
-		subject do 
-			FactoryGirl.build(:boleto_sicoob, conta: {
+		subject do
+			FactoryBot.build(:boleto_sicoob, conta: {
 					carteira: '1',
 					agencia: '78',
 					codigo_cedente: '668',
@@ -112,7 +112,7 @@ describe BrBoleto::Boleto::Sicoob do
 
 	describe "#codigo_de_barras" do
 		subject do
-			FactoryGirl.build(:boleto_sicoob) do |sicoob|
+			FactoryBot.build(:boleto_sicoob) do |sicoob|
 				sicoob.conta.agencia        = 3069
 				sicoob.conta.codigo_cedente = 828_19 # Para o sicoob é o código do cliente
 				sicoob.conta.codigo_cedente_dv = '0' # Para o sicoob é o código do cliente
@@ -125,10 +125,10 @@ describe BrBoleto::Boleto::Sicoob do
 		end
 
 		it { subject.codigo_de_barras.must_equal '75699816800093015781306901082819000100107001' }
-		it { subject.linha_digitavel.must_equal '75691.30698 01082.819002 01001.070018 9 81680009301578' }		
+		it { subject.linha_digitavel.must_equal '75691.30698 01082.819002 01001.070018 9 81680009301578' }
 
 		it "codigo de barras de um boleto de exemplo" do
-			subject.conta.agencia           = 3069  
+			subject.conta.agencia           = 3069
 			subject.conta.codigo_cedente    = 82819 # Para o sicoob é o código do cliente
 			subject.conta.codigo_cedente_dv = 0 # Para o sicoob é o código do cliente
 			subject.conta.carteira       = '1'

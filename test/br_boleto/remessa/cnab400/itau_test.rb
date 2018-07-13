@@ -1,11 +1,11 @@
 require 'test_helper'
 
 describe BrBoleto::Remessa::Cnab400::Itau do
-	subject { FactoryGirl.build(:remessa_cnab400_itau, pagamentos: pagamento, conta: conta) }
-	let(:pagamento) { FactoryGirl.build(:remessa_pagamento, pagador: pagador) } 
-	let(:conta)     { FactoryGirl.build(:conta_itau) } 
-	let(:pagador)   { FactoryGirl.build(:pagador) } 
-	
+	subject { FactoryBot.build(:remessa_cnab400_itau, pagamentos: pagamento, conta: conta) }
+	let(:pagamento) { FactoryBot.build(:remessa_pagamento, pagador: pagador) }
+	let(:conta)     { FactoryBot.build(:conta_itau) }
+	let(:pagador)   { FactoryBot.build(:pagador) }
+
 	it "deve ter a class para a conta do itau" do
 		BrBoleto::Remessa::Cnab400::Itau.new.conta_class.must_equal BrBoleto::Conta::Itau
 	end
@@ -27,7 +27,7 @@ describe BrBoleto::Remessa::Cnab400::Itau do
 			result = subject.informacoes_da_conta(:header)
 
 			result[0..3].must_equal    '1234'    # Agencia
-			result[4..5].must_equal    '00'  
+			result[4..5].must_equal    '00'
 			result[6..10].must_equal   '89755'    # Conta Corrente
 			result[11].must_equal      '7'        # Conta Corrente DV
 			result[12..19].must_equal   ' ' * 8
@@ -46,7 +46,7 @@ describe BrBoleto::Remessa::Cnab400::Itau do
 			result = subject.informacoes_da_conta(:detalhe)
 
 			result[0..3].must_equal    '1234'    # Agencia
-			result[4..5].must_equal    '00'  
+			result[4..5].must_equal    '00'
 			result[6..10].must_equal   '89755'    # Conta Corrente
 			result[11].must_equal      '7'        # Conta Corrente DV
 			result[12..15].must_equal   '    '
@@ -57,7 +57,7 @@ describe BrBoleto::Remessa::Cnab400::Itau do
 
 	describe '#complemento_registro' do
 		it "deve retornar 294 brancos" do
-			subject.complemento_registro[0..293].must_equal ''.rjust(294) 
+			subject.complemento_registro[0..293].must_equal ''.rjust(294)
 			subject.complemento_registro.size.must_equal 294
 		end
 	end
@@ -74,7 +74,7 @@ describe BrBoleto::Remessa::Cnab400::Itau do
 
 			result = subject.detalhe_posicao_063_108(pagamento)
 
-			result[0..7].must_equal   '00000763'          # Numero documento                 
+			result[0..7].must_equal   '00000763'          # Numero documento
 			result[8..20].must_equal  '0' * 13            # Zeros
 			result[21..23].must_equal '123'               # Carteira
 			result[24..44].must_equal ' ' * 21            # Brancos
@@ -100,7 +100,7 @@ describe BrBoleto::Remessa::Cnab400::Itau do
 			result.size.must_equal 40
 
 			result[00..05].must_equal '050829'        # "Data Vencimento: Formato DDMMAA Normal ""DDMMAA"" A vista = ""888888"" Contra Apresentação = ""999999"""
-			result[06..18].must_equal '0000000004756' # Valor do Titulo 
+			result[06..18].must_equal '0000000004756' # Valor do Titulo
 			result[19..21].must_equal '341'           # Número Banco
 			result[22..26].must_equal "00000"         # 000000 ou Agencia
 			result[27..28].must_equal "02"            # Espécie do Título
@@ -155,7 +155,7 @@ describe BrBoleto::Remessa::Cnab400::Itau do
 			result[00..01].must_equal "01"                                    # Tipo de Inscrição do Pagador: "01" = CPF / "02" = CNPJ
 			result[02..15].must_equal '00012345678901'                        # Número do CNPJ ou CPF do Pagador
 			result[16..55].must_equal 'nome pagador'.adjust_size_to(40)       # Nome do Pagador
-			
+
 			result[56..95].must_equal 'rua do pagador'.adjust_size_to(40)     # Endereço do Pagador
 			result[96..107].must_equal 'bairro do pagador'.adjust_size_to(12) # Bairro do Pagador
 			result[108..115].must_equal '89885001'                            # CEP do Pagador

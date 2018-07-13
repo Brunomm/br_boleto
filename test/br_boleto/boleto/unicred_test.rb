@@ -2,13 +2,13 @@
 require 'test_helper'
 
 describe BrBoleto::Boleto::Unicred do
-	subject { FactoryGirl.build(:boleto_unicred, conta: conta) }
-	let(:conta) { FactoryGirl.build(:conta_unicred) } 
+	subject { FactoryBot.build(:boleto_unicred, conta: conta) }
+	let(:conta) { FactoryBot.build(:conta_unicred) }
 
 
 	context "on validations" do
 		it { must validate_length_of(:numero_documento).is_at_most(11).with_message(:custom_length_maximum) }
-		
+
 		context '#conta.carteira' do
 			it { subject.valid_carteira_inclusion.must_equal ['06','09','19','21','22'] }
 			it "validação da carteira da conta" do
@@ -22,7 +22,7 @@ describe BrBoleto::Boleto::Unicred do
 		describe '#conta.convenio / codigo_cedente' do
 			it { subject.valid_convenio_maximum.must_equal 7 }
 			it { subject.valid_convenio_required.must_equal true }
-			
+
 			it "validação obrigatoriedade do codigo_cedente da conta" do
 				subject.conta.codigo_cedente = ''
 				conta_must_be_msg_error(:convenio, :blank)
@@ -61,9 +61,9 @@ describe BrBoleto::Boleto::Unicred do
 	end
 
 	describe "#nosso_numero" do
-		subject { FactoryGirl.build(:boleto_unicred, numero_documento: '68315') }
+		subject { FactoryBot.build(:boleto_unicred, numero_documento: '68315') }
 
-		it "deve retornar o numero do documento com o digito_verificador_nosso_numero" do 
+		it "deve retornar o numero do documento com o digito_verificador_nosso_numero" do
 			subject.stubs(:digito_verificador_nosso_numero).returns('9')
 			subject.numero_documento = '3646'
 			subject.nosso_numero.must_equal "09/00000003646-9"
@@ -71,8 +71,8 @@ describe BrBoleto::Boleto::Unicred do
 	end
 
 	describe "#codigo_de_barras_do_banco" do
-		subject do 
-			FactoryGirl.build(:boleto_unicred, conta: {
+		subject do
+			FactoryBot.build(:boleto_unicred, conta: {
 					carteira: '09',
 					agencia: '78',
 					conta_corrente: '668',
@@ -98,7 +98,7 @@ describe BrBoleto::Boleto::Unicred do
 
 	describe "#codigo_de_barras" do
 		subject do
-			FactoryGirl.build(:boleto_unicred) do |unicred|
+			FactoryBot.build(:boleto_unicred) do |unicred|
 				unicred.conta.agencia           = 3069
 				unicred.conta.codigo_cedente    = 828_19 # Para o unicred é o código do cliente
 				unicred.conta.codigo_cedente_dv = '0'    # Para o unicred é o código do cliente
@@ -110,10 +110,10 @@ describe BrBoleto::Boleto::Unicred do
 		end
 
 		it { subject.codigo_de_barras.must_equal '23795816800093015783069090000001001000897550' }
-		it { subject.linha_digitavel.must_equal  '23793.06901 90000.001009 10008.975509 5 81680009301578' }		
+		it { subject.linha_digitavel.must_equal  '23793.06901 90000.001009 10008.975509 5 81680009301578' }
 
 		it "codigo de barras de um boleto de exemplo" do
-			subject.conta.agencia           = 3069  
+			subject.conta.agencia           = 3069
 			subject.conta.codigo_cedente    = 82819 # Para o unicred é o código do cliente
 			subject.conta.codigo_cedente_dv = 0     # Para o unicred é o código do cliente
 			subject.conta.carteira          = '09'

@@ -1,10 +1,10 @@
 require 'test_helper'
 
 describe BrBoleto::Remessa::Cnab400::Sicredi do
-	subject { FactoryGirl.build(:remessa_cnab400_sicredi, pagamentos: pagamento, conta: conta) }
-	let(:pagamento) { FactoryGirl.build(:remessa_pagamento, pagador: pagador) } 
-	let(:conta)     { FactoryGirl.build(:conta_sicredi) } 
-	let(:pagador)   { FactoryGirl.build(:pagador) } 
+	subject { FactoryBot.build(:remessa_cnab400_sicredi, pagamentos: pagamento, conta: conta) }
+	let(:pagamento) { FactoryBot.build(:remessa_pagamento, pagador: pagador) }
+	let(:conta)     { FactoryBot.build(:conta_sicredi) }
+	let(:pagador)   { FactoryBot.build(:pagador) }
 
 
 	context "HEADER" do
@@ -29,7 +29,7 @@ describe BrBoleto::Remessa::Cnab400::Sicredi do
 				result[0..4].must_equal  '89755'         # Conta Corrente
 				result[5..18].must_equal '00012345678901'  # CPF/CNPJ
 				result[19].must_equal    ''.rjust(1)       # Branco
-				
+
 				result.size.must_equal 20
 			end
 			it "deve retornar com 21 caracteres" do
@@ -72,7 +72,7 @@ describe BrBoleto::Remessa::Cnab400::Sicredi do
 
 				subject.header_posicao_103_a_394[0..7].must_equal ''.rjust(8)
 				subject.header_posicao_103_a_394[8..14].must_equal '0004758'
-				subject.header_posicao_103_a_394[15..287].must_equal ''.rjust(273) 
+				subject.header_posicao_103_a_394[15..287].must_equal ''.rjust(273)
 				subject.header_posicao_103_a_394[288..291].must_equal '2.00'
 
 				subject.header_posicao_103_a_394.size.must_equal 292
@@ -153,7 +153,7 @@ describe BrBoleto::Remessa::Cnab400::Sicredi do
 				pagamento.data_emissao = Date.parse('15/09/2017')
 				result = subject.informacoes_do_pagamento(pagamento, 4)
 				result[00..05].must_equal '050829'        # "Data Vencimento: Formato DDMMAA Normal ""DDMMAA"" A vista = ""888888"" Contra Apresentação = ""999999"""
-				result[06..18].must_equal '0000000004756' # Valor do Titulo 
+				result[06..18].must_equal '0000000004756' # Valor do Titulo
 				result[19..27].must_equal '         '     # Brancos
 				result[28..28].must_equal "C"             # Espécie do Título
 				result[  29  ].must_equal "N"             # dentificação (Sempre 'N')
@@ -164,7 +164,7 @@ describe BrBoleto::Remessa::Cnab400::Sicredi do
 				result.size.must_equal 40
 			end
 		end
-		
+
 		describe '#detalhe_multas_e_juros_do_pagamento' do
 			it "deve ter o tamanho de 58 digitos" do
 				subject.detalhe_multas_e_juros_do_pagamento(pagamento, 2).size.must_equal 58
@@ -208,7 +208,7 @@ describe BrBoleto::Remessa::Cnab400::Sicredi do
 				result[00..01].must_equal "10"                                    # Tipo de Inscrição do Pagador: "01" = CPF / "02" = CNPJ
 				result[02..15].must_equal '00012345678901'                        # Número do CNPJ ou CPF do Pagador
 				result[16..55].must_equal 'nome pagador'.adjust_size_to(40)       # Nome do Pagador
-				
+
 				result[56..73].must_equal 'rua do pagador'.adjust_size_to(18)     # Endereço do Pagador
 				result[74..83].must_equal 'bairro do pagador'.adjust_size_to(10)  # Endereço do Pagador
 				result[84..93].must_equal 'Chapecó'.adjust_size_to(10)            # Endereço do Pagador

@@ -1,6 +1,6 @@
 # encoding: UTF-8
 
-FactoryGirl.define do
+FactoryBot.define do
 	factory :pagador, class:  BrBoleto::Pagador do
 		nome      'João da Silva'
 		cpf_cnpj  '33.669.170/0001-12' # Gerado pelo gerador de cnpj

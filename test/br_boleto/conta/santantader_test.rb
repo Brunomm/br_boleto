@@ -1,7 +1,7 @@
 require 'test_helper'
 
 describe BrBoleto::Conta::Santander do
-	subject { FactoryGirl.build(:conta_santander) }
+	subject { FactoryBot.build(:conta_santander) }
 
 	it "deve herdar de Conta::Base" do
 		subject.class.superclass.must_equal BrBoleto::Conta::Base
@@ -238,7 +238,7 @@ describe BrBoleto::Conta::Santander do
 	describe "#get_codigo_motivo_ocorrencia" do
 		context "CÓDIGOS motivo ocorrência A para o Santander CNAB 400" do
 			it { subject.get_codigo_motivo_ocorrencia('01', '02', 400).must_equal 'A01' }  # Código do banco inválido
-		
+
 			it { subject.get_codigo_motivo_ocorrencia('001', '02', 400).must_equal 'A08' }  # NOSSO NUMERO NAO NUMERICO
 			it { subject.get_codigo_motivo_ocorrencia('002', '03', 400).must_equal 'A33' }  # VALOR DO ABATIMENTO NAO NUMERICO
 			it { subject.get_codigo_motivo_ocorrencia('003', '26', 400).must_equal 'A16' }  # DATA VENCIMENTO NAO NUMERICA

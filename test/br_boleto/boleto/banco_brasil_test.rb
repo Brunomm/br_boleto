@@ -2,9 +2,9 @@
 require 'test_helper'
 
 describe BrBoleto::Boleto::BancoBrasil do
-	subject { FactoryGirl.build(:boleto_banco_brasil, conta: conta) }
-	let(:conta) { FactoryGirl.build(:conta_banco_brasil) } 
-	
+	subject { FactoryBot.build(:boleto_banco_brasil, conta: conta) }
+	let(:conta) { FactoryBot.build(:conta_banco_brasil) }
+
 	context "on validations" do
 		# it { must validate_length_of(:numero_documento).is_at_most(11).with_message(:custom_length_maximum) }
 
@@ -23,7 +23,7 @@ describe BrBoleto::Boleto::BancoBrasil do
 				must validate_length_of(:numero_documento).is_at_most(9).with_message(:custom_length_maximum)
 			end
 		end
-		
+
 		context '#conta.carteira' do
 			it { subject.valid_carteira_inclusion.must_equal ['11','12','15','16','17', '18', '31', '51'] }
 			it "validação da carteira da conta" do
@@ -37,7 +37,7 @@ describe BrBoleto::Boleto::BancoBrasil do
 		# describe '#conta.convenio / codigo_cedente' do
 		# 	it { subject.valid_convenio_maximum.must_equal 7 }
 		# 	it { subject.valid_convenio_required.must_equal true }
-			
+
 		# 	it "validação obrigatoriedade do codigo_cedente da conta" do
 		# 		subject.conta.codigo_cedente = ''
 		# 		conta_must_be_msg_error(:convenio, :blank)
@@ -72,9 +72,9 @@ describe BrBoleto::Boleto::BancoBrasil do
 	end
 
 	describe "#nosso_numero" do
-		subject { FactoryGirl.build(:boleto_banco_brasil, numero_documento: '68315') }
+		subject { FactoryBot.build(:boleto_banco_brasil, numero_documento: '68315') }
 
-		it "deve retornar o numero do documento com o digito_verificador_nosso_numero com convenio de 4 ou 6 digitos" do 
+		it "deve retornar o numero do documento com o digito_verificador_nosso_numero com convenio de 4 ou 6 digitos" do
 			subject.stubs(:digito_verificador_nosso_numero).returns('9')
 			subject.conta.convenio = 1234
 			subject.numero_documento = '3646'
@@ -84,7 +84,7 @@ describe BrBoleto::Boleto::BancoBrasil do
 			subject.nosso_numero.must_equal "12345603646-9"
 		end
 
-		it "deve retornar o numero do documento sem o digito_verificador_nosso_numero com convenio de 7 ou 8 digitos" do 
+		it "deve retornar o numero do documento sem o digito_verificador_nosso_numero com convenio de 7 ou 8 digitos" do
 			subject.conta.convenio = 1234567
 			subject.numero_documento = '3646'
 			subject.nosso_numero.must_equal "12345670000003646"
@@ -95,8 +95,8 @@ describe BrBoleto::Boleto::BancoBrasil do
 	end
 
 	describe "#codigo_de_barras_do_banco" do
-		subject do 
-			FactoryGirl.build(:boleto_banco_brasil, conta: {
+		subject do
+			FactoryBot.build(:boleto_banco_brasil, conta: {
 					carteira: '16',
 					agencia: '78',
 					conta_corrente: '6685',
@@ -153,7 +153,7 @@ describe BrBoleto::Boleto::BancoBrasil do
 
 	describe "#codigo_de_barras" do
 		subject do
-			FactoryGirl.build(:boleto_banco_brasil) do |banco_brasil|
+			FactoryBot.build(:boleto_banco_brasil) do |banco_brasil|
 				banco_brasil.conta.agencia        = 3069
 				banco_brasil.conta.codigo_cedente = 1234 # Para o banco do Brasil é o código do cliente
 				banco_brasil.conta.codigo_cedente_dv = '0' # Para o banco do Brasil é o código do cliente
@@ -165,10 +165,10 @@ describe BrBoleto::Boleto::BancoBrasil do
 		end
 
 		it { subject.codigo_de_barras.must_equal '00193816800093015781234001001030690008975512' }
-		it { subject.linha_digitavel.must_equal '00191.23405 01001.030699 00089.755128 3 81680009301578' }		
+		it { subject.linha_digitavel.must_equal '00191.23405 01001.030699 00089.755128 3 81680009301578' }
 
 		it "codigo de barras de um boleto de exemplo" do
-			subject.conta.agencia           = 3069  
+			subject.conta.agencia           = 3069
 			subject.conta.codigo_cedente    = 5828196 # Para o banco do Brasil é o código do cliente
 			subject.conta.codigo_cedente_dv = 0       # Para o banco do Brasil é o código do cliente
 			subject.conta.carteira       = '12'

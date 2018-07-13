@@ -1,10 +1,10 @@
 require 'test_helper'
 
 describe BrBoleto::Remessa::Cnab400::Base do
-	subject { FactoryGirl.build(:remessa_cnab400_base, pagamentos: pagamento, conta: conta) }
-	let(:pagamento) { FactoryGirl.build(:remessa_pagamento) } 
-	let(:conta)     { FactoryGirl.build(:conta_sicoob) } 
-	let(:sequence_1) { sequence('sequence_1') } 
+	subject { FactoryBot.build(:remessa_cnab400_base, pagamentos: pagamento, conta: conta) }
+	let(:pagamento) { FactoryBot.build(:remessa_pagamento) }
+	let(:conta)     { FactoryBot.build(:conta_sicoob) }
+	let(:sequence_1) { sequence('sequence_1') }
 
 	before do
 		BrBoleto::Remessa::Cnab400::Base.any_instance.stubs(:conta_class).returns(conta.class)
@@ -65,7 +65,7 @@ describe BrBoleto::Remessa::Cnab400::Base do
 		end
 	end
 
-	
+
 	describe '#Header' do
 		it '#monta_header deve chamar os metodos para montar o header' do
 			subject.expects(:header_posicao_001_a_001).in_sequence(sequence_1).returns('001_a_001-')
@@ -239,7 +239,7 @@ describe BrBoleto::Remessa::Cnab400::Base do
 	end
 
 	describe '#dados_do_arquivo' do
-		
+
 		it "deve montar os dados do arquivo setando o sequencial e os pagamentos corretamente - com 1 pagamento" do
 			subject.expects(:monta_header).returns('montã_header')
 			subject.expects(:monta_detalhe).with(pagamento, 2).returns('mônta_detalhe')
@@ -248,7 +248,7 @@ describe BrBoleto::Remessa::Cnab400::Base do
 			subject.dados_do_arquivo.must_equal "MONTA_HEADER\r\nMONTA_DETALHE\r\nMONTA_TRAILER\r\n"
 		end
 		it "deve montar os dados do arquivo setando o sequencial e os pagamentos corretamente - com 2 pagamentos" do
-			pagamento2 = FactoryGirl.build(:remessa_pagamento)
+			pagamento2 = FactoryBot.build(:remessa_pagamento)
 			subject.pagamentos << pagamento2
 
 			subject.expects(:monta_header).returns('montã_header').in_sequence(sequence_1)

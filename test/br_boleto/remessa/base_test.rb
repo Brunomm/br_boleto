@@ -1,7 +1,7 @@
 require 'test_helper'
 
 describe BrBoleto::Remessa::Base do
-	subject { FactoryGirl.build(:remessa_base) }
+	subject { FactoryBot.build(:remessa_base) }
 	before do
 		subject.stubs(:conta_class).returns BrBoleto::Conta::Sicoob
 	end

@@ -1,9 +1,9 @@
 # encoding: UTF-8
 
-FactoryGirl.define do
+FactoryBot.define do
 	factory :boleto_banco_brasil, class:  BrBoleto::Boleto::BancoBrasil do
-		conta             { FactoryGirl.build(:conta_banco_brasil) }
-		pagador          { FactoryGirl.build(:pagador) }
+		conta             { FactoryBot.build(:conta_banco_brasil) }
+		pagador          { FactoryBot.build(:pagador) }
 		numero_documento  '111'
 		data_vencimento   { Date.tomorrow }
 		data_documento    { Date.current }

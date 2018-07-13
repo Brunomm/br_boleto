@@ -1,9 +1,9 @@
 require 'test_helper'
 
 describe BrBoleto::Remessa::Cnab240::BancoBrasil do
-	subject { FactoryGirl.build(:remessa_cnab240_banco_brasil, lotes: lote) }
-	let(:pagamento) { FactoryGirl.build(:remessa_pagamento, valor_documento: 879.66) } 
-	let(:lote) { FactoryGirl.build(:remessa_lote, pagamentos: pagamento) } 
+	subject { FactoryBot.build(:remessa_cnab240_banco_brasil, lotes: lote) }
+	let(:pagamento) { FactoryBot.build(:remessa_pagamento, valor_documento: 879.66) }
+	let(:lote) { FactoryBot.build(:remessa_lote, pagamentos: pagamento) }
 
 	it "deve herdar da class Base" do
 		subject.class.superclass.must_equal BrBoleto::Remessa::Cnab240::Base
@@ -94,9 +94,9 @@ describe BrBoleto::Remessa::Cnab240::BancoBrasil do
 			subject.informacoes_da_conta.size.must_equal 20
 		end
 
-		it "1 - Primeira parte = agencia 5 posicoes - ajustados com zeros a esquerda" do	
+		it "1 - Primeira parte = agencia 5 posicoes - ajustados com zeros a esquerda" do
 			subject.conta.agencia = '47'
-			subject.informacoes_da_conta[0..4].must_equal '00047'			
+			subject.informacoes_da_conta[0..4].must_equal '00047'
 
 			subject.conta.agencia = '1234'
 			subject.informacoes_da_conta[0..4].must_equal '01234'
@@ -109,7 +109,7 @@ describe BrBoleto::Remessa::Cnab240::BancoBrasil do
 
 		it "3 - Terceira parte = conta_corrente 12 posicoes - ajustados com zeros a esquerda" do
 			subject.conta.conta_corrente = '89755'
-			subject.informacoes_da_conta[6..17].must_equal '000000089755'			
+			subject.informacoes_da_conta[6..17].must_equal '000000089755'
 
 			subject.conta.conta_corrente = '1234567890'
 			subject.informacoes_da_conta[6..17].must_equal '001234567890'
@@ -117,7 +117,7 @@ describe BrBoleto::Remessa::Cnab240::BancoBrasil do
 
 		it "4 - Quarta parte = Conta Corrente DV" do
 			subject.conta.conta_corrente_dv = '8'
-			subject.informacoes_da_conta[18..18].must_equal('8')			
+			subject.informacoes_da_conta[18..18].must_equal('8')
 		end
 
 		it "5 - Quinta parte = Se o conta_corrente_dv não for 2 digitos deve ter 1 espaço em branco" do
@@ -144,11 +144,11 @@ describe BrBoleto::Remessa::Cnab240::BancoBrasil do
 		it "1 - Primeira parte = conta_corrente com 12 posicoes - ajustados com zeros a esquerda" do
 			subject.conta.conta_corrente = '1234'
 			subject.complemento_p(pagamento)[0..11].must_equal '000000001234'
-		
+
 			subject.conta.conta_corrente = '264631'
 			subject.complemento_p(pagamento)[0..11].must_equal '000000264631'
 		end
-		
+
 		it "2 - Seguna parte = Conta Corrente DV - 1 posicao" do
 			subject.conta.conta_corrente_dv = '7'
 			subject.complemento_p(pagamento)[12..13].must_equal '7 '
@@ -156,7 +156,7 @@ describe BrBoleto::Remessa::Cnab240::BancoBrasil do
 
 		it "3 - Terceira parte = Nosso número com 20 posições ajustado com brancos a direita" do
 			pagamento.nosso_numero = '44447777777-1'
-			subject.complemento_p(pagamento)[14..33].must_equal '444477777771        '			
+			subject.complemento_p(pagamento)[14..33].must_equal '444477777771        '
 
 			pagamento.nosso_numero = '88888888999999999'
 			subject.complemento_p(pagamento)[14..33].must_equal '88888888999999999   '
@@ -169,7 +169,7 @@ describe BrBoleto::Remessa::Cnab240::BancoBrasil do
 			subject.segmento_p_numero_do_documento(pagamento).size.must_equal 15
 		end
 
-		it "deve conter o numero do documento 15 posicoes - ajustados com brancos a direita" do	
+		it "deve conter o numero do documento 15 posicoes - ajustados com brancos a direita" do
 			pagamento.expects(:numero_documento).returns("977897")
 			subject.segmento_p_numero_do_documento(pagamento).must_equal '977897         '
 		end

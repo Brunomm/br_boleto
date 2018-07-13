@@ -1,9 +1,9 @@
 require 'test_helper'
 
 describe BrBoleto::Remessa::Cnab240::Itau do
-	subject { FactoryGirl.build(:remessa_cnab240_itau, lotes: lote) }
-	let(:pagamento) { FactoryGirl.build(:remessa_pagamento, valor_documento: 879.66) } 
-	let(:lote) { FactoryGirl.build(:remessa_lote, pagamentos: pagamento) } 
+	subject { FactoryBot.build(:remessa_cnab240_itau, lotes: lote) }
+	let(:pagamento) { FactoryBot.build(:remessa_pagamento, valor_documento: 879.66) }
+	let(:lote) { FactoryBot.build(:remessa_lote, pagamentos: pagamento) }
 
 	it "deve herdar da class Base" do
 		subject.class.superclass.must_equal BrBoleto::Remessa::Cnab240::Base
@@ -64,9 +64,9 @@ describe BrBoleto::Remessa::Cnab240::Itau do
 			subject.informacoes_da_conta.size.must_equal 20
 		end
 
-		it "1 - Primeira parte = agencia 5 posicoes - ajustados com zeros a esquerda" do	
+		it "1 - Primeira parte = agencia 5 posicoes - ajustados com zeros a esquerda" do
 			subject.conta.agencia = '47'
-			subject.informacoes_da_conta[0..4].must_equal '00047'			
+			subject.informacoes_da_conta[0..4].must_equal '00047'
 
 			subject.conta.agencia = '1234'
 			subject.informacoes_da_conta[0..4].must_equal '01234'
@@ -77,12 +77,12 @@ describe BrBoleto::Remessa::Cnab240::Itau do
 		end
 
 		it "3 - Terceira parte = deve ser preenchido com zeros" do
-			subject.informacoes_da_conta[6..12].must_equal '0000000'			
+			subject.informacoes_da_conta[6..12].must_equal '0000000'
 		end
 
 		it "4 - Quarta parte = conta_corrente 5 posicoes - ajustados com zeros a esquerda" do
 			subject.conta.conta_corrente = '89755'
-			subject.informacoes_da_conta[13..17].must_equal '89755'			
+			subject.informacoes_da_conta[13..17].must_equal '89755'
 
 			subject.conta.conta_corrente = '1234'
 			subject.informacoes_da_conta[13..17].must_equal '01234'
@@ -94,7 +94,7 @@ describe BrBoleto::Remessa::Cnab240::Itau do
 
 		it "6 - Sexta parte = Conta Corrente DV" do
 			subject.conta.conta_corrente_dv = '8'
-			subject.informacoes_da_conta[19..19].must_equal('8')			
+			subject.informacoes_da_conta[19..19].must_equal('8')
 		end
 	end
 
@@ -125,15 +125,15 @@ describe BrBoleto::Remessa::Cnab240::Itau do
 		it "2 - Segunda parte = conta_corrente com 5 posicoes - ajustados com zeros a esquerda" do
 			subject.conta.conta_corrente = '1234'
 			subject.complemento_p(pagamento)[7..11].must_equal '01234'
-		
+
 			subject.conta.conta_corrente = '26461'
 			subject.complemento_p(pagamento)[7..11].must_equal '26461'
 		end
 
 		it "3 - Terceira parte = deve ser preenchido com 1 espaço em branco" do
-			subject.complemento_p(pagamento)[12..12].must_equal ' '			
+			subject.complemento_p(pagamento)[12..12].must_equal ' '
 		end
-		
+
 		it "4 - Quarta parte = Conta Corrente DV - 1 posicao" do
 			subject.conta.conta_corrente_dv = '7'
 			subject.complemento_p(pagamento)[13..13].must_equal '7'
@@ -142,11 +142,11 @@ describe BrBoleto::Remessa::Cnab240::Itau do
 		it "5 - Quinta parte = carteira com 3 posicoes ajustados com zeros a esquerda" do
 			subject.conta.carteira = '21'
 			subject.complemento_p(pagamento)[14..16].must_equal '021'
-		end			
+		end
 
 		it "6 - Sexta parte = Numero documento com 8 posicoes" do
 			pagamento.numero_documento = '89378'
-			subject.complemento_p(pagamento)[17..24].must_equal '00089378'		
+			subject.complemento_p(pagamento)[17..24].must_equal '00089378'
 
 			pagamento.numero_documento = '12345678'
 			subject.complemento_p(pagamento)[17..24].must_equal '12345678'
@@ -154,7 +154,7 @@ describe BrBoleto::Remessa::Cnab240::Itau do
 
 		it "7 - Setima parte = numero_documento DV com 1 posicao - Deve ser o ultimo digito do nosso numero" do
 			pagamento.nosso_numero = '999/99999999-9'
-			subject.complemento_p(pagamento)[25..25].must_equal '9'			
+			subject.complemento_p(pagamento)[25..25].must_equal '9'
 
 			pagamento.nosso_numero = '999/99999999-0'
 			subject.complemento_p(pagamento)[25..25].must_equal '0'
@@ -171,12 +171,12 @@ describe BrBoleto::Remessa::Cnab240::Itau do
 			subject.segmento_p_numero_do_documento(pagamento).size.must_equal 15
 		end
 
-		it "1 - Primeira parte = deve conter o numero do documento 10 posicoes - ajustados com zeros a esquerda" do	
+		it "1 - Primeira parte = deve conter o numero do documento 10 posicoes - ajustados com zeros a esquerda" do
 			pagamento.expects(:numero_documento).returns("977897")
 			subject.segmento_p_numero_do_documento(pagamento)[0..9].must_equal '0000977897'
 		end
 
-		it "2 - Segunda parte = deve ser preenchido com brancos" do	
+		it "2 - Segunda parte = deve ser preenchido com brancos" do
 			subject.segmento_p_numero_do_documento(pagamento)[10..14].must_equal ' ' * 5
 		end
 	end
