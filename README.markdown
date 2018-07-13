@@ -317,16 +317,16 @@ conta = BrBoleto::Conta::Sicoob.new({
 #### Pagador
 O pagador é o "cliente" que vai pagar o boleto/cobrança. É utilizado no boleto e no Pagamento da remessa.
 ```ruby
-pagador = BrBoleto::Pagador.new do
-  nome =      'João da Silva'
-  cpf_cnpj =  '33.669.170/0001-12' # Gerado pelo gerador de cnpj
-  endereco =  'RUA DO PAGADOR'
-  bairro =    'Bairro do pagador'
-  cep =       '89885-000'
-  cidade =    'Chapecó'
-  uf =        'SC'
-  nome_avalista =      'Maria avalista'
-  documento_avalista = '840.106.990-43' # Gerado pelo gerador de CPF
+pagador = BrBoleto::Pagador.new do |pagador|
+  pagador.nome =      'João da Silva'
+  pagador.cpf_cnpj =  '33.669.170/0001-12' # Gerado pelo gerador de cnpj
+  pagador.endereco =  'RUA DO PAGADOR'
+  pagador.bairro =    'Bairro do pagador'
+  pagador.cep =       '89885-000'
+  pagador.cidade =    'Chapecó'
+  pagador.uf =        'SC'
+  pagador.nome_avalista =      'Maria avalista'
+  pagador.documento_avalista = '840.106.990-43' # Gerado pelo gerador de CPF
 end
 ```
 
