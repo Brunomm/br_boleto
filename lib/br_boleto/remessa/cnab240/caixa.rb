@@ -89,6 +89,14 @@ module BrBoleto
 					complemento
 				end
 
+				# Forma de Cadastr. do Título no Banco
+				#  Preencher com "1" - Cobrança Registrada (C007)
+				#  1 posição
+				#
+				def segmento_p_posicao_059_a_059(pagamento)
+					pagamento.forma_cadastramento
+				end
+
 				# Segmento P para numero do documento
 				# DESCRIÇÃO              TAMANHO     POSIÇÃO
 				# ---------------------------------------------------------
@@ -127,6 +135,22 @@ module BrBoleto
 				#
 				def segmento_p_posicao_224_a_224
 					'1'
+				end
+
+				# Número de Dias para Baixa/Devolução
+				# Como ainda não tem essa configuração no pagamento
+				# Será setado 60 dias por padrão.
+				# Número de dias corridos após a data de vencimento de um Título não pago,
+				# que deverá ser baixado e devolvido para o Beneficiário. Pode ser:
+				#  - De 01 a 999 dias corridos.
+				# Caso informado ‘00’, será considerado para baixa/devolução em D+1 após a Data de Vencimento do Título.
+				# Caso informado brancos, será considerado para baixa/devolução em D+5 após a Data de Vencimento do
+				# Título.
+				#
+				# 3 posoções
+				#
+				def segmento_p_posicao_225_a_227
+					'060'
 				end
 
 				# Segmento Q Cód. Bco. Corresp. na Compensação

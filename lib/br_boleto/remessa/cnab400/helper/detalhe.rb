@@ -22,7 +22,7 @@ module BrBoleto
 						detalhe << detalhe_posicao_001_001                        # Identificação do Registro Detalhe
 						detalhe << detalhe_posicao_002_003(pagamento)             # Tipo de inscrição do beneficiario
 						detalhe << detalhe_posicao_004_017                        # CNPJ do beneficiario
-						detalhe << detalhe_posicao_018_037                        # Informações da conta
+						detalhe << detalhe_posicao_018_037(pagamento, sequencial) # Informações da conta (porém depende de cada banco)
 						detalhe << detalhe_posicao_038_062(pagamento)             # Numero de controle do participante
 						detalhe << detalhe_posicao_063_076(pagamento, sequencial) # Nosso número com DV
 						detalhe << detalhe_posicao_077_108(pagamento, sequencial) # Diferente para cada banco
@@ -62,7 +62,7 @@ module BrBoleto
 					# Informações da conta
 					# Tipo: Numero
 					# Tamanho: 20
-					def detalhe_posicao_018_037
+					def detalhe_posicao_018_037(pagamento, sequencial)
 						informacoes_da_conta(:detalhe)
 					end
 

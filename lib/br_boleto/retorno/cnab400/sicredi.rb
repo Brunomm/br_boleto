@@ -4,11 +4,11 @@ module BrBoleto
 		module Cnab400
 			class Sicredi < BrBoleto::Retorno::Cnab400::Base
 			private
-				# O valor da posição que representa o nosso_numero está 
+				# O valor da posição que representa o nosso_numero está
 				# subdividido em várias partes para o sicredi.
 				#
 				# Nosso Numero (Posição 048 a 062) conforme exemplo informações abaixo:
-				# - Ano             - 02 posições (48 a 49) - Ano Atual 
+				# - Ano             - 02 posições (48 a 49) - Ano Atual
 				# - Byte Idt.       - 01 posições (50 a 50) - Byte de identificação
 				# - Número Seq.     - 05 posições (51 a 55) - Número sequencial
 				# - DV nosso num.   - 01 posição  (56 a 56) - Dígito verificador nosso número
@@ -28,6 +28,7 @@ module BrBoleto
 						codigo_pagador_associado:      20..24,
 						nosso_numero_sem_dv:           48..55,
 						nosso_numero_dv:               56,
+						codigo_ocorrencia_retorno:     109..110,
 						data_ocorrencia:               111..116,
 						data_ocorrencia_sacado:        111..116,
 						numero_documento:              117..126,

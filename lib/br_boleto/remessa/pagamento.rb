@@ -2,13 +2,13 @@
 module BrBoleto
 	module Remessa
 		class Pagamento < BrBoleto::ActiveModelBase
-			
+
 			# conté o metodo 'pagador'
 			# CNAB: 240 e 400
 			include BrBoleto::HavePagador
 
 			include BrBoleto::Helper::DefaultCodes
-			
+
 			# <b>REQUERIDO</b>: nosso numero
 			# CNAB: 240 e 400
 			attr_accessor :nosso_numero
@@ -37,7 +37,7 @@ module BrBoleto
 			#                   1 - Frente do Bloqueto
 			#                   2 - Verso do Bloauqto
 			#                   3 - Corpo de instruções da Ficha de Complansação
-			# 
+			#
 			attr_accessor :tipo_impressao # Default '1'
 
 			# <b>OPCIONAL</b>: codigo da 1a instrucao
@@ -59,7 +59,7 @@ module BrBoleto
 
 			# <b>OPCIONAL</b>: valor do IOF
 			attr_accessor :valor_iof
-			
+
 			# <b>OPCIONAL</b>: valor do abatimento
 			attr_accessor :valor_abatimento
 
@@ -99,18 +99,18 @@ module BrBoleto
 
 			# <b>OPCIONAL</b>: Informações para Juros
 			#  Código do juros pode ser:
-			#      - '1' Valor por Dia
-			#      - '2' Taxa Mensal
+			#      - '1' Valor por Dia R$
+			#      - '2' Taxa Mensal %
 			#      - '3' Isento
 			#      - E Ainda alguns bancos como o SICOOB não conseguem seguir o padrão e usam o cód '0' para Isento
 			attr_accessor :codigo_juros, :data_juros
 			attr_accessor :valor_juros      # Valor de acordo com o código da multa
-			
+
 			# Cálculo para saber a taxa de juros % ao mês.
 			# É efetuado o calculo apenas quando o codigo de juros for setado
 			# com 1, na qual significa que foi setado o valor R$ diário.
 			# Esse método sempre deve retornar o percentual de juros MENSAL
-			# 
+			#
 			def percentual_juros # Valor % Ex: 2.5% = 2.5
 				if codigo_juros.to_i == 1
 					(valor_juros.to_f*30/valor_documento.to_f*100).to_f.round(2)
@@ -129,12 +129,12 @@ module BrBoleto
 					0.0
 				end
 			end
-			
+
 			# <b>OPCIONAL</b>: Número da parquela que o pagamento representa
 			# Padrão: 1
 			# CNAB: 240 e 400
 			attr_accessor :parcela
-			
+
 			# Tipo de Emissão: 1-Banco/Cooperativa 2-Cliente
 			# Banco Sicoob utiliza
 			# CNAB: 240 e 400
@@ -212,7 +212,7 @@ module BrBoleto
 				# 23 =  Nota Fiscal
 				# 24 =  Documento de Dívida
 				# 25 =  Cédula de Produto Rural
-				# 26 =  Warrant 
+				# 26 =  Warrant
 				# 27 =  Dívida Ativa de Estado
 				# 28 =  Dívida Ativa de Município
 				# 29 =  Dívida Ativa da União
@@ -226,7 +226,7 @@ module BrBoleto
 			# Aceite título
 			# "0" = Sem aceite / "1" = Com aceite" / Depende de
 			# "N" = Sem aceite / "S" = Com aceite" \ cada banco
-			# "N" = Sem aceite / "A" = Com aceite" \ 
+			# "N" = Sem aceite / "A" = Com aceite" \
 			#  CNAB: 240 e 400
 			# Setar true para Aceite e false para Não aceite
 			attr_accessor :aceite
@@ -283,13 +283,13 @@ module BrBoleto
 			########################  VALIDAÇÕES PERSONALIZADAS  ########################
 				attr_accessor :valid_tipo_impressao_required
 				validates :tipo_impressao, presence: true, if: :valid_tipo_impressao_required
-				
+
 				attr_accessor :valid_cod_desconto_length
 				validates :cod_desconto, custom_length: {is: :valid_cod_desconto_length}, if: :valid_cod_desconto_length
 
 				attr_accessor :valid_emissao_boleto_length
 				validates :emissao_boleto, custom_length: {is: :valid_emissao_boleto_length}, if: :valid_emissao_boleto_length
-				
+
 				attr_accessor :valid_distribuicao_boleto_length
 				validates :distribuicao_boleto, custom_length: {is: :valid_distribuicao_boleto_length}, if: :valid_distribuicao_boleto_length
 			#############################################################################
@@ -309,9 +309,9 @@ module BrBoleto
 
 			# Nosso número deve retornar apenas letras e números
 			# Ex: self.nosso_numero = '0100245-P'
-			#     self.nosso_numero 
+			#     self.nosso_numero
 			#      ~> '0100245P'
-			# 
+			#
 			def nosso_numero
 				"#{@nosso_numero}".remove(/[^\d\w]/i)
 			end
@@ -339,7 +339,7 @@ module BrBoleto
 					identificacao_ocorrencia: '01',
 					especie_titulo:           '01',
 					codigo_moeda:             '9',
-					forma_cadastramento:      '0',
+					forma_cadastramento:      '1',
 					emissao_boleto:           '2',  # Cliente Emite
 					distribuicao_boleto:      '2',  # Cliente Distribui
 					codigo_protesto:          '3',  # Não protestar
@@ -373,7 +373,7 @@ module BrBoleto
 				formata_data(data_multa, formato)
 			end
 			def valor_multa_formatado(tamanho=13)
-				BrBoleto::Helper::Number.new(valor_multa).formata_valor_monetario(tamanho) 
+				BrBoleto::Helper::Number.new(valor_multa).formata_valor_monetario(tamanho)
 			end
 
 			# Formatação para campos da juros
@@ -381,7 +381,7 @@ module BrBoleto
 				formata_data(data_juros, formato)
 			end
 			def valor_juros_formatado(tamanho=13)
-				BrBoleto::Helper::Number.new(valor_juros).formata_valor_monetario(tamanho) 
+				BrBoleto::Helper::Number.new(valor_juros).formata_valor_monetario(tamanho)
 			end
 
 			# Formata o campo valor
@@ -392,7 +392,7 @@ module BrBoleto
 			#   quantidade de caracteres a ser retornado
 			#
 			def valor_documento_formatado(tamanho = 13)
-				BrBoleto::Helper::Number.new(valor_documento).formata_valor_monetario(tamanho) 
+				BrBoleto::Helper::Number.new(valor_documento).formata_valor_monetario(tamanho)
 			end
 
 			# Formata o campo valor_juros_monetario
@@ -403,7 +403,7 @@ module BrBoleto
 			#   quantidade de caracteres a ser retornado
 			#
 			def valor_juros_monetario_formatado(tamanho = 13)
-				BrBoleto::Helper::Number.new(valor_juros_monetario).formata_valor_monetario(tamanho) 
+				BrBoleto::Helper::Number.new(valor_juros_monetario).formata_valor_monetario(tamanho)
 			end
 
 			# Formata o campo valor_multa_monetario
@@ -414,7 +414,7 @@ module BrBoleto
 			#   quantidade de caracteres a ser retornado
 			#
 			def valor_multa_monetario_formatado(tamanho = 13)
-				BrBoleto::Helper::Number.new(valor_multa_monetario).formata_valor_monetario(tamanho) 
+				BrBoleto::Helper::Number.new(valor_multa_monetario).formata_valor_monetario(tamanho)
 			end
 
 			# Formata o campo valor dos descontos
@@ -423,13 +423,13 @@ module BrBoleto
 			#   quantidade de caracteres a ser retornado
 			#
 			def valor_desconto_formatado(tamanho = 13)
-				BrBoleto::Helper::Number.new(valor_desconto).formata_valor_monetario(tamanho) 
+				BrBoleto::Helper::Number.new(valor_desconto).formata_valor_monetario(tamanho)
 			end
 			def desconto_2_valor_formatado(tamanho = 13)
-				BrBoleto::Helper::Number.new(desconto_2_valor).formata_valor_monetario(tamanho) 
+				BrBoleto::Helper::Number.new(desconto_2_valor).formata_valor_monetario(tamanho)
 			end
 			def desconto_3_valor_formatado(tamanho = 13)
-				BrBoleto::Helper::Number.new(desconto_3_valor).formata_valor_monetario(tamanho) 
+				BrBoleto::Helper::Number.new(desconto_3_valor).formata_valor_monetario(tamanho)
 			end
 
 			# Formata o campo valor do IOF
@@ -438,7 +438,7 @@ module BrBoleto
 			#   quantidade de caracteres a ser retornado
 			#
 			def valor_iof_formatado(tamanho = 13)
-				BrBoleto::Helper::Number.new(valor_iof).formata_valor_monetario(tamanho) 
+				BrBoleto::Helper::Number.new(valor_iof).formata_valor_monetario(tamanho)
 			end
 
 			# Formata o campo valor do IOF
@@ -447,7 +447,7 @@ module BrBoleto
 			#   quantidade de caracteres a ser retornado
 			# CNAB: 240 e 400
 			def valor_abatimento_formatado(tamanho = 13)
-				BrBoleto::Helper::Number.new(valor_abatimento).formata_valor_monetario(tamanho) 
+				BrBoleto::Helper::Number.new(valor_abatimento).formata_valor_monetario(tamanho)
 			end
 
 			# Formata o valor percentual da multa
@@ -458,7 +458,7 @@ module BrBoleto
 			def percentual_multa_formatado(tamanho = 6)
 				BrBoleto::Helper::Number.new(percentual_multa).formata_valor_percentual(tamanho).adjust_size_to(tamanho, '0')
 			end
-			
+
 			# Formata o valor percentual do juros
 			# Ex:
 			#   2.5%    = 2.5  = 025000
@@ -468,7 +468,7 @@ module BrBoleto
 				BrBoleto::Helper::Number.new(percentual_juros).formata_valor_percentual(tamanho).adjust_size_to(tamanho, '0')
 			end
 
-			
+
 		private
 
 			def formata_data(value, formato="%d%m%Y")

@@ -6,7 +6,7 @@ module BrBoleto
 				def conta_class
 					BrBoleto::Conta::Sicoob
 				end
-				
+
 				# Tipo Formulário - 01 posição  (15 a 15):
 				#      "1" -auto-copiativo
 				#      "3" -auto-envelopável
@@ -23,7 +23,7 @@ module BrBoleto
 				##############################################################
 
 				validates :tipo_formulario, presence: true
-				
+
 				def default_values
 					super.merge({
 						tipo_formulario:     '4'
@@ -91,6 +91,14 @@ module BrBoleto
 					result
 				end
 
+				# Forma de Cadastr. do Título no Banco
+				#  Preencher com "0"
+				#  1 posição
+				#
+				def segmento_p_posicao_059_a_059(pagamento)
+					'0'
+				end
+
 				# Tipo de Documento
 				# 1 posição
 				# Branco
@@ -134,7 +142,7 @@ module BrBoleto
 					result << "#{pagamento.parcela}".adjust_size_to(2, '0', :right)
 					result << "#{conta.modalidade}".adjust_size_to(2, '0', :right)
 					result << "#{tipo_formulario}".adjust_size_to(1, '1')
-					result.adjust_size_to(20)					
+					result.adjust_size_to(20)
 				end
 
 				def complemento_trailer_lote(lote, nr_lote)

@@ -72,7 +72,7 @@ describe BrBoleto::Conta::Sicredi do
 			must_be_message_error(:posto, :custom_length_maximum, {count: 2})
 			subject.posto = '12'
 			wont_be_message_error(:posto, :custom_length_maximum, {count: 2})
-		end	
+		end
 		context 'Validações padrões do byte_id'	 do
 			subject { BrBoleto::Conta::Sicredi.new }
 			it { must validate_presence_of(:byte_id) }
@@ -120,7 +120,7 @@ describe BrBoleto::Conta::Sicredi do
 			subject.posto = 4
 			subject.posto.must_equal '04'
 		end
-	end	
+	end
 	describe '#byte_id' do
 		it "deve ajustar  valor para 1 digito" do
 			subject.byte_id = 4
@@ -130,15 +130,15 @@ describe BrBoleto::Conta::Sicredi do
 
 	describe "#equivalent_especie_titulo_240" do
 		context "CÓDIGOS para o cnab 240 do Sicredi" do
-			it { subject.get_especie_titulo('01', 240).must_equal '03' }  # Duplicata Mercantil por Indicação (DMI)
+			it { subject.get_especie_titulo('01', 240).must_equal '99' }  # Cheque >> Outros
 			it { subject.get_especie_titulo('02', 240).must_equal '03' }  # Duplicata Mercantil por Indicação (DMI)
 		end
 	end
 
 	describe "#equivalent_especie_titulo_400" do
 		context "CÓDIGOS para o cnab 400 do Sicredi" do
-			it { subject.get_especie_titulo('01', 400).must_equal 'A' }  
-			it { subject.get_especie_titulo('02', 400).must_equal 'A' }  
+			it { subject.get_especie_titulo('01', 400).must_equal 'A' }
+			it { subject.get_especie_titulo('02', 400).must_equal 'A' }
 			it { subject.get_especie_titulo('03', 400).must_equal 'A' }  # Duplicata Mercantil por Indicação (DMI)
 			it { subject.get_especie_titulo('06', 400).must_equal 'B' }  # Duplicata Rural (DR)
 			it { subject.get_especie_titulo('12', 400).must_equal 'C' }  # Nota Promissória (NP)
@@ -156,10 +156,10 @@ describe BrBoleto::Conta::Sicredi do
 	describe "#equivalent_tipo_cobranca_400" do
 		it { subject.get_tipo_cobranca('1', 400).must_equal 'A' }  # Cobrança Simples
 	end
-	
+
 	describe "#equivalent_tipo_impressao_400" do
 		it { subject.get_tipo_impressao('1', 400).must_equal 'A' }  # Frente do Bloqueto
-	end	
+	end
 
 	describe "#equivalent_identificacao_emissao_400" do
 		it { subject.get_identificacao_emissao('1', 400).must_equal 'A' }  # Impressão é feita pelo Sicredi

@@ -20,7 +20,7 @@ module BrBoleto
 				def informacoes_da_conta(local)
 
 					# Detalhe Posição:  017 até 037
-					if local == :detalhe 
+					if local == :detalhe
 						# POSIÇÂO    TAM.  Descrição
 						# 017 a 017  001  Tipo de moeda     ( “A” – Real )
 						# 018 a 018  001  Tipo de desconto  ( “B” – Percentual )
@@ -116,6 +116,17 @@ module BrBoleto
 					detalhe_posicao_005_016
 				end
 
+				# POSIÇÂO         TAM.     Descrição
+				#-----------------------------------------------
+				# 018 a 018       001      Tipo de desconto ("A" = Valor / "B" = Percentual)
+				# 019 a 019       001      Tipo de juros    ("A" = Valor / "B" = Percentual)
+				# 020 a 037       018      Brancos
+				# Tipo: Numero
+				# Tamanho: 20
+				def detalhe_posicao_018_037(pagamento, sequencial)
+					informacoes_da_conta(:detalhe)
+				end
+
 				# Detalhe Posição 038 a 062
 				#-----------------------------------------------
 				# POSIÇÂO         TAM.     Descrição
@@ -164,7 +175,8 @@ module BrBoleto
 					dados << ''.adjust_size_to(2)
 					dados << ''.adjust_size_to(4)
 					dados << ''.adjust_size_to(10, '0')
-					dados << ''.adjust_size_to(4, '0')
+					# dados << ''.adjust_size_to(4, '0')
+					dados << pagamento.percentual_multa_formatado( 4 )
 					dados << ''.adjust_size_to(12)
 					dados
 				end
@@ -175,11 +187,11 @@ module BrBoleto
 				# 121 a 126    006    Data do Vencimento do Título
 				# 127 a 139    013    Valor do Título
 				# 140 a 148    009    Brancos
-				# 149 a 149    001    Espécie de Título 
+				# 149 a 149    001    Espécie de Título
 				# 150 a 150    001    Identificação (Sempre 'N')
 				# 151 a 156    006    Data da emissão do Título
 				# 157 a 158    002    1a instrução
-				# 159 a 160    002    2a instrução 
+				# 159 a 160    002    2a instrução
 				#
 				# Tamanho: 40
 				def informacoes_do_pagamento(pagamento, sequencial)
@@ -206,7 +218,11 @@ module BrBoleto
 				# Tamanho: 58
 				def detalhe_multas_e_juros_do_pagamento(pagamento, sequencial)
 					detalhe = ''
-					detalhe << pagamento.valor_juros_monetario_formatado(13)
+					if pagamento.codigo_juros.to_i == 1
+						detalhe << pagamento.valor_juros_monetario_formatado(13)
+					else
+						detalhe << BrBoleto::Helper::Number.new( pagamento.percentual_juros ).formata_valor_monetario(13)
+					end
 					detalhe << "#{pagamento.data_desconto_formatado('%d%m%y')}".adjust_size_to(6,'0', :right )
 					detalhe << "#{pagamento.valor_desconto_formatado}".adjust_size_to(13,'0', :right )
 					detalhe << ''.adjust_size_to(13,'0')
@@ -247,7 +263,7 @@ module BrBoleto
 					info << ''.adjust_size_to(5, '0')                                                  # Código do Pagador
 					info << "#{pagamento.pagador.documento_avalista}".adjust_size_to(14, '0', :right)  # Sacador/Avalista (CPF/CNPJ)
 					info << "#{pagamento.pagador.nome_avalista}".adjust_size_to(41)                    # Sacador/Avalista (Nome)
-					info                                                
+					info
 				end
 
 			############################ TRAILER #######################################

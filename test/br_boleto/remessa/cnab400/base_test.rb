@@ -2,9 +2,9 @@ require 'test_helper'
 
 describe BrBoleto::Remessa::Cnab400::Base do
 	subject { FactoryGirl.build(:remessa_cnab400_base, pagamentos: pagamento, conta: conta) }
-	let(:pagamento) { FactoryGirl.build(:remessa_pagamento) } 
-	let(:conta)     { FactoryGirl.build(:conta_sicoob) } 
-	let(:sequence_1) { sequence('sequence_1') } 
+	let(:pagamento) { FactoryGirl.build(:remessa_pagamento) }
+	let(:conta)     { FactoryGirl.build(:conta_sicoob) }
+	let(:sequence_1) { sequence('sequence_1') }
 
 	before do
 		BrBoleto::Remessa::Cnab400::Base.any_instance.stubs(:conta_class).returns(conta.class)
@@ -65,7 +65,7 @@ describe BrBoleto::Remessa::Cnab400::Base do
 		end
 	end
 
-	
+
 	describe '#Header' do
 		it '#monta_header deve chamar os metodos para montar o header' do
 			subject.expects(:header_posicao_001_a_001).in_sequence(sequence_1).returns('001_a_001-')
@@ -137,7 +137,7 @@ describe BrBoleto::Remessa::Cnab400::Base do
 			subject.expects(:detalhe_posicao_001_001).returns('001_001 a-').in_sequence(sequence_1)
 			subject.expects(:detalhe_posicao_002_003).returns('002_003 b-').in_sequence(sequence_1)
 			subject.expects(:detalhe_posicao_004_017).returns('004_017 c-').in_sequence(sequence_1)
-			subject.expects(:detalhe_posicao_018_037).returns('018_037 d-').in_sequence(sequence_1)
+			subject.expects(:detalhe_posicao_018_037).returns('018_037 d-').in_sequence(sequence_1).with(pagamento, 4)
 			subject.expects(:detalhe_posicao_038_062).returns('038_062 e-').in_sequence(sequence_1)
 			subject.expects(:detalhe_posicao_063_076).returns('063_076 f-').in_sequence(sequence_1).with(pagamento, 4)
 			subject.expects(:detalhe_posicao_077_108).returns('077_108 g-').in_sequence(sequence_1).with(pagamento, 4)
@@ -166,7 +166,7 @@ describe BrBoleto::Remessa::Cnab400::Base do
 
 		it '#detalhe_posicao_018_037 - deve retornar as informações da conta' do
 			subject.expects(:informacoes_da_conta).with(:detalhe).returns('informacoes_da_conta')
-			subject.detalhe_posicao_018_037.must_equal 'informacoes_da_conta'
+			subject.detalhe_posicao_018_037(pagamento, 5).must_equal 'informacoes_da_conta'
 
 		end
 
@@ -239,7 +239,7 @@ describe BrBoleto::Remessa::Cnab400::Base do
 	end
 
 	describe '#dados_do_arquivo' do
-		
+
 		it "deve montar os dados do arquivo setando o sequencial e os pagamentos corretamente - com 1 pagamento" do
 			subject.expects(:monta_header).returns('montã_header')
 			subject.expects(:monta_detalhe).with(pagamento, 2).returns('mônta_detalhe')

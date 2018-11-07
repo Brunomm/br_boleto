@@ -2,7 +2,7 @@
 module BrBoleto
 	module Conta
 		class Sicredi < BrBoleto::Conta::Base
-			
+
 			# MODALIDADE CARTEIRA:
 			#      _______________________________________________
 			#     | Carteira | Descrição                         |
@@ -37,7 +37,7 @@ module BrBoleto
 
 			def default_values
 				super.merge({
-					carteira:                      '1', 			 
+					carteira:                      '1',
 					valid_carteira_required:       true,    # <- Validação dinâmica que a modalidade é obrigatória
 					valid_carteira_length:         1,       # <- Validação dinâmica que a modalidade deve ter 1 digito
 					valid_carteira_inclusion:      %w[1 3], # <- Validação dinâmica de valores aceitos para a modalidade
@@ -47,7 +47,7 @@ module BrBoleto
 					valid_convenio_maximum:        5,       # <- Validação que a convenio deve ter no máximo 5 digitos
 					codigo_carteira:               '1',     # Cobrança Simples
 					valid_codigo_carteira_length:   1,      # <- Validação dinâmica que a modalidade deve ter 1 digito
-					posto:                         '0',     
+					posto:                         '0',
 					valid_posto_maximum:           2,       # <- Validação que a posto deve ter no máximo 2 digitos
 					valid_posto_required:          true,    # <- Validação que a posto deve ter obrigatório
 					byte_id:                      '2',
@@ -91,7 +91,7 @@ module BrBoleto
 			end
 
 			# Campo Agência / Código do Cedente
-			# @return [String] Agência com 4 caracteres . Posto do beneficiário com 2 caracteres . Código do beneficiário com 5 caracteres 
+			# @return [String] Agência com 4 caracteres . Posto do beneficiário com 2 caracteres . Código do beneficiário com 5 caracteres
 			# Exemplo: AAAA.PP.CCCCC
 			def agencia_codigo_cedente
 				"#{agencia}.#{posto}.#{codigo_cedente}"
@@ -100,20 +100,64 @@ module BrBoleto
 
 			##################################### DEFAULT CODES ###############################################
 
-				# Espécie do Título CNAB 240 
+				# Espécie do Título CNAB 240
+				# '03' = DMI duplicata mercantil por indicação
+				# '05' = DSI duplicata de serviço por indicação
+				# '06' = DR duplicata rural
+				# '07' = LC letra de câmbio
+				# '12' = NP nota promissória
+				# '13' = NPR nota promissória rural
+				# '16' = NS nota de seguro
+				# '17' = RC recibo
+				# '19' = ND nota de débito
+				# '32' = Boleto Proposta
+				# '99' = Outros
 				def equivalent_especie_titulo_240
 					super.merge(
-						#  Padrão    Código para  
+						#  Padrão    Código para
 						{# da GEM     o Banco
-							'01'    =>   '03', # Duplicata Mercantil por Indicação (DMI)
-							'02'    =>   '03'  # Duplicata Mercantil por Indicação (DMI)
-						})
+							'01'  => '99',  # CH   –  Cheque
+							'02'  => '03',  # DM   –  Duplicata Mercantil
+							'03'  => '03',  # DMI  –  Duplicata Mercantil p/ Indicação
+							'04'  => '05',  # DS   –  Duplicata de Serviço
+							'05'  => '05',  # DSI  –  Duplicata de Serviço p/ Indicação
+							'06'  => '06',  # DR   –  Duplicata Rural
+							'07'  => '07',  # LC   –  Letra de Câmbio
+							'08'  => '99',  # NCC  –  Nota de Crédito Comercial
+							'09'  => '99',  # NCE  –  Nota de Crédito a Exportação
+							'10'  => '99',  # NCI  –  Nota de Crédito Industrial
+							'11'  => '99',  # NCR  –  Nota de Crédito Rural
+							'12'  => '12',  # NP   –  Nota Promissória
+							'13'  => '13',  # NPR  –  Nota Promissória Rural
+							'14'  => '99',  # TM   –  Triplicata Mercantil
+							'15'  => '99',  # TS   –  Triplicata de Serviço
+							'16'  => '16',  # NS   –  Nota de Seguro
+							'17'  => '17',  # RC   –  Recibo
+							'18'  => '99',  # FAT  –  Fatura
+							'19'  => '19',  # ND   –  Nota de Débito
+							'20'  => '99',  # AP   –  Apólice de Seguro
+							'21'  => '99',  # ME   –  Mensalidade Escolar
+							'22'  => '99',  # PC   –  Parcela de Consórcio
+							'23'  => '99',  # NF   –  Nota Fiscal
+							'24'  => '99',  # DD   –  Documento de Dívida
+							'25'  => '99',  # Cédula de Produto Rural
+							'26'  => '99',  # Warrant
+							'27'  => '99',  # Dívida Ativa de Estado
+							'28'  => '99',  # Dívida Ativa de Município
+							'29'  => '99',  # Dívida Ativa da União
+							'30'  => '99',  # Encargos condominiais
+							'31'  => '99',  # CC  –  Cartão de Crédito
+							'32'  => '32',  # BDP –  Boleto de Proposta
+							'99'  => '99',  # Outros
+						}
+					)
 				end
+
 
 				# Espécie do Título CNAB 400
 				def equivalent_especie_titulo_400
 					super.merge(
-						#  Padrão    Código para  
+						#  Padrão    Código para
 						{# da GEM     o Banco
 							'01'    =>   'A',
 							'02'    =>   'A',
@@ -131,25 +175,25 @@ module BrBoleto
 						})
 				end
 
-				# Código da Carteira 
+				# Código da Carteira
 				def equivalent_tipo_cobranca_400
 					super.merge({ '1' => 'A' }) # Cobrança Simples
-				end	
+				end
 
-				# Identificação do Tipo de Impressão : 
+				# Identificação do Tipo de Impressão :
 				def equivalent_tipo_impressao_400
 					super.merge({ '1' => 'A' }) # Frente do Bloqueto
-				end	
+				end
 
-				# Código da Moeda : 
+				# Código da Moeda :
 				def equivalent_codigo_moeda_400
 					super.merge({ '09' => 'A' }) # Real
-				end	
+				end
 
 				# Identificação da Emissão do Boleto de Pagamento
 				def equivalent_identificacao_emissao_400
 					super.merge(
-						#  Padrão    Código para  
+						#  Padrão    Código para
 						{# da GEM     o Banco
 							'1'    =>   'A',  # Impressão é feita pelo Sicredi
 							'2'    =>   'B',  # Impressão é feita pelo Beneficiário
@@ -170,10 +214,10 @@ module BrBoleto
 					}
 				end
 
-				# Código de Movimento Retorno 
+				# Código de Movimento Retorno
 				def equivalent_codigo_movimento_retorno_240
 					super.merge(
-						#  Padrão    Código para  
+						#  Padrão    Código para
 						{# do Banco    a GEM
 							'36'   =>   '100',      # Baixa rejeitada
 						})
@@ -184,7 +228,7 @@ module BrBoleto
 					%w[27]
 				end
 				def equivalent_codigo_motivo_ocorrencia_D_240 codigo_movimento_gem
-					#  Código     Padrão para  
+					#  Código     Padrão para
 					{# do Banco     a Gem
 						'01'    =>   'D01',   # Alteração de carteira
 					}
@@ -192,7 +236,7 @@ module BrBoleto
 
 				def equivalent_codigo_motivo_ocorrencia_A_400 codigo_movimento_gem
 					super.merge(
-						#  Padrão    Código para  
+						#  Padrão    Código para
 						{# do Banco    a GEM
 							'01'   =>   'A01',     # Código do banco inválido
 							'02'   =>   'A02',     # Código do registro detalhe inválido
@@ -244,7 +288,7 @@ module BrBoleto
 
 				def equivalent_codigo_motivo_ocorrencia_B_400 codigo_movimento_gem
 					super.merge(
-						#  Padrão    Código para  
+						#  Padrão    Código para
 						{# do Banco    a GEM
 							'03'   =>   'B03',     # Tarifa de sustação
 							'04'   =>   'B04',     # Tarifa de protesto
@@ -259,7 +303,7 @@ module BrBoleto
 				# Identificações de Ocorrência / Código de ocorrência:
 				def equivalent_codigo_movimento_retorno_400
 					super.merge(
-						#  Padrão    Código para  
+						#  Padrão    Código para
 						{# do Banco    a GEM
 							'15'   =>   '101', # Liquidação em cartório
 							'24'   =>   '106', # Entrada rejeitada por CEP irregular
@@ -270,7 +314,7 @@ module BrBoleto
 							'35'   =>   '105', # Aceite do pagador
 						})
 				end
-				
+
 		end
 	end
 end
