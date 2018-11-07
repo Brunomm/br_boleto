@@ -55,6 +55,11 @@ module BrBoleto
 			attr_accessor :valor_desconto
 
 			# <b>OPCIONAL</b>: codigo do desconto (para CNAB240)
+			# Indica o tipo de desconto que deseja conceder ao Pagador do título:
+			#  - "0" - Sem Desconto;
+			#  - "1" - Valor Fixo até a Data do Desconto informada;
+			#  - "2" - Percentual até a Data do Desconto informada
+			#
 			attr_accessor :cod_desconto
 
 			# <b>OPCIONAL</b>: valor do IOF

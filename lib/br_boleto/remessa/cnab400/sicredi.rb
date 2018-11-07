@@ -83,37 +83,34 @@ module BrBoleto
 
          ############################ DETALHE ########################################
 
-				# Detalhe Posição 002 a 004
+				# Detalhe Posição 002 a 003
 				# POSIÇÂO         TAM.     Descrição
 				#-----------------------------------------------
 				# 002 a 002       001      Tipo de cobrança  (“A” - Sicredi Com Registro)
 				# 003 a 003       001      Tipo de carteira  (“A” – Simples)
-				# 004 a 004       001      Tipo de Impressão ("A” – Normal)
 				#
-				# Tamanho: 003
-				def detalhe_posicao_002_004(pagamento)
+				# Tamanho: 002
+				def detalhe_posicao_002_003(pagamento)
 					detalhe = ''
 					detalhe << "#{conta.get_tipo_cobranca(conta.carteira, 400)}".adjust_size_to(1, 'A')
 					detalhe << "#{conta.get_tipo_cobranca(conta.codigo_carteira, 400)}".adjust_size_to(1, 'A')
-					detalhe << "#{conta.get_tipo_impressao(pagamento.tipo_impressao, 400)}".adjust_size_to(1, 'A')
 					detalhe
-				end
-				def detalhe_posicao_002_003(pagamento)
-					detalhe_posicao_002_004(pagamento)
 				end
 
 
 				# Detalhe Posição 005 a 016
 				# POSIÇÂO         TAM.     Descrição
 				#-----------------------------------------------
+				# 004 a 004       001      Tipo de Impressão ("A” – Normal)
 				# 005 a 016       012      Deixar em Branco
+				# 017 a 017       001      "A" - Real
 				#
-				# Tamanho: 012
-				def detalhe_posicao_005_016
-					detalhe = ''.adjust_size_to(12)
-				end
-				def detalhe_posicao_004_017
-					detalhe_posicao_005_016
+				# Tamanho: 014
+				def detalhe_posicao_004_017(pagamento, sequencial)
+					detalhe = "#{conta.get_tipo_impressao(pagamento.tipo_impressao, 400)}".adjust_size_to(1, 'A')
+					detalhe << ''.adjust_size_to(12)
+					detalhe << 'A'
+					detalhe
 				end
 
 				# POSIÇÂO         TAM.     Descrição
@@ -124,7 +121,10 @@ module BrBoleto
 				# Tipo: Numero
 				# Tamanho: 20
 				def detalhe_posicao_018_037(pagamento, sequencial)
-					informacoes_da_conta(:detalhe)
+					detalhe =  pagamento.cod_desconto.to_i == 1 ? 'A' : 'B'
+					detalhe << (pagamento.codigo_juros.to_i == 1 ? 'A' : 'B')
+					detalhe << "".adjust_size_to(18)
+					detalhe
 				end
 
 				# Detalhe Posição 038 a 062
@@ -154,7 +154,7 @@ module BrBoleto
 				# 077 a 078       002      Número Total de parcelas do carnê
 				# 079 a 082       004      Brancos
 				# 083 a 092       010      Valor Desconto por dia de antecipação (Preencher com Zeros)
-				# 093 a 096       004      % multa por pagamento em atraso (Preencher com Zeros)
+				# 093 a 096       004      Alinhado à direita com zeros à esquerda, sem separador decimal ou preencher com zeros.
 				# 097 a 108       012      Brancos
 				#
 				# Tamanho: 46
@@ -175,7 +175,6 @@ module BrBoleto
 					dados << ''.adjust_size_to(2)
 					dados << ''.adjust_size_to(4)
 					dados << ''.adjust_size_to(10, '0')
-					# dados << ''.adjust_size_to(4, '0')
 					dados << pagamento.percentual_multa_formatado( 4 )
 					dados << ''.adjust_size_to(12)
 					dados

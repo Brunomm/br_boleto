@@ -37,20 +37,20 @@ module BrBoleto
 
 ############################## DETALHE #########################################################
 
-				# Informações Opcionais no Bradesco. 
-				# Somente deverão ser preenchidos, caso o cliente Beneficiário esteja previamente 
+				# Informações Opcionais no Bradesco.
+				# Somente deverão ser preenchidos, caso o cliente Beneficiário esteja previamente
 				# cadastrado para operar com a modalidade de cobrança com débito automático
 				def detalhe_posicao_002_003(pagamento)
 					''.adjust_size_to(2)
 				end
-				def detalhe_posicao_004_017
+				def detalhe_posicao_004_017(pagamento, sequencial)
 					''.adjust_size_to(14)
 				end
 
 				# Informações da conta <- Específico para cada banco
 				# Posição: 018 até 037
 				# Tipo: Numérico
-				# Tamanho: 020				
+				# Tamanho: 020
 				def informacoes_da_conta(local)
 
 					# POSIÇÂO    TAM.  Descrição
@@ -60,7 +60,7 @@ module BrBoleto
 					# 025 a 029  005  Códigos da Agência Beneficiários (sem o dígito)
 					# 030 a 036  007  Contas Corrente
 					# 037 a 037  001  Dígito da Conta
-					if local == :detalhe 
+					if local == :detalhe
 						info = ''.adjust_size_to(3)
 						info << '0'
 						info << "#{conta.carteira}".adjust_size_to(3, '0', :right)
@@ -118,8 +118,8 @@ module BrBoleto
 					info << ''.adjust_size_to(2)
 					info
 				end
-			
-				
+
+
 				# Informações referente ao pagamento
 				# Posição 121 até 160
 				# POSIÇÂO      TAM.   Descrição
@@ -127,11 +127,11 @@ module BrBoleto
 				# 127 a 139    013    Valor do Título
 				# 140 a 142    003    Banco Encarregado da Cobrança (Preencher com zeros)
 				# 143 a 147    005    Agência Depositária (Preencher com zeros)
-				# 148 a 149    002    Espécie de Título 
+				# 148 a 149    002    Espécie de Título
 				# 150 a 150    001    Identificação (Sempre 'N')
 				# 151 a 156    006    Data da emissão do Título
 				# 157 a 158    002    1a instrução
-				# 159 a 160    002    2a instrução 
+				# 159 a 160    002    2a instrução
 				# Tamanho: 40
 				def informacoes_do_pagamento(pagamento, sequencial)
 					dados = ''
@@ -170,7 +170,7 @@ module BrBoleto
 					dados << ''.adjust_size_to(2,'0', :right) # 1a Instrução
 					dados << ''.adjust_size_to(2,'0', :right) # 2a Instrução
 					dados
-					
+
 				end
 
 				# Informações referente aos juros e multas do pagamento
@@ -219,7 +219,7 @@ module BrBoleto
 					info << "#{pagamento.pagador.cep}".adjust_size_to(8, '0', :right)    # CEP + Sufixo do CEP
 					info << "#{pagamento.pagador.documento_avalista}".adjust_size_to(14) # Sacador/Avalista (CPF/CNPJ)
 					info << "#{pagamento.pagador.nome_avalista}".adjust_size_to(46)      # Sacador/Avalista (Nome)
-					info                                                
+					info
 				end
 ################################################################################################
 

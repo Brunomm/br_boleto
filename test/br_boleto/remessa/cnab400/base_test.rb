@@ -136,7 +136,7 @@ describe BrBoleto::Remessa::Cnab400::Base do
 		it "#monta_detalhe - deve montar as 400 posições do com as informações do pagamento" do
 			subject.expects(:detalhe_posicao_001_001).returns('001_001 a-').in_sequence(sequence_1)
 			subject.expects(:detalhe_posicao_002_003).returns('002_003 b-').in_sequence(sequence_1)
-			subject.expects(:detalhe_posicao_004_017).returns('004_017 c-').in_sequence(sequence_1)
+			subject.expects(:detalhe_posicao_004_017).returns('004_017 c-').in_sequence(sequence_1).with(pagamento, 4)
 			subject.expects(:detalhe_posicao_018_037).returns('018_037 d-').in_sequence(sequence_1).with(pagamento, 4)
 			subject.expects(:detalhe_posicao_038_062).returns('038_062 e-').in_sequence(sequence_1)
 			subject.expects(:detalhe_posicao_063_076).returns('063_076 f-').in_sequence(sequence_1).with(pagamento, 4)
@@ -161,7 +161,7 @@ describe BrBoleto::Remessa::Cnab400::Base do
 
 		it '#detalhe_posicao_004_017 - deve retornar o cnpj da conta ajustado para 14 digitos' do
 			conta.expects(:cpf_cnpj).returns('1234567890')
-			subject.detalhe_posicao_004_017.must_equal '00001234567890'
+			subject.detalhe_posicao_004_017(pagamento, 3).must_equal '00001234567890'
 		end
 
 		it '#detalhe_posicao_018_037 - deve retornar as informações da conta' do
