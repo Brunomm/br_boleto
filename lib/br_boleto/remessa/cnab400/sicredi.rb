@@ -220,7 +220,8 @@ module BrBoleto
 					if pagamento.codigo_juros.to_i == 1
 						detalhe << pagamento.valor_juros_monetario_formatado(13)
 					else
-						detalhe << BrBoleto::Helper::Number.new( pagamento.percentual_juros ).formata_valor_monetario(13)
+						# detalhe << BrBoleto::Helper::Number.new( pagamento.percentual_juros ).formata_valor_monetario(13)
+						detalhe << BrBoleto::Helper::Number.new( (pagamento.percentual_juros.to_f / 30).round(2) ).formata_valor_monetario(13)
 					end
 					detalhe << "#{pagamento.data_desconto_formatado('%d%m%y')}".adjust_size_to(6,'0', :right )
 					detalhe << "#{pagamento.valor_desconto_formatado}".adjust_size_to(13,'0', :right )
