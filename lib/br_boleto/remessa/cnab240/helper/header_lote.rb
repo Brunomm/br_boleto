@@ -131,7 +131,10 @@ module BrBoleto
 					# 20 posições
 					#
 					def header_lote_posicao_054_a_073
-						informacoes_da_conta
+						# informacoes_da_conta
+						info = informacoes_da_conta
+						info[-1] = ' '
+						info
 					end
 
 					# Nome da Empresa

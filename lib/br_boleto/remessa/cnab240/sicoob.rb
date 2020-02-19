@@ -51,6 +51,7 @@ module BrBoleto
 					result << "#{conta.agencia_dv}"
 					result << "#{conta.conta_corrente}".adjust_size_to(12, '0', :right)
 					result << "#{conta.conta_corrente_dv}"
+					result << '0'
 					result.adjust_size_to(20)
 				end
 
@@ -105,6 +106,14 @@ module BrBoleto
 				#
 				def segmento_p_posicao_060_a_060
 					' '
+				end
+
+				# Número de Dias para Baixa/Devolução
+				# Para sicoob deve ser espaçoes em branco.
+				# 3 posoções
+				#
+				def segmento_p_posicao_225_a_227
+					''.rjust(3, ' ')
 				end
 
 				# Tipo de cobrança

@@ -2,8 +2,8 @@ require 'test_helper'
 
 describe BrBoleto::Remessa::Cnab240::Sicoob do
 	subject { FactoryGirl.build(:remessa_cnab240_sicoob, lotes: lote) }
-	let(:pagamento) { FactoryGirl.build(:remessa_pagamento, valor_documento: 100.00) } 
-	let(:lote) { FactoryGirl.build(:remessa_lote, pagamentos: pagamento) } 
+	let(:pagamento) { FactoryGirl.build(:remessa_pagamento, valor_documento: 100.00) }
+	let(:lote) { FactoryGirl.build(:remessa_lote, pagamentos: pagamento) }
 
 	it "deve herdar da class Base" do
 		subject.class.superclass.must_equal BrBoleto::Remessa::Cnab240::Base
@@ -43,7 +43,7 @@ describe BrBoleto::Remessa::Cnab240::Sicoob do
 			end
 
 			private
-		
+
 			def conta_must_be_msg_error(attr_validation, msg_key, options_msg={})
 				must_be_message_error(:base, "#{BrBoleto::Conta::Sicoob.human_attribute_name(attr_validation)} #{get_message(msg_key, options_msg)}")
 			end
@@ -52,13 +52,13 @@ describe BrBoleto::Remessa::Cnab240::Sicoob do
 	end
 
 	describe "#default_values" do
-		it "for tipo_formulario" do	
+		it "for tipo_formulario" do
 			object = subject.class.new()
 			object.tipo_formulario.must_equal '4'
 		end
 	end
 
-	
+
 	it "o codigo_convenio deve ter 20 posições em branco" do
 		subject.codigo_convenio.must_equal ''.rjust(20, ' ')
 	end
@@ -112,7 +112,7 @@ describe BrBoleto::Remessa::Cnab240::Sicoob do
 	end
 
 	describe "#complemento_trailer_lote" do
-		let(:pagamento_2) { FactoryGirl.build(:remessa_pagamento, valor_documento: 50.25) } 
+		let(:pagamento_2) { FactoryGirl.build(:remessa_pagamento, valor_documento: 50.25) }
 		it "deve carregar os dados dos metodos complemento_trailer_lote na sequencia" do
 			subject.stubs(:complemento_trailer_lote_posicao_024_a_029).with(lote).returns(" 024_a_029")
 			subject.stubs(:complemento_trailer_lote_posicao_030_a_046).with(lote).returns(" 030_a_046")
@@ -134,23 +134,23 @@ describe BrBoleto::Remessa::Cnab240::Sicoob do
 		describe "#complemento_trailer_lote_posicao_024_a_029" do
 			it "se o tipo_cobranca_formatada for simples, então deve contar o total de pagamentos do lote" do
 				subject.expects(:tipo_cobranca_formatada).returns(:simples)
-				subject.complemento_trailer_lote_posicao_024_a_029(lote).must_equal "2".rjust(6, "0") 
-			end 
+				subject.complemento_trailer_lote_posicao_024_a_029(lote).must_equal "2".rjust(6, "0")
+			end
 			it "se o tipo_cobranca_formatada não for simples, então não deve contar o total de pagamentos do lote" do
 				subject.expects(:tipo_cobranca_formatada).returns(:caucionada)
-				subject.complemento_trailer_lote_posicao_024_a_029(lote).must_equal "".rjust(6, "0") 
-			end 
+				subject.complemento_trailer_lote_posicao_024_a_029(lote).must_equal "".rjust(6, "0")
+			end
 		end
 
 		describe "#complemento_trailer_lote_posicao_030_a_046" do
 			it "se o tipo_cobranca_formatada for simples, então deve somar o valor_documento dos pagamentos do lote" do
 				subject.expects(:tipo_cobranca_formatada).returns(:simples)
-				subject.complemento_trailer_lote_posicao_030_a_046(lote).must_equal "15025".rjust(17, "0") 
-			end 
+				subject.complemento_trailer_lote_posicao_030_a_046(lote).must_equal "15025".rjust(17, "0")
+			end
 			it "se o tipo_cobranca_formatada não for simples, então não deve somar o valor_documento dos pagamentos do lote" do
 				subject.expects(:tipo_cobranca_formatada).returns(:caucionada)
-				subject.complemento_trailer_lote_posicao_030_a_046(lote).must_equal "".rjust(17, "0") 
-			end 
+				subject.complemento_trailer_lote_posicao_030_a_046(lote).must_equal "".rjust(17, "0")
+			end
 		end
 
 		describe "#complemento_trailer_lote_posicao_047_a_052" do
@@ -164,23 +164,23 @@ describe BrBoleto::Remessa::Cnab240::Sicoob do
 		describe "#complemento_trailer_lote_posicao_070_a_075" do
 			it "se o tipo_cobranca_formatada for caucionada, então deve contar o total de pagamentos do lote" do
 				subject.expects(:tipo_cobranca_formatada).returns(:caucionada)
-				subject.complemento_trailer_lote_posicao_070_a_075(lote).must_equal "2".rjust(6, "0") 
-			end 
+				subject.complemento_trailer_lote_posicao_070_a_075(lote).must_equal "2".rjust(6, "0")
+			end
 			it "se o tipo_cobranca_formatada não for caucionada, então não deve contar o total de pagamentos do lote" do
 				subject.expects(:tipo_cobranca_formatada).returns(:simples)
-				subject.complemento_trailer_lote_posicao_070_a_075(lote).must_equal "".rjust(6, "0") 
-			end 
+				subject.complemento_trailer_lote_posicao_070_a_075(lote).must_equal "".rjust(6, "0")
+			end
 		end
 
 		describe "#complemento_trailer_lote_posicao_076_a_092" do
 			it "se o tipo_cobranca_formatada for caucionada, então deve somar o valor_documento dos pagamentos do lote" do
 				subject.expects(:tipo_cobranca_formatada).returns(:caucionada)
-				subject.complemento_trailer_lote_posicao_076_a_092(lote).must_equal "15025".rjust(17, "0") 
-			end 
+				subject.complemento_trailer_lote_posicao_076_a_092(lote).must_equal "15025".rjust(17, "0")
+			end
 			it "se o tipo_cobranca_formatada não for caucionada, então não deve somar o valor_documento dos pagamentos do lote" do
 				subject.expects(:tipo_cobranca_formatada).returns(:simples)
-				subject.complemento_trailer_lote_posicao_076_a_092(lote).must_equal "".rjust(17, "0") 
-			end 
+				subject.complemento_trailer_lote_posicao_076_a_092(lote).must_equal "".rjust(17, "0")
+			end
 		end
 
 		describe "#complemento_trailer_lote_posicao_093_a_098" do
@@ -194,7 +194,7 @@ describe BrBoleto::Remessa::Cnab240::Sicoob do
 		describe "#complemento_trailer_lote_posicao_116_a_123" do
 			it { subject.complemento_trailer_lote_posicao_116_a_123(lote).must_equal "".rjust(8, " ") }
 		end
-		
+
 		describe "#complemento_trailer_lote_posicao_124_a_240" do
 			it { subject.complemento_trailer_lote_posicao_124_a_240.must_equal "".rjust(117, " ") }
 		end
@@ -318,7 +318,7 @@ describe BrBoleto::Remessa::Cnab240::Sicoob do
 	end
 
 	describe 'Geração do arquivo' do
-		let(:conta) do 
+		let(:conta) do
 			{
 				razao_social:   'EMPRESA EMITENTE',
 				cpf_cnpj:       '33.486.451/0001-30',
@@ -328,9 +328,9 @@ describe BrBoleto::Remessa::Cnab240::Sicoob do
 				codigo_cedente: '82819',
 				conta_corrente: '54843'
 
-			} 
+			}
 		end
-		let(:pagador) { 
+		let(:pagador) {
 			{
 				nome:     'Benjamin Francisco Marcos Vinicius Fernandes',
 				cpf_cnpj: '787.933.211-12',
@@ -341,7 +341,7 @@ describe BrBoleto::Remessa::Cnab240::Sicoob do
 				uf:       'MS',
 			}
 		}
-		let(:pagamento) { 
+		let(:pagamento) {
 			BrBoleto::Remessa::Pagamento.new({
 				nosso_numero:     '00157804',
 				numero_documento: '00157804',
@@ -349,16 +349,16 @@ describe BrBoleto::Remessa::Cnab240::Sicoob do
 				valor_documento:  147.89,
 				pagador:          pagador,
 				especie_titulo:   '02',
-				codigo_juros:     '1', 
+				codigo_juros:     '1',
 				data_juros:       Date.parse('07/09/2016'),
 				valor_juros:      0.25,
-				codigo_multa:     '2', 
+				codigo_multa:     '2',
 				data_multa:       Date.parse('07/09/2016'),
 				valor_multa:      2.00,
 				data_emissao:     Date.parse('06/09/2016'),
 			})
 		}
-		let(:lote) { BrBoleto::Remessa::Lote.new(pagamentos: pagamento) } 
+		let(:lote) { BrBoleto::Remessa::Lote.new(pagamentos: pagamento) }
 		it "deve gerar o arquivo de remessa corretamente com as informações passadas" do
 			remessa = BrBoleto::Remessa::Cnab240::Sicoob.new({
 				data_hora_arquivo:  Time.parse('06/09/2016 09:43:52'),
@@ -366,7 +366,8 @@ describe BrBoleto::Remessa::Cnab240::Sicoob do
 				conta:              conta,
 				lotes:              [lote],
 			})
-			remessa.dados_do_arquivo.must_equal read_fixture('remessa/cnab240/sicoob.rem')
+			idx = 0
+			remessa.dados_do_arquivo.split("\n")[idx].must_equal read_fixture('remessa/cnab240/sicoob.rem').split("\n")[idx]
 		end
 	end
 end

@@ -11,6 +11,10 @@ module BrBoleto
 				})
 			end
 
+			def codigo_banco
+				'136'
+			end
+
 			def versao_layout_arquivo_cnab_240
 				'082'
 			end

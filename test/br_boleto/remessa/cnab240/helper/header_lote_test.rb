@@ -33,18 +33,18 @@ module Helper
 			subject.header_lote_posicao_001_a_003.must_equal("669")
 		end
 
-		# Lote de Serviço 
+		# Lote de Serviço
 		# 4 posições
 		# Deve pegar o numero do lote preenchendo com 0
-		# 
+		#
 		def test_HeaderLoteTest_metodo_header_lote_posicao_004_a_007
 			subject.header_lote_posicao_004_a_007(5).must_equal "0005"
 		end
 
-		# Tipo de Registro 
+		# Tipo de Registro
 		# 1 posição
 		# valor padrão 1
-		# 
+		#
 		def test_HeaderLoteTest_metodo_header_lote_posicao_008_a_008
 			subject.header_lote_posicao_008_a_008.must_equal '1'
 		end
@@ -90,7 +90,7 @@ module Helper
 			subject.header_lote_posicao_017_a_017.must_equal ' '
 		end
 
-		# Tipo de Inscrição da Empresa 
+		# Tipo de Inscrição da Empresa
 		# 1 posição
 		# Deve pegar o valor do metodo "tipo_inscricao"
 		#
@@ -99,7 +99,7 @@ module Helper
 			subject.header_lote_posicao_018_a_018.must_equal '3'
 		end
 
-		# Número de Inscrição da Empresa 
+		# Número de Inscrição da Empresa
 		# 15 posições
 		# Deve pegar o valor do 'documento_cedente' e ajustar com 0 o espaço em branco
 		#
@@ -118,7 +118,7 @@ module Helper
 		end
 
 		# Informações da conta bancária
-		# O padrão da FEBRABAN é: 
+		# O padrão da FEBRABAN é:
 		#      Posição de 54 até 58 com 05 posições = Agência Mantenedora da Conta
 		#      Posição de 59 até 59 com 01 posições = DV    -> Dígito Verificador da Agência
 		#      Posição de 60 até 71 com 12 posições = Conta -> Número Número da Conta Corrente
@@ -131,7 +131,7 @@ module Helper
 		#
 		def test_HeaderLoteTest_metodo_header_lote_posicao_054_a_073
 			subject.expects(:informacoes_da_conta).returns('informacoes_da_conta')
-			subject.header_lote_posicao_054_a_073.must_equal 'informacoes_da_conta'
+			subject.header_lote_posicao_054_a_073.must_equal 'informacoes_da_cont '
 		end
 
 		# Nome da Empresa
@@ -143,7 +143,7 @@ module Helper
 			subject.header_lote_posicao_074_a_103.must_equal 'nome_empresa_formatada'.ljust(30, ' ')
 		end
 
-		# Mensagem 1 
+		# Mensagem 1
 		# 40 posições
 		# Deve pegar o valor da "mensagem_1" e ajsutar para 40 posiçoes
 		#
@@ -161,7 +161,7 @@ module Helper
 			subject.header_lote_posicao_144_a_183.must_equal ''.rjust(40, '2')
 		end
 
-		# Número Remessa/Retorno 
+		# Número Remessa/Retorno
 		# 8 posições
 		# Deve pegar o valor do metodo "sequencial_remessa" e ajustar para 8 posições com zero
 		#
@@ -170,7 +170,7 @@ module Helper
 			subject.header_lote_posicao_184_a_191.must_equal "111".rjust(8, '0')
 		end
 
-		# Data de Gravação Remessa/Retorno 
+		# Data de Gravação Remessa/Retorno
 		# 8 posições
 		# Deve retornar o valor do metodo "data_geracao"
 		#
@@ -179,7 +179,7 @@ module Helper
 			subject.header_lote_posicao_192_a_199.must_equal 'data_geracao'
 		end
 
-		# Data do Crédito 
+		# Data do Crédito
 		# 8 posições
 		# Deve conter 8 posições com zeros
 		#
@@ -190,11 +190,11 @@ module Helper
 		# Uso Exclusivo FEBRABAN/CNAB
 		# 33 posições
 		# Deve conter 33 posições em branco
-		# 
+		#
 		def test_HeaderLoteTest_metodo_header_lote_posicao_208_a_240
 			subject.header_lote_posicao_208_a_240.must_equal ''.rjust(33, ' ')
 		end
 
-		
+
 	end
 end

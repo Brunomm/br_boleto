@@ -67,7 +67,7 @@ describe BrBoleto::Conta::Unicred do
 	end
 
 	it "codigo do banco" do
-		subject.codigo_banco.must_equal '237'
+		subject.codigo_banco.must_equal '136'
 	end
 	it '#codigo_banco_dv' do
 		subject.codigo_banco_dv.must_equal '2'
@@ -148,7 +148,7 @@ describe BrBoleto::Conta::Unicred do
 			it { subject.get_codigo_protesto('4', 240).must_equal '1' } # Protestar Fim Falimentar - Dias Úteis
 			it { subject.get_codigo_protesto('5', 240).must_equal '1' } # Protestar Fim Falimentar - Dias Corridos
 			it { subject.get_codigo_protesto('8', 240).must_equal '3' } # Negativação sem Protesto
-			it { subject.get_codigo_protesto('9', 240).must_equal '3' } # Cancelamento Protesto Automático 
+			it { subject.get_codigo_protesto('9', 240).must_equal '3' } # Cancelamento Protesto Automático
 		end
 	end
 end
