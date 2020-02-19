@@ -11,6 +11,10 @@ module BrBoleto
 				})
 			end
 
+			def nome_banco
+				@nome_banco ||= 'UNICRED'
+			end
+
 			def codigo_banco
 				'136'
 			end
@@ -22,7 +26,7 @@ module BrBoleto
 			def versao_layout_lote_cnab_240
 				'041'
 			end
-			
+
 
 			##################################### DEFAULT CODES ###############################################
 
@@ -36,7 +40,7 @@ module BrBoleto
 						'4' => '1', # Protestar Fim Falimentar - Dias Úteis
 						'5' => '1', # Protestar Fim Falimentar - Dias Corridos
 						'8' => '3', # Negativação sem Protesto
-						'9' => '3', # Cancelamento Protesto Automático 
+						'9' => '3', # Cancelamento Protesto Automático
 					}
 				end
 

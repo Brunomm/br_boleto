@@ -75,7 +75,7 @@ describe BrBoleto::Conta::Unicred do
 
 	describe "#nome_banco" do
 		it "valor padrão para o nome_banco" do
-			subject.nome_banco.must_equal 'BRADESCO'
+			subject.nome_banco.must_equal 'UNICRED'
 		end
 		it "deve ser possível mudar o valor do nome do banco" do
 			subject.nome_banco = 'MEU'

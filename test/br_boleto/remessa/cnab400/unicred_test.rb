@@ -2,16 +2,16 @@ require 'test_helper'
 
 describe BrBoleto::Remessa::Cnab400::Unicred do
 	subject { FactoryGirl.build(:remessa_cnab400_unicred, pagamentos: pagamento, conta: conta) }
-	let(:pagamento) { FactoryGirl.build(:remessa_pagamento, pagador: pagador) } 
-	let(:conta)     { FactoryGirl.build(:conta_unicred) } 
-	let(:pagador)   { FactoryGirl.build(:pagador) } 
-	
+	let(:pagamento) { FactoryGirl.build(:remessa_pagamento, pagador: pagador) }
+	let(:conta)     { FactoryGirl.build(:conta_unicred) }
+	let(:pagador)   { FactoryGirl.build(:pagador) }
+
 	it "deve ter a class para a conta do unicred" do
 		BrBoleto::Remessa::Cnab400::Unicred.new.conta_class.must_equal BrBoleto::Conta::Unicred
 	end
 
 	it "deve herdar de Cnab400::Bradesco" do
-		subject.class.superclass.must_equal BrBoleto::Remessa::Cnab400::Bradesco
+		subject.class.superclass.must_equal BrBoleto::Remessa::Cnab400::Base
 	end
 
 	describe '#informacoes_da_conta' do
@@ -24,8 +24,8 @@ describe BrBoleto::Remessa::Cnab400::Unicred do
 
 			result[0..20].must_equal  '00000000000039321235'  # Codigo Empresa
 		end
-		it "deve retornar com 20 caracteres" do
-			subject.informacoes_da_conta(:detalhe).size.must_equal 20
+		it "deve retornar com 36 caracteres" do
+			subject.informacoes_da_conta(:detalhe).size.must_equal 36
 		end
 		it "deve trazer as informações em suas posições quando o parametro for :detalhe" do
 			conta.agencia           = 1234
@@ -35,12 +35,12 @@ describe BrBoleto::Remessa::Cnab400::Unicred do
 			conta.carteira          = 21
 			result = subject.informacoes_da_conta(:detalhe)
 
-			result[0..2].must_equal    '   '
-			result[3].must_equal       '0'  
-			result[4..6].must_equal    '021'  
-			result[7..11].must_equal   '01234'    # Agencia
-			result[12..18].must_equal  '0089755'  # Conta Corrente
-			result[19].must_equal      '7'        # Conta Corrente DV
+			result[0..2].must_equal    '012'
+			result[3].must_equal       '3'
+			result[4..6].must_equal    '410'
+			result[7..11].must_equal   '00000'
+			result[12..18].must_equal  '0897557'
+			result[19].must_equal      '0'
 		end
 	end
 
@@ -48,10 +48,9 @@ describe BrBoleto::Remessa::Cnab400::Unicred do
 		it "deve retornar o sequencial da remessa com 12 posições e mais 277 brancos" do
 			subject.sequencial_remessa = 4758
 
-			subject.complemento_registro[0..7].must_equal '        '
-			subject.complemento_registro[8..9].must_equal 'MX'
-			subject.complemento_registro[10..16].must_equal '0004758'
-			subject.complemento_registro[17..293].must_equal ''.rjust(277) 
+			subject.complemento_registro[0..6].must_equal '       '
+			subject.complemento_registro[7..16].must_equal '0000004758'
+			subject.complemento_registro[17..293].must_equal ''.rjust(277)
 
 			subject.complemento_registro.size.must_equal 294
 		end
@@ -65,8 +64,8 @@ describe BrBoleto::Remessa::Cnab400::Unicred do
 			pagamento.expects(:numero_documento).returns('534423')
 			result = subject.detalhe_posicao_038_062(pagamento)
 
-			result[00..13].must_equal ''.rjust(14)              # Preencher com Branco
-			result[14..24].must_equal   '534423'.rjust(11, '0') # Numero documento         
+			result[00..13].must_equal "534423        "
+			result[14..24].must_equal ''.rjust(11, ' ')
 			result.size.must_equal 25
 		end
 	end
@@ -79,14 +78,10 @@ describe BrBoleto::Remessa::Cnab400::Unicred do
 			pagamento.assign_attributes(tipo_emissao: 2)
 			result = subject.detalhe_posicao_063_108(pagamento)
 
-			result[0..2].must_equal   '000'                 
-			result[3].must_equal      '0'                  # Identificativos de Multa
-			result[4..7].must_equal   '0000'               # Percentual de Multa por Atraso
-			result[8..18].must_equal  '00000977897'        # Identificação do Título no Banco
-			result[19].must_equal     '6'                  # Nosso numero DV
-			result[20..29].must_equal '0000000000'         # Desconto Bonificação por dia
-			result[30].must_equal     '2'                  # Condição para Emissão da Papeleta de Cobrança
-			result[31..45].must_equal ''.rjust(15)         # Preencher com Branco
+			result[0..2].must_equal   '136'
+			result[3..4].must_equal   '00'
+			result[5..29].must_equal  ''.adjust_size_to(25)
+			result[30..45].must_equal '03          10  '
 
 			result.size.must_equal 46
 		end
@@ -107,37 +102,15 @@ describe BrBoleto::Remessa::Cnab400::Unicred do
 			result = subject.informacoes_do_pagamento(pagamento, 4)
 			result.size.must_equal 40
 
-			result[00..05].must_equal '050829'        # "Data Vencimento: Formato DDMMAA Normal ""DDMMAA"" A vista = ""888888"" Contra Apresentação = ""999999"""
-			result[06..18].must_equal '0000000004756' # Valor do Titulo 
-			result[19..21].must_equal '000'           # 000 ou Número Banco
-			result[22..26].must_equal "00000"         # 000000 ou Agencia
-			result[27..28].must_equal "02"            # Espécie do Título
-			result[  29  ].must_equal "N"             # dentificação (Sempre 'N')
-			result[30..35].must_equal '150917'        # Data de Emissão do Título: formato ddmmaa
-			result[36..37].must_equal '00'            # Primeira instrução codificada
-			result[38..39].must_equal '00'            # Segunda instrução
-		end
-	end
-
-	describe '#detalhe_multas_e_juros_do_pagamento' do
-		it "deve ter o tamanho de 58 digitos" do
-			subject.detalhe_multas_e_juros_do_pagamento(pagamento, 2).size.must_equal 58
-		end
-		it "deve conter as informações nas posições corretas" do
-			pagamento.valor_juros = '0.39'
-			pagamento.valor_iof = '2.7'
-			pagamento.data_desconto = Date.parse('21/03/2018')
-			pagamento.valor_desconto = 4.3
-			pagamento.valor_abatimento = 56.47
-
-			result = subject.detalhe_multas_e_juros_do_pagamento(pagamento, 4)
-			result.size.must_equal 58
-
-			result[00..12].must_equal '0000000000039'
-			result[13..18].must_equal "210318"
-			result[19..31].must_equal '0000000000430'
-			result[32..44].must_equal '0000000000270'
-			result[45..57].must_equal '0000000005647'
+			result[00..05].must_equal '050829'
+			result[06..18].must_equal '0000000004756'
+			result[19..21].must_equal '   '
+			result[22..26].must_equal "00000"
+			result[27..28].must_equal "00"
+			result[  29  ].must_equal "0"
+			result[30..35].must_equal '150917'
+			result[36..37].must_equal '00'
+			result[38..39].must_equal '00'
 		end
 	end
 
@@ -157,13 +130,14 @@ describe BrBoleto::Remessa::Cnab400::Unicred do
 			result = subject.informacoes_do_sacado(pagamento, 2)
 			result.size.must_equal 176
 
-			result[00..01].must_equal "01"                                    # Tipo de Inscrição do Pagador: "01" = CPF / "02" = CNPJ
-			result[02..15].must_equal '00012345678901'                        # Número do CNPJ ou CPF do Pagador
-			result[16..55].must_equal 'nome pagador'.adjust_size_to(40)       # Nome do Pagador
-			result[56..95].must_equal 'rua do pagador'.adjust_size_to(40)     # Endereço do Pagador
-			result[108..115].must_equal '89885001'                            # CEP do Pagador
-			result[116..130].must_equal '84010699043'.rjust(15)               # Observações/Mensagem ou Sacador/Avalista
-			result[133..175].must_equal 'Avalista'.adjust_size_to(43)         # Observações/Mensagem ou Sacador/Avalista
+			result[00..01].must_equal "01"                                # Tipo de Inscrição do Pagador: "01" = CPF / "02" = CNPJ
+			result[02..15].must_equal '00012345678901'                    # Número do CNPJ ou CPF do Pagador
+			result[16..55].must_equal 'nome pagador'.adjust_size_to(40)   # Nome do Pagador
+			result[56..95].must_equal 'rua do pagador'.adjust_size_to(40) # Endereço do Pagador
+			result[108..115].must_equal '89885001'                        # CEP do Pagador
+			result[116..135].must_equal 'Chapecó'.adjust_size_to(20)       # CIDADE
+			result[136..137].must_equal 'SC'                  # UF
+			result[138..175].must_equal ''.adjust_size_to(38)         # Observações/Mensagem ou Sacador/Avalista
 		end
 	end
 end
