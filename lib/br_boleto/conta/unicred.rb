@@ -27,6 +27,10 @@ module BrBoleto
 				'041'
 			end
 
+			def conta_corrente_dv
+				@conta_corrente_dv ||= BrBoleto::Calculos::Modulo11FatorDe2a9.new(conta_corrente).to_s
+			end
+
 
 			##################################### DEFAULT CODES ###############################################
 

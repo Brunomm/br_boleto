@@ -238,13 +238,14 @@ describe BrBoleto::Remessa::Cnab240::Unicred do
 		}
 		let(:lote) { BrBoleto::Remessa::Lote.new(pagamentos: pagamento) }
 		it "deve gerar o arquivo de remessa corretamente com as informações passadas" do
-			remessa = BrBoleto::Remessa::Cnab240::Unicred.new({
+			remessa = BrBoleto::Remessa::Cnab400::Unicred.new({
 				data_hora_arquivo:  Time.parse('10/11/2016 09:27:45'),
 				sequencial_remessa: 1,
 				conta:              conta,
-				lotes:              [lote],
+				pagamentos:         [pagamento],
 			})
-			remessa.dados_do_arquivo.must_equal read_fixture('remessa/cnab240/unicred.rem')
+
+			remessa.dados_do_arquivo.must_equal read_fixture('remessa/cnab400/unicred.rem')
 		end
 	end
 end

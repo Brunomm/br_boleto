@@ -55,7 +55,7 @@ describe BrBoleto::Boleto::Unicred do
 		it "deve calcular pelo Modulo11Fator3197" do
 			# subject.carteira = 09
 			subject.numero_documento = 111
-			BrBoleto::Calculos::Modulo11FatorDe2a7.expects(:new).with("0900000000111").returns("meu_resultado")
+			BrBoleto::Calculos::Modulo11FatorDe2a9.expects(:new).with('00000000111').returns("meu_resultado")
 			subject.digito_verificador_nosso_numero.must_equal "meu_resultado"
 		end
 	end
@@ -66,7 +66,7 @@ describe BrBoleto::Boleto::Unicred do
 		it "deve retornar o numero do documento com o digito_verificador_nosso_numero" do
 			subject.stubs(:digito_verificador_nosso_numero).returns('9')
 			subject.numero_documento = '3646'
-			subject.nosso_numero.must_equal "09/00000003646-9"
+			subject.nosso_numero.must_equal "00000003646-9"
 		end
 	end
 
@@ -81,18 +81,16 @@ describe BrBoleto::Boleto::Unicred do
 			)
 		end
 		it "deve montar o codigo corretamente com as informações" do
-			subject.stubs(:nosso_numero).returns('09/00000003646-9')
+			subject.stubs(:nosso_numero).returns('0000003646-9')
 
 			result = subject.codigo_de_barras_do_banco
 			result.size.must_equal 25
 
 			result[0..3].must_equal   '0078'        # Agencia
-			result[4..5].must_equal   '09'          # Carteira
-			result[6..16].must_equal  '00000000395' # Numero documento
-			result[17..23].must_equal '0000668'     # Conta Corrente
-			result[24].must_equal     '0'           # Zero
+			result[4..13].must_equal  '0000006688'     # Conta Corrente
+			result[14..24].must_equal '00000036469' # Numero documento
 
-			subject.codigo_de_barras_do_banco.must_equal '0078090000000039500006680'
+			subject.codigo_de_barras_do_banco.must_equal '0078000000668800000036469'
 		end
 	end
 
@@ -109,8 +107,8 @@ describe BrBoleto::Boleto::Unicred do
 			end
 		end
 
-		it { subject.codigo_de_barras.must_equal '13691816800093015783069090000001001000897550' }
-		it { subject.linha_digitavel.must_equal  '13693.06905 90000.001009 10008.975509 1 81680009301578' }
+		it { subject.codigo_de_barras.must_equal '13691816800093015783069000089755800000010010' }
+		it { subject.linha_digitavel.must_equal  '13693.06905 00089.755805 00000.100107 1 81680009301578' }
 
 		it "codigo de barras de um boleto de exemplo" do
 			subject.conta.agencia           = 3069
@@ -121,8 +119,8 @@ describe BrBoleto::Boleto::Unicred do
 			subject.valor_documento         = 408.50
 			subject.data_vencimento         = Date.parse('2016-09-01')
 
-			subject.linha_digitavel.must_equal  '13693.06905 90000.001561 79008.975504 9 69040000040850'
-			subject.codigo_de_barras.must_equal '13699690400000408503069090000001567900897550'
+			subject.linha_digitavel.must_equal  '13693.06905 00089.755805 00000.156794 9 69040000040850'
+			subject.codigo_de_barras.must_equal '13699690400000408503069000089755800000015679'
 		end
 	end
 end

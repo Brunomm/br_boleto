@@ -8,7 +8,6 @@ module BrBoleto
 					BrBoleto::Conta::Unicred
 				end
 
-				validate :validation_codigo_empresa_is_required
 ############################## HEADER #########################################################
 
 				# Código da remessa
@@ -153,13 +152,12 @@ module BrBoleto
 				# POSIÇÂO      TAM.   Descrição
 				# 121 a 126    006    Data do Vencimento do Título
 				# 127 a 139    013    Valor do Título
-				# 140 a 142    003    Banco Encarregado da Cobrança (Preencher com zeros)
-				# 143 a 147    005    Agência Depositária (Preencher com zeros)
-				# 148 a 149    002    Espécie de Título
-				# 150 a 150    001    Identificação (Sempre 'N')
+				# 140 a 142    003    Filler
+				# 143 a 147    005    Filler Zeros
+				# 148 a 149    002    Filler Zeros
+				# 150 a 150    001    Código do desconto
 				# 151 a 156    006    Data da emissão do Título
-				# 157 a 158    002    1a instrução
-				# 159 a 160    002    2a instrução
+				# 157 a 160    004    Filler Zeros
 				# Tamanho: 40
 				def informacoes_do_pagamento(pagamento, sequencial)
 					dados = ''
@@ -188,18 +186,13 @@ module BrBoleto
 				# Tamanho: 58
 				def detalhe_posicao_161_218(pagamento, sequencial)
 					info = ''
-
-					if "#{pagamento.codigo_juros}".in?(%w[1 2])
-						info << pagamento.valor_juros_monetario_formatado(13)
-					else
-						info << '5'
-					end
-
+					info << pagamento.valor_juros_monetario_formatado(13)
 					info << pagamento.data_desconto_formatado
 					info << pagamento.valor_desconto_formatado(13)
-					info << "#{pagamento.nosso_numero}".adjust_size_to(11, '0', :right)
+					info << "#{pagamento.nosso_numero.to_i}".adjust_size_to(11, '0', :right)
 					info << '00'
 					info << pagamento.valor_abatimento_formatado(13)
+					info.adjust_size_to(58, '5', :right)
 				end
 
 
